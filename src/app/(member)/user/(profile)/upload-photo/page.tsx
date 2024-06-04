@@ -8,10 +8,14 @@ import {
     FormItem,
     FormMessage,
 } from '@/components/ui/form';
+import { useUpdateProfilePhoto } from '@/feature/user/profile';
+import { errorHelper } from '@/lib/formErrorHelper';
 import useFilePreview from '@/lib/useFilePreview';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { HardDriveUpload } from 'lucide-react';
 import Image from 'next/image';
+import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import React from 'react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
@@ -38,13 +42,23 @@ const formSchema = z.object({
         ),
 });
 export default function Page() {
-    function onSubmit() {
-        alert('lanjut');
+    const router = useRouter();
+    const { mutate, isPending } = useUpdateProfilePhoto({
+        onSuccess: onSuccess,
+        onError: (error) => errorHelper(form.setError, error),
+    });
+    async function onSubmit(data: z.infer<typeof formSchema>) {
+        mutate(data.photo);
     }
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         mode: 'onChange',
     });
+
+    function onSuccess() {
+        router.push('/user/interest');
+        // console.log(data);
+    }
 
     const fileRef = form.register('photo');
     const result = form.watch(['photo']);
@@ -105,14 +119,18 @@ export default function Page() {
                             />
                         </div>
                         <div className="flex items-center justify-center py-4">
-                            <Button type="submit">Next</Button>
+                            <Button type="submit" loading={isPending}>
+                                Next
+                            </Button>
                         </div>
                     </form>
                 </Form>
                 <div className="flex items-center justify-center">
-                    <Button variant={'ghost'} className="">
-                        Skip Now
-                    </Button>
+                    <Link href="/user/interest">
+                        <Button variant={'ghost'} className="">
+                            Skip Now
+                        </Button>
+                    </Link>
                 </div>
             </section>
         </div>

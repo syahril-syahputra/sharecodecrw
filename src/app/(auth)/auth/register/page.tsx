@@ -30,7 +30,9 @@ import { PasswordInput } from '@/components/ui/password-input';
 import { BodyUserRegistration } from '@/types/auth';
 import { errorHelper } from '@/lib/formErrorHelper';
 import { useUserRegistration } from '@/feature/auth/register';
-
+import { useFetchCity, useFetchState } from '@/feature/base/city';
+import dayjs from 'dayjs';
+import { signIn } from 'next-auth/react';
 const formSchema = z
     .object({
         first_name: z.string().min(1, { message: 'Name is required' }),
@@ -60,7 +62,14 @@ export default function Page() {
         onError: (error) => errorHelper(form.setError, error),
     });
 
-    function onSucces() {
+    async function onSucces() {
+        await signIn('credentials', {
+            email: form.getValues().email,
+            password: form.getValues().password,
+            remember_me: false,
+            callbackUrl: '/email-verification',
+        });
+        form.reset();
         // console.log(data);
     }
     async function onSubmit(values: z.infer<typeof formSchema>) {
@@ -68,7 +77,7 @@ export default function Page() {
             first_name: values.first_name,
             last_name: values.last_name,
             email: values.email,
-            dob: values.birthday,
+            dob: dayjs(values.birthday).format('YYYY-MM-DD'),
             city_id: values.city,
             password: values.password,
             password_confirmation: values.confirm_password,
@@ -83,6 +92,11 @@ export default function Page() {
             newsletter: false,
         },
     });
+    const { data: dataState } = useFetchState();
+    const { data: dataCity } = useFetchCity(form.getValues('province'), () => {
+        form.setValue('city', '');
+    });
+
     return (
         <div className="mx-auto max-w-xl space-y-8">
             <section className="space-y-4 text-center">
@@ -91,6 +105,7 @@ export default function Page() {
                     To discover more start with creating an account!
                 </div>
             </section>
+
             <Form {...form}>
                 <form
                     onSubmit={form.handleSubmit(onSubmit)}
@@ -194,15 +209,14 @@ export default function Page() {
                                             </SelectTrigger>
                                         </FormControl>
                                         <SelectContent>
-                                            <SelectItem value="Sulawesi Selatan">
-                                                Sulawesi Selatan
-                                            </SelectItem>
-                                            <SelectItem value="Bali">
-                                                Bali
-                                            </SelectItem>
-                                            <SelectItem value="Jakarta">
-                                                Jakarta
-                                            </SelectItem>
+                                            {dataState?.map((item) => (
+                                                <SelectItem
+                                                    key={item.id}
+                                                    value={item.id}
+                                                >
+                                                    {item.name}
+                                                </SelectItem>
+                                            ))}
                                         </SelectContent>
                                     </Select>
                                     <FormMessage />
@@ -224,15 +238,14 @@ export default function Page() {
                                             </SelectTrigger>
                                         </FormControl>
                                         <SelectContent>
-                                            <SelectItem value="makassar">
-                                                Makassar
-                                            </SelectItem>
-                                            <SelectItem value="bali">
-                                                Bali
-                                            </SelectItem>
-                                            <SelectItem value="Jakarta">
-                                                Jakarta
-                                            </SelectItem>
+                                            {dataCity?.map((item) => (
+                                                <SelectItem
+                                                    key={item.id}
+                                                    value={item.id}
+                                                >
+                                                    {item.name}
+                                                </SelectItem>
+                                            ))}
                                         </SelectContent>
                                     </Select>
                                     <FormMessage />

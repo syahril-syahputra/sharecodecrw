@@ -1,4 +1,5 @@
 'use client';
+import ErrorMessage from '@/components/base/Error/ErrorMessage';
 import TitleAuth from '@/components/base/Title/TitleAuth';
 import { Button } from '@/components/ui/button';
 import {
@@ -8,9 +9,10 @@ import {
     FormItem,
     FormMessage,
 } from '@/components/ui/form';
-import { Input } from '@/components/ui/input';
+import { PasswordInput } from '@/components/ui/password-input';
 import Spinner from '@/components/ui/spinner';
-import { yupResolver } from '@hookform/resolvers/yup';
+import fetchClient from '@/lib/FetchClient';
+import { errorHelper } from '@/lib/formErrorHelper';
 import { zodResolver } from '@hookform/resolvers/zod';
 import axios from 'axios';
 import Link from 'next/link';
@@ -19,10 +21,6 @@ import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 
-interface FormInputs {
-    password: string;
-    password_confirmation: string;
-}
 const formSchema = z
     .object({
         password: z.string().min(1, { message: 'Password is required' }),
@@ -51,62 +49,51 @@ export default function Page() {
         mode: 'onChange',
     });
 
-    // useEffect(() => {
-    //     async function fetchData() {
-    //         try {
-    //             await fetchClient({
-    //                 url: '/auth/validate-reset-password-token',
-    //                 method: 'POST',
-    //                 body: {
-    //                     token:
-    //                         'key=' +
-    //                         key +
-    //                         '&confirmation_key=' +
-    //                         confirmation_key,
-    //                 },
-    //             });
-    //             setisTokenValid(true);
-    //         } catch (error) {
-    //             setisTokenValid(false);
-    //             console.log(error);
-    //         } finally {
-    //             setisValidating(false);
-    //         }
-    //     }
-    //     fetchData();
-    // }, []);
+    useEffect(() => {
+        async function fetchData() {
+            try {
+                await fetchClient({
+                    url: '/auth/validate-reset-password-token',
+                    method: 'POST',
+                    body: {
+                        token:
+                            'key=' +
+                            key +
+                            '&confirmation_key=' +
+                            confirmation_key,
+                    },
+                });
+                setisTokenValid(true);
+            } catch (error) {
+                setisTokenValid(false);
+                console.log(error);
+            } finally {
+                setisValidating(false);
+            }
+        }
+        fetchData();
+    }, []);
 
     async function onSubmit() {
-        // handle submitting the form
-        // const dataRequest = {
-        //     password: data.password,
-        //     password_confirmation: data.password_confirmation,
-        //     token: 'key=' + key + '&confirmation_key=' + confirmation_key,
-        // };
-        // seterrorResponse('');
-        // try {
-        //     await fetchClient({
-        //         method: 'POST',
-        //         url: '/auth/reset-password',
-        //         body: dataRequest,
-        //     });
-        //     router.push('/auth/login');
-        // } catch (error) {
-        //     if (axios.isAxiosError(error)) {
-        //         if (error.response?.data.errors) {
-        //             const obj = error.response?.data.errors;
-        //             for (const [key, value] of Object.entries(obj)) {
-        //                 if (key in scheme.fields) {
-        //                     setError(key as FormErrorKeys, {
-        //                         type: 'custom',
-        //                         message: value as string,
-        //                     });
-        //                 }
-        //             }
-        //         }
-        //         seterrorResponse(error.response?.data.message);
-        //     }
-        // }
+        const dataRequest = {
+            password: form.getValues().password,
+            password_confirmation: form.getValues().confirm_password,
+            token: 'key=' + key + '&confirmation_key=' + confirmation_key,
+        };
+        seterrorResponse('');
+        try {
+            await fetchClient({
+                method: 'POST',
+                url: '/auth/reset-password',
+                body: dataRequest,
+            });
+            router.push('/auth/login');
+        } catch (error) {
+            if (axios.isAxiosError(error)) {
+                errorHelper(form.setError, error),
+                    seterrorResponse(error.response?.data.message);
+            }
+        }
     }
     return (
         <div className="container  mt-8 pt-4">
@@ -123,7 +110,7 @@ export default function Page() {
                     <TitleAuth>Your link not valid.</TitleAuth>
                     <div>
                         Please click{' '}
-                        <Link href={'/auth/forgot-password'}>HERE</Link> resend
+                        <Link href={'/auth/forget-password'}>HERE</Link> resend
                         input your email again
                     </div>
                 </div>
@@ -144,9 +131,23 @@ export default function Page() {
                                 render={({ field }) => (
                                     <FormItem>
                                         <FormControl>
-                                            <Input
+                                            <PasswordInput
                                                 placeholder="Password"
-                                                type="password"
+                                                {...field}
+                                            />
+                                        </FormControl>
+                                        <FormMessage />
+                                    </FormItem>
+                                )}
+                            />
+                            <FormField
+                                control={form.control}
+                                name="confirm_password"
+                                render={({ field }) => (
+                                    <FormItem>
+                                        <FormControl>
+                                            <PasswordInput
+                                                placeholder="Confirm Password"
                                                 {...field}
                                             />
                                         </FormControl>
@@ -155,22 +156,11 @@ export default function Page() {
                                 )}
                             />
 
-                            <FormField
-                                control={form.control}
-                                name="confirm_password"
-                                render={({ field }) => (
-                                    <FormItem>
-                                        <FormControl>
-                                            <Input
-                                                placeholder="Confirm Password"
-                                                type="password"
-                                                {...field}
-                                            />
-                                        </FormControl>
-                                        <FormMessage />
-                                    </FormItem>
-                                )}
-                            />
+                            {errorResponse && (
+                                <ErrorMessage>
+                                    {errorResponse || 'Samething Wrong'}
+                                </ErrorMessage>
+                            )}
                             <Button
                                 block
                                 type="submit"

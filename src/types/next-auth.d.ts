@@ -12,12 +12,9 @@ declare module 'next-auth' {
 
     interface User {
         // id: number;
-        name: string;
-        email: string;
-        company_name: string;
-        ulid: string;
         first_name: string;
         last_name: string;
+        email: string;
         email_verified_at: string;
     }
 }

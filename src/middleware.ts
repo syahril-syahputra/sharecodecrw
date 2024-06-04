@@ -7,16 +7,27 @@ export async function middleware(request: NextRequest) {
         secret: process.env.NEXTAUTH_SECRET,
     });
 
-    // if (session) {
-    //     if (
-    //         request.nextUrl.pathname.startsWith('/auth/') &&
-    //         !request.nextUrl.pathname.endsWith('/email-verification')
-    //     ) {
-    //         return NextResponse.redirect(new URL('/', request.url));
-    //     }
-    // } else {
-    //     if (request.nextUrl.pathname.startsWith('/product/inquiry/')) {
-    //         return NextResponse.redirect(new URL('/auth/login', request.url));
-    //     }
-    // }
+    if (session) {
+        if (
+            request.nextUrl.pathname.startsWith('/auth/') &&
+            !request.nextUrl.pathname.endsWith('/email-verification')
+        ) {
+            return NextResponse.redirect(new URL('/', request.url));
+        }
+        if (
+            request.nextUrl.pathname.startsWith('/user') &&
+            !session.email_verified_at
+        ) {
+            return NextResponse.redirect(
+                new URL('/email-verification', request.url)
+            );
+        }
+    } else {
+        if (
+            request.nextUrl.pathname.startsWith('/user') ||
+            request.nextUrl.pathname.startsWith('/email-verification')
+        ) {
+            return NextResponse.redirect(new URL('/auth/login', request.url));
+        }
+    }
 }

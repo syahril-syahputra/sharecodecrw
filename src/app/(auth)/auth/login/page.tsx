@@ -21,7 +21,7 @@ import Image from 'next/image';
 import ErrorMessage from '@/components/base/Error/ErrorMessage';
 import TitleSeparator from '@/components/base/Title/TitleSeparator';
 import { PasswordInput } from '@/components/ui/password-input';
-import { useRouter, useSearchParams } from 'next/navigation';
+import { useSearchParams, useRouter } from 'next/navigation';
 import { signIn } from 'next-auth/react';
 
 const formSchema = z.object({
@@ -66,7 +66,7 @@ export default function Page() {
                 setloginFail(request?.error);
             } else {
                 router.refresh();
-                router.push(callbackUrl || '');
+                router.push('/user');
             }
         } catch (error) {
             console.log(error);

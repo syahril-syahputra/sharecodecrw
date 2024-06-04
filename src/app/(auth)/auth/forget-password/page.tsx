@@ -9,6 +9,7 @@ import {
     FormMessage,
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
+import fetchClient from '@/lib/FetchClient';
 import { zodResolver } from '@hookform/resolvers/zod';
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
@@ -29,18 +30,17 @@ export default function Page() {
     });
 
     async function onSubmit() {
-        // handle submitting the form
-        // try {
-        //     await fetchClient({
-        //         url: '/auth/forgot-password',
-        //         method: 'POST',
-        //         body: { email: data.email },
-        //     });
-        // } catch (error) {
-        //     console.log(error);
-        // } finally {
-        //     setsended(true);
-        // }
+        try {
+            await fetchClient({
+                url: '/auth/forgot-password',
+                method: 'POST',
+                body: { email: form.getValues().email },
+            });
+        } catch (error) {
+            console.log(error);
+        } finally {
+            setsended(true);
+        }
     }
     return (
         <div className="container  mt-8 pt-4">

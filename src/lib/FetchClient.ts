@@ -6,6 +6,8 @@ interface fetchClientProps {
     url: string;
     body?: object;
     token?: string;
+    header?: object;
+    contentType?: string;
 }
 
 async function fetchClient({
@@ -13,6 +15,7 @@ async function fetchClient({
     url,
     body = {},
     token,
+    contentType,
 }: fetchClientProps) {
     const session = await getSession();
     const accessToken = token || session?.access_token;
@@ -23,7 +26,7 @@ async function fetchClient({
         data: body,
         headers: {
             Accept: 'application/json',
-            'Content-Type': 'application/json',
+            'Content-Type': contentType || 'application/json',
             Authorization: 'Bearer ' + accessToken,
         },
     });
