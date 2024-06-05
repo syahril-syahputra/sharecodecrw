@@ -45,13 +45,24 @@ export const authOptions: NextAuthOptions = {
     ],
     callbacks: {
         async jwt({ token, user, trigger, session }) {
-            if (trigger === 'update') {
-                token.email_verified_at = session.email_verified_at;
-            }
             if (user) {
                 return { ...token, ...user };
             }
+            if (trigger === 'update') {
+                if (session.email_verified_at) {
+                    token.email_verified_at = session.email_verified_at;
+                }
+                if (session.email) {
+                    token.email = session.email;
+                    token.email_verified_at = null;
+                }
+            }
+            // if (trigger === 'update') {
 
+            //     if (session.email_verified_at) {
+            //         token.user.userDetail = session.userDetail;
+            //     }
+            // }
             return token;
         },
         // eslint-disable-next-line @typescript-eslint/no-explicit-any

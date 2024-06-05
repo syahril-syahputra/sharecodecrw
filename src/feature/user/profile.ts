@@ -39,3 +39,18 @@ export const useUpdateInterest = ({ onSuccess, onError }: IProps) => {
         onSuccess: onSuccess,
     });
 };
+
+export const useUpdateEmail = ({ onSuccess, onError }: IProps) => {
+    return useMutation({
+        mutationFn: async (email: string) => {
+            const response = fetchClient({
+                method: 'PATCH',
+                url: '/user/email',
+                body: { email },
+            });
+            return response;
+        },
+        onError: onError,
+        onSuccess: onSuccess,
+    });
+};

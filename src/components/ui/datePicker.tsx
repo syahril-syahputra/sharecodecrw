@@ -28,7 +28,7 @@ export default function DatePicker(props: IProps) {
                         !props.value && 'text-muted-foreground'
                     )}
                 >
-                    <span>
+                    <span className="-ml-1">
                         {props.value ? (
                             format(props.value, 'PPP')
                         ) : (

@@ -141,7 +141,7 @@ export default function Page() {
                         render={({ field }) => (
                             <FormItem>
                                 <DatePicker
-                                    placeholder="Birth Day"
+                                    placeholder="Date of Birth"
                                     value={field.value}
                                     block
                                     onChange={field.onChange}

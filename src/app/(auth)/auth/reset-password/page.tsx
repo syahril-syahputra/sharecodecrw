@@ -16,7 +16,7 @@ import { errorHelper } from '@/lib/formErrorHelper';
 import { zodResolver } from '@hookform/resolvers/zod';
 import axios from 'axios';
 import Link from 'next/link';
-import { useRouter, useSearchParams } from 'next/navigation';
+import { useSearchParams } from 'next/navigation';
 import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
@@ -34,10 +34,10 @@ const formSchema = z
     });
 export default function Page() {
     const searchParams = useSearchParams();
-    const router = useRouter();
 
     const [isValidating, setisValidating] = useState(true);
     const [isTokenValid, setisTokenValid] = useState(false);
+    const [isSet, setisSet] = useState(false);
 
     const key = searchParams.get('key');
     const confirmation_key = searchParams.get('confirmation_key');
@@ -87,7 +87,7 @@ export default function Page() {
                 url: '/auth/reset-password',
                 body: dataRequest,
             });
-            router.push('/auth/login');
+            setisSet(true);
         } catch (error) {
             if (axios.isAxiosError(error)) {
                 errorHelper(form.setError, error),
@@ -97,9 +97,25 @@ export default function Page() {
     }
     return (
         <div className="container  mt-8 pt-4">
+            {isSet && (
+                <div className="mx-auto my-8 flex max-w-xl flex-col  items-center space-y-8 rounded-lg  p-8 text-center">
+                    <TitleAuth>
+                        Your password has been successfully reset
+                    </TitleAuth>
+                    <div>
+                        <Link href={'/auth/login'}>
+                            <Button variant={'ghost'} className="text-primary">
+                                Login
+                            </Button>
+                        </Link>
+                    </div>
+                </div>
+            )}
             {isValidating && (
                 <div className="mx-auto my-8 flex max-w-xl flex-col  items-center space-y-8 rounded-lg  p-8 text-center">
-                    <TitleAuth>Please Wait, verifying your token </TitleAuth>
+                    <TitleAuth>
+                        Verifying your reset password link, please wait…
+                    </TitleAuth>
                     <div>
                         <Spinner />
                     </div>
@@ -107,15 +123,20 @@ export default function Page() {
             )}
             {!isTokenValid && !isValidating && (
                 <div className="mx-auto my-8 flex max-w-xl flex-col  items-center space-y-8 rounded-lg  p-8 text-center">
-                    <TitleAuth>Your link not valid.</TitleAuth>
+                    <TitleAuth>
+                        Your reset password link is not valid, please resend new
+                        request
+                    </TitleAuth>
                     <div>
-                        Please click{' '}
-                        <Link href={'/auth/forget-password'}>HERE</Link> resend
-                        input your email again
+                        <Link href={'/auth/forget-password'}>
+                            <Button variant={'ghost'} className="text-primary">
+                                Resend
+                            </Button>
+                        </Link>
                     </div>
                 </div>
             )}
-            {isTokenValid && !isValidating && (
+            {isTokenValid && !isValidating && !isSet && (
                 <div className="mx-auto max-w-xl space-y-8">
                     <section className="text-center">
                         <TitleAuth>Reset Password</TitleAuth>

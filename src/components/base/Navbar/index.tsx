@@ -34,11 +34,13 @@ export default async function Navbar() {
         }
     }
     return (
-        <>
+        <div className="fixed left-0 right-0 top-0 z-50 bg-background">
             {!verified && <ResendVerificationEmail />}
-            <div className="flex items-start space-x-4 p-4">
+            <div className=" sticky flex items-start space-x-4 p-4">
                 <div className="flex items-center space-x-4 pt-2 ">
-                    <Logo />
+                    <Link href={'/'}>
+                        <Logo />
+                    </Link>
                     <Button>Owner</Button>
                 </div>
                 <div className="flex-1">
@@ -82,6 +84,6 @@ export default async function Navbar() {
                     </div>
                 )}
             </div>
-        </>
+        </div>
     );
 }

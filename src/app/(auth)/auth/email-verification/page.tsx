@@ -101,9 +101,9 @@ export default function Page() {
                     <div>
                         <label
                             onClick={resend}
-                            className="cursor-pointer underline hover:opacity-70"
+                            className="cursor-pointer text-primary underline hover:opacity-70"
                         >
-                            HERE
+                            Resend
                         </label>{' '}
                     </div>
                 </div>

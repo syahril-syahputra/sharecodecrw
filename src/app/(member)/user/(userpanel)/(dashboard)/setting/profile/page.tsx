@@ -18,11 +18,17 @@ import {
     SelectValue,
 } from '@/components/ui/select';
 import { Textarea } from '@/components/ui/textarea';
+import { useUpdateEmail } from '@/feature/user/profile';
+import { errorHelper } from '@/lib/formErrorHelper';
+// import { useUpdateEmail } from '@/feature/user/profile';
+// import { errorHelper } from '@/lib/formErrorHelper';
 import useFilePreview from '@/lib/useFilePreview';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { ChevronLeft, CircleAlert, HardDriveUpload } from 'lucide-react';
+import { useSession } from 'next-auth/react';
 import Image from 'next/image';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import React from 'react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
@@ -70,18 +76,36 @@ const formBasicSchema = z.object({
     about_me: z.string().min(1, { message: 'About Me is required' }),
 });
 export default function Page() {
+    const { update } = useSession();
+    const router = useRouter();
     function onSubmit() {
         alert('lanjut');
     }
+
+    //email controller
+    async function onSubmitEmail(data: z.infer<typeof formEmailSchema>) {
+        mutateEmail.mutate(data.email);
+    }
+    const formEmail = useForm<z.infer<typeof formEmailSchema>>({
+        resolver: zodResolver(formEmailSchema),
+        mode: 'onChange',
+    });
+    const mutateEmail = useUpdateEmail({
+        onSuccess: async () => {
+            await update({
+                email: formEmail.getValues().email,
+            });
+            router.refresh();
+        },
+        onError: (error) => errorHelper(formEmail.setError, error),
+    });
+    //end email controller
+
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         mode: 'onChange',
     });
 
-    const formEmail = useForm<z.infer<typeof formEmailSchema>>({
-        resolver: zodResolver(formEmailSchema),
-        mode: 'onChange',
-    });
     const formBasic = useForm<z.infer<typeof formBasicSchema>>({
         resolver: zodResolver(formBasicSchema),
         mode: 'onChange',
@@ -154,7 +178,7 @@ export default function Page() {
             <TitleFormHeader>Email</TitleFormHeader>
             <Form {...formEmail}>
                 <form
-                    onSubmit={formEmail.handleSubmit(onSubmit)}
+                    onSubmit={formEmail.handleSubmit(onSubmitEmail)}
                     className="space-y-8"
                 >
                     <div className="flex items-start space-x-4">
@@ -175,10 +199,7 @@ export default function Page() {
                             <span>Verify email once again, after update.</span>
                         </div>
                     </div>
-                    <Button
-                        type="submit"
-                        loading={formEmail.formState.isSubmitting}
-                    >
+                    <Button type="submit" loading={mutateEmail.isPending}>
                         SAVE
                     </Button>
                 </form>
