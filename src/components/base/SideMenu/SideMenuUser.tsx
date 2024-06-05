@@ -13,25 +13,25 @@ export default function SideMenuUser() {
             <CardMember />
             <Menu>
                 <MenuGroup>
-                    <MenuItem>Community & Events</MenuItem>
-                    <MenuItem>Manage My Community</MenuItem>
+                    <MenuItem url={''}>Community & Events</MenuItem>
+                    <MenuItem url={''}>Manage My Community</MenuItem>
                 </MenuGroup>
                 <MenuGroup>
-                    <MenuItem>Crowner Listings</MenuItem>
-                    <MenuItem>Owner Listings</MenuItem>
+                    <MenuItem url={''}>Crowner Listings</MenuItem>
+                    <MenuItem url={''}>Owner Listings</MenuItem>
                 </MenuGroup>
                 <MenuGroup>
-                    <MenuItem>Badges</MenuItem>
-                    <MenuItem>Plans & Pyments</MenuItem>
+                    <MenuItem url={''}>Badges</MenuItem>
+                    <MenuItem url={''}>Plans & Pyments</MenuItem>
                 </MenuGroup>
                 <MenuGroup>
-                    <MenuItem>About Us </MenuItem>
-                    <MenuItem>Cookies</MenuItem>
-                    <MenuItem>Terms and Conditions</MenuItem>
+                    <MenuItem url={''}>About Us </MenuItem>
+                    <MenuItem url={''}>Cookies</MenuItem>
+                    <MenuItem url={''}>Terms and Conditions</MenuItem>
                 </MenuGroup>
                 <MenuGroup>
                     <Link href={'/user/setting'}>
-                        <MenuItem>Settings</MenuItem>
+                        <MenuItem url={'setting'}>Settings</MenuItem>
                     </Link>
                 </MenuGroup>
             </Menu>
