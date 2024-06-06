@@ -1,5 +1,6 @@
 import fetchClient from '@/lib/FetchClient';
 import { IError } from '@/types/error';
+import { IProfile, IUpdatePassword, IUpdateProfile } from '@/types/user';
 import { useMutation } from '@tanstack/react-query';
 import { AxiosError, AxiosResponse } from 'axios';
 
@@ -51,6 +52,61 @@ export const useUpdateEmail = ({ onSuccess, onError }: IProps) => {
             return response;
         },
         onError: onError,
+        onSuccess: onSuccess,
+    });
+};
+export const useUpdatePhoneNumber = ({ onSuccess, onError }: IProps) => {
+    return useMutation({
+        mutationFn: async (phone_number: string) => {
+            const response = fetchClient({
+                method: 'PATCH',
+                url: '/user/phone-number',
+                body: { phone_number },
+            });
+            return response;
+        },
+        onError: onError,
+        onSuccess: onSuccess,
+    });
+};
+
+export const useUpdatePasswrod = ({ onSuccess, onError }: IProps) => {
+    return useMutation({
+        mutationFn: async (data: IUpdatePassword) => {
+            const response = fetchClient({
+                method: 'PATCH',
+                url: '/user/password',
+                body: data,
+            });
+            return response;
+        },
+        onError: onError,
+        onSuccess: onSuccess,
+    });
+};
+export const useUpdateProfile = ({ onSuccess, onError }: IProps) => {
+    return useMutation({
+        mutationFn: async (data: IUpdateProfile) => {
+            const response = fetchClient({
+                method: 'PATCH',
+                url: '/user/profile',
+                body: data,
+            });
+            return response;
+        },
+        onError: onError,
+        onSuccess: onSuccess,
+    });
+};
+export const useFetchProfile = (onSuccess: (data: IProfile) => void) => {
+    return useMutation({
+        mutationFn: async () => {
+            const response = await fetchClient({
+                url: '/user/me',
+            });
+
+            return response.data.data as IProfile;
+        },
         onSuccess: onSuccess,
     });
 };

@@ -12,13 +12,13 @@ export default function page() {
                 </div>
             </Link>
             <Link href={'/user/setting/password'}>
-                <div className="flex items-center space-x-2">
+                <div className="flex items-center space-x-2 hover:text-primary">
                     <KeyRound />
                     <span>Update Password</span>
                 </div>
             </Link>
             <Link href={'/user/setting/phone'}>
-                <div className="flex items-center space-x-2">
+                <div className="flex items-center space-x-2 hover:text-primary">
                     <Phone />
                     <span>Update Phone Number</span>
                 </div>

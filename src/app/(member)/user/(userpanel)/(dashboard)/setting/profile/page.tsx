@@ -1,6 +1,8 @@
 'use client';
 import TitleFormHeader from '@/components/base/Title/TitleFormHeader';
+import { Alert, AlertTitle } from '@/components/ui/alert';
 import { Button } from '@/components/ui/button';
+import { Checkbox } from '@/components/ui/checkbox';
 import DatePicker from '@/components/ui/datePicker';
 import {
     Form,
@@ -17,19 +19,25 @@ import {
     SelectTrigger,
     SelectValue,
 } from '@/components/ui/select';
+import Spinner from '@/components/ui/spinner';
 import { Textarea } from '@/components/ui/textarea';
-import { useUpdateEmail } from '@/feature/user/profile';
+import { useFetchCity, useFetchState } from '@/feature/base/city';
+import {
+    useFetchProfile,
+    useUpdateEmail,
+    useUpdateProfile,
+} from '@/feature/user/profile';
 import { errorHelper } from '@/lib/formErrorHelper';
-// import { useUpdateEmail } from '@/feature/user/profile';
-// import { errorHelper } from '@/lib/formErrorHelper';
 import useFilePreview from '@/lib/useFilePreview';
+import { IProfile } from '@/types/user';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { ChevronLeft, CircleAlert, HardDriveUpload } from 'lucide-react';
+import dayjs from 'dayjs';
+import { Check, ChevronLeft, CircleAlert, HardDriveUpload } from 'lucide-react';
 import { useSession } from 'next-auth/react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 
@@ -70,18 +78,27 @@ const formBasicSchema = z.object({
         required_error: 'Date of birth is required.',
     }),
     province: z.string().min(1, { message: 'Province is required' }),
-    city: z.string().min(1, { message: 'City is required' }),
-    password: z.string().min(1, { message: 'Password is required' }),
-
-    about_me: z.string().min(1, { message: 'About Me is required' }),
+    city: z.string().min(1),
+    newsletter: z.boolean(),
+    about_me: z.string().optional(),
 });
 export default function Page() {
-    const { update } = useSession();
+    const { update, data: userData } = useSession();
+    const [currentProfule, setcurrentProfule] = useState<IProfile>({});
     const router = useRouter();
     function onSubmit() {
         alert('lanjut');
     }
-
+    function onSubmitProfile(data: z.infer<typeof formBasicSchema>) {
+        mutateProfile({
+            first_name: data.first_name,
+            last_name: data.last_name,
+            dob: dayjs(data.birthday).format('YYYY-MM-DD'),
+            city_id: data.city,
+            about: data.about_me || '',
+            subscribe_newsletter: data.newsletter,
+        });
+    }
     //email controller
     async function onSubmitEmail(data: z.infer<typeof formEmailSchema>) {
         mutateEmail.mutate(data.email);
@@ -89,6 +106,9 @@ export default function Page() {
     const formEmail = useForm<z.infer<typeof formEmailSchema>>({
         resolver: zodResolver(formEmailSchema),
         mode: 'onChange',
+        defaultValues: {
+            email: userData?.user.email,
+        },
     });
     const mutateEmail = useUpdateEmail({
         onSuccess: async () => {
@@ -109,6 +129,46 @@ export default function Page() {
     const formBasic = useForm<z.infer<typeof formBasicSchema>>({
         resolver: zodResolver(formBasicSchema),
         mode: 'onChange',
+    });
+    const { data: dataState } = useFetchState();
+    const { data: dataCity, isPending: isPendingCity } = useFetchCity(
+        formBasic.getValues('province'),
+        () => {
+            if (
+                formBasic.getValues('province') !== currentProfule.province_id
+            ) {
+                formBasic.setValue('city', '');
+            }
+        }
+    );
+
+    useEffect(() => {
+        mutate();
+    }, []);
+
+    const {
+        data: updateResponse,
+        mutate: mutateProfile,
+        isPending: isSending,
+        isSuccess: isSuccessUpdate,
+    } = useUpdateProfile({
+        onSuccess: () => {},
+        onError: (error) => errorHelper(formBasic.setError, error),
+    });
+    const { mutate } = useFetchProfile((data) => {
+        setcurrentProfule(data);
+        formEmail.reset({
+            email: data.email,
+        });
+        formBasic.reset({
+            first_name: data.first_name,
+            last_name: data.last_name,
+            birthday: dayjs(data.dob).toDate(),
+            province: data.province_id,
+            city: data.city_id,
+            about_me: data.about || '',
+            newsletter: data.subscribe_newsletter,
+        });
     });
 
     const fileRef = form.register('photo');
@@ -206,7 +266,7 @@ export default function Page() {
             </Form>
             <Form {...formBasic}>
                 <form
-                    onSubmit={formBasic.handleSubmit(onSubmit)}
+                    onSubmit={formBasic.handleSubmit(onSubmitProfile)}
                     className="space-y-8"
                 >
                     <TitleFormHeader>Basic Info</TitleFormHeader>
@@ -268,8 +328,8 @@ export default function Page() {
                             render={({ field }) => (
                                 <FormItem className="flex-1">
                                     <Select
+                                        value={field.value}
                                         onValueChange={field.onChange}
-                                        defaultValue={field.value}
                                     >
                                         <FormControl>
                                             <SelectTrigger>
@@ -277,51 +337,55 @@ export default function Page() {
                                             </SelectTrigger>
                                         </FormControl>
                                         <SelectContent>
-                                            <SelectItem value="Sulawesi Selatan">
-                                                Sulawesi Selatan
-                                            </SelectItem>
-                                            <SelectItem value="Bali">
-                                                Bali
-                                            </SelectItem>
-                                            <SelectItem value="Jakarta">
-                                                Jakarta
-                                            </SelectItem>
+                                            {dataState?.map((item) => (
+                                                <SelectItem
+                                                    key={item.id}
+                                                    value={item.id}
+                                                >
+                                                    {item.name}
+                                                </SelectItem>
+                                            ))}
                                         </SelectContent>
                                     </Select>
                                     <FormMessage />
                                 </FormItem>
                             )}
                         />
-                        <FormField
-                            control={formBasic.control}
-                            name="city"
-                            render={({ field }) => (
-                                <FormItem className="flex-1">
-                                    <Select
-                                        onValueChange={field.onChange}
-                                        defaultValue={field.value}
-                                    >
-                                        <FormControl>
-                                            <SelectTrigger>
-                                                <SelectValue placeholder="City" />
-                                            </SelectTrigger>
-                                        </FormControl>
-                                        <SelectContent>
-                                            <SelectItem value="makassar">
-                                                Makassar
-                                            </SelectItem>
-                                            <SelectItem value="bali">
-                                                Bali
-                                            </SelectItem>
-                                            <SelectItem value="Jakarta">
-                                                Jakarta
-                                            </SelectItem>
-                                        </SelectContent>
-                                    </Select>
-                                    <FormMessage />
-                                </FormItem>
-                            )}
-                        />
+                        {!isPendingCity ? (
+                            <FormField
+                                control={formBasic.control}
+                                name="city"
+                                render={({ field }) => (
+                                    <FormItem className="flex-1">
+                                        <Select
+                                            value={field.value}
+                                            onValueChange={field.onChange}
+                                        >
+                                            <FormControl>
+                                                <SelectTrigger>
+                                                    <SelectValue placeholder="City" />
+                                                </SelectTrigger>
+                                            </FormControl>
+                                            <SelectContent>
+                                                {dataCity?.map((item) => (
+                                                    <SelectItem
+                                                        key={item.id}
+                                                        value={item.id}
+                                                    >
+                                                        {item.name}
+                                                    </SelectItem>
+                                                ))}
+                                            </SelectContent>
+                                        </Select>
+                                        <FormMessage />
+                                    </FormItem>
+                                )}
+                            />
+                        ) : (
+                            <div className="flex-1 ">
+                                <Spinner />
+                            </div>
+                        )}
                     </div>
                     <TitleFormHeader>About Me</TitleFormHeader>
                     <FormField
@@ -339,10 +403,38 @@ export default function Page() {
                             </FormItem>
                         )}
                     />
-                    <Button
-                        type="submit"
-                        loading={formBasic.formState.isSubmitting}
-                    >
+                    <FormField
+                        control={formBasic.control}
+                        name="newsletter"
+                        render={({ field }) => (
+                            <FormItem>
+                                <FormControl>
+                                    <div className="flex items-start space-x-2 py-2">
+                                        <Checkbox
+                                            id="terms"
+                                            checked={field.value}
+                                            onCheckedChange={field.onChange}
+                                        />
+                                        <label
+                                            htmlFor="terms"
+                                            className="text-sm leading-none "
+                                        >
+                                            Subscribe newsletter
+                                        </label>
+                                    </div>
+                                </FormControl>
+                            </FormItem>
+                        )}
+                    />
+                    {isSuccessUpdate && (
+                        <Alert variant={'success'}>
+                            <AlertTitle className="flex items-center space-x-2">
+                                <Check />
+                                <span>{updateResponse.data.message}</span>
+                            </AlertTitle>
+                        </Alert>
+                    )}
+                    <Button type="submit" loading={isSending}>
                         SAVE
                     </Button>
                 </form>
