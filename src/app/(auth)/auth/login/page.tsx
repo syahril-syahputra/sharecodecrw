@@ -23,6 +23,7 @@ import TitleSeparator from '@/components/base/Title/TitleSeparator';
 import { PasswordInput } from '@/components/ui/password-input';
 import { useSearchParams, useRouter } from 'next/navigation';
 import { signIn } from 'next-auth/react';
+import fetchClient from '@/lib/FetchClient';
 
 const formSchema = z.object({
     email: z
@@ -35,6 +36,7 @@ const formSchema = z.object({
 });
 export default function Page() {
     const [loginFail, setloginFail] = useState('');
+    const [loadingGoogle, setloadingGoogle] = useState(false);
 
     const searchParams = useSearchParams();
     const router = useRouter();
@@ -48,12 +50,23 @@ export default function Page() {
             remember_me: false,
         },
     });
+    const getUrl = async () => {
+        setloadingGoogle(true);
+        try {
+            const response = await fetchClient({ url: '/auth/google' });
+            router.push(response.data.data.url);
+        } catch (error) {
+            console.log(error);
+        } finally {
+            setloadingGoogle(false);
+        }
+    };
     async function onSubmit(data: z.infer<typeof formSchema>) {
         setloginFail('');
         // handle submitting the form
         try {
             const callbackUrl = searchParams.get('callbackUrl') || '/';
-            const request = await signIn('credentials', {
+            const request = await signIn('username-login', {
                 email: data.email,
                 password: data.password,
                 remember_me: data.remember_me,
@@ -149,7 +162,12 @@ export default function Page() {
                     />{' '}
                     Sign in with Apple
                 </Button>
-                <Button variant={'outline'}>
+
+                <Button
+                    variant={'outline'}
+                    loading={loadingGoogle}
+                    onClick={getUrl}
+                >
                     <Image
                         src={'/icons/google.png'}
                         alt="google"

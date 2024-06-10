@@ -9,6 +9,7 @@ import React, { useEffect, useState } from 'react';
 
 export default function Page() {
     const searchParams = useSearchParams();
+    const [isTokenResend, setisTokenResend] = useState(false);
     const [timer, settimer] = useState(5);
     const router = useRouter();
     const key = searchParams.get('key');
@@ -18,11 +19,17 @@ export default function Page() {
     const [isFailed, setisFailed] = useState(false);
     const { update } = useSession();
     async function resend() {
-        await fetchClient({
-            url: '/auth/resend-verification',
-            method: 'POST',
-        });
-        router.push('/');
+        try {
+            await fetchClient({
+                url: '/auth/resend-verification',
+                method: 'POST',
+            });
+            setisTokenResend(true);
+        } catch (error) {
+            console.log(error);
+        }
+
+        // router.push('/');
     }
     useEffect(() => {
         const fetchData = async () => {
@@ -99,12 +106,19 @@ export default function Page() {
                         email verification token
                     </div>
                     <div>
-                        <label
-                            onClick={resend}
-                            className="cursor-pointer text-primary underline hover:opacity-70"
-                        >
-                            Resend
-                        </label>{' '}
+                        {isTokenResend ? (
+                            <div>
+                                Your token has been sent, verify your email to
+                                continue
+                            </div>
+                        ) : (
+                            <label
+                                onClick={resend}
+                                className="cursor-pointer text-primary underline hover:opacity-70"
+                            >
+                                Resend
+                            </label>
+                        )}
                     </div>
                 </div>
             )}

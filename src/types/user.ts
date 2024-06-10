@@ -23,6 +23,7 @@ export interface IProfile {
     province?: string;
     about?: string | null;
     created_at?: string; // Can be Date if you want to parse it to a Date object
+    profile_picture_url?: string;
 }
 export interface IUpdateProfile {
     first_name: string;

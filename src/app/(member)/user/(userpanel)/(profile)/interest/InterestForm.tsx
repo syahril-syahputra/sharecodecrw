@@ -46,7 +46,7 @@ export default function InterestForm({ data }: { data: IInterest[] }) {
         router.push('/user');
     }
     return (
-        <div className="mx-auto max-w-xl space-y-4">
+        <div className="mx-auto max-w-xl space-y-4 pt-4">
             {data.map((item) => {
                 const children = item.children.map((child) => {
                     return {
@@ -64,7 +64,6 @@ export default function InterestForm({ data }: { data: IInterest[] }) {
                         emptyIndicator={
                             <p className="text-center text-lg leading-10 text-gray-600 dark:text-gray-400">
                                 No more {item.title}
-                                {value.find((x) => (x.id = item.id))?.id}
                             </p>
                         }
                     />

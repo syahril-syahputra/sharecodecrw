@@ -30,6 +30,9 @@ export default function Page() {
     const form = useForm<formPassword>({
         resolver: zodResolver(formSchema),
         mode: 'onChange',
+        defaultValues: {
+            code: '+1',
+        },
     });
 
     const {
@@ -46,7 +49,7 @@ export default function Page() {
         onError: (error) => errorHelper(form.setError, error),
     });
     async function onSubmitd(values: z.infer<typeof formSchema>) {
-        mutate(values.code + '' + values.phone_number);
+        mutate(values.phone_number);
     }
     return (
         <div className="flex-1">
@@ -56,7 +59,7 @@ export default function Page() {
                 </Button>
             </Link>
             <div className="space-y-8 p-8">
-                <TitleFormHeader>Update Password</TitleFormHeader>
+                <TitleFormHeader>Update Phone Number</TitleFormHeader>
                 <Form {...form}>
                     <form
                         onSubmit={form.handleSubmit(onSubmitd)}
@@ -71,6 +74,7 @@ export default function Page() {
                                         <FormControl>
                                             <Input
                                                 placeholder="+1"
+                                                readOnly
                                                 className="text-center"
                                                 {...field}
                                             />

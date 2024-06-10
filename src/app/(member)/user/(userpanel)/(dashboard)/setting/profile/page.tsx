@@ -26,6 +26,7 @@ import {
     useFetchProfile,
     useUpdateEmail,
     useUpdateProfile,
+    useUpdateProfilePhoto,
 } from '@/feature/user/profile';
 import { errorHelper } from '@/lib/formErrorHelper';
 import useFilePreview from '@/lib/useFilePreview';
@@ -86,8 +87,17 @@ export default function Page() {
     const { update, data: userData } = useSession();
     const [currentProfule, setcurrentProfule] = useState<IProfile>({});
     const router = useRouter();
-    function onSubmit() {
-        alert('lanjut');
+    const {
+        mutate: mutateFP,
+        isPending,
+        isSuccess: isSuccessUpdateFoto,
+        data: updateFotoResponse,
+    } = useUpdateProfilePhoto({
+        onSuccess: () => {},
+        onError: (error) => errorHelper(form.setError, error),
+    });
+    async function onSubmit(data: z.infer<typeof formSchema>) {
+        mutateFP(data.photo);
     }
     function onSubmitProfile(data: z.infer<typeof formBasicSchema>) {
         mutateProfile({
@@ -155,7 +165,7 @@ export default function Page() {
         onSuccess: () => {},
         onError: (error) => errorHelper(formBasic.setError, error),
     });
-    const { mutate } = useFetchProfile((data) => {
+    const { mutate, data: dataCurrentProtile } = useFetchProfile((data) => {
         setcurrentProfule(data);
         formEmail.reset({
             email: data.email,
@@ -202,7 +212,9 @@ export default function Page() {
                                                     src={
                                                         filePreview
                                                             ? (filePreview as string)
-                                                            : '/icons/user.png'
+                                                            : dataCurrentProtile?.profile_picture_url
+                                                              ? dataCurrentProtile?.profile_picture_url
+                                                              : '/icons/user.png'
                                                     }
                                                     width={200}
                                                 />{' '}
@@ -230,8 +242,18 @@ export default function Page() {
                             )}
                         />
                     </div>
+                    {isSuccessUpdateFoto && (
+                        <Alert variant={'success'}>
+                            <AlertTitle className="flex items-center space-x-2">
+                                <Check />
+                                <span>{updateFotoResponse.data.message}</span>
+                            </AlertTitle>
+                        </Alert>
+                    )}
                     <div className="flex items-center justify-center py-4">
-                        <Button type="submit">UPLOAD NEW PICTURE</Button>
+                        <Button type="submit" loading={isPending}>
+                            UPLOAD NEW PICTURE
+                        </Button>
                     </div>
                 </form>
             </Form>
@@ -259,6 +281,7 @@ export default function Page() {
                             <span>Verify email once again, after update.</span>
                         </div>
                     </div>
+
                     <Button type="submit" loading={mutateEmail.isPending}>
                         SAVE
                     </Button>

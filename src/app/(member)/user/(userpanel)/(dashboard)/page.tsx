@@ -1,7 +1,8 @@
 import CardEvent from '@/components/base/Card/CardEvent';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { Plus } from 'lucide-react';
+import { Edit, Plus } from 'lucide-react';
+import Link from 'next/link';
 import React from 'react';
 
 export default function page() {
@@ -15,11 +16,20 @@ export default function page() {
                 <Plus />
                 <span className="font-bold">This is an introduction.</span>
             </div>
-            <div className="space-x-2">
-                <span className="font-semibold">Interests :</span>{' '}
-                <Badge variant={'secondary'}>Travelling</Badge>
-                <Badge variant={'secondary'}>Adventure</Badge>
-                <Badge variant={'secondary'}>Walking Tours</Badge>
+            <div className="flex justify-between">
+                <div className="space-x-2">
+                    <span className="font-semibold">Interests :</span>{' '}
+                    <Badge variant={'secondary'}>Travelling</Badge>
+                    <Badge variant={'secondary'}>Adventure</Badge>
+                    <Badge variant={'secondary'}>Walking Tours</Badge>
+                </div>
+                <div>
+                    <Link href="/user/interest">
+                        <Button variant={'ghost'}>
+                            <Edit />
+                        </Button>
+                    </Link>
+                </div>
             </div>
             <div className="divide-y-2">
                 <div className="py-4">

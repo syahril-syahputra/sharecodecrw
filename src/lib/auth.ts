@@ -12,6 +12,37 @@ export const authOptions: NextAuthOptions = {
     },
     providers: [
         CredentialsProvider({
+            id: 'google-login',
+            name: 'google',
+            credentials: {},
+
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            async authorize(credentials: any) {
+                try {
+                    const response = await api.get(
+                        '/auth/google/callback?code=' + credentials.code
+                    );
+                    console.log('halooo');
+                    const user = response.data;
+
+                    if (user) {
+                        return response.data.data;
+                    }
+
+                    return null;
+                    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                } catch (error: any) {
+                    if (error instanceof Response) {
+                        return null;
+                    }
+                    throw new Error(
+                        error?.response?.data.message || 'Invalid credentials'
+                    );
+                }
+            },
+        }),
+        CredentialsProvider({
+            id: 'username-login',
             name: 'credentials',
             credentials: {},
 
@@ -72,6 +103,7 @@ export const authOptions: NextAuthOptions = {
             session.user.first_name = token.first_name || '';
             session.user.last_name = token.last_name || '';
             session.user.email_verified_at = token.email_verified_at || '';
+            session.user.profile_picture_url = token.profile_picture_url || '';
 
             return session;
         },
