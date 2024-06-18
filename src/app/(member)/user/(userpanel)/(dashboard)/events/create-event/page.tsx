@@ -21,14 +21,18 @@ import {
 import Spinner from '@/components/ui/spinner';
 import { Textarea } from '@/components/ui/textarea';
 import { useFetchCity, useFetchState } from '@/feature/base/city';
+import { useFetchInterest } from '@/feature/base/interest';
 import useFilePreview from '@/lib/useFilePreview';
+import { LatLng } from '@/types/maps';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { HardDriveUpload } from 'lucide-react';
 import dynamic from 'next/dynamic';
 import Image from 'next/image';
-import React from 'react';
+import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
+import MultipleSelector, { Option } from '@/components/ui/multipleSelector';
+import { IInterest } from '@/types/base/interest';
 
 const MAX_FILE_SIZE = 500000;
 const ACCEPTED_IMAGE_TYPES = [
@@ -37,13 +41,13 @@ const ACCEPTED_IMAGE_TYPES = [
     'image/png',
     'image/webp',
 ];
-interface LatLng {
-    lat: number;
-    lng: number;
-}
 
-interface AddressObject {
-    [key: string]: string;
+// interface AddressObject {
+//     [key: string]: string;
+// }
+interface IInterestList {
+    id: string;
+    data: Option[];
 }
 
 const Map = dynamic(() => import('@/components/base/Maps/maps'), {
@@ -73,6 +77,7 @@ const formSchema = z.object({
     about_me: z.string().optional(),
 });
 export default function Page() {
+    const [getAdreessLoading, setgetAdreessLoading] = useState(false);
     function onSubmitProfile(data: z.infer<typeof formSchema>) {
         alert(data);
     }
@@ -88,13 +93,14 @@ export default function Page() {
         // console.log(iframeUrl);
 
         // Reverse geocoding
+        setgetAdreessLoading(true);
         const response = await fetch(
             `https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}&addressdetails=1`
         );
         const data = await response.json();
         const address = data.display_name;
-        const address_obj: AddressObject = data.address;
-        alert(JSON.stringify(address_obj));
+        // const address_obj: AddressObject = data.address;
+        setgetAdreessLoading(false);
         form.setValue('address', address);
     };
 
@@ -102,6 +108,15 @@ export default function Page() {
         resolver: zodResolver(formSchema),
         mode: 'onChange',
     });
+    const { data: dataInterest, isPending: pendingInterest } = useFetchInterest(
+        (data: IInterest[]) => {
+            setValue(
+                data.map((item) => {
+                    return { id: item.id, data: [] };
+                })
+            );
+        }
+    );
     const { data: dataState } = useFetchState();
     const { data: dataCity, isPending: isPendingCity } = useFetchCity(
         form.getValues('province'),
@@ -113,6 +128,21 @@ export default function Page() {
     const fileRef = form.register('photo');
     const result = form.watch(['photo']);
     const [filePreview] = useFilePreview(result[0]);
+
+    const [value, setValue] = useState<IInterestList[]>(
+        dataInterest
+            ? dataInterest.map((item) => {
+                  return { id: item.id, data: [] };
+              })
+            : []
+    );
+    function onChange(id: string, data: Option[]) {
+        const filteredData: IInterestList[] = value.filter(
+            (item) => item.id !== id
+        );
+        const updated: IInterestList[] = [...filteredData, { id, data }];
+        setValue(updated);
+    }
     return (
         <div className=" flex-1 space-y-4 p-4">
             <Form {...form}>
@@ -314,29 +344,78 @@ export default function Page() {
                                 </div>
                             )}
                         </div>
-                        <div>
-                            <Map onLocationSelected={handleLocationSelected} />
-                        </div>
-                        <FormField
-                            control={form.control}
-                            name="address"
-                            render={({ field }) => (
-                                <FormItem className="flex-1">
-                                    <FormLabel>Address</FormLabel>
-                                    <FormControl>
-                                        <Input
-                                            placeholder="Address"
-                                            readOnly
-                                            {...field}
-                                        />
-                                    </FormControl>
-                                    <FormMessage />
-                                </FormItem>
-                            )}
-                        />
                     </div>
 
-                    <div></div>
+                    <div>
+                        {pendingInterest || !dataInterest ? (
+                            <div className="flex items-center space-x-4 text-sm">
+                                <Spinner /> <span>Get Tags...</span>
+                            </div>
+                        ) : (
+                            <div className="space-y-4">
+                                {dataInterest.map((item) => {
+                                    const children = item.children.map(
+                                        (child) => {
+                                            return {
+                                                label: child.title,
+                                                value: child.id,
+                                            };
+                                        }
+                                    );
+                                    return (
+                                        <MultipleSelector
+                                            key={item.id}
+                                            value={
+                                                value.find(
+                                                    (x) => (x.id = item.id)
+                                                )?.data
+                                            }
+                                            onChange={(data) =>
+                                                onChange(item.id, data)
+                                            }
+                                            defaultOptions={children}
+                                            placeholder={'Select ' + item.title}
+                                            emptyIndicator={
+                                                <p className="text-center text-lg leading-10 text-gray-600 dark:text-gray-400">
+                                                    No more {item.title}
+                                                </p>
+                                            }
+                                        />
+                                    );
+                                })}
+                            </div>
+                        )}
+                    </div>
+                    <div className="col-span-2 space-y-4">
+                        <div>
+                            <Map
+                                className="h-[200px] w-full"
+                                onLocationSelected={handleLocationSelected}
+                            />
+                        </div>
+                        {getAdreessLoading ? (
+                            <div className="flex items-center space-x-4 text-sm">
+                                <Spinner /> <span>Searching Address...</span>
+                            </div>
+                        ) : (
+                            <FormField
+                                control={form.control}
+                                name="address"
+                                render={({ field }) => (
+                                    <FormItem className="flex-1">
+                                        <FormLabel>Address</FormLabel>
+                                        <FormControl>
+                                            <Input
+                                                placeholder="Address"
+                                                {...field}
+                                            />
+                                        </FormControl>
+                                        <FormMessage />
+                                    </FormItem>
+                                )}
+                            />
+                        )}
+                    </div>
                     {/* {isSuccessUpdate && (
                         <Alert variant={'success'}>
                             <AlertTitle className="flex items-center space-x-2">

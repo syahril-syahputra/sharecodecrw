@@ -3,11 +3,7 @@ import { MapContainer, TileLayer, Marker, useMapEvents } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 import L from 'leaflet';
 import { useEffect, useState } from 'react';
-
-interface LatLng {
-    lat: number;
-    lng: number;
-}
+import { LatLng } from '@/types/maps';
 
 interface LocationMarkerProps {
     onLocationSelected: (latlng: LatLng) => void;
@@ -15,6 +11,7 @@ interface LocationMarkerProps {
 }
 
 interface MapProps {
+    className?: string;
     onLocationSelected: (latlng: LatLng) => void;
 }
 
@@ -49,6 +46,7 @@ const LocationMarker: React.FC<LocationMarkerProps> = ({
     });
 
     useEffect(() => {
+        // alert(JSON.stringify(userLocation));
         if (userLocation) {
             map.setView(userLocation, map.getZoom());
             setPosition(userLocation);
@@ -58,9 +56,11 @@ const LocationMarker: React.FC<LocationMarkerProps> = ({
     return position === null ? null : <Marker position={position}></Marker>;
 };
 
-const Map: React.FC<MapProps> = ({ onLocationSelected }) => {
+const Map: React.FC<MapProps> = ({ onLocationSelected, className }) => {
     const [zoom] = useState<number>(13);
     const [userLocation, setUserLocation] = useState<LatLng | null>(null);
+    const defaultLat = parseInt(process.env.NEXT_PUBLIC_DEFAULT_LAT || '0');
+    const defaultLng = parseInt(process.env.NEXT_PUBLIC_DEFAULT_LNG || '0');
 
     useEffect(() => {
         if ('geolocation' in navigator) {
@@ -73,17 +73,19 @@ const Map: React.FC<MapProps> = ({ onLocationSelected }) => {
 
     return (
         <MapContainer
-            center={userLocation || { lat: 51.505, lng: 60.0 }}
+            center={userLocation || { lat: defaultLat, lng: defaultLng }}
             zoom={zoom}
-            style={{ height: '200px', width: '100%' }}
+            className={className}
         >
             <TileLayer
-                attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+                // attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
                 url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
             />
             <LocationMarker
                 onLocationSelected={onLocationSelected}
-                userLocation={userLocation}
+                userLocation={
+                    userLocation || { lat: defaultLat, lng: defaultLng }
+                }
             />
         </MapContainer>
     );
