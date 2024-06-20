@@ -33,6 +33,10 @@ import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import MultipleSelector, { Option } from '@/components/ui/multipleSelector';
 import { IInterest } from '@/types/base/interest';
+import { useFetchTimezone } from '@/feature/base/timezone';
+import { BodyCreateEvent } from '@/types/events';
+import { useCreateEvent } from '@/feature/events/useCreateEvent';
+import { errorHelper } from '@/lib/formErrorHelper';
 
 const MAX_FILE_SIZE = 500000;
 const ACCEPTED_IMAGE_TYPES = [
@@ -54,16 +58,17 @@ const Map = dynamic(() => import('@/components/base/Maps/maps'), {
     ssr: false,
 });
 const formSchema = z.object({
-    first_name: z.string().min(1, { message: 'Name is required' }),
+    title: z.string().min(1, { message: 'Name is required' }),
 
     datetime: z.date({
-        required_error: 'Date of birth is required.',
+        required_error: 'Date and time is required.',
     }),
+    timezone: z.string().min(1, { message: 'Timezone is required' }),
     province: z.string().min(1, { message: 'Province is required' }),
+    price: z.coerce.number().optional(),
     city: z.string().min(1),
     address: z.string().min(1),
-    newsletter: z.boolean(),
-    photo: z
+    img: z
         .any()
         .refine((files) => files?.length == 1, 'Image is required.')
         .refine(
@@ -74,25 +79,55 @@ const formSchema = z.object({
             (files) => ACCEPTED_IMAGE_TYPES.includes(files?.[0]?.type),
             '.jpg, .jpeg, .png and .webp files are accepted.'
         ),
-    about_me: z.string().optional(),
+    about: z.string().optional(),
+    longitude: z.number({
+        required_error: 'longitude required.',
+    }),
+    latitude: z.number({
+        required_error: 'latitude required.',
+    }),
+    tags: z.string().array().optional(),
 });
 export default function Page() {
     const [getAdreessLoading, setgetAdreessLoading] = useState(false);
-    function onSubmitProfile(data: z.infer<typeof formSchema>) {
-        alert(data);
-    }
 
-    // const [location, setLocation] = useState<LatLng | null>(null);
-    // const [address, setAddress] = useState<string>('');
+    const { mutate } = useCreateEvent({
+        onSuccess: () => {},
+        onError: (error) => errorHelper(form.setError, error),
+    });
+    function onSubmitProfile(data: z.infer<typeof formSchema>) {
+        const dataInterest = value.map((item) => item.data);
+        const resultArray = dataInterest.flatMap((subArray) =>
+            subArray.map((item) => item.value)
+        );
+        if (resultArray.length < 3) {
+            form.setError('tags', {
+                type: 'custom',
+                message: 'Please select min 3 interest',
+            });
+            return;
+        }
+        form.setValue('tags', resultArray);
+
+        const body: BodyCreateEvent = {
+            timezone_id: data.timezone,
+            about: data.about,
+            date_time: data.datetime,
+            img: data.img,
+            city_id: data.city,
+            price: data.price,
+            tags: resultArray,
+            title: data.title,
+            address: data.address,
+            longitude: data.longitude,
+            latitude: data.latitude,
+        };
+        mutate(body);
+    }
 
     const handleLocationSelected = async (latlng: LatLng) => {
         const { lat, lng } = latlng;
-        // console.log(lat, lng);
 
-        // const iframeUrl = `https://www.openstreetmap.org/export/embed.html?bbox=${lng - 0.01},${lat - 0.01},${lng + 0.01},${lat + 0.01}&layer=mapnik&marker=${lat},${lng}`;
-        // console.log(iframeUrl);
-
-        // Reverse geocoding
         setgetAdreessLoading(true);
         const response = await fetch(
             `https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}&addressdetails=1`
@@ -101,6 +136,8 @@ export default function Page() {
         const address = data.display_name;
         // const address_obj: AddressObject = data.address;
         setgetAdreessLoading(false);
+        form.setValue('longitude', lng);
+        form.setValue('latitude', lat);
         form.setValue('address', address);
     };
 
@@ -118,6 +155,7 @@ export default function Page() {
         }
     );
     const { data: dataState } = useFetchState();
+    const { data: dataTimezome } = useFetchTimezone();
     const { data: dataCity, isPending: isPendingCity } = useFetchCity(
         form.getValues('province'),
         () => {
@@ -125,17 +163,11 @@ export default function Page() {
         }
     );
 
-    const fileRef = form.register('photo');
-    const result = form.watch(['photo']);
+    const fileRef = form.register('img');
+    const result = form.watch(['img']);
     const [filePreview] = useFilePreview(result[0]);
 
-    const [value, setValue] = useState<IInterestList[]>(
-        dataInterest
-            ? dataInterest.map((item) => {
-                  return { id: item.id, data: [] };
-              })
-            : []
-    );
+    const [value, setValue] = useState<IInterestList[]>([]);
     function onChange(id: string, data: Option[]) {
         const filteredData: IInterestList[] = value.filter(
             (item) => item.id !== id
@@ -150,20 +182,19 @@ export default function Page() {
                     onSubmit={form.handleSubmit(onSubmitProfile)}
                     className="grid grid-cols-2 gap-4"
                 >
-                    <div className="space-y-8">
+                    {' '}
+                    <div className="col-span-2">
                         <TitleFormHeader>Create Event</TitleFormHeader>
-
+                    </div>
+                    <div className="space-y-8">
                         <FormField
                             control={form.control}
-                            name="first_name"
+                            name="title"
                             render={({ field }) => (
                                 <FormItem className="flex-1">
-                                    <FormLabel>Title</FormLabel>
+                                    <FormLabel>Title*</FormLabel>
                                     <FormControl>
-                                        <Input
-                                            placeholder="First Name"
-                                            {...field}
-                                        />
+                                        <Input placeholder="Title" {...field} />
                                     </FormControl>
                                     <FormMessage />
                                 </FormItem>
@@ -174,7 +205,7 @@ export default function Page() {
                             name="datetime"
                             render={({ field }) => (
                                 <FormItem className="flex-1">
-                                    <FormLabel>Datetime</FormLabel>
+                                    <FormLabel>Datetime*</FormLabel>
                                     <FormControl>
                                         <DateTimePicker
                                             jsDate={field.value}
@@ -188,10 +219,45 @@ export default function Page() {
                         />
                         <FormField
                             control={form.control}
-                            name="first_name"
+                            name="timezone"
                             render={({ field }) => (
                                 <FormItem className="flex-1">
-                                    <FormLabel>Timezone</FormLabel>
+                                    <FormLabel>Timezone*</FormLabel>
+                                    <Select
+                                        value={field.value}
+                                        onValueChange={field.onChange}
+                                    >
+                                        <FormControl>
+                                            <SelectTrigger>
+                                                <SelectValue placeholder="Select Timezone" />
+                                            </SelectTrigger>
+                                        </FormControl>
+                                        <SelectContent>
+                                            {dataTimezome?.map((item) => (
+                                                <SelectItem
+                                                    key={item.id}
+                                                    value={item.id}
+                                                >
+                                                    {item.label}
+                                                </SelectItem>
+                                            ))}
+                                        </SelectContent>
+                                    </Select>
+                                    <FormMessage />
+                                </FormItem>
+                            )}
+                        />
+                        <FormField
+                            control={form.control}
+                            name="price"
+                            render={({ field }) => (
+                                <FormItem className="flex-1">
+                                    <FormLabel>
+                                        Price (CAD)
+                                        <span className="pl-4 text-xs">
+                                            put 0 for free event
+                                        </span>
+                                    </FormLabel>
                                     <FormControl>
                                         <Input {...field} />
                                     </FormControl>
@@ -201,20 +267,7 @@ export default function Page() {
                         />
                         <FormField
                             control={form.control}
-                            name="first_name"
-                            render={({ field }) => (
-                                <FormItem className="flex-1">
-                                    <FormLabel>Price</FormLabel>
-                                    <FormControl>
-                                        <Input {...field} />
-                                    </FormControl>
-                                    <FormMessage />
-                                </FormItem>
-                            )}
-                        />
-                        <FormField
-                            control={form.control}
-                            name="about_me"
+                            name="about"
                             render={({ field }) => (
                                 <FormItem className="flex-1">
                                     <FormLabel>
@@ -232,7 +285,7 @@ export default function Page() {
                         />
                         <FormField
                             control={form.control}
-                            name="photo"
+                            name="img"
                             render={() => (
                                 <FormItem>
                                     <FormLabel>Upload Image</FormLabel>
@@ -345,7 +398,6 @@ export default function Page() {
                             )}
                         </div>
                     </div>
-
                     <div>
                         {pendingInterest || !dataInterest ? (
                             <div className="flex items-center space-x-4 text-sm">
@@ -353,6 +405,7 @@ export default function Page() {
                             </div>
                         ) : (
                             <div className="space-y-4">
+                                <FormLabel>Tags</FormLabel>
                                 {dataInterest.map((item) => {
                                     const children = item.children.map(
                                         (child) => {
@@ -392,6 +445,26 @@ export default function Page() {
                                 className="h-[200px] w-full"
                                 onLocationSelected={handleLocationSelected}
                             />
+                            <div className="flex space-x-4">
+                                <FormField
+                                    control={form.control}
+                                    name="longitude"
+                                    render={() => (
+                                        <FormItem className="flex-1">
+                                            <FormMessage />
+                                        </FormItem>
+                                    )}
+                                />
+                                <FormField
+                                    control={form.control}
+                                    name="latitude"
+                                    render={() => (
+                                        <FormItem className="flex-1">
+                                            <FormMessage />
+                                        </FormItem>
+                                    )}
+                                />
+                            </div>
                         </div>
                         {getAdreessLoading ? (
                             <div className="flex items-center space-x-4 text-sm">
@@ -403,7 +476,7 @@ export default function Page() {
                                 name="address"
                                 render={({ field }) => (
                                     <FormItem className="flex-1">
-                                        <FormLabel>Address</FormLabel>
+                                        <FormLabel>Address*</FormLabel>
                                         <FormControl>
                                             <Input
                                                 placeholder="Address"
@@ -424,6 +497,7 @@ export default function Page() {
                             </AlertTitle>
                         </Alert>
                     )} */}
+                    {JSON.stringify(form.getValues())}
                     <div>
                         <Button type="submit" loading={false}>
                             SAVE

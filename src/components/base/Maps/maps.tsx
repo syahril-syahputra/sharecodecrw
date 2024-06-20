@@ -58,9 +58,12 @@ const LocationMarker: React.FC<LocationMarkerProps> = ({
 
 const Map: React.FC<MapProps> = ({ onLocationSelected, className }) => {
     const [zoom] = useState<number>(13);
-    const [userLocation, setUserLocation] = useState<LatLng | null>(null);
     const defaultLat = parseInt(process.env.NEXT_PUBLIC_DEFAULT_LAT || '0');
     const defaultLng = parseInt(process.env.NEXT_PUBLIC_DEFAULT_LNG || '0');
+    const [userLocation, setUserLocation] = useState<LatLng | null>({
+        lat: defaultLat,
+        lng: defaultLng,
+    });
 
     useEffect(() => {
         if ('geolocation' in navigator) {
@@ -83,9 +86,7 @@ const Map: React.FC<MapProps> = ({ onLocationSelected, className }) => {
             />
             <LocationMarker
                 onLocationSelected={onLocationSelected}
-                userLocation={
-                    userLocation || { lat: defaultLat, lng: defaultLng }
-                }
+                userLocation={userLocation}
             />
         </MapContainer>
     );
