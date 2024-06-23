@@ -3,3 +3,9 @@ export interface IError {
     message: string;
     success: boolean;
 }
+
+export interface ISuccess {
+    data: object;
+    message: string;
+    success: boolean;
+}

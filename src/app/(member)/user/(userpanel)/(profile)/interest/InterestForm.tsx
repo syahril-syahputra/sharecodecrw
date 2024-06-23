@@ -57,7 +57,7 @@ export default function InterestForm({ data }: { data: IInterest[] }) {
                 return (
                     <MultipleSelector
                         key={item.id}
-                        value={value.find((x) => (x.id = item.id))?.data}
+                        value={value.find((x) => x.id === item.id)?.data}
                         onChange={(data) => onChange(item.id, data)}
                         defaultOptions={children}
                         placeholder={'Select ' + item.title}

@@ -1,9 +1,14 @@
 // components/Map.tsx
+'use client';
 import { MapContainer, TileLayer, Marker, useMapEvents } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 import L from 'leaflet';
-import { useEffect, useState } from 'react';
-import { LatLng } from '@/types/maps';
+import { Fragment, useEffect, useState } from 'react';
+
+export interface LatLng {
+    lat: number;
+    lng: number;
+}
 
 interface LocationMarkerProps {
     onLocationSelected: (latlng: LatLng) => void;
@@ -11,9 +16,8 @@ interface LocationMarkerProps {
 }
 
 interface MapProps {
-    className?: string;
-    userLocationBase?: LatLng;
     onLocationSelected: (latlng: LatLng) => void;
+    userLocationBase: LatLng | null;
 }
 
 // Fix marker icons issue with Leaflet
@@ -47,7 +51,6 @@ const LocationMarker: React.FC<LocationMarkerProps> = ({
     });
 
     useEffect(() => {
-        // alert(JSON.stringify(userLocation));
         if (userLocation) {
             map.setView(userLocation, map.getZoom());
             setPosition(userLocation);
@@ -57,48 +60,32 @@ const LocationMarker: React.FC<LocationMarkerProps> = ({
     return position === null ? null : <Marker position={position}></Marker>;
 };
 
-const Map: React.FC<MapProps> = ({
+const OpenStreetMap: React.FC<MapProps> = ({
     onLocationSelected,
-    className,
     userLocationBase,
 }) => {
-    const [zoom] = useState<number>(13);
-    const defaultLat = parseInt(process.env.NEXT_PUBLIC_DEFAULT_LAT || '0');
-    const defaultLng = parseInt(process.env.NEXT_PUBLIC_DEFAULT_LNG || '0');
-    const [userLocation, setUserLocation] = useState<LatLng | null>(
-        userLocationBase || {
-            lat: defaultLat,
-            lng: defaultLng,
-        }
-    );
-
-    useEffect(() => {
-        if (!userLocationBase) {
-            if ('geolocation' in navigator) {
-                navigator.geolocation.getCurrentPosition((position) => {
-                    const { latitude, longitude } = position.coords;
-                    setUserLocation({ lat: latitude, lng: longitude });
-                });
-            }
-        }
-    }, []);
+    if (!userLocationBase?.lat && !userLocationBase?.lng) {
+        return <Fragment>Load map</Fragment>;
+    }
 
     return (
-        <MapContainer
-            center={userLocation || { lat: defaultLat, lng: defaultLng }}
-            zoom={zoom}
-            className={className}
-        >
-            <TileLayer
-                // attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-                url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-            />
-            <LocationMarker
-                onLocationSelected={onLocationSelected}
-                userLocation={userLocation}
-            />
-        </MapContainer>
+        <Fragment>
+            <MapContainer
+                center={userLocationBase || { lat: 51.505, lng: 60.0 }}
+                zoom={13}
+                style={{ height: '300px', width: '300px', zIndex: 0 }}
+            >
+                <TileLayer
+                    attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+                    url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                />
+                <LocationMarker
+                    onLocationSelected={onLocationSelected}
+                    userLocation={userLocationBase}
+                />
+            </MapContainer>
+        </Fragment>
     );
 };
 
-export default Map;
+export default OpenStreetMap;

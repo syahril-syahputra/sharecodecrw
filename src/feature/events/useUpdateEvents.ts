@@ -8,8 +8,9 @@ import dayjs from 'dayjs';
 interface IProps {
     onSuccess: (data: AxiosResponse) => void;
     onError: (error: AxiosError<IError>) => void;
+    id: string;
 }
-export const useCreateEvent = ({ onSuccess, onError }: IProps) => {
+export const useUpdateEvent = ({ onSuccess, onError, id }: IProps) => {
     return useMutation({
         mutationFn: async (body: BodyCreateEvent) => {
             console.log(body);
@@ -27,10 +28,12 @@ export const useCreateEvent = ({ onSuccess, onError }: IProps) => {
             formData.append('price', (body.price || 0).toString());
             formData.append('tags', JSON.stringify(body.tags));
             formData.append('address', body.address);
-            formData.append('image', body.img[0]);
+            if (body.img && body.img.length > 0) {
+                formData.append('image', body.img[0] || undefined);
+            }
             const response = await fetchClient({
-                method: 'POST',
-                url: '/crowner/user-publisher/events',
+                method: 'PATCH',
+                url: '/crowner/user-publisher/events/' + id,
                 contentType: 'multipart/form-data',
                 body: formData,
             });

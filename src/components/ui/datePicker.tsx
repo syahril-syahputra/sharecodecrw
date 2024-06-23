@@ -12,7 +12,7 @@ import { format } from 'date-fns';
 import { cn } from '@/lib/utils';
 interface IProps {
     placeholder?: string;
-    value: Date;
+    value?: Date;
     block?: boolean;
     onChange: (date?: Date) => void;
 }
@@ -42,11 +42,11 @@ export default function DatePicker(props: IProps) {
                 <Calendar
                     captionLayout="dropdown-buttons"
                     mode="single"
-                    selected={props.value}
+                    selected={props.value || undefined}
                     onSelect={props.onChange}
-                    disabled={(date) =>
-                        date > new Date() || date < new Date('1900-01-01')
-                    }
+                    // disabled={(date) =>
+                    //     date > new Date() || date < new Date('1900-01-01')
+                    // }
                     fromYear={1960}
                     toYear={2030}
                     initialFocus

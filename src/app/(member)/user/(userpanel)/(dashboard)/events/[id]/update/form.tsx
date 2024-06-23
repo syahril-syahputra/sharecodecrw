@@ -34,19 +34,14 @@ import { z } from 'zod';
 import MultipleSelector, { Option } from '@/components/ui/multipleSelector';
 import { IInterest } from '@/types/base/interest';
 import { useFetchTimezone } from '@/feature/base/timezone';
-import { BodyCreateEvent } from '@/types/events';
-import { useCreateEvent } from '@/feature/events/useCreateEvent';
+import { BodyCreateEvent, IDetailEvent } from '@/types/events';
 import { errorHelper } from '@/lib/formErrorHelper';
 import { Alert, AlertTitle } from '@/components/ui/alert';
+import { useUpdateEvent } from '@/feature/events/useUpdateEvents';
+import ErrorMessage from '@/components/base/Error/ErrorMessage';
 import { useRouter } from 'next/navigation';
-
-const MAX_FILE_SIZE = 500000;
-const ACCEPTED_IMAGE_TYPES = [
-    'image/jpeg',
-    'image/jpg',
-    'image/png',
-    'image/webp',
-];
+import { useToast } from '@/components/ui/use-toast';
+import Link from 'next/link';
 
 // interface AddressObject {
 //     [key: string]: string;
@@ -55,7 +50,9 @@ interface IInterestList {
     id: string;
     data: Option[];
 }
-
+interface IProps {
+    data: IDetailEvent;
+}
 const Map = dynamic(() => import('@/components/base/Maps/maps'), {
     ssr: false,
 });
@@ -70,17 +67,7 @@ const formSchema = z.object({
     price: z.coerce.number().optional(),
     city: z.string().min(1),
     address: z.string().min(1),
-    img: z
-        .any()
-        .refine((files) => files?.length == 1, 'Image is required.')
-        .refine(
-            (files) => files?.[0]?.size <= MAX_FILE_SIZE,
-            `Max file size is 500kb.`
-        )
-        .refine(
-            (files) => ACCEPTED_IMAGE_TYPES.includes(files?.[0]?.type),
-            '.jpg, .jpeg, .png and .webp files are accepted.'
-        ),
+    img: z.any().optional(),
     about: z.string().optional(),
     longitude: z.number({
         required_error: 'longitude required.',
@@ -90,23 +77,32 @@ const formSchema = z.object({
     }),
     tags: z.string().array().optional(),
 });
-export default function Page() {
+export default function FormUpdateEvent({ data }: IProps) {
     const [getAdreessLoading, setgetAdreessLoading] = useState(false);
     const router = useRouter();
-
+    const { toast } = useToast();
     const {
         mutate,
         isPending: isLoadingCreate,
         isSuccess,
+        isError,
+        error,
         data: createResponse,
-    } = useCreateEvent({
+    } = useUpdateEvent({
         onSuccess: () => {
-            router.push('/user/events');
+            toast({
+                title: 'Update Success',
+                variant: 'success',
+                description: 'Data Event Updated',
+            });
+
+            router.push('/user/events/' + data.id, {});
         },
         onError: (error) => errorHelper(form.setError, error),
+        id: data.id,
     });
     function onSubmitProfile(data: z.infer<typeof formSchema>) {
-        const dataInterest = value.map((item) => item.data);
+        const dataInterest = valueTag.map((item) => item.data);
         const resultArray = dataInterest.flatMap((subArray) =>
             subArray.map((item) => item.value)
         );
@@ -154,12 +150,36 @@ export default function Page() {
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         mode: 'onChange',
+        defaultValues: {
+            title: data.title,
+            longitude: data.longitude,
+            latitude: data.latitude,
+            datetime: new Date(data.date_time),
+            address: data.address,
+            timezone: data.timezone_id,
+            province: data.province_id,
+            city: data.city_id,
+            about: data.about,
+            price: parseInt(data.price),
+        },
     });
     const { data: dataInterest, isPending: pendingInterest } = useFetchInterest(
-        (data: IInterest[]) => {
-            setValue(
-                data.map((item) => {
-                    return { id: item.id, data: [] };
+        (dataInterest: IInterest[]) => {
+            setValueTag(
+                dataInterest.map((item) => {
+                    const dataChild: Option[] = [];
+                    item.children.forEach((itemChild) => {
+                        const cektag = data?.tags.find(
+                            (tag) => tag.id === itemChild.id
+                        );
+                        if (cektag) {
+                            dataChild.push({
+                                label: itemChild.title,
+                                value: itemChild.id,
+                            });
+                        }
+                    });
+                    return { id: item.id, data: dataChild };
                 })
             );
         }
@@ -169,21 +189,28 @@ export default function Page() {
     const { data: dataCity, isPending: isPendingCity } = useFetchCity(
         form.getValues('province'),
         () => {
-            form.setValue('city', '');
+            if (form.getValues('province') !== data.province_id) {
+                form.setValue('city', '');
+            }
         }
     );
-
+    // useEffect(() => {
+    //     setEventBaseLocation({
+    //         lat: Number(data?.latitude),
+    //         lng: Number(data?.longitude),
+    //     });
+    // }, [isFetching]);
     const fileRef = form.register('img');
     const result = form.watch(['img']);
     const [filePreview] = useFilePreview(result[0]);
 
-    const [value, setValue] = useState<IInterestList[]>([]);
+    const [valueTag, setValueTag] = useState<IInterestList[]>([]);
     function onChange(id: string, data: Option[]) {
-        const filteredData: IInterestList[] = value.filter(
+        const filteredData: IInterestList[] = valueTag.filter(
             (item) => item.id !== id
         );
         const updated: IInterestList[] = [...filteredData, { id, data }];
-        setValue(updated);
+        setValueTag(updated);
     }
     return (
         <div className=" flex-1 space-y-4 p-4">
@@ -192,9 +219,8 @@ export default function Page() {
                     onSubmit={form.handleSubmit(onSubmitProfile)}
                     className="grid grid-cols-2 gap-4"
                 >
-                    {' '}
                     <div className="col-span-2">
-                        <TitleFormHeader>Create Event</TitleFormHeader>
+                        <TitleFormHeader>Update Event</TitleFormHeader>
                     </div>
                     <div className="space-y-8">
                         <FormField
@@ -313,7 +339,9 @@ export default function Page() {
                                                     src={
                                                         filePreview
                                                             ? (filePreview as string)
-                                                            : '/icons/image.png'
+                                                            : data.image_url
+                                                              ? data.image_url
+                                                              : '/icons/image.png'
                                                     }
                                                     width={200}
                                                 />{' '}
@@ -430,7 +458,7 @@ export default function Page() {
                                         <MultipleSelector
                                             key={item.id}
                                             value={
-                                                value.find(
+                                                valueTag.find(
                                                     (x) => x.id === item.id
                                                 )?.data
                                             }
@@ -464,7 +492,12 @@ export default function Page() {
                             <Map
                                 className="relative z-0 h-[200px] w-full"
                                 onLocationSelected={handleLocationSelected}
+                                userLocationBase={{
+                                    lat: form.getValues('latitude') || 0,
+                                    lng: form.getValues('longitude') || 0,
+                                }}
                             />
+
                             <div className="flex space-x-4">
                                 <FormField
                                     control={form.control}
@@ -510,6 +543,12 @@ export default function Page() {
                         )}
                     </div>
                     <div className="space-y-8">
+                        {isError && (
+                            <ErrorMessage>
+                                {error.response?.data?.message ||
+                                    'Samething Wrong'}
+                            </ErrorMessage>
+                        )}
                         {isSuccess && (
                             <Alert variant={'success'}>
                                 <AlertTitle className="flex items-center space-x-2">
@@ -518,9 +557,14 @@ export default function Page() {
                                 </AlertTitle>
                             </Alert>
                         )}
-                        <Button type="submit" loading={isLoadingCreate}>
-                            SAVE
-                        </Button>
+                        <div className="space-x-4">
+                            <Link href={'/user/events/' + data.id}>
+                                <Button variant={'link'}>Cancel</Button>
+                            </Link>
+                            <Button type="submit" loading={isLoadingCreate}>
+                                SAVE
+                            </Button>
+                        </div>
                     </div>
                 </form>
             </Form>

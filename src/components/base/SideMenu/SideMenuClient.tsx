@@ -14,7 +14,9 @@ export default function SideMenuClient() {
             <CardMember />
             <Menu>
                 <MenuGroupChild title="Crowner Management">
-                    <MenuItem url={''}>Events</MenuItem>
+                    <Link href={'/user/events'}>
+                        <MenuItem url={'events'}>Events</MenuItem>
+                    </Link>
                     <MenuItem url={''}>Communities</MenuItem>
                     <MenuItem url={''}> Community Tutors</MenuItem>
                 </MenuGroupChild>

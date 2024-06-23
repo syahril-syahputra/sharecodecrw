@@ -25,7 +25,6 @@ export const useFetchCity = (stateId: string, onSuccess: () => void) => {
             onSuccess();
             return response.data.data as DataCity[];
         },
-
         queryKey: ['fetch.city', stateId],
     });
 };

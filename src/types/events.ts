@@ -11,3 +11,68 @@ export interface BodyCreateEvent {
     city_id: string;
     address: string;
 }
+
+export interface ITag {
+    id: string;
+    title: string;
+}
+
+export interface IDetailEvent {
+    id: string;
+    city_id: string;
+    province_id: string;
+    timezone_id: string;
+    community_id: string | null;
+    title: string;
+    city: string;
+    province: string;
+    tz_identifier: string;
+    gmt_offset: string;
+    community_name: string | null;
+    address: string;
+    latitude: number;
+    longitude: number;
+    about: string;
+    acceptance_status: string;
+    is_visible: boolean;
+    image_url: string;
+    created_at: string;
+    updated_at: string;
+    date_time: string;
+    rsvp_counter: number;
+    interest_counter: number;
+    price: string;
+    price_formated: string;
+    tags: ITag[];
+}
+
+export interface IFilterEvent {
+    title?: string;
+    timezone_id?: string;
+    start_date?: string;
+    end_date?: string;
+    event_type?: string;
+    event_schedule?: string;
+    acceptance_status?: string;
+    is_visible?: string;
+}
+export interface IEventRsvp {
+    user_id: string;
+    first_name: string;
+    last_name: string;
+    email: string;
+    profile_picture_url: string;
+}
+export interface IEventInterest {
+    user_id: string;
+    first_name: string;
+    last_name: string;
+    email: string;
+    profile_picture_url: string;
+}
+export interface IEventAcceptanceStatus {
+    acceptance_status: 'accepted' | 'rejected' | undefined;
+}
+export interface IEventVisibility {
+    visibility: boolean;
+}
