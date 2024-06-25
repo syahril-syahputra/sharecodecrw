@@ -19,7 +19,10 @@ export default function SideMenuClient() {
                     </Link>
                     <MenuItem url={''}>Communities</MenuItem>
                     <Link href={'/crowner/community-tutors'}>
-                        <MenuItem url={'community-tutors'}> Community Tutors</MenuItem>
+                        <MenuItem url={'community-tutors'}>
+                            {' '}
+                            Community Tutors
+                        </MenuItem>
                     </Link>
                 </MenuGroupChild>
 

@@ -1,6 +1,9 @@
 import fetchClient from '@/lib/FetchClient';
 import { IPaginationMeta, ISortMeta } from '@/types/base/pagination';
-import { ICommunityTutor, IFilterCommunityTutor } from '@/types/crowner/community-tutors';
+import {
+    ICommunityTutor,
+    IFilterCommunityTutor,
+} from '@/types/crowner/community-tutors';
 import { keepPreviousData, useQuery } from '@tanstack/react-query';
 import { PaginationState } from '@tanstack/react-table';
 

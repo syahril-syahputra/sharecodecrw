@@ -15,7 +15,9 @@ import { useToast } from '@/components/ui/use-toast';
 import { useRouter } from 'next/navigation';
 import { useDeleteCommunityTutor } from '@/feature/crowner/community-tutors/useDeleteCommunityTutor';
 
-export default function DeleteCommunityTutor(props: { id?: string | undefined }) {
+export default function DeleteCommunityTutor(props: {
+    id?: string | undefined;
+}) {
     const router = useRouter();
     const { toast } = useToast();
 
@@ -57,7 +59,9 @@ export default function DeleteCommunityTutor(props: { id?: string | undefined })
             <AlertDialog open={deleteDialog}>
                 <AlertDialogContent>
                     <AlertDialogHeader>
-                        <AlertDialogTitle>Delete Community Tutor?</AlertDialogTitle>
+                        <AlertDialogTitle>
+                            Delete Community Tutor?
+                        </AlertDialogTitle>
                         <AlertDialogDescription>
                             This action cannot be undone. This will permanently
                             delete.

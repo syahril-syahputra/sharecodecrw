@@ -26,15 +26,11 @@ import { LatLng } from '@/types/maps';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Check, HardDriveUpload } from 'lucide-react';
 import dynamic from 'next/dynamic';
-import Image from 'next/image';
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import MultipleSelector, { Option } from '@/components/ui/multipleSelector';
 import { IInterest } from '@/types/base/interest';
-import { useFetchTimezone } from '@/feature/base/timezone';
-import { BodyCreateEvent } from '@/types/events';
-import { useCreateEvent } from '@/feature/events/useCreateEvent';
 import { errorHelper } from '@/lib/formErrorHelper';
 import { Alert, AlertTitle } from '@/components/ui/alert';
 import { useRouter } from 'next/navigation';
@@ -184,7 +180,9 @@ export default function Page() {
                 >
                     {' '}
                     <div className="col-span-2">
-                        <TitleFormHeader>Create Community Tutor</TitleFormHeader>
+                        <TitleFormHeader>
+                            Create Community Tutor
+                        </TitleFormHeader>
                     </div>
                     <div className="space-y-8">
                         <FormField
@@ -207,7 +205,7 @@ export default function Page() {
                                 <FormItem className="flex-1">
                                     <FormLabel>
                                         Hourly Rate (CAD)
-                                        <span className="ml-2 text-xs text-muted-foreground italic">
+                                        <span className="ml-2 text-xs italic text-muted-foreground">
                                             put 0 for free tutor
                                         </span>
                                     </FormLabel>
@@ -252,7 +250,7 @@ export default function Page() {
                                             >
                                                 <img
                                                     alt="Avatar"
-                                                    className="rounded-xl mx-auto aspect-square border border-slate-300 object-cover"
+                                                    className="mx-auto aspect-square rounded-xl border border-slate-300 object-cover"
                                                     src={
                                                         filePreview
                                                             ? (filePreview as string)

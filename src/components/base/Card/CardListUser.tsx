@@ -21,7 +21,7 @@ export default function CardListUser(props: IUserListCard) {
                         </div>
                     )}
 
-                    <img
+                    <Image
                         width={100}
                         alt=""
                         height={100}

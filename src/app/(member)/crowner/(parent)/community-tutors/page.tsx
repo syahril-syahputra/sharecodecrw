@@ -1,19 +1,25 @@
-'use client'
+'use client';
 
-import CardCommunityTutor from "@/components/base/Card/CardCommunityTutor"
-import LoadingFetch from "@/components/base/Loading/LoadingFetch"
-import TitleFormHeader from "@/components/base/Title/TitleFormHeader"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import PaginationTable from "@/components/ui/pagination-table"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { useFetchCommunityTutors } from "@/feature/crowner/community-tutors/useFetchCommunityTutors"
-import useTableConfig from "@/lib/useTableConfig"
-import { IFilterCommunityTutor } from "@/types/crowner/community-tutors"
-import { Plus } from "lucide-react"
-import Link from "next/link"
+import CardCommunityTutor from '@/components/base/Card/CardCommunityTutor';
+import LoadingFetch from '@/components/base/Loading/LoadingFetch';
+import TitleFormHeader from '@/components/base/Title/TitleFormHeader';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import PaginationTable from '@/components/ui/pagination-table';
+import {
+    Select,
+    SelectContent,
+    SelectItem,
+    SelectTrigger,
+    SelectValue,
+} from '@/components/ui/select';
+import { useFetchCommunityTutors } from '@/feature/crowner/community-tutors/useFetchCommunityTutors';
+import useTableConfig from '@/lib/useTableConfig';
+import { IFilterCommunityTutor } from '@/types/crowner/community-tutors';
+import { Plus } from 'lucide-react';
+import Link from 'next/link';
 
-export default function Page(){
+export default function Page() {
     const {
         filterValue,
         filter,
@@ -28,13 +34,16 @@ export default function Page(){
         defaultFilter: {
             title: '',
             acceptance_status: '',
-            is_visible: ''
+            is_visible: '',
         },
     });
-    const { data, isLoading } = useFetchCommunityTutors(pagination, filter, sort);
-    
+    const { data, isLoading } = useFetchCommunityTutors(
+        pagination,
+        filter,
+        sort
+    );
 
-    return(
+    return (
         <div className="flex-1 space-y-4 p-4">
             <div className="flex items-center justify-between border-b">
                 <TitleFormHeader>Community Tutors</TitleFormHeader>
@@ -45,7 +54,7 @@ export default function Page(){
                 </Link>
             </div>
             <section className="grid grid-cols-4 gap-4 p-4">
-                <div className="grid grid-cols-3 gap-4 border-r pr-4 col-span-3">                        
+                <div className="col-span-3 grid grid-cols-3 gap-4 border-r pr-4">
                     <Input
                         className="w-full"
                         value={filterValue.title}
@@ -67,7 +76,10 @@ export default function Page(){
                         value={filterValue.is_visible}
                     >
                         <SelectTrigger>
-                            <SelectValue placeholder="Visibility (all)" defaultValue={''}/>
+                            <SelectValue
+                                placeholder="Visibility (all)"
+                                defaultValue={''}
+                            />
                         </SelectTrigger>
                         <SelectContent>
                             <SelectItem value={'true'}>visible</SelectItem>
@@ -84,16 +96,16 @@ export default function Page(){
                         value={filterValue.acceptance_status}
                     >
                         <SelectTrigger>
-                            <SelectValue placeholder="Acceptance (all)"/>
+                            <SelectValue placeholder="Acceptance (all)" />
                         </SelectTrigger>
                         <SelectContent>
                             <SelectItem value={'idle'}>idle</SelectItem>
-                            <SelectItem value={'accepted'}>accepted</SelectItem>                            
+                            <SelectItem value={'accepted'}>accepted</SelectItem>
                             <SelectItem value={'rejected'}>rejected</SelectItem>
                         </SelectContent>
                     </Select>
                 </div>
-                <div className="pr-4 w-auto">
+                <div className="w-auto pr-4">
                     <Button variant={'ghost'} onClick={resetHandler}>
                         Reset
                     </Button>
@@ -106,6 +118,7 @@ export default function Page(){
                 ) : data?.items.length ? (
                     data?.items.map((item) => (
                         <CardCommunityTutor
+                            key={item.id}
                             id={item.id}
                             title={item.title}
                             image={item.image_url}
@@ -129,5 +142,5 @@ export default function Page(){
                 />
             </div>
         </div>
-    )
+    );
 }

@@ -1,4 +1,4 @@
-import { IItemInterest } from "../base/interest";
+import { IItemInterest } from '../base/interest';
 
 export interface BodyCreateCommunityTutor {
     city_id: string;

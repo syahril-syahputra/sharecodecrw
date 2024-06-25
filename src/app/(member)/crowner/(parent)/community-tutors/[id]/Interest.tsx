@@ -5,7 +5,9 @@ import { Skeleton } from '@/components/ui/skeleton';
 import { useFetchCommunityTutorInterest } from '@/feature/crowner/community-tutors/useFetchCommunityTutor';
 import useTableConfig from '@/lib/useTableConfig';
 
-export default function CommunityTutorInterests(props: { id: string | undefined }) {
+export default function CommunityTutorInterests(props: {
+    id: string | undefined;
+}) {
     // Interest
     const {
         pagination: paginationInterest,
@@ -57,9 +59,7 @@ export default function CommunityTutorInterests(props: { id: string | undefined 
                                     firstName={interest.first_name}
                                     lastName={interest.last_name}
                                     email={interest.email}
-                                    profilePict={
-                                        interest.profile_picture_url
-                                    }
+                                    profilePict={interest.profile_picture_url}
                                 />
                             );
                         })}

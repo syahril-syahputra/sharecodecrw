@@ -1,32 +1,47 @@
-'use client'
-import { BodyCreateCommunityTutor, ICommunityTutor } from "@/types/crowner/community-tutors";
+'use client';
+import {
+    BodyCreateCommunityTutor,
+    ICommunityTutor,
+} from '@/types/crowner/community-tutors';
 import MultipleSelector, { Option } from '@/components/ui/multipleSelector';
 import dynamic from 'next/dynamic';
 import { z } from 'zod';
-import { errorHelper } from "@/lib/formErrorHelper";
-import { useState } from "react";
+import { errorHelper } from '@/lib/formErrorHelper';
+import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { useToast } from "@/components/ui/use-toast";
-import { useUpdateCommunityTutor } from "@/feature/crowner/community-tutors/useUpdateCommunityTutor";
+import { useToast } from '@/components/ui/use-toast';
+import { useUpdateCommunityTutor } from '@/feature/crowner/community-tutors/useUpdateCommunityTutor';
 import { LatLng } from '@/types/maps';
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useFetchInterest } from "@/feature/base/interest";
-import { IInterest } from "@/types/base/interest";
-import { useFetchCity, useFetchState } from "@/feature/base/city";
-import useFilePreview from "@/lib/useFilePreview";
-import TitleFormHeader from "@/components/base/Title/TitleFormHeader";
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
-import Image from "next/image";
-import { Check, HardDriveUpload } from "lucide-react";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import Spinner from "@/components/ui/spinner";
-import ErrorMessage from "@/components/base/Error/ErrorMessage";
-import { Alert, AlertTitle } from "@/components/ui/alert";
-import Link from "next/link";
-import { Button } from "@/components/ui/button";
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useFetchInterest } from '@/feature/base/interest';
+import { IInterest } from '@/types/base/interest';
+import { useFetchCity, useFetchState } from '@/feature/base/city';
+import useFilePreview from '@/lib/useFilePreview';
+import TitleFormHeader from '@/components/base/Title/TitleFormHeader';
+import {
+    Form,
+    FormControl,
+    FormField,
+    FormItem,
+    FormLabel,
+    FormMessage,
+} from '@/components/ui/form';
+import { Input } from '@/components/ui/input';
+import { Textarea } from '@/components/ui/textarea';
+import { Check, HardDriveUpload } from 'lucide-react';
+import {
+    Select,
+    SelectContent,
+    SelectItem,
+    SelectTrigger,
+    SelectValue,
+} from '@/components/ui/select';
+import Spinner from '@/components/ui/spinner';
+import ErrorMessage from '@/components/base/Error/ErrorMessage';
+import { Alert, AlertTitle } from '@/components/ui/alert';
+import Link from 'next/link';
+import { Button } from '@/components/ui/button';
 
 interface IProps {
     data: ICommunityTutor;
@@ -58,7 +73,7 @@ const formSchema = z.object({
     tags: z.string().array().optional(),
 });
 
-export default function FormUpdateCommunityTutor({ data }: IProps){
+export default function FormUpdateCommunityTutor({ data }: IProps) {
     const [getAdreessLoading, setgetAdreessLoading] = useState(false);
     const router = useRouter();
     const { toast } = useToast();
@@ -194,7 +209,9 @@ export default function FormUpdateCommunityTutor({ data }: IProps){
                     className="grid grid-cols-2 gap-4"
                 >
                     <div className="col-span-2">
-                        <TitleFormHeader>Update Community Tutor</TitleFormHeader>
+                        <TitleFormHeader>
+                            Update Community Tutor
+                        </TitleFormHeader>
                     </div>
                     <div className="space-y-8">
                         <FormField
@@ -258,19 +275,19 @@ export default function FormUpdateCommunityTutor({ data }: IProps){
                                             <label
                                                 className="relative inline-block cursor-pointer"
                                                 htmlFor="community_tutor"
-                                            >                                                               
+                                            >
                                                 <img
                                                     alt="community_tutor"
-                                                    className="rounded-xl mx-auto aspect-square border border-slate-300 object-cover dark:border-slate-700"
+                                                    className="mx-auto aspect-square rounded-xl border border-slate-300 object-cover dark:border-slate-700"
                                                     src={
                                                         filePreview
                                                             ? (filePreview as string)
                                                             : data?.image_url
-                                                                ? data?.image_url
-                                                                : '/icons/image.png'                                                                            
+                                                              ? data?.image_url
+                                                              : '/icons/image.png'
                                                     }
                                                 />{' '}
-                                                <div className="rounded-xl absolute bottom-0 left-0 right-0 top-0 flex items-center justify-center bg-neutral-800 bg-opacity-60 opacity-0 hover:opacity-100">
+                                                <div className="absolute bottom-0 left-0 right-0 top-0 flex items-center justify-center rounded-xl bg-neutral-800 bg-opacity-60 opacity-0 hover:opacity-100">
                                                     <HardDriveUpload
                                                         className="text-white"
                                                         size={60}
