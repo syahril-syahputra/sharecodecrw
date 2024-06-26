@@ -61,15 +61,27 @@ const formSchema = z.object({
     address: z.string().min(1),
     image: z
         .any()
-        .refine((files) => files?.length == 1, 'Image is required.')
+        .optional()
+        .refine((files) => files?.length === 1 || files?.length === 0, 'Only one image is allowed.')
         .refine(
-            (files) => files?.[0]?.size <= MAX_FILE_SIZE,
+            (files) => !files || files.length === 0 || files?.[0]?.size <= MAX_FILE_SIZE,
             `Max file size is 500kb.`
         )
         .refine(
-            (files) => ACCEPTED_IMAGE_TYPES.includes(files?.[0]?.type),
+            (files) => !files || files.length === 0 || ACCEPTED_IMAGE_TYPES.includes(files?.[0]?.type),
             '.jpg, .jpeg, .png and .webp files are accepted.'
         ),
+        // .array(z.any())
+        // .optional()
+        // .refine((files) => files?.length === 1 || files?.length === 0, 'Only one image is allowed.')
+        // .refine(
+        //     (files) => !files || files.length === 0 || files[0].size <= MAX_FILE_SIZE,
+        //     `Max file size is 500kb.`
+        // )
+        // .refine(
+        //     (files) => !files || files.length === 0 || ACCEPTED_IMAGE_TYPES.includes(files[0].type),
+        //     '.jpg, .jpeg, .png, and .webp files are accepted.'
+        // ),
     about: z.string().optional(),
     longitude: z.number({
         required_error: 'longitude required.',

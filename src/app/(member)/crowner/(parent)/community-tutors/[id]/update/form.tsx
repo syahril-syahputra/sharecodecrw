@@ -7,7 +7,7 @@ import MultipleSelector, { Option } from '@/components/ui/multipleSelector';
 import dynamic from 'next/dynamic';
 import { z } from 'zod';
 import { errorHelper } from '@/lib/formErrorHelper';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useToast } from '@/components/ui/use-toast';
 import { useUpdateCommunityTutor } from '@/feature/crowner/community-tutors/useUpdateCommunityTutor';
@@ -42,6 +42,7 @@ import ErrorMessage from '@/components/base/Error/ErrorMessage';
 import { Alert, AlertTitle } from '@/components/ui/alert';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
+import Image from 'next/image';
 
 interface IProps {
     data: ICommunityTutor;
@@ -140,6 +141,24 @@ export default function FormUpdateCommunityTutor({ data }: IProps) {
         form.setValue('latitude', lat);
         form.setValue('address', address);
     };
+
+    const [baseLocation, setBaseLocation] = useState<LatLng | undefined>();
+    const resetPosition = () => {
+        //reset value
+        form.setValue('latitude', Number(data.latitude) || 0)
+        form.setValue('longitude', Number(data.longitude) || 0)
+        form.setValue('address', data.address || '')
+        setBaseLocation({
+            lat: Number(data.latitude),
+            lng: Number(data.longitude)
+        })
+    };
+    useEffect(() => {
+        setBaseLocation({
+            lat: Number(data.latitude),
+            lng: Number(data.longitude)
+        })
+    }, [data]);
 
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
@@ -273,21 +292,23 @@ export default function FormUpdateCommunityTutor({ data }: IProps) {
                                     <FormControl>
                                         <div>
                                             <label
-                                                className="relative inline-block cursor-pointer"
-                                                htmlFor="community_tutor"
+                                                className="relative inline-block cursor-pointer "
+                                                htmlFor="avatar"
                                             >
-                                                <img
-                                                    alt="community_tutor"
-                                                    className="mx-auto aspect-square rounded-xl border border-slate-300 object-cover dark:border-slate-700"
+                                                <Image
+                                                    alt="Avatar"
+                                                    className="rounded-md w-full mx-auto border border-slate-300 object-cover"
+                                                    height={200}
                                                     src={
                                                         filePreview
                                                             ? (filePreview as string)
-                                                            : data?.image_url
-                                                              ? data?.image_url
+                                                            : data.image_url
+                                                              ? data.image_url
                                                               : '/icons/image.png'
                                                     }
+                                                    width={200}
                                                 />{' '}
-                                                <div className="absolute bottom-0 left-0 right-0 top-0 flex items-center justify-center rounded-xl bg-neutral-800 bg-opacity-60 opacity-0 hover:opacity-100">
+                                                <div className="rounded-md w-full absolute bottom-0 left-0 right-0 top-0 flex items-center justify-center  bg-neutral-800 bg-opacity-60 opacity-0 hover:opacity-100">
                                                     <HardDriveUpload
                                                         className="text-white"
                                                         size={60}
@@ -385,7 +406,7 @@ export default function FormUpdateCommunityTutor({ data }: IProps) {
                                 <Spinner /> <span>Get Tags...</span>
                             </div>
                         ) : (
-                            <div className="space-y-4">
+                            <div className="space-y-2">
                                 <FormLabel>Tags</FormLabel>
                                 {dataInterest.map((item) => {
                                     const children = item.children.map(
@@ -434,10 +455,7 @@ export default function FormUpdateCommunityTutor({ data }: IProps) {
                             <Map
                                 className="relative z-0 h-[300px] w-full"
                                 onLocationSelected={handleLocationSelected}
-                                userLocationBase={{
-                                    lat: form.getValues('latitude') || 0,
-                                    lng: form.getValues('longitude') || 0,
-                                }}
+                                userLocationBase={baseLocation}
                             />
 
                             <div className="flex space-x-4">
@@ -483,6 +501,7 @@ export default function FormUpdateCommunityTutor({ data }: IProps) {
                                 )}
                             />
                         )}
+                        <Button type='button' className="mt-2" variant={'secondary'} onClick={resetPosition}>Reset map position</Button> 
                     </div>
                     <div className="space-y-8">
                         {isError && (
@@ -499,7 +518,7 @@ export default function FormUpdateCommunityTutor({ data }: IProps) {
                                 </AlertTitle>
                             </Alert>
                         )}
-                        <div className="space-x-4">
+                        <div className="space-x-4 mt-10">
                             <Link href={'/user/events/' + data.id}>
                                 <Button variant={'link'}>Cancel</Button>
                             </Link>

@@ -2,7 +2,7 @@
 import { MapContainer, TileLayer, Marker, useMapEvents } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 import L from 'leaflet';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { LatLng } from '@/types/maps';
 
 interface LocationMarkerProps {
@@ -71,6 +71,13 @@ const Map: React.FC<MapProps> = ({
             lng: defaultLng,
         }
     );
+    
+    // reset position of marker
+    if(userLocationBase) {
+        useEffect(() => {
+            setUserLocation({ lat: userLocationBase?.lat, lng: userLocationBase?.lng });
+        }, [userLocationBase]);
+    }
 
     useEffect(() => {
         if (!userLocationBase) {

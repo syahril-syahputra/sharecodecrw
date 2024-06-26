@@ -107,7 +107,7 @@ export default function Page({ params }: { params: { id: string } }) {
                                                 ? data?.interest_counter
                                                 : 'No'}
                                         </span>{' '}
-                                        people interest in this event
+                                        people interest in this tutor
                                     </span>
                                 </div>
                             </div>

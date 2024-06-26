@@ -30,7 +30,7 @@ export default function Page() {
         setfilterValue,
         setPagination,
     } = useTableConfig<IFilterCommunityTutor>({
-        defaultComlumn: 'title',
+        defaultComlumn: '',
         defaultFilter: {
             title: '',
             acceptance_status: '',

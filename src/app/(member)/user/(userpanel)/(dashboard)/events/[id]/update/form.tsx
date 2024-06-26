@@ -334,7 +334,7 @@ export default function FormUpdateEvent({ data }: IProps) {
                                             >
                                                 <Image
                                                     alt="Avatar"
-                                                    className="mx-auto  border border-slate-300 object-cover dark:border-slate-700"
+                                                    className="mx-auto rounded-md border border-slate-300 object-cover"
                                                     height={200}
                                                     src={
                                                         filePreview
@@ -345,7 +345,7 @@ export default function FormUpdateEvent({ data }: IProps) {
                                                     }
                                                     width={200}
                                                 />{' '}
-                                                <div className="absolute bottom-0 left-0 right-0 top-0 flex items-center justify-center  bg-neutral-800 bg-opacity-60 opacity-0 hover:opacity-100">
+                                                <div className="absolute rounded-md bottom-0 left-0 right-0 top-0 flex items-center justify-center  bg-neutral-800 bg-opacity-60 opacity-0 hover:opacity-100">
                                                     <HardDriveUpload
                                                         className="text-white"
                                                         size={60}
