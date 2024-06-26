@@ -1,5 +1,8 @@
 import Image from 'next/image';
 import Link from 'next/link';
+import AcceptanceStatus from '../ListingUtilities/AcceptanceStatus';
+import VisibilityStatus from '../ListingUtilities/VisibilityStatus';
+import { CircleMinus } from 'lucide-react';
 
 interface IProps {
     id: string;
@@ -34,7 +37,7 @@ export default function CardCommunityTutor(props: IProps) {
                             <div className="text-muted-foreground">
                                 {props.region}
                             </div>
-                            <div className="mt-6">
+                            <div className="mt-6 mb-2">
                                 {props.hourly_rate > 0 && (
                                     <>
                                         <span className="text-primary">
@@ -52,9 +55,9 @@ export default function CardCommunityTutor(props: IProps) {
                                     </span>
                                 )}
                             </div>
-                            <span className="text-sm">
-                                {props.is_visible ? 'visible' : 'hidden'} -{' '}
-                                {props.acceptance_status}
+                            <span className="space-x-3">
+                                <AcceptanceStatus acceptance={props.acceptance_status}/> 
+                                <VisibilityStatus is_visible={props.is_visible}/>
                             </span>
                         </div>
                     </div>

@@ -12,6 +12,8 @@ import CommunityTutorVisibility from './Visibility';
 import DeleteCommunityTutor from './Delete';
 import { Button } from '@/components/ui/button';
 import CommunityTutorInterests from './Interest';
+import AcceptanceStatus from '@/components/base/ListingUtilities/AcceptanceStatus';
+import VisibilityStatus from '@/components/base/ListingUtilities/VisibilityStatus';
 
 export default function Page({ params }: { params: { id: string } }) {
     const { data, isLoading, refetch } = useFetchCommunityTutor(params.id);
@@ -26,15 +28,18 @@ export default function Page({ params }: { params: { id: string } }) {
 
     return (
         <div className="container py-8">
+            <TitlePage className='border-b mb-4'>{data?.title}</TitlePage>
             <section className="flex items-center justify-between">
                 <div className="space-y-4">
-                    <TitlePage>{data?.title}</TitlePage>
                     <div className="space-x-2">
                         {data?.tags.map((tag) => {
                             return <Badge key={tag.id}>{tag.title}</Badge>;
                         })}
                     </div>
-                    <div className=" capitalize">{`${data?.acceptance_status} | ${visibilityStatus(data?.is_visible)}`}</div>
+                    <div className='my-auto space-x-3'>
+                        <AcceptanceStatus acceptance={data?.acceptance_status}/> 
+                        <VisibilityStatus is_visible={data?.is_visible}/>
+                    </div>
                 </div>
                 <div className="flex items-center space-x-2">
                     <CommunityTutorVisibility
