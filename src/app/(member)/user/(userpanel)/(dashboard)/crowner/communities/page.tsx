@@ -43,7 +43,7 @@ export default function Page() {
         <div className="flex-1 space-y-4 p-4">
             <div className="flex items-center justify-between">
                 <TitleFormHeader>Community you manage</TitleFormHeader>
-                <Link href={'communities/create-community'}>
+                <Link href={'/user/create-community'}>
                     <Button variant={'ghost'}>
                         <Plus />
                         <span className="pl-2">Create Community</span>

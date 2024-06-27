@@ -4,7 +4,6 @@ export interface BodyCreateCommunity {
     latitude: number;
     longitude: number;
     about?: string;
-    price?: number;
     img: FileList;
     address: string;
     tags: string[];

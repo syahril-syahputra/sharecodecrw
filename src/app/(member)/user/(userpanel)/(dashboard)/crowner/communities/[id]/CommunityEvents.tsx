@@ -54,7 +54,7 @@ export default function CommunityEvents({
     return (
         <div className="flex-1 space-y-4 p-4">
             <div className="flex items-center justify-between">
-                <TitleFormHeader>Your Personal Event</TitleFormHeader>
+                <TitleFormHeader>Community Event</TitleFormHeader>
                 <Link href={'events/create-event'}>
                     <Button variant={'ghost'}>
                         <Plus />

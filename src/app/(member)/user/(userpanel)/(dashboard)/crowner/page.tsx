@@ -63,7 +63,7 @@ export default function Page() {
                             <div className="grid flex-1 grid-cols-3 gap-4">
                                 <CardCreate
                                     title="Start new community"
-                                    href="/user/crowner/events/create-community"
+                                    href="/user/create-community"
                                 />
                                 {data.communities &&
                                     data.communities.map(
