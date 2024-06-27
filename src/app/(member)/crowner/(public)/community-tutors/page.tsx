@@ -1,5 +1,5 @@
 export default function Page(){
     return(
-        <>Public community tutors</>
+        <>Second search result</>
     )
 }
