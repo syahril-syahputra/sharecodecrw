@@ -7,6 +7,10 @@ export interface User {
     last_name: string;
     email_verified_at: string;
 }
+export interface ITags {
+    id: string;
+    title: string;
+}
 export interface IProfile {
     id?: string;
     city_id?: string;
@@ -24,6 +28,7 @@ export interface IProfile {
     about?: string | null;
     created_at?: string; // Can be Date if you want to parse it to a Date object
     profile_picture_url?: string;
+    tags?: ITags[];
 }
 export interface IUpdateProfile {
     first_name: string;

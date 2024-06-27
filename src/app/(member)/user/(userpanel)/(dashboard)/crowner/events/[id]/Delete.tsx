@@ -27,7 +27,7 @@ export default function DeleteEvent(props: { id?: string | undefined }) {
                 variant: 'success',
                 description: 'Event has been deleted',
             });
-            router.replace('/user/events');
+            router.replace('/user/crowner/events');
         },
         onError: (error) => {
             toast({

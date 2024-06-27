@@ -13,15 +13,17 @@ export default function SideMenuClient() {
         <div className="divide-y-2">
             <CardMember />
             <Menu>
-                <MenuGroupChild title="Crowner Management">
-                    <Link href={'/user/events'}>
+                <MenuGroupChild href="/user/crowner" title="Crowner Management">
+                    <Link href={'/user/crowner/events'}>
                         <MenuItem url={'events'}>Events</MenuItem>
                     </Link>
-                    <MenuItem url={''}>Communities</MenuItem>
+                    <Link href={'/user/crowner/communities'}>
+                        <MenuItem url={'communities'}>Communities</MenuItem>
+                    </Link>
                     <MenuItem url={''}> Community Tutors</MenuItem>
                 </MenuGroupChild>
 
-                <MenuGroupChild title="Owner Management">
+                <MenuGroupChild href="/user/owner" title="Owner Management">
                     <MenuItem url={''}>Cars</MenuItem>
                     <MenuItem url={''}>Home & Garden</MenuItem>
                     <MenuItem url={''}>Electricity</MenuItem>

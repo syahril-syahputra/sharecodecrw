@@ -23,7 +23,7 @@ export default function MenuItem(props: {
     url: string;
 }) {
     const pathname = usePathname();
-    const selectedUrl = pathname.split('/')[2];
+    const selectedUrl = pathname.split('/')[3] || pathname.split('/')[2];
     if (props.href) {
         return (
             <Link href={props.href}>

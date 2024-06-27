@@ -1,7 +1,6 @@
 'use client';
 import TitleFormHeader from '@/components/base/Title/TitleFormHeader';
 import { Button } from '@/components/ui/button';
-import { DateTimePicker } from '@/components/ui/datetime-picker';
 import {
     Form,
     FormControl,
@@ -33,15 +32,14 @@ import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import MultipleSelector, { Option } from '@/components/ui/multipleSelector';
 import { IInterest } from '@/types/base/interest';
-import { useFetchTimezone } from '@/feature/base/timezone';
-import { BodyCreateEvent, IDetailEvent } from '@/types/events';
 import { errorHelper } from '@/lib/formErrorHelper';
 import { Alert, AlertTitle } from '@/components/ui/alert';
-import { useUpdateEvent } from '@/feature/events/useUpdateEvents';
 import ErrorMessage from '@/components/base/Error/ErrorMessage';
 import { useRouter } from 'next/navigation';
 import { useToast } from '@/components/ui/use-toast';
 import Link from 'next/link';
+import { BodyCreateCommunity, IDetailCommunity } from '@/types/community';
+import { useUpdateCommunity } from '@/feature/community/useUpdateCommunity';
 
 // interface AddressObject {
 //     [key: string]: string;
@@ -51,7 +49,7 @@ interface IInterestList {
     data: Option[];
 }
 interface IProps {
-    data: IDetailEvent;
+    data: IDetailCommunity;
 }
 const Map = dynamic(() => import('@/components/base/Maps/maps'), {
     ssr: false,
@@ -59,12 +57,7 @@ const Map = dynamic(() => import('@/components/base/Maps/maps'), {
 const formSchema = z.object({
     title: z.string().min(1, { message: 'Title is required' }),
 
-    datetime: z.date({
-        required_error: 'Date and time is required.',
-    }),
-    timezone: z.string().min(1, { message: 'Timezone is required' }),
     province: z.string().min(1, { message: 'Province is required' }),
-    price: z.coerce.number().optional(),
     city: z.string().min(1),
     address: z.string().min(1),
     img: z.any().optional(),
@@ -77,7 +70,7 @@ const formSchema = z.object({
     }),
     tags: z.string().array().optional(),
 });
-export default function FormUpdateEvent({ data }: IProps) {
+export default function FormUpdateCommunity({ data }: IProps) {
     const [getAdreessLoading, setgetAdreessLoading] = useState(false);
     const router = useRouter();
     const { toast } = useToast();
@@ -88,15 +81,15 @@ export default function FormUpdateEvent({ data }: IProps) {
         isError,
         error,
         data: createResponse,
-    } = useUpdateEvent({
+    } = useUpdateCommunity({
         onSuccess: () => {
             toast({
                 title: 'Update Success',
                 variant: 'success',
-                description: 'Data Event Updated',
+                description: 'Data Community Updated',
             });
 
-            router.push('/user/events/' + data.id, {});
+            router.push('/user/crowner/communities/' + data.id, {});
         },
         onError: (error) => errorHelper(form.setError, error),
         id: data.id,
@@ -115,13 +108,10 @@ export default function FormUpdateEvent({ data }: IProps) {
         }
         form.setValue('tags', resultArray);
 
-        const body: BodyCreateEvent = {
-            timezone_id: data.timezone,
+        const body: BodyCreateCommunity = {
             about: data.about,
-            date_time: data.datetime,
             img: data.img,
             city_id: data.city,
-            price: data.price,
             tags: resultArray,
             title: data.title,
             address: data.address,
@@ -154,13 +144,10 @@ export default function FormUpdateEvent({ data }: IProps) {
             title: data.title,
             longitude: data.longitude,
             latitude: data.latitude,
-            datetime: new Date(data.date_time),
             address: data.address,
-            timezone: data.timezone_id,
             province: data.province_id,
             city: data.city_id,
             about: data.about,
-            price: parseInt(data.price),
         },
     });
     const { data: dataInterest, isPending: pendingInterest } = useFetchInterest(
@@ -185,7 +172,6 @@ export default function FormUpdateEvent({ data }: IProps) {
         }
     );
     const { data: dataState } = useFetchState();
-    const { data: dataTimezome } = useFetchTimezone();
     const { data: dataCity, isPending: isPendingCity } = useFetchCity(
         form.getValues('province'),
         () => {
@@ -220,7 +206,7 @@ export default function FormUpdateEvent({ data }: IProps) {
                     className="grid grid-cols-2 gap-4"
                 >
                     <div className="col-span-2">
-                        <TitleFormHeader>Update Event</TitleFormHeader>
+                        <TitleFormHeader>Update Community</TitleFormHeader>
                     </div>
                     <div className="space-y-8">
                         <FormField
@@ -236,83 +222,19 @@ export default function FormUpdateEvent({ data }: IProps) {
                                 </FormItem>
                             )}
                         />
-                        <FormField
-                            control={form.control}
-                            name="datetime"
-                            render={({ field }) => (
-                                <FormItem className="flex-1">
-                                    <FormLabel>Datetime*</FormLabel>
-                                    <FormControl>
-                                        <DateTimePicker
-                                            jsDate={field.value}
-                                            hourCycle={24}
-                                            onJsDateChange={field.onChange}
-                                            granularity="second"
-                                        />
-                                    </FormControl>
-                                    <FormMessage />
-                                </FormItem>
-                            )}
-                        />
-                        <FormField
-                            control={form.control}
-                            name="timezone"
-                            render={({ field }) => (
-                                <FormItem className="flex-1">
-                                    <FormLabel>Timezone*</FormLabel>
-                                    <Select
-                                        value={field.value}
-                                        onValueChange={field.onChange}
-                                    >
-                                        <FormControl>
-                                            <SelectTrigger>
-                                                <SelectValue placeholder="Select Timezone" />
-                                            </SelectTrigger>
-                                        </FormControl>
-                                        <SelectContent>
-                                            {dataTimezome?.map((item) => (
-                                                <SelectItem
-                                                    key={item.id}
-                                                    value={item.id}
-                                                >
-                                                    {item.label}
-                                                </SelectItem>
-                                            ))}
-                                        </SelectContent>
-                                    </Select>
-                                    <FormMessage />
-                                </FormItem>
-                            )}
-                        />
-                        <FormField
-                            control={form.control}
-                            name="price"
-                            render={({ field }) => (
-                                <FormItem className="flex-1">
-                                    <FormLabel>
-                                        Price (CAD)
-                                        <span className="pl-4 text-xs">
-                                            put 0 for free event
-                                        </span>
-                                    </FormLabel>
-                                    <FormControl>
-                                        <Input {...field} />
-                                    </FormControl>
-                                    <FormMessage />
-                                </FormItem>
-                            )}
-                        />
+
                         <FormField
                             control={form.control}
                             name="about"
                             render={({ field }) => (
                                 <FormItem className="flex-1">
                                     <FormLabel>
-                                        What is your event about
+                                        What is your community about
                                     </FormLabel>
                                     <FormControl>
                                         <Textarea
-                                            placeholder="Write down event description"
+                                            className="h-52"
+                                            placeholder="Write down community description"
                                             {...field}
                                         />
                                     </FormControl>
@@ -558,7 +480,7 @@ export default function FormUpdateEvent({ data }: IProps) {
                             </Alert>
                         )}
                         <div className="space-x-4">
-                            <Link href={'/user/events/' + data.id}>
+                            <Link href={'/user/crowner/communities/' + data.id}>
                                 <Button variant={'link'}>Cancel</Button>
                             </Link>
                             <Button type="submit" loading={isLoadingCreate}>
