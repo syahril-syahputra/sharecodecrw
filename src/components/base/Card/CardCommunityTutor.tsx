@@ -18,7 +18,7 @@ interface IProps {
 export default function CardCommunityTutor(props: IProps) {
     return (
         <div className="space-y-5">
-            <Link href={`/crowner/community-tutors/${props.id}`} key={props.id}>
+            <Link href={`/crowner/publisher/community-tutors/${props.id}`} key={props.id}>
                 <div className="flex cursor-pointer rounded-md border shadow-md active:opacity-30">
                     <div className="mx-auto my-auto h-full">
                         <Image
