@@ -47,6 +47,7 @@ export interface IDetailEvent {
 }
 
 export interface IFilterEvent {
+    community_id?: string;
     title?: string;
     timezone_id?: string;
     start_date?: string;

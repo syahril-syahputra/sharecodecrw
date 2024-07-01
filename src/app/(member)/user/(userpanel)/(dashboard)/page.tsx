@@ -3,12 +3,18 @@ import CardEvent from '@/components/base/Card/CardEvent';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { useFetchEvent } from '@/feature/events/useFetchEvent';
+import { useFetchProfile } from '@/feature/user/profile';
 import { IDetailEvent } from '@/types/events';
+import { IProfile } from '@/types/user';
 import { Edit, Plus } from 'lucide-react';
 import Link from 'next/link';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 
 export default function Page() {
+    const [currentProfule, setcurrentProfule] = useState<IProfile>({});
+    const { mutate } = useFetchProfile((data) => {
+        setcurrentProfule(data);
+    });
     const { data: event } = useFetchEvent(
         {
             pageIndex: 1,
@@ -21,22 +27,38 @@ export default function Page() {
         },
         { sort_by: 'title', sort_type: 'desc' }
     );
+    useEffect(() => {
+        mutate();
+    }, []);
     return (
         <section className="h-96 flex-1 p-4">
             <div className="flex items-center justify-between font-bold">
                 <h1>Introduce Yourself</h1>
-                <Button variant={'ghost'}>EDIT</Button>
+                <Link href={'/user/setting/profile'}>
+                    <Button variant={'ghost'}>EDIT</Button>
+                </Link>
             </div>
-            <div className="flex flex-col items-center space-y-2 p-4">
-                <Plus />
-                <span className="font-bold">This is an introduction.</span>
-            </div>
-            <div className="flex justify-between">
+            {currentProfule.about ? (
+                <div className="min-h-24">
+                    <span className="">{currentProfule.about}</span>
+                </div>
+            ) : (
+                <div className="flex flex-col items-center space-y-2 p-4">
+                    <Plus />
+                    <span className="font-bold">{currentProfule.about}</span>
+                </div>
+            )}
+
+            <div className="flex items-center justify-between">
                 <div className="space-x-2">
                     <span className="font-semibold">Interests :</span>{' '}
-                    <Badge variant={'secondary'}>Travelling</Badge>
-                    <Badge variant={'secondary'}>Adventure</Badge>
-                    <Badge variant={'secondary'}>Walking Tours</Badge>
+                    {currentProfule.tags?.map((item) => {
+                        return (
+                            <Badge key={item.id} variant={'secondary'}>
+                                {item.title}
+                            </Badge>
+                        );
+                    })}
                 </div>
                 <div>
                     <Link href="/user/interest">
@@ -67,30 +89,22 @@ export default function Page() {
                                 {event &&
                                     event.items.map((item: IDetailEvent) => (
                                         <Link
-                                            href={'/user/events/' + item.id}
+                                            href={
+                                                '/user/crowner/events/' +
+                                                item.id
+                                            }
                                             key={item.id}
                                         >
                                             <CardEvent
                                                 variant="vertikal"
-                                                image={item.image_url}
-                                                address={
-                                                    item.city +
-                                                    ', ' +
-                                                    item.province
-                                                }
-                                                title={item.title}
-                                                key={item.id}
-                                                price={item.price}
-                                                datetime={
-                                                    new Date(item.date_time)
-                                                }
+                                                data={item}
                                             />
                                         </Link>
                                     ))}
                             </div>
                         </div>
                         <div className="flex justify-end py-4">
-                            <Link href={'/user/events'}>
+                            <Link href={'/user/crowner/events'}>
                                 <Button variant={'ghost'}>More</Button>
                             </Link>
                         </div>

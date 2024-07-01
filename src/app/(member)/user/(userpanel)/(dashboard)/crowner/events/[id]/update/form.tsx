@@ -96,7 +96,7 @@ export default function FormUpdateEvent({ data }: IProps) {
                 description: 'Data Event Updated',
             });
 
-            router.push('/user/events/' + data.id, {});
+            router.push('/user/crowner/events/' + data.id, {});
         },
         onError: (error) => errorHelper(form.setError, error),
         id: data.id,
@@ -558,7 +558,7 @@ export default function FormUpdateEvent({ data }: IProps) {
                             </Alert>
                         )}
                         <div className="space-x-4">
-                            <Link href={'/user/events/' + data.id}>
+                            <Link href={'/user/crowner/events/' + data.id}>
                                 <Button variant={'link'}>Cancel</Button>
                             </Link>
                             <Button type="submit" loading={isLoadingCreate}>

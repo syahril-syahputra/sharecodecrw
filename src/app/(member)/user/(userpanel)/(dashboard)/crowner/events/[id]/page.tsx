@@ -18,10 +18,10 @@ import {
 } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
-import RsvpInterest from './RsvpInterest';
 import { Button } from '@/components/ui/button';
 import EventVisibility from './Visibility';
 import DeleteEvent from './Delete';
+import RsvpInterest from './RsvpInterest';
 
 export default function Page({ params }: { params: { id: string } }) {
     const { data, isLoading, refetch } = useDetailEvent(params.id);
@@ -69,7 +69,7 @@ export default function Page({ params }: { params: { id: string } }) {
                         id={params.id}
                         visibility={data?.is_visible}
                     />
-                    <a href={`/user/events/${params.id}/update`}>
+                    <a href={`/user/crowner/events/${params.id}/update`}>
                         <Button size={'sm'} variant={'secondary'}>
                             <Edit className="mr-2" />
                             Edit
@@ -97,8 +97,8 @@ export default function Page({ params }: { params: { id: string } }) {
                             <span>{data?.about}</span>
                         </div>
                     </div>
-                    <div className="w-full shadow-md lg:w-2/5">
-                        <div className="space-y-2 rounded-xl border p-4">
+                    <div className="w-full lg:w-2/5">
+                        <div className="space-y-2 rounded-xl  border p-4 shadow-md">
                             <div className="flex flex-row">
                                 <div className="flex-none">
                                     <MapPin className="text-primary" />

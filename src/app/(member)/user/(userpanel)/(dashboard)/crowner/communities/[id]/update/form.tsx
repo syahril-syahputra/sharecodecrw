@@ -1,7 +1,6 @@
 'use client';
 import TitleFormHeader from '@/components/base/Title/TitleFormHeader';
 import { Button } from '@/components/ui/button';
-import { DateTimePicker } from '@/components/ui/datetime-picker';
 import {
     Form,
     FormControl,
@@ -33,20 +32,14 @@ import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import MultipleSelector, { Option } from '@/components/ui/multipleSelector';
 import { IInterest } from '@/types/base/interest';
-import { useFetchTimezone } from '@/feature/base/timezone';
-import { BodyCreateEvent } from '@/types/events';
-import { useCreateEvent } from '@/feature/events/useCreateEvent';
 import { errorHelper } from '@/lib/formErrorHelper';
 import { Alert, AlertTitle } from '@/components/ui/alert';
+import ErrorMessage from '@/components/base/Error/ErrorMessage';
 import { useRouter } from 'next/navigation';
-
-const MAX_FILE_SIZE = 500000;
-const ACCEPTED_IMAGE_TYPES = [
-    'image/jpeg',
-    'image/jpg',
-    'image/png',
-    'image/webp',
-];
+import { useToast } from '@/components/ui/use-toast';
+import Link from 'next/link';
+import { BodyCreateCommunity, IDetailCommunity } from '@/types/community';
+import { useUpdateCommunity } from '@/feature/community/useUpdateCommunity';
 
 // interface AddressObject {
 //     [key: string]: string;
@@ -55,32 +48,19 @@ interface IInterestList {
     id: string;
     data: Option[];
 }
-
+interface IProps {
+    data: IDetailCommunity;
+}
 const Map = dynamic(() => import('@/components/base/Maps/maps'), {
     ssr: false,
 });
 const formSchema = z.object({
     title: z.string().min(1, { message: 'Title is required' }),
 
-    datetime: z.date({
-        required_error: 'Date and time is required.',
-    }),
-    timezone: z.string().min(1, { message: 'Timezone is required' }),
     province: z.string().min(1, { message: 'Province is required' }),
-    price: z.coerce.number().optional(),
     city: z.string().min(1),
     address: z.string().min(1),
-    img: z
-        .any()
-        .refine((files) => files?.length == 1, 'Image is required.')
-        .refine(
-            (files) => files?.[0]?.size <= MAX_FILE_SIZE,
-            `Max file size is 500kb.`
-        )
-        .refine(
-            (files) => ACCEPTED_IMAGE_TYPES.includes(files?.[0]?.type),
-            '.jpg, .jpeg, .png and .webp files are accepted.'
-        ),
+    img: z.any().optional(),
     about: z.string().optional(),
     longitude: z.number({
         required_error: 'longitude required.',
@@ -90,23 +70,32 @@ const formSchema = z.object({
     }),
     tags: z.string().array().optional(),
 });
-export default function Page() {
+export default function FormUpdateCommunity({ data }: IProps) {
     const [getAdreessLoading, setgetAdreessLoading] = useState(false);
     const router = useRouter();
-
+    const { toast } = useToast();
     const {
         mutate,
         isPending: isLoadingCreate,
         isSuccess,
+        isError,
+        error,
         data: createResponse,
-    } = useCreateEvent({
+    } = useUpdateCommunity({
         onSuccess: () => {
-            router.push('/user/events');
+            toast({
+                title: 'Update Success',
+                variant: 'success',
+                description: 'Data Community Updated',
+            });
+
+            router.push('/user/crowner/communities/' + data.id, {});
         },
         onError: (error) => errorHelper(form.setError, error),
+        id: data.id,
     });
     function onSubmitProfile(data: z.infer<typeof formSchema>) {
-        const dataInterest = value.map((item) => item.data);
+        const dataInterest = valueTag.map((item) => item.data);
         const resultArray = dataInterest.flatMap((subArray) =>
             subArray.map((item) => item.value)
         );
@@ -119,13 +108,10 @@ export default function Page() {
         }
         form.setValue('tags', resultArray);
 
-        const body: BodyCreateEvent = {
-            timezone_id: data.timezone,
+        const body: BodyCreateCommunity = {
             about: data.about,
-            date_time: data.datetime,
             img: data.img,
             city_id: data.city,
-            price: data.price,
             tags: resultArray,
             title: data.title,
             address: data.address,
@@ -154,36 +140,63 @@ export default function Page() {
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         mode: 'onChange',
+        defaultValues: {
+            title: data.title,
+            longitude: data.longitude,
+            latitude: data.latitude,
+            address: data.address,
+            province: data.province_id,
+            city: data.city_id,
+            about: data.about,
+        },
     });
     const { data: dataInterest, isPending: pendingInterest } = useFetchInterest(
-        (data: IInterest[]) => {
-            setValue(
-                data.map((item) => {
-                    return { id: item.id, data: [] };
+        (dataInterest: IInterest[]) => {
+            setValueTag(
+                dataInterest.map((item) => {
+                    const dataChild: Option[] = [];
+                    item.children.forEach((itemChild) => {
+                        const cektag = data?.tags.find(
+                            (tag) => tag.id === itemChild.id
+                        );
+                        if (cektag) {
+                            dataChild.push({
+                                label: itemChild.title,
+                                value: itemChild.id,
+                            });
+                        }
+                    });
+                    return { id: item.id, data: dataChild };
                 })
             );
         }
     );
     const { data: dataState } = useFetchState();
-    const { data: dataTimezome } = useFetchTimezone();
     const { data: dataCity, isPending: isPendingCity } = useFetchCity(
         form.getValues('province'),
         () => {
-            form.setValue('city', '');
+            if (form.getValues('province') !== data.province_id) {
+                form.setValue('city', '');
+            }
         }
     );
-
+    // useEffect(() => {
+    //     setEventBaseLocation({
+    //         lat: Number(data?.latitude),
+    //         lng: Number(data?.longitude),
+    //     });
+    // }, [isFetching]);
     const fileRef = form.register('img');
     const result = form.watch(['img']);
     const [filePreview] = useFilePreview(result[0]);
 
-    const [value, setValue] = useState<IInterestList[]>([]);
+    const [valueTag, setValueTag] = useState<IInterestList[]>([]);
     function onChange(id: string, data: Option[]) {
-        const filteredData: IInterestList[] = value.filter(
+        const filteredData: IInterestList[] = valueTag.filter(
             (item) => item.id !== id
         );
         const updated: IInterestList[] = [...filteredData, { id, data }];
-        setValue(updated);
+        setValueTag(updated);
     }
     return (
         <div className=" flex-1 space-y-4 p-4">
@@ -192,9 +205,8 @@ export default function Page() {
                     onSubmit={form.handleSubmit(onSubmitProfile)}
                     className="grid grid-cols-2 gap-4"
                 >
-                    {' '}
                     <div className="col-span-2">
-                        <TitleFormHeader>Create Event</TitleFormHeader>
+                        <TitleFormHeader>Update Community</TitleFormHeader>
                     </div>
                     <div className="space-y-8">
                         <FormField
@@ -210,83 +222,19 @@ export default function Page() {
                                 </FormItem>
                             )}
                         />
-                        <FormField
-                            control={form.control}
-                            name="datetime"
-                            render={({ field }) => (
-                                <FormItem className="flex-1">
-                                    <FormLabel>Datetime*</FormLabel>
-                                    <FormControl>
-                                        <DateTimePicker
-                                            jsDate={field.value}
-                                            hourCycle={24}
-                                            onJsDateChange={field.onChange}
-                                            granularity="second"
-                                        />
-                                    </FormControl>
-                                    <FormMessage />
-                                </FormItem>
-                            )}
-                        />
-                        <FormField
-                            control={form.control}
-                            name="timezone"
-                            render={({ field }) => (
-                                <FormItem className="flex-1">
-                                    <FormLabel>Timezone*</FormLabel>
-                                    <Select
-                                        value={field.value}
-                                        onValueChange={field.onChange}
-                                    >
-                                        <FormControl>
-                                            <SelectTrigger>
-                                                <SelectValue placeholder="Select Timezone" />
-                                            </SelectTrigger>
-                                        </FormControl>
-                                        <SelectContent>
-                                            {dataTimezome?.map((item) => (
-                                                <SelectItem
-                                                    key={item.id}
-                                                    value={item.id}
-                                                >
-                                                    {item.label}
-                                                </SelectItem>
-                                            ))}
-                                        </SelectContent>
-                                    </Select>
-                                    <FormMessage />
-                                </FormItem>
-                            )}
-                        />
-                        <FormField
-                            control={form.control}
-                            name="price"
-                            render={({ field }) => (
-                                <FormItem className="flex-1">
-                                    <FormLabel>
-                                        Price (CAD)
-                                        <span className="pl-4 text-xs">
-                                            put 0 for free event
-                                        </span>
-                                    </FormLabel>
-                                    <FormControl>
-                                        <Input {...field} />
-                                    </FormControl>
-                                    <FormMessage />
-                                </FormItem>
-                            )}
-                        />
+
                         <FormField
                             control={form.control}
                             name="about"
                             render={({ field }) => (
                                 <FormItem className="flex-1">
                                     <FormLabel>
-                                        What is your event about
+                                        What is your community about
                                     </FormLabel>
                                     <FormControl>
                                         <Textarea
-                                            placeholder="Write down event description"
+                                            className="h-52"
+                                            placeholder="Write down community description"
                                             {...field}
                                         />
                                     </FormControl>
@@ -313,7 +261,9 @@ export default function Page() {
                                                     src={
                                                         filePreview
                                                             ? (filePreview as string)
-                                                            : '/icons/image.png'
+                                                            : data.image_url
+                                                              ? data.image_url
+                                                              : '/icons/image.png'
                                                     }
                                                     width={200}
                                                 />{' '}
@@ -430,7 +380,7 @@ export default function Page() {
                                         <MultipleSelector
                                             key={item.id}
                                             value={
-                                                value.find(
+                                                valueTag.find(
                                                     (x) => x.id === item.id
                                                 )?.data
                                             }
@@ -464,7 +414,12 @@ export default function Page() {
                             <Map
                                 className="relative z-0 h-[200px] w-full"
                                 onLocationSelected={handleLocationSelected}
+                                userLocationBase={{
+                                    lat: form.getValues('latitude') || 0,
+                                    lng: form.getValues('longitude') || 0,
+                                }}
                             />
+
                             <div className="flex space-x-4">
                                 <FormField
                                     control={form.control}
@@ -510,6 +465,12 @@ export default function Page() {
                         )}
                     </div>
                     <div className="space-y-8">
+                        {isError && (
+                            <ErrorMessage>
+                                {error.response?.data?.message ||
+                                    'Samething Wrong'}
+                            </ErrorMessage>
+                        )}
                         {isSuccess && (
                             <Alert variant={'success'}>
                                 <AlertTitle className="flex items-center space-x-2">
@@ -518,9 +479,14 @@ export default function Page() {
                                 </AlertTitle>
                             </Alert>
                         )}
-                        <Button type="submit" loading={isLoadingCreate}>
-                            SAVE
-                        </Button>
+                        <div className="space-x-4">
+                            <Link href={'/user/crowner/communities/' + data.id}>
+                                <Button variant={'link'}>Cancel</Button>
+                            </Link>
+                            <Button type="submit" loading={isLoadingCreate}>
+                                SAVE
+                            </Button>
+                        </div>
                     </div>
                 </form>
             </Form>
