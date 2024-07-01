@@ -3,16 +3,18 @@ import Step from '@/components/base/Step/Step';
 import TitlePage from '@/components/base/Title/TitlePage';
 import { ArrowLeft, X } from 'lucide-react';
 import React, { useState } from 'react';
-import Step1 from './Step1';
 import clsx from 'clsx';
-import Step2 from './Step2';
-import Step3 from './Step3';
-import Step4 from './Step4';
-import Step5 from './Step5';
 import Link from 'next/link';
+import dynamic from 'next/dynamic';
 import { useCreateCommunity } from '@/feature/community/useCreateCommunity';
 import { BodyCreateCommunity } from '@/types/community';
 import Spinner from '@/components/ui/spinner';
+
+const Step1 = dynamic(() => import('./Step1'), { ssr: false });
+const Step2 = dynamic(() => import('./Step2'), { ssr: false });
+const Step3 = dynamic(() => import('./Step3'), { ssr: false });
+const Step4 = dynamic(() => import('./Step4'), { ssr: false });
+const Step5 = dynamic(() => import('./Step5'), { ssr: false });
 
 export default function Page() {
     const [index, setindex] = useState(1);
