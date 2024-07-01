@@ -1,5 +1,3 @@
-export default function Page(){
-    return (
-        <>Reserved events</>
-    )
+export default function Page() {
+    return <>Reserved events</>;
 }

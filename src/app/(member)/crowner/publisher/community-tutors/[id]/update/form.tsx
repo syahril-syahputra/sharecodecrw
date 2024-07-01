@@ -145,19 +145,19 @@ export default function FormUpdateCommunityTutor({ data }: IProps) {
     const [baseLocation, setBaseLocation] = useState<LatLng | undefined>();
     const resetPosition = () => {
         //reset value
-        form.setValue('latitude', Number(data.latitude) || 0)
-        form.setValue('longitude', Number(data.longitude) || 0)
-        form.setValue('address', data.address || '')
+        form.setValue('latitude', Number(data.latitude) || 0);
+        form.setValue('longitude', Number(data.longitude) || 0);
+        form.setValue('address', data.address || '');
         setBaseLocation({
             lat: Number(data.latitude),
-            lng: Number(data.longitude)
-        })
+            lng: Number(data.longitude),
+        });
     };
     useEffect(() => {
         setBaseLocation({
             lat: Number(data.latitude),
-            lng: Number(data.longitude)
-        })
+            lng: Number(data.longitude),
+        });
     }, [data]);
 
     const form = useForm<z.infer<typeof formSchema>>({
@@ -297,7 +297,7 @@ export default function FormUpdateCommunityTutor({ data }: IProps) {
                                             >
                                                 <Image
                                                     alt="Avatar"
-                                                    className="rounded-md w-full mx-auto border border-slate-300 object-cover"
+                                                    className="mx-auto w-full rounded-md border border-slate-300 object-cover"
                                                     height={200}
                                                     src={
                                                         filePreview
@@ -308,7 +308,7 @@ export default function FormUpdateCommunityTutor({ data }: IProps) {
                                                     }
                                                     width={200}
                                                 />{' '}
-                                                <div className="rounded-md w-full absolute bottom-0 left-0 right-0 top-0 flex items-center justify-center  bg-neutral-800 bg-opacity-60 opacity-0 hover:opacity-100">
+                                                <div className="absolute bottom-0 left-0 right-0 top-0 flex w-full items-center justify-center rounded-md  bg-neutral-800 bg-opacity-60 opacity-0 hover:opacity-100">
                                                     <HardDriveUpload
                                                         className="text-white"
                                                         size={60}
@@ -501,7 +501,14 @@ export default function FormUpdateCommunityTutor({ data }: IProps) {
                                 )}
                             />
                         )}
-                        <Button type='button' className="mt-2" variant={'secondary'} onClick={resetPosition}>Reset map position</Button> 
+                        <Button
+                            type="button"
+                            className="mt-2"
+                            variant={'secondary'}
+                            onClick={resetPosition}
+                        >
+                            Reset map position
+                        </Button>
                     </div>
                     <div className="space-y-8">
                         {isError && (
@@ -518,7 +525,7 @@ export default function FormUpdateCommunityTutor({ data }: IProps) {
                                 </AlertTitle>
                             </Alert>
                         )}
-                        <div className="space-x-4 mt-10">
+                        <div className="mt-10 space-x-4">
                             <Link href={'/user/events/' + data.id}>
                                 <Button variant={'link'}>Cancel</Button>
                             </Link>

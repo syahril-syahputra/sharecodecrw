@@ -28,7 +28,7 @@ export default function Page({ params }: { params: { id: string } }) {
 
     return (
         <div className="container py-8">
-            <TitlePage className='border-b mb-4'>{data?.title}</TitlePage>
+            <TitlePage className="mb-4 border-b">{data?.title}</TitlePage>
             <section className="flex items-center justify-between">
                 <div className="space-y-4">
                     <div className="space-x-2">
@@ -36,9 +36,11 @@ export default function Page({ params }: { params: { id: string } }) {
                             return <Badge key={tag.id}>{tag.title}</Badge>;
                         })}
                     </div>
-                    <div className='my-auto space-x-3'>
-                        <AcceptanceStatus acceptance={data?.acceptance_status}/> 
-                        <VisibilityStatus is_visible={data?.is_visible}/>
+                    <div className="my-auto space-x-3">
+                        <AcceptanceStatus
+                            acceptance={data?.acceptance_status}
+                        />
+                        <VisibilityStatus is_visible={data?.is_visible} />
                     </div>
                 </div>
                 <div className="flex items-center space-x-2">
@@ -47,7 +49,9 @@ export default function Page({ params }: { params: { id: string } }) {
                         id={params.id}
                         visibility={data?.is_visible}
                     />
-                    <a href={`/crowner/publisher/community-tutors/${params.id}/update`}>
+                    <a
+                        href={`/crowner/publisher/community-tutors/${params.id}/update`}
+                    >
                         <Button size={'sm'} variant={'secondary'}>
                             <Edit className="mr-2" />
                             Edit

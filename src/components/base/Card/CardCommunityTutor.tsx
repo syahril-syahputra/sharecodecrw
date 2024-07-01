@@ -18,7 +18,10 @@ interface IProps {
 export default function CardCommunityTutor(props: IProps) {
     return (
         <div className="space-y-5">
-            <Link href={`/crowner/publisher/community-tutors/${props.id}`} key={props.id}>
+            <Link
+                href={`/crowner/publisher/community-tutors/${props.id}`}
+                key={props.id}
+            >
                 <div className="flex cursor-pointer rounded-md border shadow-md active:opacity-30">
                     <div className="mx-auto my-auto h-full">
                         <Image
@@ -37,7 +40,7 @@ export default function CardCommunityTutor(props: IProps) {
                             <div className="text-muted-foreground">
                                 {props.region}
                             </div>
-                            <div className="mt-6 mb-2">
+                            <div className="mb-2 mt-6">
                                 {props.hourly_rate > 0 && (
                                     <>
                                         <span className="text-primary">
@@ -56,8 +59,12 @@ export default function CardCommunityTutor(props: IProps) {
                                 )}
                             </div>
                             <span className="space-x-3">
-                                <AcceptanceStatus acceptance={props.acceptance_status}/> 
-                                <VisibilityStatus is_visible={props.is_visible}/>
+                                <AcceptanceStatus
+                                    acceptance={props.acceptance_status}
+                                />
+                                <VisibilityStatus
+                                    is_visible={props.is_visible}
+                                />
                             </span>
                         </div>
                     </div>

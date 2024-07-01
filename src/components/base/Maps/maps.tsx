@@ -71,11 +71,14 @@ const Map: React.FC<MapProps> = ({
             lng: defaultLng,
         }
     );
-    
+
     // reset position of marker
-    if(userLocationBase) {
+    if (userLocationBase) {
         useEffect(() => {
-            setUserLocation({ lat: userLocationBase?.lat, lng: userLocationBase?.lng });
+            setUserLocation({
+                lat: userLocationBase?.lat,
+                lng: userLocationBase?.lng,
+            });
         }, [userLocationBase]);
     }
 

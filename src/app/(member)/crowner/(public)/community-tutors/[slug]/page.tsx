@@ -1,5 +1,3 @@
-export default function Page(){
-    return (
-        <>Detail with slug</>
-    )
+export default function Page() {
+    return <>Detail with slug</>;
 }

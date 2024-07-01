@@ -1,5 +1,3 @@
 export default function Page() {
-    return (
-        <>First search Result</>
-    )
+    return <>First search Result</>;
 }
