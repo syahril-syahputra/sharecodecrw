@@ -7,7 +7,6 @@ import { Separator } from '@/components/ui/separator';
 import { useFetchCommunityTutor } from '@/feature/crowner/community-tutors/useFetchCommunityTutor';
 import { DollarSign, Edit, MapPin, MessageCircleHeart } from 'lucide-react';
 import Image from 'next/image';
-import { visibilityStatus } from '@/lib/visibilityStatus';
 import CommunityTutorVisibility from './Visibility';
 import DeleteCommunityTutor from './Delete';
 import { Button } from '@/components/ui/button';

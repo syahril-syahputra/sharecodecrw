@@ -2,7 +2,6 @@ import Image from 'next/image';
 import Link from 'next/link';
 import AcceptanceStatus from '../ListingUtilities/AcceptanceStatus';
 import VisibilityStatus from '../ListingUtilities/VisibilityStatus';
-import { CircleMinus } from 'lucide-react';
 
 interface IProps {
     id: string;
