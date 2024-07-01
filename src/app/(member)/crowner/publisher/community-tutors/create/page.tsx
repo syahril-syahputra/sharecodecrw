@@ -1,7 +1,6 @@
 'use client';
 import TitleFormHeader from '@/components/base/Title/TitleFormHeader';
 import { Button } from '@/components/ui/button';
-import { DateTimePicker } from '@/components/ui/datetime-picker';
 import {
     Form,
     FormControl,
@@ -27,47 +26,62 @@ import { LatLng } from '@/types/maps';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Check, HardDriveUpload } from 'lucide-react';
 import dynamic from 'next/dynamic';
-import Image from 'next/image';
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import MultipleSelector, { Option } from '@/components/ui/multipleSelector';
 import { IInterest } from '@/types/base/interest';
-import { useFetchTimezone } from '@/feature/base/timezone';
-import { BodyCreateEvent, IDetailEvent } from '@/types/events';
 import { errorHelper } from '@/lib/formErrorHelper';
 import { Alert, AlertTitle } from '@/components/ui/alert';
-import { useUpdateEvent } from '@/feature/events/useUpdateEvents';
-import ErrorMessage from '@/components/base/Error/ErrorMessage';
 import { useRouter } from 'next/navigation';
-import { useToast } from '@/components/ui/use-toast';
-import Link from 'next/link';
+import { useCreateCommunityTutor } from '@/feature/crowner/community-tutors/useCreateCommunityTutor';
+import { BodyCreateCommunityTutor } from '@/types/crowner/community-tutors';
 
-// interface AddressObject {
-//     [key: string]: string;
-// }
+const MAX_FILE_SIZE = 500000;
+const ACCEPTED_IMAGE_TYPES = [
+    'image/jpeg',
+    'image/jpg',
+    'image/png',
+    'image/webp',
+];
+
 interface IInterestList {
     id: string;
     data: Option[];
 }
-interface IProps {
-    data: IDetailEvent;
-}
+
 const Map = dynamic(() => import('@/components/base/Maps/maps'), {
     ssr: false,
 });
 const formSchema = z.object({
     title: z.string().min(1, { message: 'Title is required' }),
-
-    datetime: z.date({
-        required_error: 'Date and time is required.',
-    }),
-    timezone: z.string().min(1, { message: 'Timezone is required' }),
     province: z.string().min(1, { message: 'Province is required' }),
-    price: z.coerce.number().optional(),
+    hourly_rate: z.coerce.number().optional(),
     city: z.string().min(1),
     address: z.string().min(1),
-    img: z.any().optional(),
+    image: z
+        .any()
+        .optional()
+        .refine((files) => files?.length === 1 || files?.length === 0, 'Only one image is allowed.')
+        .refine(
+            (files) => !files || files.length === 0 || files?.[0]?.size <= MAX_FILE_SIZE,
+            `Max file size is 500kb.`
+        )
+        .refine(
+            (files) => !files || files.length === 0 || ACCEPTED_IMAGE_TYPES.includes(files?.[0]?.type),
+            '.jpg, .jpeg, .png and .webp files are accepted.'
+        ),
+        // .array(z.any())
+        // .optional()
+        // .refine((files) => files?.length === 1 || files?.length === 0, 'Only one image is allowed.')
+        // .refine(
+        //     (files) => !files || files.length === 0 || files[0].size <= MAX_FILE_SIZE,
+        //     `Max file size is 500kb.`
+        // )
+        // .refine(
+        //     (files) => !files || files.length === 0 || ACCEPTED_IMAGE_TYPES.includes(files[0].type),
+        //     '.jpg, .jpeg, .png, and .webp files are accepted.'
+        // ),
     about: z.string().optional(),
     longitude: z.number({
         required_error: 'longitude required.',
@@ -77,32 +91,23 @@ const formSchema = z.object({
     }),
     tags: z.string().array().optional(),
 });
-export default function FormUpdateEvent({ data }: IProps) {
+export default function Page() {
     const [getAdreessLoading, setgetAdreessLoading] = useState(false);
     const router = useRouter();
-    const { toast } = useToast();
+
     const {
         mutate,
         isPending: isLoadingCreate,
         isSuccess,
-        isError,
-        error,
         data: createResponse,
-    } = useUpdateEvent({
+    } = useCreateCommunityTutor({
         onSuccess: () => {
-            toast({
-                title: 'Update Success',
-                variant: 'success',
-                description: 'Data Event Updated',
-            });
-
-            router.push('/user/crowner/events/' + data.id, {});
+            router.push('/crowner/community-tutors');
         },
         onError: (error) => errorHelper(form.setError, error),
-        id: data.id,
     });
     function onSubmitProfile(data: z.infer<typeof formSchema>) {
-        const dataInterest = valueTag.map((item) => item.data);
+        const dataInterest = value.map((item) => item.data);
         const resultArray = dataInterest.flatMap((subArray) =>
             subArray.map((item) => item.value)
         );
@@ -115,13 +120,11 @@ export default function FormUpdateEvent({ data }: IProps) {
         }
         form.setValue('tags', resultArray);
 
-        const body: BodyCreateEvent = {
-            timezone_id: data.timezone,
+        const body: BodyCreateCommunityTutor = {
             about: data.about,
-            date_time: data.datetime,
-            img: data.img,
+            image: data.image,
             city_id: data.city,
-            price: data.price,
+            hourly_rate: data.hourly_rate,
             tags: resultArray,
             title: data.title,
             address: data.address,
@@ -140,7 +143,7 @@ export default function FormUpdateEvent({ data }: IProps) {
         );
         const data = await response.json();
         const address = data.display_name;
-        // const address_obj: AddressObject = data.address;
+
         setgetAdreessLoading(false);
         form.setValue('longitude', lng);
         form.setValue('latitude', lat);
@@ -150,67 +153,35 @@ export default function FormUpdateEvent({ data }: IProps) {
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         mode: 'onChange',
-        defaultValues: {
-            title: data.title,
-            longitude: data.longitude,
-            latitude: data.latitude,
-            datetime: new Date(data.date_time),
-            address: data.address,
-            timezone: data.timezone_id,
-            province: data.province_id,
-            city: data.city_id,
-            about: data.about,
-            price: parseInt(data.price),
-        },
     });
     const { data: dataInterest, isPending: pendingInterest } = useFetchInterest(
-        (dataInterest: IInterest[]) => {
-            setValueTag(
-                dataInterest.map((item) => {
-                    const dataChild: Option[] = [];
-                    item.children.forEach((itemChild) => {
-                        const cektag = data?.tags.find(
-                            (tag) => tag.id === itemChild.id
-                        );
-                        if (cektag) {
-                            dataChild.push({
-                                label: itemChild.title,
-                                value: itemChild.id,
-                            });
-                        }
-                    });
-                    return { id: item.id, data: dataChild };
+        (data: IInterest[]) => {
+            setValue(
+                data.map((item) => {
+                    return { id: item.id, data: [] };
                 })
             );
         }
     );
     const { data: dataState } = useFetchState();
-    const { data: dataTimezome } = useFetchTimezone();
     const { data: dataCity, isPending: isPendingCity } = useFetchCity(
         form.getValues('province'),
         () => {
-            if (form.getValues('province') !== data.province_id) {
-                form.setValue('city', '');
-            }
+            form.setValue('city', '');
         }
     );
-    // useEffect(() => {
-    //     setEventBaseLocation({
-    //         lat: Number(data?.latitude),
-    //         lng: Number(data?.longitude),
-    //     });
-    // }, [isFetching]);
-    const fileRef = form.register('img');
-    const result = form.watch(['img']);
+
+    const fileRef = form.register('image');
+    const result = form.watch(['image']);
     const [filePreview] = useFilePreview(result[0]);
 
-    const [valueTag, setValueTag] = useState<IInterestList[]>([]);
+    const [value, setValue] = useState<IInterestList[]>([]);
     function onChange(id: string, data: Option[]) {
-        const filteredData: IInterestList[] = valueTag.filter(
+        const filteredData: IInterestList[] = value.filter(
             (item) => item.id !== id
         );
         const updated: IInterestList[] = [...filteredData, { id, data }];
-        setValueTag(updated);
+        setValue(updated);
     }
     return (
         <div className=" flex-1 space-y-4 p-4">
@@ -219,8 +190,11 @@ export default function FormUpdateEvent({ data }: IProps) {
                     onSubmit={form.handleSubmit(onSubmitProfile)}
                     className="grid grid-cols-2 gap-4"
                 >
+                    {' '}
                     <div className="col-span-2">
-                        <TitleFormHeader>Update Event</TitleFormHeader>
+                        <TitleFormHeader>
+                            Create Community Tutor
+                        </TitleFormHeader>
                     </div>
                     <div className="space-y-8">
                         <FormField
@@ -238,61 +212,13 @@ export default function FormUpdateEvent({ data }: IProps) {
                         />
                         <FormField
                             control={form.control}
-                            name="datetime"
-                            render={({ field }) => (
-                                <FormItem className="flex-1">
-                                    <FormLabel>Datetime*</FormLabel>
-                                    <FormControl>
-                                        <DateTimePicker
-                                            jsDate={field.value}
-                                            hourCycle={24}
-                                            onJsDateChange={field.onChange}
-                                            granularity="second"
-                                        />
-                                    </FormControl>
-                                    <FormMessage />
-                                </FormItem>
-                            )}
-                        />
-                        <FormField
-                            control={form.control}
-                            name="timezone"
-                            render={({ field }) => (
-                                <FormItem className="flex-1">
-                                    <FormLabel>Timezone*</FormLabel>
-                                    <Select
-                                        value={field.value}
-                                        onValueChange={field.onChange}
-                                    >
-                                        <FormControl>
-                                            <SelectTrigger>
-                                                <SelectValue placeholder="Select Timezone" />
-                                            </SelectTrigger>
-                                        </FormControl>
-                                        <SelectContent>
-                                            {dataTimezome?.map((item) => (
-                                                <SelectItem
-                                                    key={item.id}
-                                                    value={item.id}
-                                                >
-                                                    {item.label}
-                                                </SelectItem>
-                                            ))}
-                                        </SelectContent>
-                                    </Select>
-                                    <FormMessage />
-                                </FormItem>
-                            )}
-                        />
-                        <FormField
-                            control={form.control}
-                            name="price"
+                            name="hourly_rate"
                             render={({ field }) => (
                                 <FormItem className="flex-1">
                                     <FormLabel>
-                                        Price (CAD)
-                                        <span className="pl-4 text-xs">
-                                            put 0 for free event
+                                        Hourly Rate (CAD)
+                                        <span className="ml-2 text-xs italic text-muted-foreground">
+                                            put 0 for free tutor
                                         </span>
                                     </FormLabel>
                                     <FormControl>
@@ -308,11 +234,12 @@ export default function FormUpdateEvent({ data }: IProps) {
                             render={({ field }) => (
                                 <FormItem className="flex-1">
                                     <FormLabel>
-                                        What is your event about
+                                        What is your tutor about
                                     </FormLabel>
                                     <FormControl>
                                         <Textarea
-                                            placeholder="Write down event description"
+                                            rows={5}
+                                            placeholder="Write down tutor description"
                                             {...field}
                                         />
                                     </FormControl>
@@ -320,9 +247,10 @@ export default function FormUpdateEvent({ data }: IProps) {
                                 </FormItem>
                             )}
                         />
+
                         <FormField
                             control={form.control}
-                            name="img"
+                            name="image"
                             render={() => (
                                 <FormItem>
                                     <FormLabel>Upload Image</FormLabel>
@@ -332,20 +260,17 @@ export default function FormUpdateEvent({ data }: IProps) {
                                                 className="relative inline-block cursor-pointer "
                                                 htmlFor="avatar"
                                             >
-                                                <Image
+                                                <img
                                                     alt="Avatar"
-                                                    className="mx-auto rounded-md border border-slate-300 object-cover"
-                                                    height={200}
+                                                    className="mx-auto aspect-square rounded-xl border border-slate-300 object-cover"
                                                     src={
                                                         filePreview
                                                             ? (filePreview as string)
-                                                            : data.image_url
-                                                              ? data.image_url
-                                                              : '/icons/image.png'
+                                                            : '/icons/image.png'
                                                     }
                                                     width={200}
                                                 />{' '}
-                                                <div className="absolute rounded-md bottom-0 left-0 right-0 top-0 flex items-center justify-center  bg-neutral-800 bg-opacity-60 opacity-0 hover:opacity-100">
+                                                <div className="absolute bottom-0 left-0 right-0 top-0 flex items-center justify-center  bg-neutral-800 bg-opacity-60 opacity-0 hover:opacity-100">
                                                     <HardDriveUpload
                                                         className="text-white"
                                                         size={60}
@@ -443,7 +368,7 @@ export default function FormUpdateEvent({ data }: IProps) {
                                 <Spinner /> <span>Get Tags...</span>
                             </div>
                         ) : (
-                            <div className="space-y-4">
+                            <div className="space-y-2">
                                 <FormLabel>Tags</FormLabel>
                                 {dataInterest.map((item) => {
                                     const children = item.children.map(
@@ -458,7 +383,7 @@ export default function FormUpdateEvent({ data }: IProps) {
                                         <MultipleSelector
                                             key={item.id}
                                             value={
-                                                valueTag.find(
+                                                value.find(
                                                     (x) => x.id === item.id
                                                 )?.data
                                             }
@@ -490,14 +415,9 @@ export default function FormUpdateEvent({ data }: IProps) {
                     <div className="col-span-2 space-y-4">
                         <div>
                             <Map
-                                className="relative z-0 h-[200px] w-full"
+                                className="relative z-0 h-[300px] w-full"
                                 onLocationSelected={handleLocationSelected}
-                                userLocationBase={{
-                                    lat: form.getValues('latitude') || 0,
-                                    lng: form.getValues('longitude') || 0,
-                                }}
                             />
-
                             <div className="flex space-x-4">
                                 <FormField
                                     control={form.control}
@@ -543,12 +463,6 @@ export default function FormUpdateEvent({ data }: IProps) {
                         )}
                     </div>
                     <div className="space-y-8">
-                        {isError && (
-                            <ErrorMessage>
-                                {error.response?.data?.message ||
-                                    'Samething Wrong'}
-                            </ErrorMessage>
-                        )}
                         {isSuccess && (
                             <Alert variant={'success'}>
                                 <AlertTitle className="flex items-center space-x-2">
@@ -557,14 +471,9 @@ export default function FormUpdateEvent({ data }: IProps) {
                                 </AlertTitle>
                             </Alert>
                         )}
-                        <div className="space-x-4">
-                            <Link href={'/user/crowner/events/' + data.id}>
-                                <Button variant={'link'}>Cancel</Button>
-                            </Link>
-                            <Button type="submit" loading={isLoadingCreate}>
-                                SAVE
-                            </Button>
-                        </div>
+                        <Button type="submit" loading={isLoadingCreate}>
+                            SAVE
+                        </Button>
                     </div>
                 </form>
             </Form>
