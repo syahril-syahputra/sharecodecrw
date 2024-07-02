@@ -1,0 +1,578 @@
+'use client';
+import TitleFormHeader from '@/components/base/Title/TitleFormHeader';
+import { Button } from '@/components/ui/button';
+import { DateTimePicker } from '@/components/ui/datetime-picker';
+import {
+    Form,
+    FormControl,
+    FormField,
+    FormItem,
+    FormLabel,
+    FormMessage,
+} from '@/components/ui/form';
+import { Input } from '@/components/ui/input';
+import {
+    Select,
+    SelectContent,
+    SelectItem,
+    SelectTrigger,
+    SelectValue,
+} from '@/components/ui/select';
+import Spinner from '@/components/ui/spinner';
+import { Textarea } from '@/components/ui/textarea';
+import { useFetchCity, useFetchState } from '@/feature/base/city';
+import { useFetchInterest } from '@/feature/base/interest';
+import useFilePreview from '@/lib/useFilePreview';
+import { LatLng } from '@/types/maps';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { Check, HardDriveUpload } from 'lucide-react';
+import dynamic from 'next/dynamic';
+import Image from 'next/image';
+import React, { useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { z } from 'zod';
+import MultipleSelector, { Option } from '@/components/ui/multipleSelector';
+import { IInterest } from '@/types/base/interest';
+import { useFetchTimezone } from '@/feature/base/timezone';
+import { BodyCreateEvent, IDetailEvent } from '@/types/events';
+import { errorHelper } from '@/lib/formErrorHelper';
+import { Alert, AlertTitle } from '@/components/ui/alert';
+import { useUpdateEvent } from '@/feature/events/useUpdateEvents';
+import ErrorMessage from '@/components/base/Error/ErrorMessage';
+import { useRouter } from 'next/navigation';
+import { useToast } from '@/components/ui/use-toast';
+import Link from 'next/link';
+
+// interface AddressObject {
+//     [key: string]: string;
+// }
+interface IInterestList {
+    id: string;
+    data: Option[];
+}
+interface IProps {
+    data: IDetailEvent;
+}
+const Map = dynamic(() => import('@/components/base/Maps/maps'), {
+    ssr: false,
+});
+const formSchema = z.object({
+    title: z.string().min(1, { message: 'Title is required' }),
+
+    datetime: z.date({
+        required_error: 'Date and time is required.',
+    }),
+    timezone: z.string().min(1, { message: 'Timezone is required' }),
+    province: z.string().min(1, { message: 'Province is required' }),
+    price: z.coerce.number().optional(),
+    city: z.string().min(1),
+    address: z.string().min(1),
+    img: z.any().optional(),
+    about: z.string().optional(),
+    longitude: z.number({
+        required_error: 'longitude required.',
+    }),
+    latitude: z.number({
+        required_error: 'latitude required.',
+    }),
+    tags: z.string().array().optional(),
+});
+export default function FormUpdateEvent({ data }: IProps) {
+    const [getAdreessLoading, setgetAdreessLoading] = useState(false);
+    const router = useRouter();
+    const { toast } = useToast();
+    const {
+        mutate,
+        isPending: isLoadingCreate,
+        isSuccess,
+        isError,
+        error,
+        data: createResponse,
+    } = useUpdateEvent({
+        onSuccess: () => {
+            toast({
+                title: 'Update Success',
+                variant: 'success',
+                description: 'Data Event Updated',
+            });
+
+            router.push('/user/crowner/communities/events/' + data.id, {});
+        },
+        onError: (error) => errorHelper(form.setError, error),
+        id: data.id,
+    });
+    function onSubmitProfile(data: z.infer<typeof formSchema>) {
+        const dataInterest = valueTag.map((item) => item.data);
+        const resultArray = dataInterest.flatMap((subArray) =>
+            subArray.map((item) => item.value)
+        );
+        if (resultArray.length < 3) {
+            form.setError('tags', {
+                type: 'custom',
+                message: 'Please select min 3 tags',
+            });
+            return;
+        }
+        form.setValue('tags', resultArray);
+
+        const body: BodyCreateEvent = {
+            timezone_id: data.timezone,
+            about: data.about,
+            date_time: data.datetime,
+            img: data.img,
+            city_id: data.city,
+            price: data.price,
+            tags: resultArray,
+            title: data.title,
+            address: data.address,
+            longitude: data.longitude,
+            latitude: data.latitude,
+        };
+        mutate(body);
+    }
+
+    const handleLocationSelected = async (latlng: LatLng) => {
+        const { lat, lng } = latlng;
+
+        setgetAdreessLoading(true);
+        const response = await fetch(
+            `https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}&addressdetails=1`
+        );
+        const data = await response.json();
+        const address = data.display_name;
+        // const address_obj: AddressObject = data.address;
+        setgetAdreessLoading(false);
+        form.setValue('longitude', lng);
+        form.setValue('latitude', lat);
+        form.setValue('address', address);
+    };
+
+    const form = useForm<z.infer<typeof formSchema>>({
+        resolver: zodResolver(formSchema),
+        mode: 'onChange',
+        defaultValues: {
+            title: data.title,
+            longitude: data.longitude,
+            latitude: data.latitude,
+            datetime: new Date(data.date_time),
+            address: data.address,
+            timezone: data.timezone_id,
+            province: data.province_id,
+            city: data.city_id,
+            about: data.about,
+            price: parseInt(data.price),
+        },
+    });
+    const { data: dataInterest, isPending: pendingInterest } = useFetchInterest(
+        (dataInterest: IInterest[]) => {
+            setValueTag(
+                dataInterest.map((item) => {
+                    const dataChild: Option[] = [];
+                    item.children.forEach((itemChild) => {
+                        const cektag = data?.tags.find(
+                            (tag) => tag.id === itemChild.id
+                        );
+                        if (cektag) {
+                            dataChild.push({
+                                label: itemChild.title,
+                                value: itemChild.id,
+                            });
+                        }
+                    });
+                    return { id: item.id, data: dataChild };
+                })
+            );
+        }
+    );
+    const { data: dataState } = useFetchState();
+    const { data: dataTimezome } = useFetchTimezone();
+    const { data: dataCity, isPending: isPendingCity } = useFetchCity(
+        form.getValues('province'),
+        () => {
+            if (form.getValues('province') !== data.province_id) {
+                form.setValue('city', '');
+            }
+        }
+    );
+    // useEffect(() => {
+    //     setEventBaseLocation({
+    //         lat: Number(data?.latitude),
+    //         lng: Number(data?.longitude),
+    //     });
+    // }, [isFetching]);
+    const fileRef = form.register('img');
+    const result = form.watch(['img']);
+    const [filePreview] = useFilePreview(result[0]);
+
+    const [valueTag, setValueTag] = useState<IInterestList[]>([]);
+    function onChange(id: string, data: Option[]) {
+        const filteredData: IInterestList[] = valueTag.filter(
+            (item) => item.id !== id
+        );
+        const updated: IInterestList[] = [...filteredData, { id, data }];
+        setValueTag(updated);
+    }
+    return (
+        <div className=" flex-1 space-y-4 p-4">
+            <Form {...form}>
+                <form
+                    onSubmit={form.handleSubmit(onSubmitProfile)}
+                    className="grid grid-cols-2 gap-4"
+                >
+                    <div className="col-span-2">
+                        <TitleFormHeader>Update Event</TitleFormHeader>
+                    </div>
+                    <div className="space-y-8">
+                        <FormField
+                            control={form.control}
+                            name="title"
+                            render={({ field }) => (
+                                <FormItem className="flex-1">
+                                    <FormLabel>Title*</FormLabel>
+                                    <FormControl>
+                                        <Input placeholder="Title" {...field} />
+                                    </FormControl>
+                                    <FormMessage />
+                                </FormItem>
+                            )}
+                        />
+                        <FormField
+                            control={form.control}
+                            name="datetime"
+                            render={({ field }) => (
+                                <FormItem className="flex-1">
+                                    <FormLabel>Datetime*</FormLabel>
+                                    <FormControl>
+                                        <DateTimePicker
+                                            jsDate={field.value}
+                                            hourCycle={24}
+                                            onJsDateChange={field.onChange}
+                                            granularity="second"
+                                        />
+                                    </FormControl>
+                                    <FormMessage />
+                                </FormItem>
+                            )}
+                        />
+                        <FormField
+                            control={form.control}
+                            name="timezone"
+                            render={({ field }) => (
+                                <FormItem className="flex-1">
+                                    <FormLabel>Timezone*</FormLabel>
+                                    <Select
+                                        value={field.value}
+                                        onValueChange={field.onChange}
+                                    >
+                                        <FormControl>
+                                            <SelectTrigger>
+                                                <SelectValue placeholder="Select Timezone" />
+                                            </SelectTrigger>
+                                        </FormControl>
+                                        <SelectContent>
+                                            {dataTimezome?.map((item) => (
+                                                <SelectItem
+                                                    key={item.id}
+                                                    value={item.id}
+                                                >
+                                                    {item.label}
+                                                </SelectItem>
+                                            ))}
+                                        </SelectContent>
+                                    </Select>
+                                    <FormMessage />
+                                </FormItem>
+                            )}
+                        />
+                        <FormField
+                            control={form.control}
+                            name="price"
+                            render={({ field }) => (
+                                <FormItem className="flex-1">
+                                    <FormLabel>
+                                        Price (CAD)
+                                        <span className="pl-4 text-xs">
+                                            put 0 for free event
+                                        </span>
+                                    </FormLabel>
+                                    <FormControl>
+                                        <Input {...field} />
+                                    </FormControl>
+                                    <FormMessage />
+                                </FormItem>
+                            )}
+                        />
+                        <FormField
+                            control={form.control}
+                            name="about"
+                            render={({ field }) => (
+                                <FormItem className="flex-1">
+                                    <FormLabel>
+                                        What is your event about
+                                    </FormLabel>
+                                    <FormControl>
+                                        <Textarea
+                                            placeholder="Write down event description"
+                                            {...field}
+                                        />
+                                    </FormControl>
+                                    <FormMessage />
+                                </FormItem>
+                            )}
+                        />
+                        <FormField
+                            control={form.control}
+                            name="img"
+                            render={() => (
+                                <FormItem>
+                                    <FormLabel>Upload Image</FormLabel>
+                                    <FormControl>
+                                        <div>
+                                            <label
+                                                className="relative inline-block cursor-pointer "
+                                                htmlFor="avatar"
+                                            >
+                                                <Image
+                                                    alt="Avatar"
+                                                    className="mx-auto  border border-slate-300 object-cover dark:border-slate-700"
+                                                    height={200}
+                                                    src={
+                                                        filePreview
+                                                            ? (filePreview as string)
+                                                            : data.image_url
+                                                              ? data.image_url
+                                                              : '/icons/image.png'
+                                                    }
+                                                    width={200}
+                                                />{' '}
+                                                <div className="absolute bottom-0 left-0 right-0 top-0 flex items-center justify-center  bg-neutral-800 bg-opacity-60 opacity-0 hover:opacity-100">
+                                                    <HardDriveUpload
+                                                        className="text-white"
+                                                        size={60}
+                                                    />
+                                                </div>
+                                            </label>
+
+                                            <FormMessage />
+                                            <input
+                                                id="avatar"
+                                                type="file"
+                                                className="hidden"
+                                                placeholder="shadcn"
+                                                accept="image/*"
+                                                multiple={false}
+                                                {...fileRef}
+                                            />
+                                        </div>
+                                    </FormControl>
+                                </FormItem>
+                            )}
+                        />
+                        <div className="relative z-10 flex space-x-2">
+                            <FormField
+                                control={form.control}
+                                name="province"
+                                render={({ field }) => (
+                                    <FormItem className="flex-1">
+                                        <FormLabel>Province*</FormLabel>
+                                        <Select
+                                            value={field.value}
+                                            onValueChange={field.onChange}
+                                        >
+                                            <FormControl>
+                                                <SelectTrigger>
+                                                    <SelectValue placeholder="Province" />
+                                                </SelectTrigger>
+                                            </FormControl>
+                                            <SelectContent>
+                                                {dataState?.map((item) => (
+                                                    <SelectItem
+                                                        key={item.id}
+                                                        value={item.id}
+                                                    >
+                                                        {item.name}
+                                                    </SelectItem>
+                                                ))}
+                                            </SelectContent>
+                                        </Select>
+                                        <FormMessage />
+                                    </FormItem>
+                                )}
+                            />
+                            {!isPendingCity ? (
+                                <FormField
+                                    control={form.control}
+                                    name="city"
+                                    render={({ field }) => (
+                                        <FormItem className="flex-1">
+                                            <FormLabel>City*</FormLabel>
+                                            <Select
+                                                value={field.value}
+                                                onValueChange={field.onChange}
+                                            >
+                                                <FormControl>
+                                                    <SelectTrigger>
+                                                        <SelectValue placeholder="City" />
+                                                    </SelectTrigger>
+                                                </FormControl>
+                                                <SelectContent>
+                                                    {dataCity?.map((item) => (
+                                                        <SelectItem
+                                                            key={item.id}
+                                                            value={item.id}
+                                                        >
+                                                            {item.name}
+                                                        </SelectItem>
+                                                    ))}
+                                                </SelectContent>
+                                            </Select>
+                                            <FormMessage />
+                                        </FormItem>
+                                    )}
+                                />
+                            ) : (
+                                <div className="flex-1 pt-8">
+                                    <Spinner />
+                                </div>
+                            )}
+                        </div>
+                    </div>
+                    <div>
+                        {pendingInterest || !dataInterest ? (
+                            <div className="flex items-center space-x-4 text-sm">
+                                <Spinner /> <span>Get Tags...</span>
+                            </div>
+                        ) : (
+                            <div className="space-y-4">
+                                <FormLabel>Tags</FormLabel>
+                                {dataInterest.map((item) => {
+                                    const children = item.children.map(
+                                        (child) => {
+                                            return {
+                                                label: child.title,
+                                                value: child.id,
+                                            };
+                                        }
+                                    );
+                                    return (
+                                        <MultipleSelector
+                                            key={item.id}
+                                            value={
+                                                valueTag.find(
+                                                    (x) => x.id === item.id
+                                                )?.data
+                                            }
+                                            onChange={(data) =>
+                                                onChange(item.id, data)
+                                            }
+                                            defaultOptions={children}
+                                            placeholder={'Select ' + item.title}
+                                            emptyIndicator={
+                                                <p className="text-center text-lg leading-10 text-gray-600 dark:text-gray-400">
+                                                    No more {item.title}
+                                                </p>
+                                            }
+                                        />
+                                    );
+                                })}
+                                <FormField
+                                    control={form.control}
+                                    name="tags"
+                                    render={() => (
+                                        <FormItem className="flex-1">
+                                            <FormMessage />
+                                        </FormItem>
+                                    )}
+                                />
+                            </div>
+                        )}
+                    </div>
+                    <div className="col-span-2 space-y-4">
+                        <div>
+                            <Map
+                                className="relative z-0 h-[200px] w-full"
+                                onLocationSelected={handleLocationSelected}
+                                userLocationBase={{
+                                    lat: form.getValues('latitude') || 0,
+                                    lng: form.getValues('longitude') || 0,
+                                }}
+                            />
+
+                            <div className="flex space-x-4">
+                                <FormField
+                                    control={form.control}
+                                    name="longitude"
+                                    render={() => (
+                                        <FormItem className="flex-1">
+                                            <FormMessage />
+                                        </FormItem>
+                                    )}
+                                />
+                                <FormField
+                                    control={form.control}
+                                    name="latitude"
+                                    render={() => (
+                                        <FormItem className="flex-1">
+                                            <FormMessage />
+                                        </FormItem>
+                                    )}
+                                />
+                            </div>
+                        </div>
+                        {getAdreessLoading ? (
+                            <div className="flex items-center space-x-4 text-sm">
+                                <Spinner /> <span>Searching Address...</span>
+                            </div>
+                        ) : (
+                            <FormField
+                                control={form.control}
+                                name="address"
+                                render={({ field }) => (
+                                    <FormItem className="flex-1">
+                                        <FormLabel>Address*</FormLabel>
+                                        <FormControl>
+                                            <Input
+                                                placeholder="Address"
+                                                {...field}
+                                            />
+                                        </FormControl>
+                                        <FormMessage />
+                                    </FormItem>
+                                )}
+                            />
+                        )}
+                    </div>
+                    <div className="space-y-8">
+                        {isError && (
+                            <ErrorMessage>
+                                {error.response?.data?.message ||
+                                    'Samething Wrong'}
+                            </ErrorMessage>
+                        )}
+                        {isSuccess && (
+                            <Alert variant={'success'}>
+                                <AlertTitle className="flex items-center space-x-2">
+                                    <Check />
+                                    <span>{createResponse.data.message}</span>
+                                </AlertTitle>
+                            </Alert>
+                        )}
+                        <div className="space-x-4">
+                            <Link
+                                href={
+                                    '/user/crowner/communities/events/' +
+                                    data.id
+                                }
+                            >
+                                <Button variant={'link'}>Cancel</Button>
+                            </Link>
+                            <Button type="submit" loading={isLoadingCreate}>
+                                SAVE
+                            </Button>
+                        </div>
+                    </div>
+                </form>
+            </Form>
+        </div>
+    );
+}

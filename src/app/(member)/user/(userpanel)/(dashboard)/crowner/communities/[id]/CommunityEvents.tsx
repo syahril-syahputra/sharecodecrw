@@ -56,11 +56,15 @@ export default function CommunityEvents({
             <div className="flex items-center justify-between border-b">
                 <TitleFormHeader>Community Event</TitleFormHeader>
                 <Link
-                    href={`/user/crowner/events/create-event?community_id=${community_id}`}
+                    href={
+                        '/user/crowner/communities/' +
+                        community_id +
+                        '/create-event'
+                    }
                 >
                     <Button variant={'ghost'}>
                         <Plus />
-                        <span className="pl-2">Create Event</span>
+                        <span className="pl-2">Create Coomunity Event</span>
                     </Button>
                 </Link>
             </div>
@@ -217,7 +221,7 @@ export default function CommunityEvents({
                 ) : data?.items.length ? (
                     data?.items.map((item) => (
                         <Link
-                            href={'/user/crowner/events/' + item.id}
+                            href={'/user/crowner/communities/events/' + item.id}
                             key={item.id}
                         >
                             <CardEvent data={item} />

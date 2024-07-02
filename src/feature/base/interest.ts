@@ -12,5 +12,6 @@ export const useFetchInterest = (onSuccess: (data: IInterest[]) => void) => {
             return response.data.data as IInterest[];
         },
         queryKey: ['fetch.interest'],
+        refetchOnWindowFocus: false,
     });
 };
