@@ -10,6 +10,7 @@ export interface BodyCreateEvent {
     tags: string[];
     city_id: string;
     address: string;
+    community_id?: string;
 }
 
 export interface ITag {

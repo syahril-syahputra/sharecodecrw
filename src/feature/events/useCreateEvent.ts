@@ -12,7 +12,6 @@ interface IProps {
 export const useCreateEvent = ({ onSuccess, onError }: IProps) => {
     return useMutation({
         mutationFn: async (body: BodyCreateEvent) => {
-            console.log(body);
             const formData = new FormData();
 
             const date = dayjs(body.date_time).format('YYYY-MM-DD hh:mm:ss');
@@ -28,6 +27,11 @@ export const useCreateEvent = ({ onSuccess, onError }: IProps) => {
             formData.append('tags', JSON.stringify(body.tags));
             formData.append('address', body.address);
             formData.append('image', body.img[0]);
+
+            if (body.community_id) {
+                formData.append('community_id', body.community_id);
+            }
+
             const response = await fetchClient({
                 method: 'POST',
                 url: '/crowner/user-publisher/events',

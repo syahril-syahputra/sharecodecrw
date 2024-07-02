@@ -38,7 +38,7 @@ import { BodyCreateEvent } from '@/types/events';
 import { useCreateEvent } from '@/feature/events/useCreateEvent';
 import { errorHelper } from '@/lib/formErrorHelper';
 import { Alert, AlertTitle } from '@/components/ui/alert';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 
 const MAX_FILE_SIZE = 500000;
 const ACCEPTED_IMAGE_TYPES = [
@@ -91,6 +91,8 @@ const formSchema = z.object({
     tags: z.string().array().optional(),
 });
 export default function Page() {
+    const parameter = useSearchParams();
+    const community_id = parameter.get('community_id');
     const [getAdreessLoading, setgetAdreessLoading] = useState(false);
     const router = useRouter();
 
@@ -101,7 +103,13 @@ export default function Page() {
         data: createResponse,
     } = useCreateEvent({
         onSuccess: () => {
-            router.push('/user/crowner/events');
+            if (community_id) {
+                router.push(
+                    `/user/crowner/communities/${community_id}#community-events`
+                );
+            } else {
+                router.push('/user/crowner/events');
+            }
         },
         onError: (error) => errorHelper(form.setError, error),
     });
@@ -132,6 +140,9 @@ export default function Page() {
             longitude: data.longitude,
             latitude: data.latitude,
         };
+        if (community_id) {
+            body.community_id = community_id;
+        }
         mutate(body);
     }
 
