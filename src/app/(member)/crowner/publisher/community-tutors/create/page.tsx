@@ -36,6 +36,7 @@ import { Alert, AlertTitle } from '@/components/ui/alert';
 import { useRouter } from 'next/navigation';
 import { useCreateCommunityTutor } from '@/feature/crowner/community-tutors/useCreateCommunityTutor';
 import { BodyCreateCommunityTutor } from '@/types/crowner/community-tutors';
+import Image from 'next/image';
 
 const MAX_FILE_SIZE = 500000;
 const ACCEPTED_IMAGE_TYPES = [
@@ -269,7 +270,7 @@ export default function Page() {
                                                 className="relative inline-block cursor-pointer "
                                                 htmlFor="avatar"
                                             >
-                                                <img
+                                                <Image
                                                     alt="Avatar"
                                                     className="mx-auto aspect-square rounded-xl border border-slate-300 object-cover"
                                                     src={

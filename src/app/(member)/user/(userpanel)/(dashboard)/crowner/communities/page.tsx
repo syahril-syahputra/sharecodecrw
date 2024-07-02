@@ -41,17 +41,17 @@ export default function Page() {
 
     return (
         <div className="flex-1 space-y-4 p-4">
-            <div className="flex items-center justify-between">
+            <div className="flex items-center justify-between border-b">
                 <TitleFormHeader>Community you manage</TitleFormHeader>
                 <Link href={'/user/create-community'}>
                     <Button variant={'ghost'}>
                         <Plus />
-                        <span className="pl-2">Create Community</span>
+                        <span className="pl-2">Start Community</span>
                     </Button>
                 </Link>
             </div>
-            <section className="flex space-x-2 divide-x-2 bg-slate-100 p-4">
-                <div className="grid flex-1 grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-2">
+            <section className="flex space-x-2 divide-x-2 rounded-md border p-4">
+                <div className="grid flex-1 grid-cols-2 gap-4">
                     <div>
                         <Input
                             value={filterValue.title}
@@ -76,20 +76,17 @@ export default function Page() {
                             value={filterValue.acceptance_status}
                         >
                             <SelectTrigger>
-                                <SelectValue placeholder="Acceptance" />
+                                <SelectValue placeholder="Acceptance (all)" />
                             </SelectTrigger>
                             <SelectContent>
-                                <SelectItem key={'all'} value="all">
-                                    all
+                                <SelectItem value={'idle'}>
+                                    Acceptance: Idle
                                 </SelectItem>
-                                <SelectItem key={'idle'} value="idle">
-                                    idle
+                                <SelectItem value={'accepted'}>
+                                    Accepted
                                 </SelectItem>
-                                <SelectItem key={'accepted'} value="accepted">
-                                    accepted
-                                </SelectItem>
-                                <SelectItem key={'rejected'} value="rejected">
-                                    rejected
+                                <SelectItem value={'rejected'}>
+                                    Rejected
                                 </SelectItem>
                             </SelectContent>
                         </Select>
@@ -105,18 +102,11 @@ export default function Page() {
                             value={filterValue.is_visible}
                         >
                             <SelectTrigger>
-                                <SelectValue placeholder="Visibility" />
+                                <SelectValue placeholder="Visibility (all)" />
                             </SelectTrigger>
                             <SelectContent>
-                                <SelectItem key={'all'} value="all">
-                                    all
-                                </SelectItem>
-                                <SelectItem key={'true'} value="true">
-                                    True
-                                </SelectItem>
-                                <SelectItem key={'false'} value="false">
-                                    False
-                                </SelectItem>
+                                <SelectItem value={'true'}>Visible</SelectItem>
+                                <SelectItem value={'false'}>Hidden</SelectItem>
                             </SelectContent>
                         </Select>
                     </div>

@@ -33,23 +33,23 @@ export function DateRangePicker({
                         id="date"
                         variant={'outline'}
                         className={cn(
-                            'w-[300px] justify-start text-left font-normal',
+                            'w-auto justify-start text-left font-normal',
                             !value && 'text-muted-foreground'
                         )}
                     >
-                        <CalendarIcon className="mr-2 h-4 w-4" />
                         {value?.from ? (
                             value.to ? (
                                 <>
-                                    {format(value.from, 'LLL dd, y')} -{' '}
-                                    {format(value.to, 'LLL dd, y')}
+                                    {format(value.from, 'dd LLL y')} -{' '}
+                                    {format(value.to, 'dd LLL y')}
                                 </>
                             ) : (
-                                format(value.from, 'LLL dd, y')
+                                format(value.from, 'dd LLL y')
                             )
                         ) : (
                             <span>{placeholder}</span>
                         )}
+                        <CalendarIcon className="ml-auto h-4 w-4" />
                     </Button>
                 </PopoverTrigger>
                 <PopoverContent className="w-auto p-0" align="start">

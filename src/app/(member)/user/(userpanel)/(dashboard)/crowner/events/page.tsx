@@ -47,7 +47,7 @@ export default function Page() {
 
     return (
         <div className="flex-1 space-y-4 p-4">
-            <div className="flex items-center justify-between">
+            <div className="flex items-center justify-between border-b">
                 <TitleFormHeader>Your Personal Event</TitleFormHeader>
                 <Link href={'events/create-event'}>
                     <Button variant={'ghost'}>
@@ -56,8 +56,8 @@ export default function Page() {
                     </Button>
                 </Link>
             </div>
-            <section className="flex space-x-2 divide-x-2 bg-slate-100 p-4">
-                <div className="grid flex-1 grid-cols-1 gap-4     sm:grid-cols-2 md:grid-cols-3">
+            <section className="flex space-x-2 divide-x-2 rounded-md border p-4">
+                <div className="grid flex-1 grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3">
                     <div>
                         <Input
                             value={filterValue.title}
@@ -70,32 +70,9 @@ export default function Page() {
                             placeholder="Name"
                         />
                     </div>
-                    {/* <div>
-                        <DatePicker
-                            block
-                            value={
-                                filterValue.start_date
-                                    ? new Date(
-                                          dayjs(filterValue.start_date).format(
-                                              'YYYY-MM-DD'
-                                          )
-                                      )
-                                    : undefined
-                            }
-                            onChange={(e) =>
-                                setfilterValue({
-                                    ...filterValue,
-                                    start_date: dayjs(e).format('YYYY-MM-DD'),
-                                    end_date: dayjs(e).format('YYYY-MM-DD'),
-                                })
-                            }
-                            placeholder="Date"
-                        />
-                    </div> */}
-
                     <div>
                         <DateRangePicker
-                            placeholder="Date"
+                            placeholder="Pick a date range"
                             value={{
                                 from: filterValue.start_date
                                     ? new Date(
@@ -136,7 +113,7 @@ export default function Page() {
                             value={filterValue.timezone_id}
                         >
                             <SelectTrigger>
-                                <SelectValue placeholder="Timezone" />
+                                <SelectValue placeholder="Select Timezone" />
                             </SelectTrigger>
                             <SelectContent>
                                 {dataTimezome?.map((item) => (
@@ -158,18 +135,17 @@ export default function Page() {
                             value={filterValue.event_schedule}
                         >
                             <SelectTrigger>
-                                <SelectValue placeholder="Event Schedule" />
+                                <SelectValue
+                                    defaultValue={'upcoming'}
+                                    placeholder="Upcoming"
+                                />
                             </SelectTrigger>
                             <SelectContent>
-                                <SelectItem key={'all'} value="all">
-                                    all
+                                <SelectItem value={'upcoming'}>
+                                    Upcoming
                                 </SelectItem>
-                                <SelectItem key={'upcoming'} value="upcoming">
-                                    upcoming
-                                </SelectItem>
-                                <SelectItem key={'past'} value="past">
-                                    past
-                                </SelectItem>
+                                <SelectItem value={'past'}>Past</SelectItem>
+                                <SelectItem value={'all'}>All</SelectItem>
                             </SelectContent>
                         </Select>
                     </div>
@@ -185,20 +161,17 @@ export default function Page() {
                             value={filterValue.acceptance_status}
                         >
                             <SelectTrigger>
-                                <SelectValue placeholder="Acceptance" />
+                                <SelectValue placeholder="Acceptance (all)" />
                             </SelectTrigger>
                             <SelectContent>
-                                <SelectItem key={'all'} value="all">
-                                    all
+                                <SelectItem value={'idle'}>
+                                    Acceptance: Idle
                                 </SelectItem>
-                                <SelectItem key={'idle'} value="idle">
-                                    idle
+                                <SelectItem value={'accepted'}>
+                                    Accepted
                                 </SelectItem>
-                                <SelectItem key={'accepted'} value="accepted">
-                                    accepted
-                                </SelectItem>
-                                <SelectItem key={'rejected'} value="rejected">
-                                    rejected
+                                <SelectItem value={'rejected'}>
+                                    Rejected
                                 </SelectItem>
                             </SelectContent>
                         </Select>
@@ -214,18 +187,11 @@ export default function Page() {
                             value={filterValue.is_visible}
                         >
                             <SelectTrigger>
-                                <SelectValue placeholder="Visibility" />
+                                <SelectValue placeholder="Visibility (all)" />
                             </SelectTrigger>
                             <SelectContent>
-                                <SelectItem key={'all'} value="all">
-                                    all
-                                </SelectItem>
-                                <SelectItem key={'true'} value="true">
-                                    True
-                                </SelectItem>
-                                <SelectItem key={'false'} value="false">
-                                    False
-                                </SelectItem>
+                                <SelectItem value={'true'}>Visible</SelectItem>
+                                <SelectItem value={'false'}>Hidden</SelectItem>
                             </SelectContent>
                         </Select>
                     </div>
@@ -254,6 +220,8 @@ export default function Page() {
                         Data Not Found
                     </div>
                 )}
+            </div>
+            <div className="mt-8">
                 <PaginationTable
                     meta={data?.meta}
                     setPagination={setPagination}

@@ -4,7 +4,6 @@ import IframeMap from '@/components/base/Maps/IframeMap';
 import TitlePage from '@/components/base/Title/TitlePage';
 import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
-import { visibilityStatus } from '@/lib/visibilityStatus';
 import { Edit, MapPin, User } from 'lucide-react';
 import Image from 'next/image';
 import { Button } from '@/components/ui/button';
@@ -12,6 +11,8 @@ import { useDetailCommunity } from '@/feature/community/useDetailCommunity';
 import TabSwitcher from './TabSwitcher';
 import CommunityVisibility from './Visibility';
 import DeleteCommunity from './Delete';
+import AcceptanceStatus from '@/components/base/ListingUtilities/AcceptanceStatus';
+import VisibilityStatus from '@/components/base/ListingUtilities/VisibilityStatus';
 
 export default function Page({ params }: { params: { id: string } }) {
     const { data, isLoading, refetch } = useDetailCommunity(params.id);
@@ -25,17 +26,20 @@ export default function Page({ params }: { params: { id: string } }) {
     }
     return (
         <div className="container py-8">
+            <TitlePage className="mb-4 border-b">{data?.title} </TitlePage>
             <section className="flex items-center justify-between">
                 <div className="space-y-4">
-                    <TitlePage>{data?.title} </TitlePage>
-
                     <div className="space-x-2">
                         {data?.tags.map((tag) => {
                             return <Badge key={tag.id}>{tag.title}</Badge>;
                         })}
                     </div>
-
-                    <div className=" capitalize">{`${data?.acceptance_status} | ${visibilityStatus(data?.is_visible)}`}</div>
+                    <div className="my-auto space-x-3">
+                        <AcceptanceStatus
+                            acceptance={data?.acceptance_status}
+                        />
+                        <VisibilityStatus is_visible={data?.is_visible} />
+                    </div>
                 </div>
                 <div className="flex items-center space-x-2">
                     <CommunityVisibility
@@ -54,14 +58,14 @@ export default function Page({ params }: { params: { id: string } }) {
             </section>
             <section>
                 <div className="lg:flex-cols space-x-4 space-y-2 py-4 lg:flex lg:justify-between lg:space-x-2 lg:space-y-0">
-                    <div className="w-full shadow-md lg:w-3/5">
+                    <div className="w-full rounded-xl shadow-md lg:w-3/5">
                         <div className="mb-4 rounded-xl border">
                             <Image
                                 width={300}
                                 height={300}
                                 alt={data?.title || ''}
                                 src={data?.image_url || '/image/no-image.png'}
-                                className="w-full rounded-xl"
+                                className="w-full rounded-t-xl"
                             />
                         </div>
                         <div className="mb-8 space-y-6 p-4">
@@ -100,8 +104,12 @@ export default function Page({ params }: { params: { id: string } }) {
                                 </div>
                                 <div className="grow pl-4">
                                     <span>
-                                        {data?.follower_counter} Follow This
-                                        Community
+                                        <span className="font-semibold">
+                                            {data?.follower_counter
+                                                ? data?.follower_counter
+                                                : 'No'}
+                                        </span>{' '}
+                                        people follow this community
                                     </span>
                                 </div>
                             </div>

@@ -1,74 +1,81 @@
-import Image from 'next/image';
-import Link from 'next/link';
+import { DollarSign, MapPin } from 'lucide-react';
+import React from 'react';
+import ImageCard from '../Image/ImageCard';
 import AcceptanceStatus from '../ListingUtilities/AcceptanceStatus';
 import VisibilityStatus from '../ListingUtilities/VisibilityStatus';
+import { ICommunityTutor } from '@/types/crowner/community-tutors';
 
 interface IProps {
-    id: string;
-    image: string;
-    title: string;
-    hourly_rate: number;
-    hourly_rate_formatted: string;
-    region: string;
-    is_visible: boolean;
-    acceptance_status: string;
+    variant?: 'horizontal' | 'vertical';
+    data: ICommunityTutor;
 }
-
 export default function CardCommunityTutor(props: IProps) {
-    return (
-        <div className="space-y-5">
-            <Link
-                href={`/crowner/publisher/community-tutors/${props.id}`}
-                key={props.id}
-            >
-                <div className="flex cursor-pointer rounded-md border shadow-md active:opacity-30">
-                    <div className="mx-auto my-auto h-full">
-                        <Image
-                            alt="image"
-                            src={props.image || '/icons/image.png'}
-                            className="h-40 w-64 rounded-l-md object-cover"
-                            width={108}
-                            height={200}
-                        />
+    if (props.variant === 'vertical') {
+        return (
+            <div className="space-y-2 rounded-md border p-4">
+                <ImageCard src={props.data.image_url} className="h-48" />
+                <div className="line-clamp-1 font-semibold capitalize">
+                    {props.data.title}
+                </div>
+                <div className="flex flex-row">
+                    <div className="flex-none">
+                        <MapPin size={21} className="text-primary" />
                     </div>
-                    <div className="flex h-auto flex-1 pl-4">
-                        <div className="mt-2">
-                            <div className="text-lg font-semibold">
-                                {props.title}
-                            </div>
-                            <div className="text-muted-foreground">
-                                {props.region}
-                            </div>
-                            <div className="mb-2 mt-6">
-                                {props.hourly_rate > 0 && (
-                                    <>
-                                        <span className="text-primary">
-                                            {props.hourly_rate_formatted}
-                                        </span>
-                                        <span className="text-sm text-muted-foreground">
-                                            {' '}
-                                            / hour
-                                        </span>
-                                    </>
-                                )}
-                                {props.hourly_rate == 0 && (
-                                    <span className="font-semibold text-primary">
-                                        {props.hourly_rate_formatted}
-                                    </span>
-                                )}
-                            </div>
-                            <span className="space-x-3">
-                                <AcceptanceStatus
-                                    acceptance={props.acceptance_status}
-                                />
-                                <VisibilityStatus
-                                    is_visible={props.is_visible}
-                                />
-                            </span>
-                        </div>
+                    <div className="grid-grow !line-clamp-1 grid pl-1">
+                        {props.data.province}, {props.data.province}
                     </div>
                 </div>
-            </Link>
-        </div>
-    );
+                <div className="flex flex-row">
+                    <div className="flex-none">
+                        <DollarSign size={21} className="text-primary" />
+                    </div>
+                    <div className="pl-1">
+                        {props.data.hourly_rate > 0 && (
+                            <>
+                                <span className="">
+                                    {props.data.hourly_rate_formatted}
+                                </span>
+                                <span className="text-sm text-muted-foreground">
+                                    {' '}
+                                    / hour
+                                </span>
+                            </>
+                        )}
+                        {props.data.hourly_rate == 0 && (
+                            <span className="font-semibold ">
+                                {props.data.hourly_rate_formatted}
+                            </span>
+                        )}
+                    </div>
+                </div>
+            </div>
+        );
+    } else {
+        return (
+            <div className="flex cursor-pointer space-x-4 rounded-md border p-4 active:opacity-30">
+                <ImageCard src={props.data.image_url} className="h-36 w-56" />
+                <div className="flex flex-1 flex-col  ">
+                    <div className="text-lg font-semibold">
+                        {props.data.title}
+                    </div>
+                    <div className="text-muted-foreground">
+                        {props.data.province}, {props.data.city}
+                    </div>
+                    <div className="flex flex-1 items-end space-x-2">
+                        <span className="space-x-3">
+                            <AcceptanceStatus
+                                acceptance={props.data.acceptance_status}
+                            />
+                            <VisibilityStatus
+                                is_visible={props.data.is_visible}
+                            />
+                        </span>
+                    </div>
+                </div>
+            </div>
+        );
+    }
 }
+CardCommunityTutor.defaultProps = {
+    variant: 'horizontal',
+};

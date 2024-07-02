@@ -30,7 +30,7 @@ export default function DatePicker(props: IProps) {
                 >
                     <span className="-ml-1">
                         {props.value ? (
-                            format(props.value, 'PPP')
+                            format(props.value, 'd LLLL y')
                         ) : (
                             <span>{props.placeholder}</span>
                         )}
