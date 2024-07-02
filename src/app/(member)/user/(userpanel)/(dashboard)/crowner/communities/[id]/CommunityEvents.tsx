@@ -52,10 +52,12 @@ export default function CommunityEvents({
     const { data, isLoading } = useFetchEvent(pagination, filter, sort);
 
     return (
-        <div className="flex-1 space-y-4 p-4">
-            <div className="flex items-center justify-between">
+        <div id="community-events" className="flex-1 scroll-mt-32 space-y-4">
+            <div className="flex items-center justify-between border-b">
                 <TitleFormHeader>Community Event</TitleFormHeader>
-                <Link href={'events/create-event'}>
+                <Link
+                    href={`/user/crowner/events/create-event?community_id=${community_id}`}
+                >
                     <Button variant={'ghost'}>
                         <Plus />
                         <span className="pl-2">Create Event</span>
@@ -76,32 +78,9 @@ export default function CommunityEvents({
                             placeholder="Name"
                         />
                     </div>
-                    {/* <div>
-                        <DatePicker
-                            block
-                            value={
-                                filterValue.start_date
-                                    ? new Date(
-                                          dayjs(filterValue.start_date).format(
-                                              'YYYY-MM-DD'
-                                          )
-                                      )
-                                    : undefined
-                            }
-                            onChange={(e) =>
-                                setfilterValue({
-                                    ...filterValue,
-                                    start_date: dayjs(e).format('YYYY-MM-DD'),
-                                    end_date: dayjs(e).format('YYYY-MM-DD'),
-                                })
-                            }
-                            placeholder="Date"
-                        />
-                    </div> */}
-
                     <div>
                         <DateRangePicker
-                            placeholder="Date"
+                            placeholder="Pick a date range"
                             value={{
                                 from: filterValue.start_date
                                     ? new Date(
@@ -142,7 +121,7 @@ export default function CommunityEvents({
                             value={filterValue.timezone_id}
                         >
                             <SelectTrigger>
-                                <SelectValue placeholder="Timezone" />
+                                <SelectValue placeholder="Select Timezone" />
                             </SelectTrigger>
                             <SelectContent>
                                 {dataTimezome?.map((item) => (
@@ -164,18 +143,17 @@ export default function CommunityEvents({
                             value={filterValue.event_schedule}
                         >
                             <SelectTrigger>
-                                <SelectValue placeholder="Event Schedule" />
+                                <SelectValue
+                                    defaultValue={'upcoming'}
+                                    placeholder="Upcoming"
+                                />
                             </SelectTrigger>
                             <SelectContent>
-                                <SelectItem key={'all'} value="all">
-                                    all
+                                <SelectItem value={'upcoming'}>
+                                    Upcoming
                                 </SelectItem>
-                                <SelectItem key={'upcoming'} value="upcoming">
-                                    upcoming
-                                </SelectItem>
-                                <SelectItem key={'past'} value="past">
-                                    past
-                                </SelectItem>
+                                <SelectItem value={'past'}>Past</SelectItem>
+                                <SelectItem value={'all'}>All</SelectItem>
                             </SelectContent>
                         </Select>
                     </div>
@@ -191,20 +169,17 @@ export default function CommunityEvents({
                             value={filterValue.acceptance_status}
                         >
                             <SelectTrigger>
-                                <SelectValue placeholder="Acceptance" />
+                                <SelectValue placeholder="Acceptance (all)" />
                             </SelectTrigger>
                             <SelectContent>
-                                <SelectItem key={'all'} value="all">
-                                    all
+                                <SelectItem value={'idle'}>
+                                    Acceptance: Idle
                                 </SelectItem>
-                                <SelectItem key={'idle'} value="idle">
-                                    idle
+                                <SelectItem value={'accepted'}>
+                                    Accepted
                                 </SelectItem>
-                                <SelectItem key={'accepted'} value="accepted">
-                                    accepted
-                                </SelectItem>
-                                <SelectItem key={'rejected'} value="rejected">
-                                    rejected
+                                <SelectItem value={'rejected'}>
+                                    Rejected
                                 </SelectItem>
                             </SelectContent>
                         </Select>
@@ -220,18 +195,11 @@ export default function CommunityEvents({
                             value={filterValue.is_visible}
                         >
                             <SelectTrigger>
-                                <SelectValue placeholder="Visibility" />
+                                <SelectValue placeholder="Visibility (all)" />
                             </SelectTrigger>
                             <SelectContent>
-                                <SelectItem key={'all'} value="all">
-                                    all
-                                </SelectItem>
-                                <SelectItem key={'true'} value="true">
-                                    True
-                                </SelectItem>
-                                <SelectItem key={'false'} value="false">
-                                    False
-                                </SelectItem>
+                                <SelectItem value={'true'}>Visible</SelectItem>
+                                <SelectItem value={'false'}>Hidden</SelectItem>
                             </SelectContent>
                         </Select>
                     </div>
