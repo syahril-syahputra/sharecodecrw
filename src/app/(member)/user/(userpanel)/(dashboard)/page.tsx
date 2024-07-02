@@ -34,14 +34,16 @@ export default function Page() {
     }, []);
     return (
         <section className="flex-1 p-4">
-            <div className='font-bold'>
-                <h1 className='text-2xl'>Welcome back, {session?.user.first_name}</h1>
+            <div className="font-bold">
+                <h1 className="text-2xl">
+                    Welcome back, {session?.user.first_name}
+                </h1>
             </div>
             <div className="flex items-center justify-between font-bold">
                 <h2>Introduction</h2>
                 <Link href={'/user/setting/profile'}>
                     <Button variant={'ghost'}>
-                        <Edit size={18} className='mr-2'/> Edit Profile
+                        <Edit size={18} className="mr-2" /> Edit Profile
                     </Button>
                 </Link>
             </div>
@@ -70,7 +72,7 @@ export default function Page() {
                 <div>
                     <Link href="/user/interest">
                         <Button variant={'ghost'}>
-                            <Edit size={18} className='mr-2'/> Edit Interest
+                            <Edit size={18} className="mr-2" /> Edit Interest
                         </Button>
                     </Link>
                 </div>

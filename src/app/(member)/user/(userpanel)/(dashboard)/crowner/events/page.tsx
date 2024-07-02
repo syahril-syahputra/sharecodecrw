@@ -135,11 +135,16 @@ export default function Page() {
                             value={filterValue.event_schedule}
                         >
                             <SelectTrigger>
-                                <SelectValue defaultValue={'upcoming'} placeholder="Upcoming"/>
+                                <SelectValue
+                                    defaultValue={'upcoming'}
+                                    placeholder="Upcoming"
+                                />
                             </SelectTrigger>
                             <SelectContent>
-                                <SelectItem value={'upcoming'}>Upcoming</SelectItem>
-                                <SelectItem value={'past'}>Past</SelectItem>                            
+                                <SelectItem value={'upcoming'}>
+                                    Upcoming
+                                </SelectItem>
+                                <SelectItem value={'past'}>Past</SelectItem>
                                 <SelectItem value={'all'}>All</SelectItem>
                             </SelectContent>
                         </Select>
@@ -156,12 +161,18 @@ export default function Page() {
                             value={filterValue.acceptance_status}
                         >
                             <SelectTrigger>
-                                <SelectValue placeholder="Acceptance (all)"/>
+                                <SelectValue placeholder="Acceptance (all)" />
                             </SelectTrigger>
                             <SelectContent>
-                                <SelectItem value={'idle'}>Acceptance: Idle</SelectItem>
-                                <SelectItem value={'accepted'}>Accepted</SelectItem>                            
-                                <SelectItem value={'rejected'}>Rejected</SelectItem>
+                                <SelectItem value={'idle'}>
+                                    Acceptance: Idle
+                                </SelectItem>
+                                <SelectItem value={'accepted'}>
+                                    Accepted
+                                </SelectItem>
+                                <SelectItem value={'rejected'}>
+                                    Rejected
+                                </SelectItem>
                             </SelectContent>
                         </Select>
                     </div>
@@ -176,7 +187,7 @@ export default function Page() {
                             value={filterValue.is_visible}
                         >
                             <SelectTrigger>
-                                <SelectValue placeholder="Visibility (all)"/>
+                                <SelectValue placeholder="Visibility (all)" />
                             </SelectTrigger>
                             <SelectContent>
                                 <SelectItem value={'true'}>Visible</SelectItem>

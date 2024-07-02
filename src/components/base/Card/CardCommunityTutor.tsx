@@ -21,7 +21,7 @@ export default function CardCommunityTutor(props: IProps) {
                     <div className="flex-none">
                         <MapPin size={21} className="text-primary" />
                     </div>
-                    <div className="!line-clamp-1 grid-grow grid pl-1">
+                    <div className="grid-grow !line-clamp-1 grid pl-1">
                         {props.data.province}, {props.data.province}
                     </div>
                 </div>

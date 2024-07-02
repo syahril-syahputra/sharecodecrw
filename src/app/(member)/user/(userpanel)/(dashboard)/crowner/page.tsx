@@ -60,7 +60,9 @@ export default function Page() {
                 </div>
                 <div>
                     <div className="py-4">
-                        <h1 className="pb-2 text-lg font-bold">Your Community</h1>
+                        <h1 className="pb-2 text-lg font-bold">
+                            Your Community
+                        </h1>
                         <div>
                             <div className="flex items-start justify-between">
                                 <div className="grid flex-1 grid-cols-4 gap-4">
@@ -141,7 +143,7 @@ export default function Page() {
                                     data.community_tutors.map(
                                         (item: ICommunityTutor) => (
                                             <Link
-                                            href={`/crowner/publisher/community-tutors/${item.id}`}
+                                                href={`/crowner/publisher/community-tutors/${item.id}`}
                                                 key={item.id}
                                             >
                                                 <CardCommunityTutor

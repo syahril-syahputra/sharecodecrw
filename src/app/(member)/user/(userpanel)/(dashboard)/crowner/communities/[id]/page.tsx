@@ -4,7 +4,6 @@ import IframeMap from '@/components/base/Maps/IframeMap';
 import TitlePage from '@/components/base/Title/TitlePage';
 import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
-import { visibilityStatus } from '@/lib/visibilityStatus';
 import { Edit, MapPin, User } from 'lucide-react';
 import Image from 'next/image';
 import { Button } from '@/components/ui/button';
@@ -27,7 +26,7 @@ export default function Page({ params }: { params: { id: string } }) {
     }
     return (
         <div className="container py-8">
-            <TitlePage className='mb-4 border-b'>{data?.title} </TitlePage>
+            <TitlePage className="mb-4 border-b">{data?.title} </TitlePage>
             <section className="flex items-center justify-between">
                 <div className="space-y-4">
                     <div className="space-x-2">
@@ -59,7 +58,7 @@ export default function Page({ params }: { params: { id: string } }) {
             </section>
             <section>
                 <div className="lg:flex-cols space-x-4 space-y-2 py-4 lg:flex lg:justify-between lg:space-x-2 lg:space-y-0">
-                    <div className="w-full shadow-md lg:w-3/5 rounded-xl">
+                    <div className="w-full rounded-xl shadow-md lg:w-3/5">
                         <div className="mb-4 rounded-xl border">
                             <Image
                                 width={300}

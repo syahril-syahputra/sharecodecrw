@@ -47,7 +47,7 @@ export default function CardEvent(props: IProps) {
                     <div className="flex-none">
                         <MapPin size={21} className="text-primary" />
                     </div>
-                    <div className="!line-clamp-1 grid-grow grid pl-1">
+                    <div className="grid-grow !line-clamp-1 grid pl-1">
                         {props.data.province}, {props.data.province}
                     </div>
                 </div>
@@ -75,7 +75,6 @@ export default function CardEvent(props: IProps) {
                         {props.data.price_formatted}
                     </div>
                 </div>
-                
             </div>
         );
     } else {
@@ -111,7 +110,7 @@ export default function CardEvent(props: IProps) {
                     <div className="text-muted-foreground">
                         {props.data.province}, {props.data.city}
                     </div>
-                    <div className="flex space-x-2 mb-4 text-muted-foreground">
+                    <div className="mb-4 flex space-x-2 text-muted-foreground">
                         <span>
                             {dayjs(props.data?.date_time).format(
                                 'dddd, DD MMMM YYYY'

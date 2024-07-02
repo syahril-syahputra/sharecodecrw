@@ -76,12 +76,18 @@ export default function Page() {
                             value={filterValue.acceptance_status}
                         >
                             <SelectTrigger>
-                                <SelectValue placeholder="Acceptance (all)"/>
+                                <SelectValue placeholder="Acceptance (all)" />
                             </SelectTrigger>
                             <SelectContent>
-                                <SelectItem value={'idle'}>Acceptance: Idle</SelectItem>
-                                <SelectItem value={'accepted'}>Accepted</SelectItem>                            
-                                <SelectItem value={'rejected'}>Rejected</SelectItem>
+                                <SelectItem value={'idle'}>
+                                    Acceptance: Idle
+                                </SelectItem>
+                                <SelectItem value={'accepted'}>
+                                    Accepted
+                                </SelectItem>
+                                <SelectItem value={'rejected'}>
+                                    Rejected
+                                </SelectItem>
                             </SelectContent>
                         </Select>
                     </div>
@@ -96,7 +102,7 @@ export default function Page() {
                             value={filterValue.is_visible}
                         >
                             <SelectTrigger>
-                                <SelectValue placeholder="Visibility (all)"/>
+                                <SelectValue placeholder="Visibility (all)" />
                             </SelectTrigger>
                             <SelectContent>
                                 <SelectItem value={'true'}>Visible</SelectItem>
