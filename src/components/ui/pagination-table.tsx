@@ -67,7 +67,7 @@ export default function PaginationTable(props: PageItem) {
 
     if (meta.total_data !== 0) {
         return (
-            <Pagination className="rounded-xl bg-white p-2 dark:bg-slate-800">
+            <Pagination className="rounded-xl">
                 <PaginationContent className="flex w-full justify-between  md:justify-center">
                     <PaginationItem
                         onClick={() =>

@@ -8,13 +8,11 @@ interface IProps {
 }
 export default function CardCreate(props: IProps) {
     return (
-        <div className="flex !cursor-pointer flex-col items-center justify-center space-y-2 rounded-md border p-4  shadow-md hover:bg-secondary">
-            <Link href={props.href}>
+            <Link href={props.href} className="flex !cursor-pointer flex-col items-center justify-center space-y-2 rounded-md border p-4  shadow-md hover:bg-secondary">
                 <div className="flex flex-col items-center justify-center">
                     <Plus size={48} />
                     <span>{props.title}</span>
                 </div>{' '}
             </Link>
-        </div>
     );
 }

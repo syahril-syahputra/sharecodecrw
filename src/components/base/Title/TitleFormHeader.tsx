@@ -8,7 +8,7 @@ export default function TitleFormHeader(props: IProps) {
     return (
         <div
             className={clsx(
-                'border-b py-4 text-2xl font-semibold',
+                'py-4 text-2xl font-semibold',
                 props.className
             )}
         >

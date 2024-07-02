@@ -53,8 +53,8 @@ export default function Page() {
                     </Button>
                 </Link>
             </div>
-            <section className="grid grid-cols-4 gap-4 p-4">
-                <div className="col-span-3 grid grid-cols-3 gap-4 border-r pr-4">
+            <section className="flex space-x-2 divide-x-2 rounded-md border p-4">
+                <div className="grid flex-1 grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3">
                     <Input
                         className="w-full"
                         value={filterValue.title}
@@ -82,8 +82,8 @@ export default function Page() {
                             />
                         </SelectTrigger>
                         <SelectContent>
-                            <SelectItem value={'true'}>visible</SelectItem>
-                            <SelectItem value={'false'}>hidden</SelectItem>
+                            <SelectItem value={'true'}>Visible</SelectItem>
+                            <SelectItem value={'false'}>Hidden</SelectItem>
                         </SelectContent>
                     </Select>
                     <Select
@@ -99,9 +99,9 @@ export default function Page() {
                             <SelectValue placeholder="Acceptance (all)" />
                         </SelectTrigger>
                         <SelectContent>
-                            <SelectItem value={'idle'}>idle</SelectItem>
-                            <SelectItem value={'accepted'}>accepted</SelectItem>
-                            <SelectItem value={'rejected'}>rejected</SelectItem>
+                            <SelectItem value={'idle'}>Idle</SelectItem>
+                            <SelectItem value={'accepted'}>Accepted</SelectItem>
+                            <SelectItem value={'rejected'}>Rejected</SelectItem>
                         </SelectContent>
                     </Select>
                 </div>
@@ -112,8 +112,8 @@ export default function Page() {
                     <Button onClick={filterHandler}>Filter</Button>
                 </div>
             </section>
-            <div className="space-y-2 ">
-                {isLoading ? (
+            <div className="flex flex-col space-y-2">
+                {/* {isLoading ? (
                     <LoadingFetch />
                 ) : data?.items.length ? (
                     data?.items.map((item) => (
@@ -128,6 +128,22 @@ export default function Page() {
                             is_visible={item.is_visible}
                             acceptance_status={item.acceptance_status}
                         />
+                    ))
+                ) : (
+                    <div className="text-center text-primary">
+                        Data Not Found
+                    </div>
+                )} */}
+                {isLoading ? (
+                    <LoadingFetch />
+                ) : data?.items.length ? (
+                    data?.items.map((item) => (
+                        <Link
+                            href={`/crowner/publisher/community-tutors/${item.id}`}
+                            key={item.id}
+                        >
+                            <CardCommunityTutor data={item} />
+                        </Link>
                     ))
                 ) : (
                     <div className="text-center text-primary">

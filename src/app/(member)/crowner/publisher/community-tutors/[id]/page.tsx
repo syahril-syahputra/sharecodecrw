@@ -73,7 +73,7 @@ export default function Page({ params }: { params: { id: string } }) {
                         </div>
                         <div className="mb-8 space-y-6 p-4">
                             <div className="text-xl font-semibold">
-                                Community Tutor About
+                                Description
                             </div>
                             <span>{data?.about}</span>
                         </div>

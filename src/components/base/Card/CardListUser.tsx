@@ -21,13 +21,15 @@ export default function CardListUser(props: IUserListCard) {
                         </div>
                     )}
 
-                    <Image
-                        width={100}
-                        alt=""
-                        height={100}
-                        src={props.profilePict || '/icons/user.png'}
-                        className="relative inline-flex h-10 w-10 items-center justify-center overflow-hidden rounded-full bg-muted"
-                    />
+                    {props.profilePict && 
+                        <Image
+                            width={100}
+                            alt=""
+                            height={100}
+                            src={props.profilePict || '/icons/user.png'}
+                            className="relative inline-flex h-10 w-10 items-center justify-center overflow-hidden rounded-full bg-muted"
+                        />
+                    }
                 </div>
                 <div className="grid grow grid-rows-2 pl-4">
                     <span className="truncate font-semibold">

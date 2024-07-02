@@ -7,7 +7,6 @@ export default function layout({ children }: { children: React.ReactNode }) {
             <section className=" w-64 p-4">
                 <SideMenuClient />
             </section>
-
             {children}
         </div>
     );

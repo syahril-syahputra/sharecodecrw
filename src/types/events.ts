@@ -42,7 +42,7 @@ export interface IDetailEvent {
     rsvp_counter: number;
     interest_counter: number;
     price: string;
-    price_formated: string;
+    price_formatted: string;
     tags: ITag[];
 }
 

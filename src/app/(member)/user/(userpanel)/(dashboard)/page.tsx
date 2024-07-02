@@ -7,52 +7,59 @@ import { useFetchProfile } from '@/feature/user/profile';
 import { IDetailEvent } from '@/types/events';
 import { IProfile } from '@/types/user';
 import { Edit, Plus } from 'lucide-react';
+import { useSession } from 'next-auth/react';
 import Link from 'next/link';
 import React, { useEffect, useState } from 'react';
 
 export default function Page() {
-    const [currentProfule, setcurrentProfule] = useState<IProfile>({});
+    const { data: session } = useSession();
+    const [currentProfile, setcurrentProfile] = useState<IProfile>({});
     const { mutate } = useFetchProfile((data) => {
-        setcurrentProfule(data);
+        setcurrentProfile(data);
     });
     const { data: event } = useFetchEvent(
         {
             pageIndex: 1,
-            pageSize: 3,
+            pageSize: 4,
         },
         {
             event_schedule: 'all',
-            acceptance_status: 'idle',
+            acceptance_status: '',
             is_visible: 'true',
         },
-        { sort_by: 'title', sort_type: 'desc' }
+        { sort_by: 'date_time', sort_type: 'asc' }
     );
     useEffect(() => {
         mutate();
     }, []);
     return (
-        <section className="h-96 flex-1 p-4">
+        <section className="flex-1 p-4">
+            <div className='font-bold'>
+                <h1 className='text-2xl'>Welcome back, {session?.user.first_name}</h1>
+            </div>
             <div className="flex items-center justify-between font-bold">
-                <h1>Introduce Yourself</h1>
+                <h2>Introduction</h2>
                 <Link href={'/user/setting/profile'}>
-                    <Button variant={'ghost'}>EDIT</Button>
+                    <Button variant={'ghost'}>
+                        <Edit size={18} className='mr-2'/> Edit Profile
+                    </Button>
                 </Link>
             </div>
-            {currentProfule.about ? (
+            {currentProfile.about ? (
                 <div className="min-h-24">
-                    <span className="">{currentProfule.about}</span>
+                    <span className="">{currentProfile.about}</span>
                 </div>
             ) : (
                 <div className="flex flex-col items-center space-y-2 p-4">
                     <Plus />
-                    <span className="font-bold">{currentProfule.about}</span>
+                    <span className="font-bold">{currentProfile.about}</span>
                 </div>
             )}
 
-            <div className="flex items-center justify-between">
+            <div className="flex items-center justify-between border-b">
                 <div className="space-x-2">
                     <span className="font-semibold">Interests :</span>{' '}
-                    {currentProfule.tags?.map((item) => {
+                    {currentProfile.tags?.map((item) => {
                         return (
                             <Badge key={item.id} variant={'secondary'}>
                                 {item.title}
@@ -63,7 +70,7 @@ export default function Page() {
                 <div>
                     <Link href="/user/interest">
                         <Button variant={'ghost'}>
-                            <Edit />
+                            <Edit size={18} className='mr-2'/> Edit Interest
                         </Button>
                     </Link>
                 </div>
@@ -85,7 +92,7 @@ export default function Page() {
                                 <span>RSVP</span>
                             </div>
                         </div> */}
-                            <div className="grid flex-1 grid-cols-3 gap-4">
+                            <div className="grid flex-1 grid-cols-4 gap-4">
                                 {event &&
                                     event.items.map((item: IDetailEvent) => (
                                         <Link
@@ -96,14 +103,14 @@ export default function Page() {
                                             key={item.id}
                                         >
                                             <CardEvent
-                                                variant="vertikal"
+                                                variant="vertical"
                                                 data={item}
                                             />
                                         </Link>
                                     ))}
                             </div>
                         </div>
-                        <div className="flex justify-end py-4">
+                        <div className="flex justify-end">
                             <Link href={'/user/crowner/events'}>
                                 <Button variant={'ghost'}>More</Button>
                             </Link>
