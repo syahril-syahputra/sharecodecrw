@@ -58,6 +58,21 @@ export interface IFilterEvent {
     acceptance_status?: string;
     is_visible?: string;
 }
+
+export interface IFilterSubscriberEvent {
+    sort_by: string;
+    price_min?: string;
+    price_max?: string;
+    start_date?: string;
+    end_date?: string;
+    event_type?: string;
+    title?: string;
+    city_id?: string;
+    timezone_id?: string;
+    community_id?: string;
+    tag_ids?: string;
+}
+
 export interface IEventRsvp {
     user_id: string;
     first_name: string;
