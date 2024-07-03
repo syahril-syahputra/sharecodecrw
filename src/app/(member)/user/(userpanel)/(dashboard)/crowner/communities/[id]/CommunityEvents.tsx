@@ -64,7 +64,7 @@ export default function CommunityEvents({
                 >
                     <Button variant={'ghost'}>
                         <Plus />
-                        <span className="pl-2">Create Coomunity Event</span>
+                        <span className="pl-2">Create Comunity Event</span>
                     </Button>
                 </Link>
             </div>
