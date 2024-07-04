@@ -7,6 +7,7 @@ import { PaginationState } from '@tanstack/react-table';
 export const useFetchEvents = (
     page: PaginationState,
     filter: IFilterSubscriberEvent,
+    sort: ISortMeta
 ) => {
     return useQuery({
         queryFn: async () => {
@@ -14,7 +15,8 @@ export const useFetchEvents = (
             const queryParams = new URLSearchParams({
                 page: page.pageIndex.toString(),
                 paginate: '12',
-                ...filter
+                ...filter,
+                ...sort,
             });
             const url = `${baseUrl}?${queryParams.toString()}`;
             const response = await fetchClient({

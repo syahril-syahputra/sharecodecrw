@@ -52,6 +52,10 @@ const config = {
                     DEFAULT: 'hsl(var(--card))',
                     foreground: 'hsl(var(--card-foreground))',
                 },
+                interest: {
+                    DEFAULT: 'var(--interest)',
+                    foreground: 'var(--interestHover)',
+                },
             },
             borderRadius: {
                 lg: 'var(--radius)',

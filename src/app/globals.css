@@ -41,6 +41,9 @@
         --ring: 0 87.5% 70.6%;
 
         --radius: 0.5rem;
+
+        --interest: #fea82f;
+        --interestHover: #f8c47b;
     }
 
     .dark {
@@ -81,6 +84,8 @@
         --ring: 0 87.5% 70.6%;
 
         --radius: 0.5rem;
+        --interest: #fea82f;
+        --interestHover: #f8c47b;
     }
 }
 

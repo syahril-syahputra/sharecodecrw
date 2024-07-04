@@ -67,6 +67,7 @@ export interface IFilterSubscriberEvent {
     end_date?: string;
     event_type?: string;
     title?: string;
+    province_id?: string;
     city_id?: string;
     timezone_id?: string;
     community_id?: string;
