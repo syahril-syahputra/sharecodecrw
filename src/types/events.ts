@@ -60,7 +60,6 @@ export interface IFilterEvent {
 }
 
 export interface IFilterSubscriberEvent {
-    sort_by: string;
     price_min?: string;
     price_max?: string;
     start_date?: string;
@@ -72,6 +71,9 @@ export interface IFilterSubscriberEvent {
     timezone_id?: string;
     community_id?: string;
     tag_ids?: string;
+    lat?: string;
+    lng?: string;
+    rad?: string;
 }
 
 export interface IEventRsvp {

@@ -20,9 +20,8 @@ export default function SideMenuClient() {
                     <Link href={'/user/crowner/communities'}>
                         <MenuItem url={'communities'}>Communities</MenuItem>
                     </Link>
-                    <Link href={'/crowner/publisher/community-tutors'}>
-                        <MenuItem url={'/community-tutors'}>
-                            {' '}
+                    <Link href={'/user/crowner/community-tutors'}>
+                        <MenuItem url={'community-tutors'}>
                             Community Tutors
                         </MenuItem>
                     </Link>
@@ -34,7 +33,11 @@ export default function SideMenuClient() {
                     <MenuItem url={''}>Electricity</MenuItem>
                 </MenuGroupChild>
                 <MenuGroup>
-                    <MenuItem url={''}>Interest & Favorites</MenuItem>
+                    <Link href={'/user/interests-favorites'}>
+                        <MenuItem url={'interests-favorites'}>
+                            Interest & Favorites
+                        </MenuItem>
+                    </Link>
                     <MenuItem url={''}>Event Reservation</MenuItem>
                 </MenuGroup>
                 <MenuGroup>

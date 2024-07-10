@@ -1,18 +1,20 @@
 import { ISortMeta } from '@/types/base/pagination';
 import { PaginationState } from '@tanstack/react-table';
+import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 
 interface ITableConfig<T> {
+    baseUrl: string;
     defaultComlumn?: string;
     defaultComlumnType?: 'asc' | 'desc';
     defaultFilter: T;
     pageSize?: number;
 }
 
-export default function useTableConfig<T>(config: ITableConfig<T>) {
+export default function useFilterConfigSSR<T>(config: ITableConfig<T>) {
+    const router = useRouter();
     const intialFilter: T = config.defaultFilter;
     const [filterValue, setfilterValue] = useState<T>(intialFilter);
-    const [filter, setfilter] = useState<T>(intialFilter);
     const [sort, setsort] = useState<ISortMeta>({
         sort_by: config.defaultComlumn || '',
         sort_type: config.defaultComlumnType || 'asc',
@@ -24,21 +26,23 @@ export default function useTableConfig<T>(config: ITableConfig<T>) {
 
     const filterHandler = () => {
         setPagination((prev) => ({ ...prev, pageIndex: 1 }));
-        setfilter(filterValue);
+        const convertObject = new URLSearchParams(
+            filterValue as string
+        ).toString();
+        const url = `${config.baseUrl}?${convertObject}`;
+        router.push(url);
     };
     const resetHandler = () => {
         setPagination((prev) => ({ ...prev, pageIndex: 1 }));
-        setfilter(intialFilter);
         setfilterValue(intialFilter);
+        router.push('/crowner/events');
     };
     return {
         filterValue,
-        filter,
         sort,
         pagination,
         setsort,
         setfilterValue,
-        setfilter,
         setPagination,
         resetHandler,
         filterHandler,

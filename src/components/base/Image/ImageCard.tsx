@@ -3,7 +3,7 @@ import Image from 'next/image';
 import React from 'react';
 
 interface IProps {
-    src: string;
+    src: string | null;
     className?: string;
 }
 export default function ImageCard(props: IProps) {

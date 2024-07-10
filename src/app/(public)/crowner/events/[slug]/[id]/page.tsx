@@ -40,7 +40,9 @@ export default async function Page({ params }: { params: { id: string } }) {
                     </BreadcrumbItem>
                     <BreadcrumbSeparator />
                     <BreadcrumbItem>
-                        <BreadcrumbLink href="/events">Event</BreadcrumbLink>
+                        <BreadcrumbLink href="/crowner/events">
+                            Event
+                        </BreadcrumbLink>
                     </BreadcrumbItem>
                     <BreadcrumbSeparator />
                     <BreadcrumbItem>
