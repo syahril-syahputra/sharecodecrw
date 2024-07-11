@@ -35,7 +35,7 @@ export default function useFilterConfigSSR<T>(config: ITableConfig<T>) {
     const resetHandler = () => {
         setPagination((prev) => ({ ...prev, pageIndex: 1 }));
         setfilterValue(intialFilter);
-        router.push('/crowner/events');
+        router.push(config.baseUrl);
     };
     return {
         filterValue,

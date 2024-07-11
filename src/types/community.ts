@@ -61,6 +61,15 @@ export interface IFilterCommunity {
     acceptance_status: string;
     is_visible: string;
 }
+export interface IFilterSubscriberCommunities {
+    title?: string;
+    province_id?: string;
+    city_id?: string;
+    tag_ids?: string;
+    lat?: string;
+    lng?: string;
+    rad?: string;
+}
 
 export interface ICommunityFollower {
     user_id: string;

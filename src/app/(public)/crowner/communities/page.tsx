@@ -5,11 +5,11 @@ import fetchServer from '@/lib/fetchServer';
 import { IPaginationMeta } from '@/types/base/pagination';
 import SSRPagination from '@/components/ui/ssr-pagination';
 import SortEvent from './sort';
-import CardCommunityTutor from '@/components/base/Card/CardCommunityTutor';
-import { ICommunityTutor } from '@/types/crowner/community-tutors';
+import CardCommunity from '@/components/base/Card/CardCommunity';
+import { IDetailCommunity } from '@/types/community';
 async function getData(filter: string | undefined) {
     try {
-        const baseUrl = `/crowner/community-tutors`;
+        const baseUrl = `/crowner/communities`;
         const convertObject = new URLSearchParams(filter).toString();
 
         const sortBy = 'sort_by=latest';
@@ -20,7 +20,7 @@ async function getData(filter: string | undefined) {
         });
         console.log(res);
         return res.data.data as {
-            items: ICommunityTutor[];
+            items: IDetailCommunity[];
             meta: IPaginationMeta;
         };
     } catch (error) {
@@ -52,15 +52,15 @@ export default async function Page({
                                 <>
                                     <div className="grid flex-1 grid-cols-3 gap-4">
                                         {data.items.map(
-                                            (item: ICommunityTutor) => (
+                                            (item: IDetailCommunity) => (
                                                 <Link
                                                     href={
-                                                        '/crowner/community-tutors/slug/' +
+                                                        '/crowner/communities/slug/' +
                                                         item.id
                                                     }
                                                     key={item.id}
                                                 >
-                                                    <CardCommunityTutor
+                                                    <CardCommunity
                                                         variant="vertical"
                                                         data={item}
                                                     />
@@ -71,7 +71,7 @@ export default async function Page({
                                     <div className="mt-8">
                                         <SSRPagination
                                             meta={data?.meta}
-                                            baseUrl="/crowner/community-tutors"
+                                            baseUrl="/crowner/communities"
                                             searchParams={searchParams || ''}
                                         />
                                     </div>

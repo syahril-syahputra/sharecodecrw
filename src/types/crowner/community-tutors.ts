@@ -39,6 +39,17 @@ export interface IFilterCommunityTutor {
     acceptance_status: string;
     is_visible: string;
 }
+export interface IFilterSubscriberCommunityTutor {
+    title?: string;
+    province_id?: string;
+    city_id?: string;
+    tag_ids?: string;
+    lat?: string;
+    lng?: string;
+    rad?: string;
+    hourly_rate_min?: string;
+    hourly_rate_max?: string;
+}
 
 export interface ICommunityTutorInterest {
     user_id: string;

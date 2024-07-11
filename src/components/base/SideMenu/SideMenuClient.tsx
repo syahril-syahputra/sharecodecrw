@@ -38,7 +38,11 @@ export default function SideMenuClient() {
                             Interest & Favorites
                         </MenuItem>
                     </Link>
-                    <MenuItem url={''}>Event Reservation</MenuItem>
+                    <Link href={'/user/event-reservation'}>
+                        <MenuItem url={'event-reservation'}>
+                            Event Reservation
+                        </MenuItem>
+                    </Link>
                 </MenuGroup>
                 <MenuGroup>
                     <MenuItem url={''}>Badges</MenuItem>

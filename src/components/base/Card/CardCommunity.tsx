@@ -22,7 +22,7 @@ export default function CardCommunity(props: IProps) {
                         <MapPin size={21} className="text-primary" />
                     </div>
                     <div className="grid-grow !line-clamp-1 grid pl-1">
-                        {props.data.province}, {props.data.province}
+                        {props.data.province}, {props.data.city}
                     </div>
                 </div>
             </div>
