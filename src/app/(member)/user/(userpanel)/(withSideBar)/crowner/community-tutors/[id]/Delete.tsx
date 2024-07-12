@@ -30,7 +30,7 @@ export default function DeleteCommunityTutor(props: {
                 variant: 'success',
                 description: success.data.message,
             });
-            router.replace('/crowner/community-tutors');
+            router.replace('/user/crowner/community-tutors');
         },
         onError: (error) => {
             toast({

@@ -139,7 +139,7 @@ export default function Page() {
                 ) : data?.items.length ? (
                     data?.items.map((item) => (
                         <Link
-                            href={`/crowner/publisher/community-tutors/${item.id}`}
+                            href={`/user/crowner/community-tutors/${item.id}`}
                             key={item.id}
                         >
                             <CardCommunityTutor data={item} />

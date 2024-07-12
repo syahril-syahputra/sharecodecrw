@@ -11,19 +11,18 @@ import {
 } from '@/components/ui/breadcrumb';
 import TitlePage from '@/components/base/Title/TitlePage';
 import Image from 'next/image';
-import { DollarSign, MapPin } from 'lucide-react';
+import { MapPin } from 'lucide-react';
 import IframeMap from '@/components/base/Maps/IframeMap';
 import { Badge } from '@/components/ui/badge';
 import EventAction from './action';
-import { ICommunityTutor } from '@/types/crowner/community-tutors';
+import { IDetailCommunity } from '@/types/community';
 
 async function getData(id: string) {
     try {
         const res = await fetchServer({
-            url: `/crowner/community-tutors/${id || ''}`,
+            url: `/crowner/communities/${id || ''}`,
         });
-        console.log(res.data.data);
-        return res.data.data as ICommunityTutor;
+        return res.data.data as IDetailCommunity;
     } catch {
         return notFound();
     }
@@ -40,8 +39,8 @@ export default async function Page({ params }: { params: { id: string } }) {
                     </BreadcrumbItem>
                     <BreadcrumbSeparator />
                     <BreadcrumbItem>
-                        <BreadcrumbLink href="/crowner/community-tutors">
-                            Community Tutors
+                        <BreadcrumbLink href="/crowner/communities">
+                            Communities
                         </BreadcrumbLink>
                     </BreadcrumbItem>
                     <BreadcrumbSeparator />
@@ -54,7 +53,7 @@ export default async function Page({ params }: { params: { id: string } }) {
                 <TitlePage>{data?.title}</TitlePage>
                 <EventAction data={data} />
             </div>
-            <section className="flex justify-between space-x-4">
+            <section className="flex  justify-between space-x-4">
                 <div className="flex-1">
                     <div className="">
                         <div className="mb-4 rounded-xl border">
@@ -68,7 +67,7 @@ export default async function Page({ params }: { params: { id: string } }) {
                         </div>
                         <div className="mb-8 space-y-6 p-4">
                             <div className="text-xl font-semibold">
-                                Community Tutor About
+                                Communities About
                             </div>
                             <span>{data?.about}</span>
                         </div>
@@ -95,29 +94,7 @@ export default async function Page({ params }: { params: { id: string } }) {
                                 longitude={data?.longitude}
                             />
                         </div>
-                        <div className="flex flex-row">
-                            <div className="flex-none">
-                                <DollarSign className="text-primary" />
-                            </div>
-                            <div className="grow pl-4">
-                                {data?.hourly_rate == 0 && (
-                                    <span className="font-semibold text-primary">
-                                        {data?.hourly_rate_formatted}
-                                    </span>
-                                )}
-                                {data?.hourly_rate != 0 && (
-                                    <>
-                                        <span className="text-primary">
-                                            {data?.hourly_rate_formatted}
-                                        </span>
-                                        <span className="text-sm text-muted-foreground">
-                                            {' '}
-                                            / hour
-                                        </span>
-                                    </>
-                                )}
-                            </div>
-                        </div>
+
                         <div className="space-y-2">
                             <div>Interests</div>
                             <div className="">

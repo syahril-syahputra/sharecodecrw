@@ -143,7 +143,7 @@ export default function Page() {
                                     data.community_tutors.map(
                                         (item: ICommunityTutor) => (
                                             <Link
-                                                href={`/crowner/publisher/community-tutors/${item.id}`}
+                                                href={`/user/crowner/community-tutors/${item.id}`}
                                                 key={item.id}
                                             >
                                                 <CardCommunityTutor

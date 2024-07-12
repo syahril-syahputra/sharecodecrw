@@ -112,7 +112,7 @@ export default function Page() {
         data: createResponse,
     } = useCreateCommunityTutor({
         onSuccess: () => {
-            router.push('/crowner/community-tutors');
+            router.push('/user/crowner/community-tutors');
         },
         onError: (error) => errorHelper(form.setError, error),
     });
@@ -279,6 +279,7 @@ export default function Page() {
                                                             : '/icons/image.png'
                                                     }
                                                     width={200}
+                                                    height={0}
                                                 />{' '}
                                                 <div className="absolute bottom-0 left-0 right-0 top-0 flex items-center justify-center  bg-neutral-800 bg-opacity-60 opacity-0 hover:opacity-100">
                                                     <HardDriveUpload

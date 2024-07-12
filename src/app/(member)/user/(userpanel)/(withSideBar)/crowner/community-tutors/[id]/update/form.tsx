@@ -93,7 +93,7 @@ export default function FormUpdateCommunityTutor({ data }: IProps) {
                 description: success.data.message,
             });
 
-            router.push('/crowner/community-tutors/' + data.id, {});
+            router.push('/user/crowner/community-tutors/' + data.id, {});
         },
         onError: (error) => errorHelper(form.setError, error),
         id: data.id,
