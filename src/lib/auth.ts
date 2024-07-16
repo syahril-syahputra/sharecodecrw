@@ -104,6 +104,10 @@ export const authOptions: NextAuthOptions = {
             session.user.last_name = token.last_name || '';
             session.user.email_verified_at = token.email_verified_at || '';
             session.user.profile_picture_url = token.profile_picture_url || '';
+            session.user.latitude = token.latitude || 0;
+            session.user.longitude = token.longitude || 0;
+            session.user.city = token.city || '';
+            session.user.province = token.province || '';
 
             return session;
         },

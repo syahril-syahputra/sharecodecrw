@@ -24,8 +24,6 @@ interface IProps {
 export default function MenuUser(props: IProps) {
     return (
         <div className="flex items-center space-x-4 py-4">
-            <span className="px-2">Post a Listing</span>
-
             <DropdownMenu>
                 <DropdownMenuTrigger asChild>
                     <UserIcon className="hover:cursor-pointer hover:text-primary" />

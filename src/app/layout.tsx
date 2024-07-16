@@ -20,7 +20,9 @@ export default function RootLayout({
                     enableSystem
                 >
                     <Providers>
-                        <SessionProvider>{children}</SessionProvider>
+                        <SessionProvider>
+                            <div>{children}</div>
+                        </SessionProvider>
                     </Providers>
                 </ThemeProvider>
             </body>

@@ -16,6 +16,10 @@ declare module 'next-auth' {
         last_name: string;
         email: string;
         profile_picture_url?: string | null;
+        latitude?: number | null;
+        longitude?: number | null;
+        city?: string | null;
+        province?: string | null;
         email_verified_at?: string | null;
     }
 }
