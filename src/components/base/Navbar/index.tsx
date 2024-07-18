@@ -1,7 +1,5 @@
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-
 import React from 'react';
+import { Button } from '@/components/ui/button';
 import Logo from '../Logo';
 import Link from 'next/link';
 import { getCurrentUser } from '@/lib/session';
@@ -9,7 +7,7 @@ import MenuUser from './MenuUser';
 import fetchServer from '@/lib/fetchServer';
 import ResendVerificationEmail from './ResendVerificationEmail';
 import LocationNavbar from './LocationNavbar';
-import { Search } from 'lucide-react';
+import SearchBar from './SearchBar';
 async function getDataUser() {
     const session = await getCurrentUser();
     try {
@@ -44,17 +42,7 @@ export default async function Navbar() {
                     </Link>
                 </div>
                 <div className="flex flex-1 items-center">
-                    <div className="flex flex-1  items-center divide-x divide-border rounded-lg border border-border px-4 py-2 shadow-md">
-                        <Input
-                            placeholder="Search"
-                            className="h-min border-0  focus:ring-0 focus-visible:ring-0"
-                        />
-
-                        <div className="flex items-center space-x-2 text-primary">
-                            <Search size={36} className=" px-2 " />
-                            <span>Search</span>
-                        </div>
-                    </div>
+                    <SearchBar />
                     <LocationNavbar />
                 </div>
                 <span className="px-2 font-semibold text-primary">

@@ -18,13 +18,15 @@ import useFilterConfigSSR from '@/lib/useFilterConfigSSR';
 import { IFilterSubscriberCommunityTutor } from '@/types/crowner/community-tutors';
 import { Input } from '@/components/ui/input';
 
-export default function FilterEvent(props: { searchParams: string }) {
-    console.log(props);
+export default function FilterEvent(props: { searchParams: object | string }) {
+    const currentFilter = props.searchParams as { title: string };
     const { filterValue, filterHandler, setfilterValue, resetHandler } =
         useFilterConfigSSR<IFilterSubscriberCommunityTutor>({
             pageSize: 12,
             baseUrl: '/crowner/community-tutors',
-            defaultFilter: {},
+            defaultFilter: {
+                title: currentFilter.title || '',
+            },
         });
     const { data: dataInterest, isLoading: isLoadingInterest } =
         useFetchInterestFilter();
@@ -41,6 +43,20 @@ export default function FilterEvent(props: { searchParams: string }) {
     return (
         <section className="w-1/5">
             <div className="mt-20 space-y-2 rounded-lg border p-3">
+                <div className="space-y-2">
+                    <Label>Title</Label>
+                    <div>
+                        <Input
+                            onChange={(value) => {
+                                setfilterValue({
+                                    ...filterValue,
+                                    title: value.target.value,
+                                });
+                            }}
+                            value={filterValue.title}
+                        />
+                    </div>
+                </div>
                 {isLoadingInterest ? (
                     <Spinner />
                 ) : (
