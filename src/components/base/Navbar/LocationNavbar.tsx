@@ -53,7 +53,11 @@ export default function LocationNavbar() {
             />
 
             {userLocation ? (
-                <span className="flex items-center space-x-2 font-semibold">
+                <span
+                    title="Change Location"
+                    onClick={() => setOpen(true)}
+                    className="flex !cursor-pointer items-center space-x-2 font-semibold hover:text-primary"
+                >
                     <MapPin size={18} className="text-primary" />
                     <span>
                         {userLocation.city}, {userLocation.province}

@@ -52,52 +52,50 @@ export default async function page({
                 <ul>
                     {data.related.map((item) => (
                         <Link href={createUrl(item)} key={item.id}>
-                            <li className="cursor-pointer hover:text-primary">
-                                {item.title}
+                            <li className="cursor-pointer capitalize hover:text-primary">
+                                {item.title} ({item.listing_type_formatted})
                             </li>
                         </Link>
                     ))}
                 </ul>
             </div>
             <div className="flex items-center space-x-4">
-                <div className="flex-1 rounded-md p-4 shadow-xl">
-                    <TitleSearchResult>Community Tutors</TitleSearchResult>
-                    <span className="block py-8">
-                        <Link
-                            href={
-                                '/crowner/community-tutors?title=' +
-                                searchParams?.search
-                            }
-                        >
+                <Link
+                    className="block flex-1 "
+                    href={
+                        '/crowner/community-tutors?title=' +
+                        searchParams?.search
+                    }
+                >
+                    <div className="rounded-md p-4 shadow-xl">
+                        <TitleSearchResult>Community Tutors</TitleSearchResult>
+                        <span className="block py-8">
                             {data.community_tutors} Listing Found
-                        </Link>
-                    </span>
-                </div>
-                <div className="flex-1 rounded-md p-4 shadow-xl">
-                    <TitleSearchResult>Events</TitleSearchResult>
-                    <span className="block py-8">
-                        <Link
-                            href={
-                                '/crowner/events?title=' + searchParams?.search
-                            }
-                        >
+                        </span>
+                    </div>
+                </Link>
+                <Link
+                    className="block flex-1 "
+                    href={'/crowner/events?title=' + searchParams?.search}
+                >
+                    <div className="rounded-md p-4 shadow-xl">
+                        <TitleSearchResult>Events</TitleSearchResult>
+                        <span className="block py-8">
                             {data.events} Listing Found
-                        </Link>
-                    </span>
-                </div>
-                <div className="flex-1 rounded-md p-4 shadow-xl">
-                    <TitleSearchResult>Communitites</TitleSearchResult>
-                    <span className="block py-8">
-                        <Link
-                            href={
-                                '/crowner/communities?title=' +
-                                searchParams?.search
-                            }
-                        >
+                        </span>
+                    </div>
+                </Link>
+                <Link
+                    className="block flex-1 "
+                    href={'/crowner/communities?title=' + searchParams?.search}
+                >
+                    <div className="rounded-md p-4 shadow-xl">
+                        <TitleSearchResult>Communitites</TitleSearchResult>
+                        <span className="block py-8">
                             {data.communities} Listing Found
-                        </Link>
-                    </span>
-                </div>
+                        </span>
+                    </div>
+                </Link>
             </div>
         </div>
     );

@@ -82,42 +82,49 @@ export default function DialogLocation(props: {
         }
     }
     const closeDialog = (value: boolean) => {
-        if (value === false) {
-            if (status === 'authenticated') {
-                const result: ILocation = {
-                    lat:
-                        session.user.latitude ||
-                        parseFloat(
-                            process.env.NEXT_PUBLIC_DEFAULT_USER_LOCATION_LAT ||
-                                '0'
-                        ),
-                    lng:
-                        session.user.longitude ||
-                        parseFloat(
-                            process.env.NEXT_PUBLIC_DEFAULT_USER_LOCATION_LNG ||
-                                '0'
-                        ),
-                    province:
-                        session.user.city ||
-                        process.env
-                            .NEXT_PUBLIC_DEFAULT_USER_LOCATION_PROVINCE ||
-                        '',
-                    city:
-                        session.user.province ||
-                        process.env.NEXT_PUBLIC_DEFAULT_USER_LOCATION_CITY ||
-                        '',
-                };
-                props.setUserLocation(result);
-                localStorage.setItem('location', JSON.stringify(result));
-                props.setOpen(false);
-            } else {
-                props.setUserLocation(defaultLocation);
-                localStorage.setItem(
-                    'location',
-                    JSON.stringify(defaultLocation)
-                );
-                props.setOpen(false);
+        if (!localStorage.getItem('location')) {
+            if (value === false) {
+                if (status === 'authenticated') {
+                    const result: ILocation = {
+                        lat:
+                            session.user.latitude ||
+                            parseFloat(
+                                process.env
+                                    .NEXT_PUBLIC_DEFAULT_USER_LOCATION_LAT ||
+                                    '0'
+                            ),
+                        lng:
+                            session.user.longitude ||
+                            parseFloat(
+                                process.env
+                                    .NEXT_PUBLIC_DEFAULT_USER_LOCATION_LNG ||
+                                    '0'
+                            ),
+                        province:
+                            session.user.city ||
+                            process.env
+                                .NEXT_PUBLIC_DEFAULT_USER_LOCATION_PROVINCE ||
+                            '',
+                        city:
+                            session.user.province ||
+                            process.env
+                                .NEXT_PUBLIC_DEFAULT_USER_LOCATION_CITY ||
+                            '',
+                    };
+                    props.setUserLocation(result);
+                    localStorage.setItem('location', JSON.stringify(result));
+                    props.setOpen(false);
+                } else {
+                    props.setUserLocation(defaultLocation);
+                    localStorage.setItem(
+                        'location',
+                        JSON.stringify(defaultLocation)
+                    );
+                    props.setOpen(false);
+                }
             }
+        } else {
+            props.setOpen(false);
         }
     };
     return (
