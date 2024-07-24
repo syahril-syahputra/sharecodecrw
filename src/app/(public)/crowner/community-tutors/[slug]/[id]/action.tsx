@@ -17,6 +17,7 @@ import { ICommunityTutor } from '@/types/crowner/community-tutors';
 import { useSession } from 'next-auth/react';
 import { DialogDescription } from '@radix-ui/react-dialog';
 import Link from 'next/link';
+import Report from '@/components/base/report';
 
 export default function EventAction(props: { data: ICommunityTutor }) {
     const { status } = useSession();
@@ -71,6 +72,7 @@ export default function EventAction(props: { data: ICommunityTutor }) {
                     </div>
                 </DialogContent>
             </Dialog>
+            <Report entityId={props.data.id} entityType="crowners" />
         </div>
     );
 }

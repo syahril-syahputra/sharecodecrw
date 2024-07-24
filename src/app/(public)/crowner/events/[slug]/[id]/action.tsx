@@ -18,6 +18,7 @@ import ShareBox from '@/components/base/Share/ShareBox';
 import { useSession } from 'next-auth/react';
 import { DialogDescription } from '@radix-ui/react-dialog';
 import Link from 'next/link';
+import Report from '@/components/base/report';
 
 export default function EventAction(props: { data: IDetailEvent }) {
     const { status } = useSession();
@@ -104,6 +105,7 @@ export default function EventAction(props: { data: IDetailEvent }) {
                     </div>
                 </DialogContent>
             </Dialog>
+            <Report entityId={props.data.id} entityType="crowners" />
         </div>
     );
 }

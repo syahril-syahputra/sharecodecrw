@@ -16,6 +16,7 @@ import IframeMap from '@/components/base/Maps/IframeMap';
 import { Badge } from '@/components/ui/badge';
 import EventAction from './action';
 import { IDetailCommunity } from '@/types/community';
+import QuestionAndAnswer from '@/components/base/QuestionAndAnswer';
 
 async function getData(id: string) {
     try {
@@ -111,6 +112,12 @@ export default async function Page({ params }: { params: { id: string } }) {
                         </div>
                     </div>
                 </div>
+            </section>
+            <section>
+                <QuestionAndAnswer
+                    entity_id={params.id}
+                    entity_type="crowners"
+                />
             </section>
         </div>
     );
