@@ -42,7 +42,7 @@ export default function InputAnswer(props: IProps) {
                 </Button>
             </div>
             <DialogLoginRequired
-                title="Sign in to create question"
+                title="Sign in to reply"
                 isOpen={isShowLogin}
                 onOpenChange={(value) => setisShowLogin(value)}
             />
