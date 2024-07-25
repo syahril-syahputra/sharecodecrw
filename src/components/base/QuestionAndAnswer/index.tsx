@@ -24,7 +24,7 @@ export default function QuestionAndAnswer(props: IProps) {
         },
     });
     const { data, refetch, fetchNextPage, isLoading, hasNextPage } =
-        useFetchQuestion(pagination, filterValue, 'latest');
+        useFetchQuestion(pagination, filterValue, 'oldest');
     const { mutate, isPending } = useCreateQuestion({
         onSuccess: () => {
             refetch();

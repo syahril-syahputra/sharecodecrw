@@ -18,7 +18,7 @@ export const useFetchAnswer = (
                 page: page.pageIndex.toString(),
                 paginate: page.pageSize.toString(),
                 ...filter,
-                order_by: sort,
+                // order_by: sort,
             });
             const url = `${baseUrl}?${queryParams.toString()}`;
             const response = await fetchClient({

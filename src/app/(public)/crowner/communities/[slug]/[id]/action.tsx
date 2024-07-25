@@ -6,8 +6,6 @@ import { useToogleInterest } from '@/feature/crowner/subscriber/events/useToogle
 import {
     Dialog,
     DialogContent,
-    DialogFooter,
-    // DialogDescription,
     DialogHeader,
     DialogTitle,
     DialogTrigger,
@@ -15,9 +13,8 @@ import {
 import ShareBox from '@/components/base/Share/ShareBox';
 import { IDetailCommunity } from '@/types/community';
 import { useSession } from 'next-auth/react';
-import { DialogDescription } from '@radix-ui/react-dialog';
-import Link from 'next/link';
 import Report from '@/components/base/report';
+import DialogLoginRequired from '@/components/base/Dialog/DialogLoginRequired';
 
 export default function EventAction(props: { data: IDetailCommunity }) {
     const { status } = useSession();
@@ -40,21 +37,12 @@ export default function EventAction(props: { data: IDetailCommunity }) {
             >
                 Interest
             </Button>
-            <Dialog open={isOpen} onOpenChange={(value) => setisOpen(value)}>
-                <DialogContent className="sm:max-w-[425px]">
-                    <DialogHeader>
-                        <DialogTitle>Sign in</DialogTitle>
-                        <DialogDescription>
-                            Sign in to follow community
-                        </DialogDescription>
-                    </DialogHeader>
-                    <DialogFooter>
-                        <Link href="/auth/login">
-                            <Button type="submit">Sign in</Button>
-                        </Link>
-                    </DialogFooter>
-                </DialogContent>
-            </Dialog>
+            <DialogLoginRequired
+                title="Sign in to follow community"
+                isOpen={isOpen}
+                onOpenChange={(value) => setisOpen(value)}
+            />
+
             <Dialog>
                 <DialogTrigger asChild>
                     <Button variant={'ghost'}>

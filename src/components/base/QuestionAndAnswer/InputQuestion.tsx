@@ -1,6 +1,8 @@
 import { Button } from '@/components/ui/button';
 import { AutosizeTextarea } from '@/components/ui/useAutosizeTextArea';
-import React from 'react';
+import React, { useState } from 'react';
+import DialogLoginRequired from '../Dialog/DialogLoginRequired';
+import { useSession } from 'next-auth/react';
 
 interface IProps {
     value: string;
@@ -9,6 +11,17 @@ interface IProps {
     send: () => void;
 }
 export default function InputQuestion(props: IProps) {
+    const { status } = useSession();
+    const isLogin = status === 'authenticated';
+
+    const [isShowLogin, setisShowLogin] = useState(false);
+    const send = () => {
+        if (isLogin) {
+            props.send();
+        } else {
+            setisShowLogin(true);
+        }
+    };
     return (
         <div className="space-y-4">
             <div>Q&A</div>
@@ -20,13 +33,19 @@ export default function InputQuestion(props: IProps) {
             />
             <div className="flex justify-end">
                 <Button
-                    onClick={props.send}
+                    onClick={send}
                     loading={props.loading}
                     className="px-16"
                 >
                     Ask
                 </Button>
             </div>
+
+            <DialogLoginRequired
+                title="Sign in to create question"
+                isOpen={isShowLogin}
+                onOpenChange={(value) => setisShowLogin(value)}
+            />
         </div>
     );
 }

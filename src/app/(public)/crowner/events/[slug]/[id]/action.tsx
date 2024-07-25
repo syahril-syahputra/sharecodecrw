@@ -8,7 +8,6 @@ import { useReserveEvent } from '@/feature/crowner/subscriber/events/useReserveE
 import {
     Dialog,
     DialogContent,
-    DialogFooter,
     // DialogDescription,
     DialogHeader,
     DialogTitle,
@@ -16,9 +15,8 @@ import {
 } from '@/components/ui/dialog';
 import ShareBox from '@/components/base/Share/ShareBox';
 import { useSession } from 'next-auth/react';
-import { DialogDescription } from '@radix-ui/react-dialog';
-import Link from 'next/link';
 import Report from '@/components/base/report';
+import DialogLoginRequired from '@/components/base/Dialog/DialogLoginRequired';
 
 export default function EventAction(props: { data: IDetailEvent }) {
     const { status } = useSession();
@@ -55,39 +53,16 @@ export default function EventAction(props: { data: IDetailEvent }) {
             >
                 RSVP
             </Button>
-            <Dialog open={isOpen} onOpenChange={(value) => setisOpen(value)}>
-                <DialogContent className="sm:max-w-[425px]">
-                    <DialogHeader>
-                        <DialogTitle>Sign in</DialogTitle>
-                        <DialogDescription>
-                            Sign in to interest event
-                        </DialogDescription>
-                    </DialogHeader>
-                    <DialogFooter>
-                        <Link href="/auth/login">
-                            <Button type="submit">Sign in</Button>
-                        </Link>
-                    </DialogFooter>
-                </DialogContent>
-            </Dialog>
-            <Dialog
-                open={isOpenRSVP}
+            <DialogLoginRequired
+                title="Sign in to interest event"
+                isOpen={isOpen}
+                onOpenChange={(value) => setisOpen(value)}
+            />
+            <DialogLoginRequired
+                title="Sign in to RSVP Event"
+                isOpen={isOpenRSVP}
                 onOpenChange={(value) => setisOpenRSVP(value)}
-            >
-                <DialogContent className="sm:max-w-[425px]">
-                    <DialogHeader>
-                        <DialogTitle>Sign in</DialogTitle>
-                        <DialogDescription>
-                            Sign in to RSVP Event
-                        </DialogDescription>
-                    </DialogHeader>
-                    <DialogFooter>
-                        <Link href="/auth/login">
-                            <Button type="submit">Sign in</Button>
-                        </Link>
-                    </DialogFooter>
-                </DialogContent>
-            </Dialog>
+            />
             <Dialog>
                 <DialogTrigger asChild>
                     <Button variant={'ghost'}>
