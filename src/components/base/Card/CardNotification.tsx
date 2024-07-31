@@ -2,9 +2,14 @@ import { INotification } from '@/types/base/notification';
 import React from 'react';
 import ImageUser from '../Image/ImageUser';
 import { humanize } from '@/lib/humanizeDate';
-import ImageNotification from '../Image/ImageNotification';
+// import ImageNotification from '../Image/ImageNotification';
+import { IQuestion } from '@/types/base/QA';
 
-export default function CardNotification({ data }: { data: INotification }) {
+export default function CardNotification({
+    data,
+}: {
+    data: INotification | IQuestion;
+}) {
     return (
         <div className="border-Input flex items-center justify-between space-x-2 border-b px-4 py-4 ">
             <ImageUser src={data.profile_picture_url} />
@@ -12,7 +17,7 @@ export default function CardNotification({ data }: { data: INotification }) {
                 <div className="text-sm">{data.message}</div>
                 <div className="text-xs">{humanize(data.created_at)}</div>
             </div>
-            <ImageNotification src={data.entity_image_url} />
+            {/* <ImageNotification src={data.entity_image_url || ''} /> */}
         </div>
     );
 }

@@ -4,7 +4,7 @@ import { Skeleton } from '@/components/ui/skeleton';
 import { useFetchQuestion } from '@/feature/qa/useFetchQueystion';
 import useTableConfig from '@/lib/useTableConfig';
 import React from 'react';
-import CardQuestion from '../QuestionAndAnswer/CardQuestion';
+// import CardQuestion from '../QuestionAndAnswer/CardQuestion';
 import CardNotification from '../Card/CardNotification';
 
 export default function Notification() {
