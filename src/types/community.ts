@@ -25,6 +25,7 @@ export interface ICommunity {
 export interface IDetailCommunity {
     id: string;
     title: string;
+    slug: string;
     city_id: string;
     province_id: string;
     city: string;

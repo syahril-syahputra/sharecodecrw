@@ -21,6 +21,7 @@ export interface ITag {
 export interface IDetailEvent {
     id: string;
     city_id: string;
+    slug?: string;
     province_id: string;
     timezone_id: string;
     community_id: string | null;

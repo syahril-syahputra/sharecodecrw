@@ -15,6 +15,7 @@ export interface BodyCreateCommunityTutor {
 export interface ICommunityTutor {
     id: string;
     city_id: string;
+    slug?: string;
     province_id: string;
     city: string;
     province: string;

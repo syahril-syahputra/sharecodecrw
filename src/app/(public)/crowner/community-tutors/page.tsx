@@ -55,7 +55,9 @@ export default async function Page({
                                             (item: ICommunityTutor) => (
                                                 <Link
                                                     href={
-                                                        '/crowner/community-tutors/slug/' +
+                                                        '/crowner/community-tutors/' +
+                                                        item.slug +
+                                                        '/' +
                                                         item.id
                                                     }
                                                     key={item.id}

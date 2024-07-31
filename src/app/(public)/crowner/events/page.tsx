@@ -55,7 +55,9 @@ export default async function Page({
                                             (item: IDetailEvent) => (
                                                 <Link
                                                     href={
-                                                        '/crowner/events/slug/' +
+                                                        '/crowner/events/' +
+                                                        item.slug +
+                                                        '/' +
                                                         item.id
                                                     }
                                                     key={item.id}

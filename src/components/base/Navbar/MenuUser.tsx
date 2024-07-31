@@ -18,6 +18,12 @@ import {
 } from '@/components/ui/dropdown-menu';
 import { signOut } from 'next-auth/react';
 import Link from 'next/link';
+import {
+    Popover,
+    PopoverContent,
+    PopoverTrigger,
+} from '@/components/ui/popover';
+import Notification from './Notification';
 interface IProps {
     session?: { email: string };
 }
@@ -48,7 +54,15 @@ export default function MenuUser(props: IProps) {
                 </DropdownMenuContent>
             </DropdownMenu>
             <Heart />
-            <Bell />
+            <Popover>
+                <PopoverTrigger asChild>
+                    <Bell className="hover:cursor-pointer hover:text-primary" />
+                </PopoverTrigger>
+                <PopoverContent className="max-h-[90vh] w-96 overflow-x-hidden overflow-y-scroll p-0">
+                    <Notification />
+                </PopoverContent>
+            </Popover>
+
             <MessageSquare />
         </div>
     );
