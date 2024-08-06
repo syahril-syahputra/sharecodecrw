@@ -1,36 +1,25 @@
 'use client';
 import InfiniteScroll from '@/components/ui/InfiniteScroll';
 import { Skeleton } from '@/components/ui/skeleton';
-import { useFetchQuestion } from '@/feature/qa/useFetchQueystion';
 import useTableConfig from '@/lib/useTableConfig';
 import React from 'react';
 // import CardQuestion from '../QuestionAndAnswer/CardQuestion';
 import CardNotification from '../Card/CardNotification';
+import { useFetchNotification } from '@/feature/notification/useFetchNotification';
 
+// interface IProps {
+//     counter: [number, React.Dispatch<React.SetStateAction<number>>];
+// }
 export default function Notification() {
-    const { pagination, filterValue } = useTableConfig<{
-        entity_type: string;
-        entity_id: string;
-    }>({
-        pageSize: 2,
-        defaultFilter: {
-            entity_type: 'crowners',
-            entity_id: '01J1RWEFJ5GYD95ZWD28YC7ZQ1',
-        },
+    const { pagination } = useTableConfig({
+        pageSize: 10,
+        defaultFilter: {},
     });
-    const { data, fetchNextPage, isLoading, hasNextPage } = useFetchQuestion(
-        pagination,
-        filterValue,
-        'oldest'
-    );
+    const { data, fetchNextPage, isLoading, hasNextPage } =
+        useFetchNotification(pagination);
 
     return (
         <div className="bg-background p-4">
-            <div className="sticky top-0 z-10 bg-background py-2 text-right ">
-                <span className="cursor-pointer text-sm hover:text-primary">
-                    Mark all as read
-                </span>
-            </div>
             <div>
                 {data &&
                     data.pages.map((page) =>

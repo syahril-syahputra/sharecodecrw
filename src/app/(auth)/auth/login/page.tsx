@@ -24,6 +24,7 @@ import { PasswordInput } from '@/components/ui/password-input';
 import { useSearchParams, useRouter } from 'next/navigation';
 import { signIn } from 'next-auth/react';
 import fetchClient from '@/lib/FetchClient';
+import useFCMToken from '@/lib/hooks/useFCMToken';
 
 const formSchema = z.object({
     email: z
@@ -35,6 +36,7 @@ const formSchema = z.object({
     remember_me: z.boolean().optional(),
 });
 export default function Page() {
+    const fcmToken = useFCMToken();
     const [loginFail, setloginFail] = useState('');
     const [loadingGoogle, setloadingGoogle] = useState(false);
 
@@ -68,6 +70,7 @@ export default function Page() {
             const callbackUrl = searchParams.get('callbackUrl') || '/';
             const request = await signIn('username-login', {
                 email: data.email,
+                token: fcmToken,
                 password: data.password,
                 remember_me: data.remember_me,
                 redirect: false,

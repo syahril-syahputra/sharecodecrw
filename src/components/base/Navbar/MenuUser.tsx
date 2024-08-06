@@ -1,13 +1,6 @@
 'use client';
 import React from 'react';
-import {
-    Bell,
-    Heart,
-    LogOut,
-    MessageSquare,
-    UserIcon,
-    User2,
-} from 'lucide-react';
+import { Heart, LogOut, MessageSquare, UserIcon, User2 } from 'lucide-react';
 import {
     DropdownMenu,
     DropdownMenuContent,
@@ -18,12 +11,7 @@ import {
 } from '@/components/ui/dropdown-menu';
 import { signOut } from 'next-auth/react';
 import Link from 'next/link';
-import {
-    Popover,
-    PopoverContent,
-    PopoverTrigger,
-} from '@/components/ui/popover';
-import Notification from './Notification';
+import ButtonNotification from './ButtonNotification';
 interface IProps {
     session?: { email: string };
 }
@@ -54,15 +42,7 @@ export default function MenuUser(props: IProps) {
                 </DropdownMenuContent>
             </DropdownMenu>
             <Heart />
-            <Popover>
-                <PopoverTrigger asChild>
-                    <Bell className="hover:cursor-pointer hover:text-primary" />
-                </PopoverTrigger>
-                <PopoverContent className="max-h-[90vh] w-96 overflow-x-hidden overflow-y-scroll p-0">
-                    <Notification />
-                </PopoverContent>
-            </Popover>
-
+            <ButtonNotification />
             <MessageSquare />
         </div>
     );

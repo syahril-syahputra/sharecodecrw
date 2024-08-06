@@ -2,16 +2,14 @@ export interface INotification {
     id: string;
     title: string;
     message: string;
-    created_at: string;
+    link: string;
     is_read: boolean;
-    listing_type: string;
-    listing_type_formatted: string;
-    entity_id: number;
+    entity_id: string;
     entity_type: string;
-    entity_type_formatted: string;
-    entity_image_url: string;
-    user_id: number;
-    first_name: string;
-    last_name: string;
-    profile_picture_url: string;
+    entity_picture_url: string;
+    notifier_user_id: string;
+    notifier_first_name: string;
+    notifier_last_name: string;
+    notifier_profile_picture_url: string | null;
+    created_at: string;
 }
