@@ -22,7 +22,7 @@ export const authOptions: NextAuthOptions = {
                     const response = await api.get(
                         '/auth/google/callback?code=' + credentials.code
                     );
-                    console.log('halooo');
+
                     const user = response.data;
 
                     if (user) {
@@ -52,6 +52,7 @@ export const authOptions: NextAuthOptions = {
                     const response = await api.post('/auth/login', {
                         email: credentials.email,
                         password: credentials.password,
+                        token: credentials.token,
                         remember_me: JSON.parse(credentials.remember_me),
                     });
 

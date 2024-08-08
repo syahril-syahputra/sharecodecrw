@@ -24,13 +24,12 @@ export default function ButtonNotification() {
         if (status === 'success') {
             setnotification(notificationCOunter);
         }
-    }, [status]);
+    }, [notificationCOunter, status]);
 
     useEffect(() => {
         if ('serviceWorker' in navigator) {
             const fcmmessaging = messaging();
             const unsubscribe = onMessage(fcmmessaging, () => {
-                console.log('notification ini ' + notification);
                 setnotification(
                     (prevNotification) => (prevNotification || 0) + 1
                 );

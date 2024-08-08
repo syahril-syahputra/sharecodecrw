@@ -1,5 +1,5 @@
 import fetchClient from '@/lib/FetchClient';
-import { keepPreviousData, useQuery } from '@tanstack/react-query';
+import { useQuery } from '@tanstack/react-query';
 
 export const useFetchNotificationCounter = () => {
     return useQuery({
@@ -11,6 +11,5 @@ export const useFetchNotificationCounter = () => {
             return response.data.data as number;
         },
         queryKey: ['fetch.notificationCounter'],
-        placeholderData: keepPreviousData,
     });
 };
