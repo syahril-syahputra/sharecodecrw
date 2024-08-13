@@ -2,13 +2,17 @@ import React from 'react';
 import ImageCard from '../Image/ImageCard';
 import IEventReservation from '@/types/eventReservation';
 import dayjs from 'dayjs';
+import Link from 'next/link';
+import { MessageCircleMore, ReceiptText } from 'lucide-react';
+import { Button } from '@/components/ui/button';
 
 interface IProps {
     data: IEventReservation;
 }
 export default function CardEventReservation(props: IProps) {
+    const url = '/crowner/event/slug/' + props.data.id;
     return (
-        <div className="flex cursor-pointer items-center space-x-4 rounded-md border p-4 shadow-md active:opacity-30">
+        <div className="flex  items-center space-x-4 rounded-md border p-4 shadow-md ">
             <ImageCard src={props.data.image_url} className="h-36 w-56" />
             <div className="flex flex-1 flex-col space-y-2 ">
                 <div className="text-2xl font-semibold">{props.data.title}</div>
@@ -26,6 +30,19 @@ export default function CardEventReservation(props: IProps) {
                 <div className="text-muted-foreground">
                     {props.data.province}, {props.data.city}
                 </div>
+            </div>
+            <div className="flex flex-col space-y-4">
+                <Link href={url}>
+                    <Button variant={'link'}>
+                        <ReceiptText className="mr-2" />
+                        View Detail
+                    </Button>
+                </Link>
+                <Link href={'/user/event-reservation/chat/' + props.data.id}>
+                    <Button variant={'link'} className="text-foreground">
+                        <MessageCircleMore className="mr-2" /> Chat Group
+                    </Button>
+                </Link>
             </div>
         </div>
     );

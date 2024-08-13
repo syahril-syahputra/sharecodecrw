@@ -23,7 +23,7 @@ export default function Page() {
             pageSize: 4,
         },
         {
-            event_schedule: 'all',
+            event_schedule: 'upcoming',
             acceptance_status: '',
             is_visible: 'true',
         },

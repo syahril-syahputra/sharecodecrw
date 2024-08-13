@@ -11,7 +11,6 @@ import {
 import { useFetchEventReservation } from '@/feature/event-reservation/useFetchEventReservation';
 import useTableConfig from '@/lib/useTableConfig';
 import { Select } from '@radix-ui/react-select';
-import Link from 'next/link';
 import React, { useState } from 'react';
 
 export default function Page() {
@@ -60,9 +59,10 @@ export default function Page() {
                         {data &&
                             data?.items.map((item) => {
                                 return (
-                                    <Link href={''} key={item.id}>
-                                        <CardEventReservation data={item} />
-                                    </Link>
+                                    <CardEventReservation
+                                        key={item.id}
+                                        data={item}
+                                    />
                                 );
                             })}
                     </div>

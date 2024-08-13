@@ -70,7 +70,11 @@ export default function ButtonNotification() {
                     </div>
                 </div>
             </PopoverTrigger>
-            <PopoverContent className="max-h-[90vh] w-96 overflow-x-hidden overflow-y-scroll p-0">
+            <PopoverContent className=" max-h-[90vh] w-96 overflow-x-hidden p-0">
+                <div className="sticky left-0 top-0 z-10 bg-background p-4 font-bold">
+                    Notification
+                </div>
+
                 <Notification />
             </PopoverContent>
         </Popover>

@@ -100,6 +100,7 @@ export const authOptions: NextAuthOptions = {
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         async session({ session, token }: any) {
             session.access_token = token.access_token;
+            session.user.id = token.id;
             session.user.email = token.email || '';
             session.user.first_name = token.first_name || '';
             session.user.last_name = token.last_name || '';

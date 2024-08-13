@@ -12,7 +12,6 @@ import {
 import { useFetchInterestsFavorites } from '@/feature/interests-favorites/useFetchInterestsFavorites';
 import useTableConfig from '@/lib/useTableConfig';
 import { Select } from '@radix-ui/react-select';
-import Link from 'next/link';
 import React, { useState } from 'react';
 
 export default function Page() {
@@ -115,9 +114,10 @@ export default function Page() {
                         {data &&
                             data?.items.map((item) => {
                                 return (
-                                    <Link href={''} key={item.id}>
-                                        <CardInterestsFavorites data={item} />
-                                    </Link>
+                                    <CardInterestsFavorites
+                                        key={item.id}
+                                        data={item}
+                                    />
                                 );
                             })}
                     </div>
