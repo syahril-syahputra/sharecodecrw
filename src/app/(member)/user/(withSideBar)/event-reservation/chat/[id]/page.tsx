@@ -12,9 +12,20 @@ export default function Page({ params }: { params: { id: string } }) {
     const [socket, setSocket] = useState<WebSocket | null>(null);
     const [message, setMessage] = useState('');
     const first = useRef<HTMLDivElement>(null);
-    const [url, seturl] = useState('');
     const [dataChat, setdataChat] = useState<IChat[]>([]);
+    const getToken = async () => {
+        try {
+            const data = await fetchClient({
+                url: '/aphemeral-tokens',
+            });
 
+            connect(
+                `wss://dev-api.crowner.ca/ws?token=${data.data.data.access_token}&room_id=${params.id}`
+            );
+        } catch (error) {
+            console.log(error);
+        }
+    };
     function connect(url: string) {
         const ws = new WebSocket(url);
         ws.onopen = function () {
@@ -36,8 +47,8 @@ export default function Page({ params }: { params: { id: string } }) {
                 e.reason
             );
             setTimeout(function () {
-                connect(url);
-            }, 20000);
+                getToken();
+            }, 10000);
         };
 
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -48,25 +59,7 @@ export default function Page({ params }: { params: { id: string } }) {
         setSocket(ws);
     }
     useEffect(() => {
-        const get = async () => {
-            try {
-                // const datas = await fetchClient({
-                //     url: '/messages/group/' + params.id,
-                // });
-                const data = await fetchClient({
-                    url: '/aphemeral-tokens',
-                });
-                seturl(
-                    `wss://dev-api.crowner.ca/ws?token=${data.data.data.access_token}&room_id=${params.id}`
-                );
-                connect(
-                    `wss://dev-api.crowner.ca/ws?token=${data.data.data.access_token}&room_id=${params.id}`
-                );
-            } catch (error) {
-                console.log(error);
-            }
-        };
-        get();
+        getToken();
 
         return () => {
             if (socket) {
@@ -87,7 +80,7 @@ export default function Page({ params }: { params: { id: string } }) {
             );
             setMessage(''); // Clear the input after sending the message
         } else {
-            connect(url);
+            getToken();
             console.log('Socket is not open.');
         }
     };
