@@ -19,3 +19,12 @@ export interface IChat {
         profile_picture_url: string;
     };
 }
+export interface IChatHistory {
+    user_id?: string;
+    first_name?: string;
+    last_name?: string;
+    id?: string;
+    message?: string;
+    created_at?: string;
+    profile_picture_url: string;
+}
