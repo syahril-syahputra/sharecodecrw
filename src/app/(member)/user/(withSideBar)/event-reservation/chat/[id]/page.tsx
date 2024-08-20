@@ -39,7 +39,7 @@ export default function Page({ params }: { params: { id: string } }) {
     const getToken = async () => {
         try {
             const data = await fetchClient({
-                url: '/aphemeral-tokens',
+                url: '/ephemeral-tokens',
             });
 
             connect(
