@@ -18,6 +18,7 @@ export default function Page({ params }: { params: { id: string } }) {
     const [message, setMessage] = useState('');
     const first = useRef<HTMLDivElement>(null);
     const [dataChat, setdataChat] = useState<IChat[]>([]);
+    const [init, setinit] = useState(false);
     const { pagination } = useTableConfig({
         pageSize: 10,
         defaultFilter: {},
@@ -29,7 +30,10 @@ export default function Page({ params }: { params: { id: string } }) {
         hasNextPage,
     } = useFetchHistoryChat(params.id, pagination, () => {
         setTimeout(() => {
-            first.current?.scrollIntoView(false);
+            if (!init) {
+                first.current?.scrollIntoView(false);
+                setinit(true);
+            }
         }, 100);
     });
     const getToken = async () => {

@@ -32,7 +32,7 @@ export default function CardChat(props: { data: IChat }) {
             </div>
         );
     }
-    if (props.data.event === 'chat-group-user-join') {
+    if (props.data.event === 'chat-group-user-join' && name !== 'You') {
         return (
             <div className="mx-auto flex items-start space-x-2 p-2">
                 <div className=" space-y-2 rounded-lg  italic text-green-600">
@@ -42,7 +42,7 @@ export default function CardChat(props: { data: IChat }) {
             </div>
         );
     }
-    if (props.data.event === 'chat-group-user-left') {
+    if (props.data.event === 'chat-group-user-left' && name !== 'You') {
         return (
             <div className="mx-auto flex items-start space-x-2 p-2">
                 <div className=" space-y-2 rounded-lg  italic text-red-400">
