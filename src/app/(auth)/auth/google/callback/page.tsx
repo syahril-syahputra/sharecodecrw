@@ -2,6 +2,8 @@
 
 import TitleAuth from '@/components/base/Title/TitleAuth';
 import Spinner from '@/components/ui/spinner';
+import fetchClient from '@/lib/FetchClient';
+import useFCMToken from '@/lib/hooks/useFCMToken';
 import { signIn } from 'next-auth/react';
 import { useSearchParams, useRouter } from 'next/navigation';
 import { useEffect } from 'react';
@@ -10,6 +12,7 @@ export default function Page() {
     const searchParams = useSearchParams();
     const id = decodeURI(searchParams.get('code') || '');
     const router = useRouter();
+    const fcmToken = useFCMToken();
     useEffect(() => {
         const fetchData = async () => {
             const request = await signIn('google-login', {
@@ -19,6 +22,13 @@ export default function Page() {
             if (request?.error) {
                 router.push('/auth/login');
             } else {
+                await fetchClient({
+                    method: 'POST',
+                    url: '/notifications/fcm-tokens',
+                    body: {
+                        token: fcmToken,
+                    },
+                });
                 router.refresh();
                 router.push('/user');
             }

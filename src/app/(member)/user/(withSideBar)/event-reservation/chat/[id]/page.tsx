@@ -20,7 +20,7 @@ export default function Page({ params }: { params: { id: string } }) {
     const [dataChat, setdataChat] = useState<IChat[]>([]);
     const [init, setinit] = useState(false);
     const { pagination } = useTableConfig({
-        pageSize: 10,
+        pageSize: 5,
         defaultFilter: {},
     });
     const {
@@ -57,7 +57,7 @@ export default function Page({ params }: { params: { id: string } }) {
         };
 
         ws.onmessage = function (e) {
-            setdataChat((prev) => [...prev, JSON.parse(e.data)]);
+            setdataChat((prev) => [JSON.parse(e.data), ...prev]);
 
             setTimeout(() => {
                 first.current?.scrollIntoView(false);
@@ -117,17 +117,32 @@ export default function Page({ params }: { params: { id: string } }) {
             <div className=" border-Border rounded-md border bg-input">
                 <ScrollArea className=" h-[500px] ">
                     <div
-                        className="flex min-h-[500px] flex-col justify-end "
+                        className="flex min-h-[500px] flex-col-reverse "
                         ref={first}
                     >
+                        {dataChat.map((item, index) => (
+                            <CardChat key={index} data={item} />
+                        ))}
+                        {historyChat &&
+                            historyChat.pages.map((page, index) => (
+                                <div key={index}>
+                                    {page.items.map((item, i) => (
+                                        <CardHistoryChat key={i} data={item} />
+                                    ))}
+                                </div>
+                            ))}
+
                         <InfiniteScroll
                             hasMore={hasNextPage}
                             isLoading={isLoading}
-                            next={() => fetchNextPage()}
-                            threshold={1}
+                            reverse
+                            next={() => {
+                                fetchNextPage();
+                            }}
+                            threshold={0}
                         >
                             {hasNextPage && (
-                                <div className="border-Input flex items-center justify-between space-x-2 border-b px-4 py-4 ">
+                                <div className="border-Input mt-[1000px] flex items-center justify-between space-x-2 border-b px-4  ">
                                     <Skeleton className="aspect-square h-14 rounded-full" />
                                     <div className="flex-1 space-y-1">
                                         <Skeleton className="h-6 w-full" />
@@ -136,17 +151,25 @@ export default function Page({ params }: { params: { id: string } }) {
                                 </div>
                             )}
                         </InfiniteScroll>
-                        {historyChat &&
-                            historyChat.pages.map((page) =>
-                                page.items.map((item, i) => (
-                                    <CardHistoryChat key={i} data={item} />
-                                ))
-                            )}
-
+                        {/* {Array(2)
+                            .fill(0)
+                            .map((i) => (
+                                <div
+                                    className="mb-2 rounded-md bg-gray-100 p-4 shadow-lg"
+                                    key={new Date().getTime()}
+                                >
+                                    <h3 className="text-lg font-bold">{`Card #${i + 1}`}</h3>
+                                    <p className="text-sm text-gray-700">
+                                        {`Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras at libero ac mi sodales convallis. In hac habitasse platea dictumst. Lorem ipsum dolor sit amet, consectetur adipiscing elit.`}
+                                    </p>
+                                </div>
+                            ))} */}
+                    </div>
+                    {/* <div>
                         {dataChat.map((item, index) => (
                             <CardChat key={index} data={item} />
                         ))}
-                    </div>
+                    </div> */}
                 </ScrollArea>
                 <div className="flex items-center space-x-2 p-4">
                     <div className="flex flex-1 items-center space-x-2">
