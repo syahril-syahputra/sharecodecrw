@@ -25,6 +25,7 @@ export async function middleware(request: NextRequest) {
     } else {
         if (
             request.nextUrl.pathname.startsWith('/user') ||
+            request.nextUrl.pathname.startsWith('/profile') ||
             request.nextUrl.pathname.startsWith('/email-verification')
         ) {
             return NextResponse.redirect(new URL('/auth/login', request.url));

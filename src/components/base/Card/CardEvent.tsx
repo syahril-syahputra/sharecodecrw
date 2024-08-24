@@ -8,6 +8,7 @@ import VisibilityStatus from '../ListingUtilities/VisibilityStatus';
 
 interface IProps {
     variant?: 'horizontal' | 'vertical';
+    isPublic?: boolean;
     data: IDetailEvent;
 }
 export default function CardEvent(props: IProps) {
@@ -80,28 +81,7 @@ export default function CardEvent(props: IProps) {
     } else {
         return (
             <div className="flex cursor-pointer  space-x-4 rounded-md border p-4 shadow-md active:opacity-30">
-                <ImageCard src={props.data.image_url} className="h-36 w-56" />
-                {/* <div className="flex flex-1 flex-col  ">
-                    <div className="flex space-x-4 font-semibold">
-                        <span>
-                            {dayjs(props.data?.date_time).format(
-                                'dddd, DD MMMM YYYY'
-                            )}
-                        </span>
-                        <span>
-                            {dayjs(props.data.date_time).format('HH:mm')} (
-                            {props.data.gmt_offset})
-                        </span>
-                    </div>
-                    <div className="text-lg font-semibold">
-                        {props.data.title}
-                    </div>
-                    <div className="flex flex-1 items-end space-x-2 font-bold">
-                        <span>
-                            {props.data.province}, {props.data.city}
-                        </span>
-                    </div>
-                </div> */}
+                <ImageCard src={props.data.image_url} className="h-20 w-20" />
 
                 <div className="flex h-auto flex-1  flex-col">
                     <div className="text-lg font-semibold">
@@ -122,16 +102,18 @@ export default function CardEvent(props: IProps) {
                             {props.data.gmt_offset})
                         </span>
                     </div>
-                    <div className="flex flex-1 items-end space-x-2">
-                        <span className="space-x-3">
-                            <AcceptanceStatus
-                                acceptance={props.data.acceptance_status}
-                            />
-                            <VisibilityStatus
-                                is_visible={props.data.is_visible}
-                            />
-                        </span>
-                    </div>
+                    {!props.isPublic && (
+                        <div className="flex flex-1 items-end space-x-2">
+                            <span className="space-x-3">
+                                <AcceptanceStatus
+                                    acceptance={props.data.acceptance_status}
+                                />
+                                <VisibilityStatus
+                                    is_visible={props.data.is_visible}
+                                />
+                            </span>
+                        </div>
+                    )}
                 </div>
             </div>
         );

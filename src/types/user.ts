@@ -7,6 +7,15 @@ export interface User {
     last_name: string;
     email_verified_at: string;
 }
+export interface IOtherUser {
+    id: string;
+    first_name: string;
+    last_name: string;
+    profile_picture_url: string | null;
+    about?: string | null;
+    province?: string | null;
+    city?: string | null;
+}
 export interface ITags {
     id: string;
     title: string;

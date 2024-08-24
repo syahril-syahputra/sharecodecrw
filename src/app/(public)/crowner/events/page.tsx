@@ -12,7 +12,6 @@ async function getData(filter: string | undefined) {
         const baseUrl = `/crowner/events`;
         const convertObject = new URLSearchParams(filter).toString();
         const url = `${baseUrl}?paginate=12&${convertObject}`;
-        console.log(url);
         const res = await fetchServer({
             url: url,
         });

@@ -48,8 +48,11 @@ export default async function Navbar() {
                 <span className="px-2 font-semibold text-primary">
                     Post a Listing
                 </span>
-                <span className="px-2  font-semibold text-primary">BLOG</span>
-
+                <Link href={'/blog'}>
+                    <span className="px-2  font-semibold text-primary">
+                        BLOG
+                    </span>
+                </Link>
                 {user ? (
                     <MenuUser session={user} />
                 ) : (
