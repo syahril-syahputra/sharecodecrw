@@ -24,7 +24,7 @@ export default function InputQuestion(props: IProps) {
     };
     return (
         <div className="space-y-4">
-            <div>Q&A</div>
+            <h1 className="py-2 text-2xl font-semibold">Q&A</h1>
             <AutosizeTextarea
                 value={props.value}
                 onChange={(e) => props.onChange(e.target.value)}

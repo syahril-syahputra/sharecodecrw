@@ -27,6 +27,9 @@ export interface IDetailEvent {
     community_id: string | null;
     title: string;
     city: string;
+    host_name: string;
+    host_id: string;
+    host_picture_url: string;
     province: string;
     tz_identifier: string;
     gmt_offset: string;

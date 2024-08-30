@@ -33,6 +33,9 @@ export interface IDetailCommunity {
     address: string;
     latitude: number;
     longitude: number;
+    host_name: string;
+    host_id: string;
+    host_picture_url: string;
     about: string;
     acceptance_status: string;
     is_visible: boolean;

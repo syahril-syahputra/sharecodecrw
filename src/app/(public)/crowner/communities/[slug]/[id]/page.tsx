@@ -17,6 +17,10 @@ import { Badge } from '@/components/ui/badge';
 import EventAction from './action';
 import { IDetailCommunity } from '@/types/community';
 import QuestionAndAnswer from '@/components/base/QuestionAndAnswer';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import Link from 'next/link';
+import { Separator } from '@/components/ui/separator';
+import Related from './related';
 
 async function getData(id: string) {
     try {
@@ -55,7 +59,22 @@ export default async function Page({ params }: { params: { id: string } }) {
                 <EventAction data={data} />
             </div>
             <section className="flex  justify-between space-x-4">
-                <div className="flex-1">
+                <div className="flex-1 space-y-4">
+                    <div>
+                        <div className="flex space-x-4 ">
+                            <Avatar className="h-8 w-8">
+                                <AvatarImage
+                                    src={data.host_picture_url || ''}
+                                />
+                                <AvatarFallback>US</AvatarFallback>
+                            </Avatar>
+                            <Link href={'/profile/' + data.host_id}>
+                                <h3 className="text-lg">
+                                    <b>HOST</b> : {data.host_name}
+                                </h3>
+                            </Link>
+                        </div>
+                    </div>
                     <div className="">
                         <div className="mb-4 rounded-xl border">
                             <Image
@@ -113,6 +132,12 @@ export default async function Page({ params }: { params: { id: string } }) {
                     </div>
                 </div>
             </section>
+
+            <Separator className="h-0.5" />
+            <section>
+                <Related tags={data?.tags} />
+            </section>
+            <Separator className="h-0.5" />
             <section>
                 <QuestionAndAnswer
                     entity_id={params.id}

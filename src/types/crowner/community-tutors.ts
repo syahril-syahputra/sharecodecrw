@@ -27,6 +27,9 @@ export interface ICommunityTutor {
     acceptance_status: string;
     is_visible: boolean;
     image_url: string;
+    host_name: string;
+    host_id: string;
+    host_picture_url: string;
     hourly_rate: number;
     hourly_rate_formatted: string;
     interest_counter: number;
