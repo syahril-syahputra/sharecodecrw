@@ -92,19 +92,21 @@ export default function Page({ params }: { params: { id: string } }) {
     }, [params.id]);
 
     const handleSendMessage = () => {
-        if (socket && socket.readyState === WebSocket.OPEN) {
-            socket.send(
-                JSON.stringify({
-                    event: 'chat-group-user-send-message',
-                    data: {
-                        message: message,
-                    },
-                })
-            );
-            setMessage(''); // Clear the input after sending the message
-        } else {
-            getToken();
-            console.log('Socket is not open.');
+        if (message.length > 0) {
+            if (socket && socket.readyState === WebSocket.OPEN) {
+                socket.send(
+                    JSON.stringify({
+                        event: 'chat-group-user-send-message',
+                        data: {
+                            message: message,
+                        },
+                    })
+                );
+                setMessage(''); // Clear the input after sending the message
+            } else {
+                getToken();
+                console.log('Socket is not open.');
+            }
         }
     };
     const handleType = (event: KeyboardEvent<HTMLInputElement>) => {

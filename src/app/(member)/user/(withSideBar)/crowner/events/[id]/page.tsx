@@ -5,7 +5,6 @@ import TitlePage from '@/components/base/Title/TitlePage';
 import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
 import { useDetailEvent } from '@/feature/events/useDetailEvents';
-import { visibilityStatus } from '@/lib/visibilityStatus';
 import dayjs from 'dayjs';
 import {
     Clock3,
@@ -22,6 +21,8 @@ import { Button } from '@/components/ui/button';
 import EventVisibility from './Visibility';
 import DeleteEvent from './Delete';
 import RsvpInterest from './RsvpInterest';
+import AcceptanceStatus from '@/components/base/ListingUtilities/AcceptanceStatus';
+import VisibilityStatus from '@/components/base/ListingUtilities/VisibilityStatus';
 
 export default function Page({ params }: { params: { id: string } }) {
     const { data, isLoading, refetch } = useDetailEvent(params.id);
@@ -61,7 +62,12 @@ export default function Page({ params }: { params: { id: string } }) {
                             return <Badge key={tag.id}>{tag.title}</Badge>;
                         })}
                     </div>
-                    <div className=" capitalize">{`${data?.acceptance_status} | ${visibilityStatus(data?.is_visible)}`}</div>
+                    <div className="flex items-center space-x-4">
+                        <AcceptanceStatus
+                            acceptance={data?.acceptance_status}
+                        />
+                        <VisibilityStatus is_visible={data?.is_visible} />
+                    </div>
                 </div>
                 <div className="flex items-center space-x-2">
                     <EventVisibility

@@ -4,6 +4,7 @@ export default interface IEventReservation {
     province_id: string;
     city: string;
     province: string;
+    slug?: string;
     title: string;
     date_time: string;
     tz_identifier: string;

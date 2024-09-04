@@ -1,5 +1,5 @@
 'use client';
-import { Info } from 'lucide-react';
+import { Flag } from 'lucide-react';
 import React, { useState } from 'react';
 import DialogReport from '../Dialog/DialogReport';
 import DialogLoginRequired from '../Dialog/DialogLoginRequired';
@@ -17,7 +17,7 @@ export default function Report(props: IProps) {
     const [isNotLoginModal, setisNotLoginModal] = useState(false);
     return (
         <div className="" title="Report">
-            <Info
+            <Flag
                 size={18}
                 onClick={() =>
                     isLogin ? setopen(true) : setisNotLoginModal(true)

@@ -59,7 +59,7 @@ export default async function Page({ params }: { params: { id: string } }) {
                 <TitlePage>{data?.title}</TitlePage>
                 <EventAction data={data} />
             </div>
-            <section className="flex items-center justify-between space-x-4">
+            <section className="flex items-start justify-between space-x-4">
                 <div className="flex-1 space-y-4">
                     <div>
                         <div className="flex space-x-4 ">

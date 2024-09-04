@@ -41,7 +41,7 @@ export default async function Page({
                 <div className="flex-1 ">
                     <SortEvent searchParams={searchParams || ''} />
 
-                    <section className="p-4">
+                    <section className="px-4">
                         <div className="">
                             {data?.items.length === 0 && (
                                 <div className=" w-full bg-primary-foreground p-8 text-center">
