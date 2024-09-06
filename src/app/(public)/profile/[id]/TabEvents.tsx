@@ -3,8 +3,7 @@ import { IDetailEvent } from '@/types/events';
 import React from 'react';
 
 export default function TabEvents() {
-    const events: IDetailEvent[] = [
-    ];
+    const events: IDetailEvent[] = [];
     return (
         <div>
             {events.map((item) => (
