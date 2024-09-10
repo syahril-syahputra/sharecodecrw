@@ -28,7 +28,7 @@ export default async function page({ params }: { params: { id: string } }) {
                 </h2>
                 <h1 className="text-2xl">{data?.title}</h1>
                 <div className="text-sm text-gray-600">
-                    Updated by {data.creator} -{' '}
+                    {data.creator} -{' '}
                     {dayjs(data.createdAt).format('HH MMM YYYY')}
                 </div>
                 <div className=" space-x-2">
@@ -47,7 +47,14 @@ export default async function page({ params }: { params: { id: string } }) {
                     className="h-auto max-h-[400px] w-full rounded-lg object-cover"
                     alt={data.title}
                 />
-                <div>{data?.body}</div>
+                <article>
+                    <div
+                        className="post__content"
+                        dangerouslySetInnerHTML={{
+                            __html: data?.body,
+                        }}
+                    ></div>
+                </article>
             </div>
         </div>
     );

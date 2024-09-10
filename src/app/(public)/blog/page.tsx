@@ -5,7 +5,6 @@ import SSRPagination from '@/components/ui/ssr-pagination';
 import fetchServer from '@/lib/fetchServer';
 import { IPaginationMeta } from '@/types/base/pagination';
 import { IArticle } from '@/types/blog';
-import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import React from 'react';
 
@@ -27,7 +26,6 @@ async function getArticle(filter: string | undefined) {
         const res = await fetchServer({
             url: url,
         });
-        console.log(res.data.data);
         return res.data.data as {
             items: IArticle[];
             meta: IPaginationMeta;
@@ -51,9 +49,7 @@ export default async function Page({
             <div className="grid grid-cols-1 gap-4 md:grid-cols-4">
                 {article?.items.length ? (
                     article.items.map((item, index) => (
-                        <Link key={index} href={'/blog/' + item.id}>
-                            <CardArticle data={item} />
-                        </Link>
+                        <CardArticle key={index} data={item} />
                     ))
                 ) : (
                     <p>No article found.</p>
