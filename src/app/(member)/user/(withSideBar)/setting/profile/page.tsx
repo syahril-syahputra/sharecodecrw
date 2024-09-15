@@ -173,7 +173,7 @@ export default function Page() {
         formBasic.reset({
             first_name: data.first_name,
             last_name: data.last_name,
-            birthday: dayjs(data.dob).toDate(),
+            birthday: data.dob ? dayjs(data.dob).toDate() : undefined,
             province: data.province_id,
             city: data.city_id,
             about_me: data.about || '',

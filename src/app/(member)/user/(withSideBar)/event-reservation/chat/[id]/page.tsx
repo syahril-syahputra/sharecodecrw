@@ -23,6 +23,27 @@ export default function Page({ params }: { params: { id: string } }) {
         pageSize: 5,
         defaultFilter: {},
     });
+    useEffect(() => {
+        ping();
+    }, []);
+
+    let timeoutId: NodeJS.Timeout;
+    const ping = () => {
+        timeoutId && clearTimeout(timeoutId);
+        timeoutId = setTimeout(
+            () => {
+                if (socket && socket.readyState === WebSocket.OPEN) {
+                    socket.send(
+                        JSON.stringify({
+                            event: 'ping',
+                        })
+                    );
+                }
+                ping();
+            },
+            parseInt(process.env.NEXT_PUBLIC_INTERVAL_PING || '5000')
+        );
+    };
     const {
         data: historyChat,
         fetchNextPage,
@@ -54,14 +75,19 @@ export default function Page({ params }: { params: { id: string } }) {
         ws.onopen = function () {
             // subscribe to some channels
             console.log('connetion success open');
+            ping();
         };
 
         ws.onmessage = function (e) {
             setdataChat((prev) => [JSON.parse(e.data), ...prev]);
-
-            setTimeout(() => {
-                first.current?.scrollIntoView(false);
-            }, 100);
+            if (
+                JSON.parse(e.data).event !== 'pong' &&
+                JSON.parse(e.data).event !== 'ping'
+            ) {
+                setTimeout(() => {
+                    first.current?.scrollIntoView(false);
+                }, 100);
+            }
         };
 
         ws.onclose = function (e) {
@@ -94,6 +120,7 @@ export default function Page({ params }: { params: { id: string } }) {
     const handleSendMessage = () => {
         if (message.length > 0) {
             if (socket && socket.readyState === WebSocket.OPEN) {
+                ping();
                 socket.send(
                     JSON.stringify({
                         event: 'chat-group-user-send-message',
