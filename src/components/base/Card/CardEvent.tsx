@@ -5,11 +5,13 @@ import ImageCard from '../Image/ImageCard';
 import { IDetailEvent } from '@/types/events';
 import AcceptanceStatus from '../ListingUtilities/AcceptanceStatus';
 import VisibilityStatus from '../ListingUtilities/VisibilityStatus';
+import clsx from 'clsx';
 
 interface IProps {
     variant?: 'horizontal' | 'vertical';
     isPublic?: boolean;
     data: IDetailEvent;
+    largeImage?: boolean;
 }
 export default function CardEvent(props: IProps) {
     if (props.variant === 'vertical') {
@@ -81,7 +83,12 @@ export default function CardEvent(props: IProps) {
     } else {
         return (
             <div className="flex cursor-pointer  space-x-4 rounded-md border p-4 shadow-md active:opacity-30">
-                <ImageCard src={props.data.image_url} className="h-20 w-20" />
+                <ImageCard
+                    src={props.data.image_url}
+                    className={clsx(
+                        props.largeImage ? 'h-36 w-36' : 'h-20 w-20'
+                    )}
+                />
 
                 <div className="flex h-auto flex-1  flex-col">
                     <div className="text-lg font-semibold">

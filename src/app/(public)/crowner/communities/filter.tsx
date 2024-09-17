@@ -42,7 +42,7 @@ export default function FilterEvent(props: { searchParams: object | string }) {
     );
     return (
         <section className="w-1/5">
-            <div className="mt-20 space-y-2 rounded-lg border p-3">
+            <div className="space-y-2 rounded-lg border p-3">
                 <div className="space-y-2">
                     <Label>Title</Label>
                     <div>

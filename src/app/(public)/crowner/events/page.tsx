@@ -31,10 +31,10 @@ export default async function Page({
     const data = await getData(searchParams);
     return (
         <div className="mt-10  w-full">
+            <SortEvent searchParams={searchParams || ''} />
             <div className="flex ">
                 <FilterEvent searchParams={searchParams || ''} />
                 <div className="flex-1 ">
-                    <SortEvent searchParams={searchParams || ''} />
                     {/* {isError && (
                         <ErrorMessage>
                             {error.message || 'Samething Wrong'}

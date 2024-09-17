@@ -15,14 +15,20 @@ import { IDetailCommunity } from '@/types/community';
 import { useSession } from 'next-auth/react';
 import Report from '@/components/base/report';
 import DialogLoginRequired from '@/components/base/Dialog/DialogLoginRequired';
+import { useToast } from '@/components/ui/use-toast';
 
 export default function EventAction(props: { data: IDetailCommunity }) {
+    const { toast } = useToast();
     const { status } = useSession();
     const [isOpen, setisOpen] = useState(false);
     const isLogin = status === 'authenticated';
     const { mutate: mutateInterest, isPending: isePendingInterest } =
         useToogleInterest({
-            onSuccess: () => {},
+            onSuccess: (data) => {
+                toast({
+                    description: data.data.message,
+                });
+            },
             onError: () => {},
         });
 

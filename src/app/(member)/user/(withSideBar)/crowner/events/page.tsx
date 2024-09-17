@@ -212,7 +212,7 @@ export default function Page() {
                             href={'/user/crowner/events/' + item.id}
                             key={item.id}
                         >
-                            <CardEvent data={item} />
+                            <CardEvent largeImage data={item} />
                         </Link>
                     ))
                 ) : (

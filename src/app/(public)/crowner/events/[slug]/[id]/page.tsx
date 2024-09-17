@@ -12,7 +12,7 @@ import {
 import { IDetailEvent } from '@/types/events';
 import TitlePage from '@/components/base/Title/TitlePage';
 import Image from 'next/image';
-import { Clock3, MapPin } from 'lucide-react';
+import { Clock3, DollarSign, MapPin } from 'lucide-react';
 import IframeMap from '@/components/base/Maps/IframeMap';
 import dayjs from 'dayjs';
 import { Badge } from '@/components/ui/badge';
@@ -56,26 +56,24 @@ export default async function Page({ params }: { params: { id: string } }) {
                 </BreadcrumbList>
             </Breadcrumb>
             <div className="flex items-center justify-between">
-                <TitlePage>{data?.title}</TitlePage>
+                <TitlePage>
+                    {data?.title}
+                    <div className="flex space-x-4 pt-4">
+                        <Avatar className="h-8 w-8">
+                            <AvatarImage src={data.host_picture_url || ''} />
+                            <AvatarFallback>US</AvatarFallback>
+                        </Avatar>
+                        <Link href={'/profile/' + data.host_id}>
+                            <h3 className="text-lg">
+                                <b>HOST</b> : {data.host_name}
+                            </h3>
+                        </Link>
+                    </div>
+                </TitlePage>
                 <EventAction data={data} />
             </div>
             <section className="flex items-start justify-between space-x-4">
                 <div className="flex-1 space-y-4">
-                    <div>
-                        <div className="flex space-x-4 ">
-                            <Avatar className="h-8 w-8">
-                                <AvatarImage
-                                    src={data.host_picture_url || ''}
-                                />
-                                <AvatarFallback>US</AvatarFallback>
-                            </Avatar>
-                            <Link href={'/profile/' + data.host_id}>
-                                <h3 className="text-lg">
-                                    <b>HOST</b> : {data.host_name}
-                                </h3>
-                            </Link>
-                        </div>
-                    </div>
                     <div className="">
                         <div className="mb-4 rounded-xl border">
                             <Image
@@ -131,7 +129,17 @@ export default async function Page({ params }: { params: { id: string } }) {
                                 longitude={data?.longitude}
                             />
                         </div>
-
+                        <div className="flex flex-row">
+                            <div className="flex-none">
+                                <DollarSign className="text-primary" />
+                            </div>
+                            <div className="flex space-x-2 pl-4">
+                                <span className="font-semibold">Price</span>
+                                <span className="font-semibold">
+                                    {data?.price_formatted}
+                                </span>
+                            </div>
+                        </div>
                         <div className="space-y-2">
                             <div>Interests</div>
                             <div className="">

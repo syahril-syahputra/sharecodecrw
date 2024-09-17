@@ -19,7 +19,7 @@ export default function SortEvent(props: { searchParams: any }) {
     }
     const router = useRouter();
     return (
-        <section className="block w-full p-4">
+        <section className="block w-full">
             <div className="my-3 flex items-end justify-end">
                 <Label className="text-md my-auto mr-2 font-normal">
                     Sort by

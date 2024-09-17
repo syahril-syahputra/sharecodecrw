@@ -17,20 +17,30 @@ import ShareBox from '@/components/base/Share/ShareBox';
 import { useSession } from 'next-auth/react';
 import Report from '@/components/base/report';
 import DialogLoginRequired from '@/components/base/Dialog/DialogLoginRequired';
+import { useToast } from '@/components/ui/use-toast';
 
 export default function EventAction(props: { data: IDetailEvent }) {
+    const { toast } = useToast();
     const { status } = useSession();
     const [isOpen, setisOpen] = useState(false);
     const [isOpenRSVP, setisOpenRSVP] = useState(false);
     const isLogin = status === 'authenticated';
     const { mutate: mutateInterest, isPending: isePendingInterest } =
         useToogleInterest({
-            onSuccess: () => {},
+            onSuccess: (data) => {
+                toast({
+                    description: data.data.message,
+                });
+            },
             onError: () => {},
         });
     const { mutate: mutateReserve, isPending: isPendingReserve } =
         useReserveEvent({
-            onSuccess: () => {},
+            onSuccess: (data) => {
+                toast({
+                    description: data.data.message,
+                });
+            },
             onError: () => {},
         });
 
