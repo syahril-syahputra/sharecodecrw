@@ -45,9 +45,11 @@ export default async function Navbar() {
                     <SearchBar />
                     <LocationNavbar />
                 </div>
-                <span className="px-2 font-semibold text-primary">
-                    Post a Listing
-                </span>
+                <Link href={'/post-a-listing'}>
+                    <span className="px-2 font-semibold text-primary">
+                        Post a Listing
+                    </span>
+                </Link>
                 <Link href={'/blog'}>
                     <span className="px-2  font-semibold text-primary">
                         BLOG
