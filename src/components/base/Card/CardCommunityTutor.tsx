@@ -30,6 +30,17 @@ export default function CardCommunityTutor(props: IProps) {
                         <DollarSign size={21} className="text-primary" />
                     </div>
                     <div className="pl-1">
+                        {props.data.price_formatted && (
+                            <>
+                                <span className="">
+                                    {props.data.price_formatted}
+                                </span>
+                                <span className="text-sm text-muted-foreground">
+                                    {' '}
+                                    / hour
+                                </span>
+                            </>
+                        )}
                         {props.data.hourly_rate > 0 && (
                             <>
                                 <span className="">

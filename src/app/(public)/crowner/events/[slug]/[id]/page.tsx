@@ -134,7 +134,6 @@ export default async function Page({ params }: { params: { id: string } }) {
                                 <DollarSign className="text-primary" />
                             </div>
                             <div className="flex space-x-2 pl-4">
-                                <span className="font-semibold">Price</span>
                                 <span className="font-semibold">
                                     {data?.price_formatted}
                                 </span>
@@ -164,7 +163,7 @@ export default async function Page({ params }: { params: { id: string } }) {
             </section>
             <Separator className="h-0.5" />
             <section>
-                <Related tags={data?.tags} />
+                <Related id={params.id} tags={data?.tags} />
             </section>
             <Separator className="h-0.5" />
             <section>

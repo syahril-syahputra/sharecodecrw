@@ -32,6 +32,7 @@ export interface ICommunityTutor {
     host_picture_url: string;
     hourly_rate: number;
     hourly_rate_formatted: string;
+    price_formatted?: string;
     interest_counter: number;
     tags: IItemInterest[];
     created_at: string;

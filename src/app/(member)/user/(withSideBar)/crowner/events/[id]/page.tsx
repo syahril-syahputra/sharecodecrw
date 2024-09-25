@@ -151,7 +151,7 @@ export default function Page({ params }: { params: { id: string } }) {
                                                 ? data?.interest_counter
                                                 : 'No'}
                                         </span>{' '}
-                                        people rsvp in this event
+                                        people interested in this event
                                     </span>
                                 </div>
                             </div>
@@ -175,7 +175,7 @@ export default function Page({ params }: { params: { id: string } }) {
                                     <DollarSign className="text-primary" />
                                 </div>
                                 <div className="grow pl-4">
-                                    <span>{data?.price_formatted}</span>
+                                    <span>{data?.price_formated}</span>
                                 </div>
                             </div>
                         </div>

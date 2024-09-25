@@ -13,10 +13,10 @@ import {
     CarouselNext,
     CarouselPrevious,
 } from '@/components/ui/carousel';
-async function getData(tags: string) {
+async function getData(id: string, tags: string) {
     try {
-        const baseUrl = `/crowner/communities`;
-        const url = `${baseUrl}?paginate=10&tag_ids=${tags}`;
+        const baseUrl = `/crowner/related-crowners`;
+        const url = `${baseUrl}?exclude_id=${id}&type=communities&tag_ids=${tags}`;
         console.log(url);
         const res = await fetchServer({
             url: url,
@@ -31,6 +31,7 @@ async function getData(tags: string) {
 }
 
 interface IProps {
+    id: string;
     tags: ITags[];
 }
 export default async function Related(props: IProps) {
@@ -38,10 +39,10 @@ export default async function Related(props: IProps) {
     const tags = `[${props.tags.map((i) => {
         return `"${i.id}"`;
     })}]`;
-    const data = await getData(tags);
+    const data = await getData(props.id, tags);
     return (
         <div>
-            <h1 className="py-4 text-2xl font-semibold">Other Event</h1>
+            <h1 className="py-4 text-2xl font-semibold">Other Comminities</h1>
             <Carousel className="w-full ">
                 <CarouselContent className="-ml-1">
                     {data?.items.map((item, index) => {

@@ -8,6 +8,7 @@ import { useSession } from 'next-auth/react';
 interface IProps {
     entityId: string;
     entityType: 'crowners' | 'question_answers';
+    entitySubType?: 'events' | 'communities' | 'community-tutors';
 }
 export default function Report(props: IProps) {
     const { status } = useSession();
@@ -32,6 +33,7 @@ export default function Report(props: IProps) {
             <DialogReport
                 entityId={props.entityId}
                 entityType={props.entityType}
+                entitySubType={props.entitySubType}
                 open={open}
                 setOpen={setopen}
             />

@@ -67,7 +67,11 @@ export default function EventAction(props: { data: ICommunityTutor }) {
                     </div>
                 </DialogContent>
             </Dialog>
-            <Report entityId={props.data.id} entityType="crowners" />
+            <Report
+                entityId={props.data.id}
+                entityType="crowners"
+                entitySubType="community-tutors"
+            />
         </div>
     );
 }

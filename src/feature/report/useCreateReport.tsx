@@ -11,7 +11,8 @@ export const useCreateReport = ({ onSuccess, onError }: IProps) => {
     return useMutation({
         mutationFn: async (body: {
             entity_id: string;
-            entity_type: string;
+            entity_type: 'crowners' | 'question_answers';
+            entity_sub_type?: 'events' | 'communities' | 'community-tutors';
             message: string;
         }) => {
             const response = await fetchClient({

@@ -90,7 +90,11 @@ export default function EventAction(props: { data: IDetailEvent }) {
                     </div>
                 </DialogContent>
             </Dialog>
-            <Report entityId={props.data.id} entityType="crowners" />
+            <Report
+                entityId={props.data.id}
+                entityType="crowners"
+                entitySubType="events"
+            />
         </div>
     );
 }

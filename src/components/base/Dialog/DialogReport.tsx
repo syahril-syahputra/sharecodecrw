@@ -23,7 +23,8 @@ import { useToast } from '@/components/ui/use-toast';
 export default function DialogReport(props: {
     open: boolean;
     entityId: string;
-    entityType: string;
+    entityType: 'crowners' | 'question_answers';
+    entitySubType?: 'events' | 'communities' | 'community-tutors';
     setOpen: (arg: boolean) => void;
 }) {
     const { toast } = useToast();
@@ -65,6 +66,7 @@ export default function DialogReport(props: {
             entity_id: props.entityId,
             message: reason === 'Other' ? otherReason : reason,
             entity_type: props.entityType,
+            entity_sub_type: props.entitySubType,
         });
     };
     return (
