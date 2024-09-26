@@ -42,7 +42,7 @@ export default async function Related(props: IProps) {
     return (
         <div>
             <h1 className="py-4 text-2xl font-semibold">
-                Other Community Totors
+                Other Community Tutors
             </h1>
             <Carousel className="w-full ">
                 <CarouselContent className="-ml-1">
@@ -54,7 +54,7 @@ export default async function Related(props: IProps) {
                             >
                                 <Link
                                     href={
-                                        '/crowner/events/' +
+                                        '/crowner/community-tutors/' +
                                         item.slug +
                                         '/' +
                                         item.id

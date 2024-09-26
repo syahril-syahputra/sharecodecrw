@@ -53,7 +53,7 @@ export default async function Related(props: IProps) {
                             >
                                 <Link
                                     href={
-                                        '/crowner/events/' +
+                                        '/crowner/communities/' +
                                         item.slug +
                                         '/' +
                                         item.id
