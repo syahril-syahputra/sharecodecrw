@@ -70,7 +70,7 @@ export default function Page() {
             const callbackUrl = searchParams.get('callbackUrl') || '/';
             const request = await signIn('username-login', {
                 email: data.email,
-                token: fcmToken,
+                token: fcmToken || null,
                 password: data.password,
                 remember_me: data.remember_me,
                 redirect: false,
