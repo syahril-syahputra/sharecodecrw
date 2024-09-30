@@ -261,7 +261,7 @@ export default function Page({ params }: { params: { id: string } }) {
                                 </FormItem>
                             )}
                         />
-                        {params.id} ini adalah
+
                         <FormField
                             control={form.control}
                             name="price"
