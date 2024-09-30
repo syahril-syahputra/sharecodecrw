@@ -49,7 +49,7 @@ export default function Page({ params }: { params: { id: string } }) {
                         visibility={data?.is_visible}
                     />
                     <a
-                        href={`/crowner/publisher/community-tutors/${params.id}/update`}
+                        href={`/user/crowner/publisher/community-tutors/${params.id}/update`}
                     >
                         <Button size={'sm'} variant={'secondary'}>
                             <Edit className="mr-2" />
