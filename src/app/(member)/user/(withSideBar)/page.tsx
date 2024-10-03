@@ -136,11 +136,12 @@ export default function Page() {
                 <div className="py-4">
                     <h1 className="pb-2 text-lg font-bold">My Communities</h1>
                     <div className="grid grid-cols-4 gap-4">
-                        <div className="flex !cursor-pointer flex-col items-center justify-center space-y-2 rounded-md border p-4  shadow-md hover:bg-secondary">
-                            <Plus size={48} />
-                            <span>Start Your Community</span>
-                        </div>
-
+                        <Link href={'/user/create-community'}>
+                            <div className="flex h-full flex-col items-center justify-center space-y-2 rounded-md border p-4  shadow-md hover:bg-secondary">
+                                <Plus size={48} />
+                                <span>Start Your Community</span>
+                            </div>
+                        </Link>
                         {communities &&
                             communities.items.map((item: IDetailCommunity) => (
                                 <Link
