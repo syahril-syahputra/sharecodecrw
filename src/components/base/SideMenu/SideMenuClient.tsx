@@ -27,11 +27,11 @@ export default function SideMenuClient() {
                     </Link>
                 </MenuGroupChild>
 
-                <MenuGroupChild href="/user/owner" title="Owner Management">
+                {/* <MenuGroupChild href="/user/owner" title="Owner Management">
                     <MenuItem url={''}>Cars</MenuItem>
                     <MenuItem url={''}>Home & Garden</MenuItem>
                     <MenuItem url={''}>Electricity</MenuItem>
-                </MenuGroupChild>
+                </MenuGroupChild> */}
                 <MenuGroup>
                     <Link href={'/user/interests-favorites'}>
                         <MenuItem url={'interests-favorites'}>

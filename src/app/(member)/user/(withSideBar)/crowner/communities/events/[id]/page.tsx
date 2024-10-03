@@ -42,7 +42,8 @@ export default function Page({ params }: { params: { id: string } }) {
                         {data?.community_name ? (
                             <Link
                                 href={
-                                    '/crowner/communities/' + data?.community_id
+                                    '/user/crowner/communities/' +
+                                    data?.community_id
                                 }
                             >
                                 {'-'}{' '}

@@ -22,6 +22,7 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import Link from 'next/link';
 import Related from './related';
 import { Separator } from '@/components/ui/separator';
+import { getCurrentUser } from '@/lib/session';
 
 async function getData(id: string) {
     try {
@@ -35,6 +36,7 @@ async function getData(id: string) {
 }
 
 export default async function Page({ params }: { params: { id: string } }) {
+    const user = await getCurrentUser();
     const data = await getData(params.id);
     return (
         <div className="container space-y-4 py-8">
@@ -59,18 +61,38 @@ export default async function Page({ params }: { params: { id: string } }) {
                 <TitlePage>
                     {data?.title}
                     <div className="flex space-x-4 pt-4">
-                        <Avatar className="h-8 w-8">
-                            <AvatarImage src={data.host_picture_url || ''} />
-                            <AvatarFallback>US</AvatarFallback>
-                        </Avatar>
-                        <Link href={'/profile/' + data.host_id}>
-                            <h3 className="text-lg">
-                                <b>HOST</b> : {data.host_name}
-                            </h3>
-                        </Link>
+                        {data.host_picture_url && (
+                            <Avatar className="h-8 w-8">
+                                <AvatarImage
+                                    src={data.host_picture_url || ''}
+                                />
+                                <AvatarFallback>US</AvatarFallback>
+                            </Avatar>
+                        )}
+
+                        {data.community_id ? (
+                            <Link
+                                href={
+                                    '/crowner/communities/slug/id' +
+                                    data.community_slug +
+                                    '/' +
+                                    data.community_id
+                                }
+                            >
+                                <h3 className="text-lg">
+                                    <b>HOST</b> : {data.community_name}
+                                </h3>
+                            </Link>
+                        ) : (
+                            <Link href={'/profile/' + data.host_id}>
+                                <h3 className="text-lg">
+                                    <b>HOST</b> : {data.host_name}
+                                </h3>
+                            </Link>
+                        )}
                     </div>
                 </TitlePage>
-                <EventAction data={data} />
+                <EventAction data={data} useId={user?.id || ''} />
             </div>
             <section className="flex items-start justify-between space-x-4">
                 <div className="flex-1 space-y-4">

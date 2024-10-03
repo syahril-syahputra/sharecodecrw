@@ -31,9 +31,11 @@ export interface IDetailEvent {
     host_id: string;
     host_picture_url: string;
     province: string;
+    user_id: string;
     tz_identifier: string;
     gmt_offset: string;
     community_name: string | null;
+    community_slug: string | null;
     address: string;
     latitude: number;
     longitude: number;

@@ -18,7 +18,10 @@ import Report from '@/components/base/report';
 import DialogLoginRequired from '@/components/base/Dialog/DialogLoginRequired';
 import { useToast } from '@/components/ui/use-toast';
 
-export default function EventAction(props: { data: ICommunityTutor }) {
+export default function EventAction(props: {
+    data: ICommunityTutor;
+    useId: string;
+}) {
     const { toast } = useToast();
     const { status } = useSession();
     const [isOpen, setisOpen] = useState(false);
@@ -35,15 +38,22 @@ export default function EventAction(props: { data: ICommunityTutor }) {
 
     return (
         <div className="flex items-center space-x-2">
-            <Button
-                loading={isePendingInterest}
-                onClick={() =>
-                    isLogin ? mutateInterest(props.data.id) : setisOpen(true)
-                }
-                className="bg-interest hover:bg-interest-foreground"
-            >
-                Interest
-            </Button>
+            {props.useId !== props.data.user_id && (
+                <>
+                    <Button
+                        loading={isePendingInterest}
+                        onClick={() =>
+                            isLogin
+                                ? mutateInterest(props.data.id)
+                                : setisOpen(true)
+                        }
+                        className="bg-interest hover:bg-interest-foreground"
+                    >
+                        Interest
+                    </Button>
+                </>
+            )}
+
             <DialogLoginRequired
                 title="Sign in to follow community tutor"
                 isOpen={isOpen}

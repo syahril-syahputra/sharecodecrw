@@ -7,6 +7,7 @@ import SSRPagination from '@/components/ui/ssr-pagination';
 import SortEvent from './sort';
 import CardCommunityTutor from '@/components/base/Card/CardCommunityTutor';
 import { ICommunityTutor } from '@/types/crowner/community-tutors';
+import React from 'react';
 async function getData(filter: string | undefined) {
     try {
         const baseUrl = `/crowner/community-tutors`;

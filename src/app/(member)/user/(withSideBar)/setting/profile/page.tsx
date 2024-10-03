@@ -111,7 +111,11 @@ export default function Page() {
     }
     //email controller
     async function onSubmitEmail(data: z.infer<typeof formEmailSchema>) {
-        mutateEmail.mutate(data.email);
+        // alert(data.email);
+        if (dataCurrentProtile?.email !== data.email) {
+            mutateEmail.mutate(data.email);
+        }
+        // mutateEmail.mutate(data.email);
     }
     const formEmail = useForm<z.infer<typeof formEmailSchema>>({
         resolver: zodResolver(formEmailSchema),
@@ -282,7 +286,15 @@ export default function Page() {
                         </div>
                     </div>
 
-                    <Button type="submit" loading={mutateEmail.isPending}>
+                    <Button
+                        type="submit"
+                        disabled={
+                            !dataCurrentProtile?.email ||
+                            dataCurrentProtile?.email ===
+                                formEmail.getValues('email')
+                        }
+                        loading={mutateEmail.isPending}
+                    >
                         SAVE
                     </Button>
                 </form>

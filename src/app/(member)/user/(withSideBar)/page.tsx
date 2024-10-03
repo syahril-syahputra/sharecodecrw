@@ -1,9 +1,12 @@
 'use client';
+import CardCommunity from '@/components/base/Card/CardCommunity';
 import CardEvent from '@/components/base/Card/CardEvent';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
+import { useFetchCommunity } from '@/feature/community/useFetchCommunity';
 import { useFetchEvent } from '@/feature/events/useFetchEvent';
 import { useFetchProfile } from '@/feature/user/profile';
+import { IDetailCommunity } from '@/types/community';
 import { IDetailEvent } from '@/types/events';
 import { IProfile } from '@/types/user';
 import { Edit, Plus } from 'lucide-react';
@@ -28,6 +31,17 @@ export default function Page() {
             is_visible: 'true',
         },
         { sort_by: 'date_time', sort_type: 'asc' }
+    );
+    const { data: communities } = useFetchCommunity(
+        {
+            pageIndex: 1,
+            pageSize: 7,
+        },
+        {
+            acceptance_status: 'accepted',
+            is_visible: 'true',
+        },
+        { sort_by: 'title', sort_type: 'asc' }
     );
     useEffect(() => {
         mutate();
@@ -120,19 +134,32 @@ export default function Page() {
                     </div>
                 </div>
                 <div className="py-4">
-                    <h1 className="pb-2 text-lg font-bold">
-                        Community Members
-                    </h1>
+                    <h1 className="pb-2 text-lg font-bold">My Communities</h1>
                     <div className="grid grid-cols-4 gap-4">
                         <div className="flex !cursor-pointer flex-col items-center justify-center space-y-2 rounded-md border p-4  shadow-md hover:bg-secondary">
                             <Plus size={48} />
                             <span>Start Your Community</span>
                         </div>
-                        {/* <CardEvent />
-                        <CardEvent />
-                        <CardEvent />
-                        <CardEvent />
-                        <CardEvent /> */}
+
+                        {communities &&
+                            communities.items.map((item: IDetailCommunity) => (
+                                <Link
+                                    href={
+                                        '/user/crowner/communities/' + item.id
+                                    }
+                                    key={item.id}
+                                >
+                                    <CardCommunity
+                                        variant="vertical"
+                                        data={item}
+                                    />
+                                </Link>
+                            ))}
+                    </div>
+                    <div className="flex justify-end">
+                        <Link href={'/user/crowner/communities'}>
+                            <Button variant={'ghost'}>More</Button>
+                        </Link>
                     </div>
                 </div>
             </div>

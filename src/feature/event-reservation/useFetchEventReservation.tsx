@@ -16,7 +16,7 @@ export const useFetchEventReservation = (
                 page: page.pageIndex.toString(),
                 paginate: page.pageSize.toString(),
                 ...filter,
-                sort,
+                sort_by: sort,
             });
             const url = `${baseUrl}?${queryParams.toString()}`;
             const response = await fetchClient({

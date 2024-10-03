@@ -7,6 +7,7 @@ import { IDetailEvent } from '@/types/events';
 import { IPaginationMeta } from '@/types/base/pagination';
 import SSRPagination from '@/components/ui/ssr-pagination';
 import SortEvent from './sort';
+import React from 'react';
 async function getData(filter: string | undefined) {
     try {
         const baseUrl = `/crowner/events`;

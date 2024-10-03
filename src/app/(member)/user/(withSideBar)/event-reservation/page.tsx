@@ -14,7 +14,7 @@ import { Select } from '@radix-ui/react-select';
 import React, { useState } from 'react';
 
 export default function Page() {
-    const [sortBy, setsortBy] = useState('newest');
+    const [sortBy, setsortBy] = useState('latest');
     const { pagination, setPagination, filterValue } = useTableConfig<{
         listing_type: string;
     }>({

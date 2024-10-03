@@ -27,6 +27,7 @@ export interface IDetailCommunity {
     title: string;
     slug: string;
     city_id: string;
+    user_id: string;
     province_id: string;
     city: string;
     province: string;
@@ -61,7 +62,7 @@ export interface IUpdateCommunity {
 }
 
 export interface IFilterCommunity {
-    title: string;
+    title?: string;
     acceptance_status: string;
     is_visible: string;
 }

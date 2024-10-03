@@ -43,12 +43,13 @@ export default function Page({ params }: { params: { id: string } }) {
                         {data?.community_name ? (
                             <Link
                                 href={
-                                    '/crowner/communities/' + data?.community_id
+                                    '/user/crowner/communities/' +
+                                    data?.community_id
                                 }
                             >
                                 {'-'}{' '}
                                 <span className="inline-flex hover:underline">
-                                    {data?.community_name}
+                                    {data?.community_name}saaaa
                                     <SquareArrowOutUpRight className="h-4" />
                                 </span>
                             </Link>

@@ -55,7 +55,7 @@ export default function Page() {
                             className="flex items-center space-x-2 p-4 font-bold hover:bg-primary-foreground"
                         >
                             <CalendarClock className="text-primary" size={36} />
-                            <span>Community Events</span>
+                            <span>Community Tutors</span>
                         </li>
                     </Link>
                 </ul>

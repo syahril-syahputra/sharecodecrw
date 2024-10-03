@@ -7,6 +7,7 @@ import SSRPagination from '@/components/ui/ssr-pagination';
 import SortEvent from './sort';
 import CardCommunity from '@/components/base/Card/CardCommunity';
 import { IDetailCommunity } from '@/types/community';
+import React from 'react';
 async function getData(filter: string | undefined) {
     try {
         const baseUrl = `/crowner/communities`;

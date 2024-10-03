@@ -41,9 +41,13 @@ export default function MenuUser(props: IProps) {
                     </DropdownMenuItem>
                 </DropdownMenuContent>
             </DropdownMenu>
-            <Heart />
+            <Link href={'/user/interests-favorites'}>
+                <Heart />
+            </Link>
             <ButtonNotification />
-            <MessageSquare />
+            <Link href={'/user/event-reservation'}>
+                <MessageSquare />
+            </Link>
         </div>
     );
 }
