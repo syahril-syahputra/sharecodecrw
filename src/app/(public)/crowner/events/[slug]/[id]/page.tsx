@@ -73,7 +73,7 @@ export default async function Page({ params }: { params: { id: string } }) {
                         {data.community_id ? (
                             <Link
                                 href={
-                                    '/crowner/communities/slug/id' +
+                                    '/crowner/communities/' +
                                     data.community_slug +
                                     '/' +
                                     data.community_id
