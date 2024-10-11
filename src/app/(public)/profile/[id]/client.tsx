@@ -4,6 +4,9 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { IOtherUser } from '@/types/user';
 import React from 'react';
 import TabEvents from './TabEvents';
+import TabCommunities from './TabCommunities';
+import TabCommunityTutors from './TabCommunityTutors';
+import TabInterest from './TabInterest';
 
 export default function ProfileUser(props: { data: IOtherUser }) {
     const { data } = props;
@@ -43,10 +46,16 @@ export default function ProfileUser(props: { data: IOtherUser }) {
                         <TabsTrigger value="interests">Interest</TabsTrigger>
                     </TabsList>
                     <TabsContent value="events">
-                        <TabEvents />
+                        <TabEvents id={data.id} />
                     </TabsContent>
-                    <TabsContent value="followers">
-                        <div>123</div>
+                    <TabsContent value="communities">
+                        <TabCommunities id={data.id} />
+                    </TabsContent>
+                    <TabsContent value="community-tutors">
+                        <TabCommunityTutors id={data.id} />
+                    </TabsContent>
+                    <TabsContent value="interests">
+                        <TabInterest id={data.id} />
                     </TabsContent>
                 </Tabs>
             </div>

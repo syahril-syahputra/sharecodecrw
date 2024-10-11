@@ -42,6 +42,7 @@ export default function CommunityFollowers({ id }: { id: string | undefined }) {
                         return (
                             <CardListUser
                                 key={follower.user_id}
+                                userId={follower.user_id}
                                 firstName={follower.first_name}
                                 lastName={follower.last_name}
                                 email={follower.email}

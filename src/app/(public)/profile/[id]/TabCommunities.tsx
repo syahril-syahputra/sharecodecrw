@@ -1,18 +1,18 @@
 'use client';
-import CardEvent from '@/components/base/Card/CardEvent';
+import CardCommunity from '@/components/base/Card/CardCommunity';
 import PaginationTable from '@/components/ui/pagination-table';
-import { useFetchProfileEvent } from '@/feature/user/profile';
+import { useFetchProfileCommunities } from '@/feature/user/profile';
 import useTableConfig from '@/lib/useTableConfig';
 import { IFilterEvent } from '@/types/events';
 import Link from 'next/link';
 import React from 'react';
 
-export default function TabEvents(props: { id: string }) {
+export default function TabCommunities(props: { id: string }) {
     const { sort, pagination, setPagination } = useTableConfig<IFilterEvent>({
         pageSize: 10,
         defaultFilter: {},
     });
-    const { data, isLoading } = useFetchProfileEvent(
+    const { data, isLoading } = useFetchProfileCommunities(
         props.id,
         pagination,
         sort
@@ -26,11 +26,14 @@ export default function TabEvents(props: { id: string }) {
                     data?.items.map((item) => (
                         <Link
                             href={
-                                '/crowner/events/' + item.slug + '/' + item.id
+                                '/crowner/communities/' +
+                                item.slug +
+                                '/' +
+                                item.id
                             }
                             key={item.id}
                         >
-                            <CardEvent data={item} variant="vertical" />
+                            <CardCommunity data={item} variant="vertical" />
                         </Link>
                     ))
                 ) : (

@@ -3,6 +3,7 @@ import React from 'react';
 import ImageUser from '../Image/ImageUser';
 import { humanize } from '@/lib/humanizeDate';
 import Report from '../report';
+import Link from 'next/link';
 
 export default function CardAnswer(props: { data: IAnswer }) {
     return (
@@ -11,9 +12,12 @@ export default function CardAnswer(props: { data: IAnswer }) {
                 <div className="flex items-center space-x-2 ">
                     <span className="inline-flex items-center space-x-2 font-bold">
                         <ImageUser src={props.data.profile_picture_url} />
-                        <span className="text-lg capitalize">
-                            {props.data.first_name} {props.data.last_name}
-                        </span>
+
+                        <Link href={'/profile/' + props.data.user_id}>
+                            <span className="text-lg capitalize">
+                                {props.data.first_name} {props.data.last_name}
+                            </span>
+                        </Link>
                     </span>
                     <span className="text-sm">
                         {humanize(props.data.created_at)}

@@ -11,10 +11,17 @@ export default function CardNotification({ data }: { data: INotification }) {
     return (
         <Link href={data.link || ''}>
             <div className="border-Input relative flex items-start justify-between space-x-3 border-b px-4 py-4 ">
-                <ImageUser src={data.notifier_profile_picture_url} />
+                <Link href={'/profile/' + data.notifier_user_id}>
+                    <ImageUser src={data.notifier_profile_picture_url} />
+                </Link>
                 <div className="flex-1 space-y-1">
                     <div className="text-sm">
-                        {`${data.notifier_first_name} ${data.notifier_last_name} ${data.message}`}
+                        <Link href={'/profile/' + data.notifier_user_id}>
+                            <b>
+                                {`${data.notifier_first_name} ${data.notifier_last_name}`}
+                            </b>
+                        </Link>{' '}
+                        {data.message}
                     </div>
                     <div className="text-xs">{humanize(data.created_at)}</div>
                 </div>

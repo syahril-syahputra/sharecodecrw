@@ -74,6 +74,7 @@ export default function RsvpInterest(props: { id: string | undefined }) {
                             dataRsvp?.items?.map((rsvp) => {
                                 return (
                                     <CardListUser
+                                        userId={rsvp.user_id}
                                         key={rsvp.user_id}
                                         firstName={rsvp.first_name}
                                         lastName={rsvp.last_name}
@@ -121,6 +122,7 @@ export default function RsvpInterest(props: { id: string | undefined }) {
                             dataInterest?.items?.map((interest) => {
                                 return (
                                     <CardListUser
+                                        userId={interest.user_id}
                                         key={interest.user_id}
                                         firstName={interest.first_name}
                                         lastName={interest.last_name}

@@ -56,6 +56,7 @@ export default function CommunityTutorInterests(props: {
                             return (
                                 <CardListUser
                                     key={interest.user_id}
+                                    userId={interest.user_id}
                                     firstName={interest.first_name}
                                     lastName={interest.last_name}
                                     email={interest.email}

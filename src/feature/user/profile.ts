@@ -110,3 +110,121 @@ export const useFetchProfile = (onSuccess: (data: IProfile) => void) => {
         onSuccess: onSuccess,
     });
 };
+
+//for tab event
+
+import { IPaginationMeta, ISortMeta } from '@/types/base/pagination';
+import { IDetailEvent } from '@/types/events';
+import { keepPreviousData, useQuery } from '@tanstack/react-query';
+import { PaginationState } from '@tanstack/react-table';
+import { IDetailCommunity } from '@/types/community';
+import { ICommunityTutor } from '@/types/crowner/community-tutors';
+import { IInterestFavorites } from '@/types/interestsFavorites';
+
+export const useFetchProfileEvent = (
+    id: string,
+    page: PaginationState,
+    sort: ISortMeta
+) => {
+    return useQuery({
+        queryFn: async () => {
+            const baseUrl = `/user/profile/${id}/events`;
+            const queryParams = new URLSearchParams({
+                page: page.pageIndex.toString(),
+                paginate: page.pageSize.toString(),
+                ...sort,
+            });
+            const url = `${baseUrl}?${queryParams.toString()}`;
+            const response = await fetchClient({
+                url: url,
+            });
+            return response.data.data as {
+                items: IDetailEvent[];
+                meta: IPaginationMeta;
+            };
+        },
+        queryKey: ['fetch.profile.event', page, sort],
+        placeholderData: keepPreviousData,
+    });
+};
+
+export const useFetchProfileCommunities = (
+    id: string,
+    page: PaginationState,
+    sort: ISortMeta
+) => {
+    return useQuery({
+        queryFn: async () => {
+            const baseUrl = `/user/profile/${id}/communities`;
+            const queryParams = new URLSearchParams({
+                page: page.pageIndex.toString(),
+                paginate: page.pageSize.toString(),
+                ...sort,
+            });
+            const url = `${baseUrl}?${queryParams.toString()}`;
+            const response = await fetchClient({
+                url: url,
+            });
+            return response.data.data as {
+                items: IDetailCommunity[];
+                meta: IPaginationMeta;
+            };
+        },
+        queryKey: ['fetch.profile.communities', page, sort],
+        placeholderData: keepPreviousData,
+    });
+};
+
+export const useFetchProfileCommunitiyTutors = (
+    id: string,
+    page: PaginationState,
+    sort: ISortMeta
+) => {
+    return useQuery({
+        queryFn: async () => {
+            const baseUrl = `/user/profile/${id}/community-tutors`;
+            const queryParams = new URLSearchParams({
+                page: page.pageIndex.toString(),
+                paginate: page.pageSize.toString(),
+                ...sort,
+            });
+            const url = `${baseUrl}?${queryParams.toString()}`;
+            const response = await fetchClient({
+                url: url,
+            });
+            return response.data.data as {
+                items: ICommunityTutor[];
+                meta: IPaginationMeta;
+            };
+        },
+        queryKey: ['fetch.profile.communitytutors', page, sort],
+        placeholderData: keepPreviousData,
+    });
+};
+
+export const useFetchProfileInterest = (
+    id: string,
+    page: PaginationState,
+    sort: ISortMeta
+) => {
+    return useQuery({
+        queryFn: async () => {
+            const baseUrl = `/user/profile/${id}/interests`;
+            const queryParams = new URLSearchParams({
+                page: page.pageIndex.toString(),
+                paginate: page.pageSize.toString(),
+                ...sort,
+            });
+            const url = `${baseUrl}?${queryParams.toString()}`;
+            const response = await fetchClient({
+                url: url,
+            });
+            return response.data.data as {
+                items: IInterestFavorites[];
+                meta: IPaginationMeta;
+            };
+        },
+        queryKey: ['fetch.profile.interest', page, sort],
+        placeholderData: keepPreviousData,
+    });
+};

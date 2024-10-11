@@ -7,5 +7,6 @@ export interface IInterestFavorites {
     city: string;
     province: string;
     title: string;
+    slug?: string;
     image_url: string | null;
 }

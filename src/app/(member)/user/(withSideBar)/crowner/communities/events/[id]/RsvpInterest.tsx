@@ -75,6 +75,7 @@ export default function RsvpInterest(props: { id: string | undefined }) {
                                 return (
                                     <CardListUser
                                         key={rsvp.user_id}
+                                        userId={rsvp.user_id}
                                         firstName={rsvp.first_name}
                                         lastName={rsvp.last_name}
                                         email={rsvp.email}
@@ -122,12 +123,11 @@ export default function RsvpInterest(props: { id: string | undefined }) {
                                 return (
                                     <CardListUser
                                         key={interest.user_id}
+                                        userId={interest.user_id}
                                         firstName={interest.first_name}
                                         lastName={interest.last_name}
                                         email={interest.email}
-                                        profilePict={
-                                            interest.profile_picture_url
-                                        }
+                                        image_url={interest.image_url}
                                     />
                                 );
                             })}
