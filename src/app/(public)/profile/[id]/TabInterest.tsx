@@ -4,7 +4,6 @@ import PaginationTable from '@/components/ui/pagination-table';
 import { useFetchProfileInterest } from '@/feature/user/profile';
 import useTableConfig from '@/lib/useTableConfig';
 import { IFilterEvent } from '@/types/events';
-import Link from 'next/link';
 import React from 'react';
 
 export default function TabInterest(props: { id: string }) {
@@ -24,22 +23,11 @@ export default function TabInterest(props: { id: string }) {
                     <></>
                 ) : data?.items.length ? (
                     data?.items.map((item) => (
-                        <Link
-                            href={
-                                '/crowner/' +
-                                    item.listing_type_formatted.replace(
-                                        ' ',
-                                        '-'
-                                    ) +
-                                    item.slug || 'slug' + '/' + item.id
-                            }
+                        <CardInterestsFavorites
                             key={item.id}
-                        >
-                            <CardInterestsFavorites
-                                data={item}
-                                variant="vertical"
-                            />
-                        </Link>
+                            data={item}
+                            variant="vertical"
+                        />
                     ))
                 ) : (
                     <div className="text-center text-primary">

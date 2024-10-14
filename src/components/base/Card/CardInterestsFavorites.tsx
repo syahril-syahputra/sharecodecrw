@@ -11,7 +11,9 @@ export default function CardInterestsFavorites(props: IProps) {
     const url =
         '/crowner/' +
         props.data?.listing_type_formatted?.replace(' ', '-') +
-        '/slug/' +
+        '/' +
+        (props.data?.slug || 'slug') +
+        '/' +
         props.data.id;
     if (props.variant === 'vertical') {
         return (
