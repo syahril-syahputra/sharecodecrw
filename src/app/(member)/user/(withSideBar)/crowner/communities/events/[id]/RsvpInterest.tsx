@@ -127,7 +127,9 @@ export default function RsvpInterest(props: { id: string | undefined }) {
                                         firstName={interest.first_name}
                                         lastName={interest.last_name}
                                         email={interest.email}
-                                        image_url={interest.image_url}
+                                        profilePict={
+                                            interest.profile_picture_url
+                                        }
                                     />
                                 );
                             })}

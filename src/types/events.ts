@@ -88,14 +88,14 @@ export interface IEventRsvp {
     first_name: string;
     last_name: string;
     email: string;
-    image_url: string;
+    profile_picture_url: string;
 }
 export interface IEventInterest {
     user_id: string;
     first_name: string;
     last_name: string;
     email: string;
-    image_url: string;
+    profile_picture_url: string;
 }
 export interface IEventAcceptanceStatus {
     acceptance_status: 'accepted' | 'rejected' | undefined;
