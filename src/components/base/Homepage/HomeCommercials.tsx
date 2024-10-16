@@ -1,6 +1,5 @@
 import React from 'react';
 import CardCommercials from '../Card/CardCommercials';
-import { title } from 'process';
 
 export default function HomeCommercials() {
     return (
@@ -52,7 +51,8 @@ export default function HomeCommercials() {
                     <div className="mx-auto max-w-xl py-4 text-center text-xl">
                         Lorem Ipsum is simply dummy text of the printing and
                         typesetting industry. Lorem Ipsum has been the
-                        industry's standard dummy text ever since the 1500s.
+                        industry&apos;s standard dummy text ever since the
+                        1500s.
                     </div>
                 </div>
             </div>

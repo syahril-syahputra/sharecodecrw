@@ -1,9 +1,11 @@
 import React from 'react';
 import ImageCard from '../Image/ImageCard';
-import Image from 'next/image';
 
 interface IProps {
-    data: any;
+    data: {
+        title: string;
+        image_url: string;
+    };
 }
 export default function CardCommercials(props: IProps) {
     return (
