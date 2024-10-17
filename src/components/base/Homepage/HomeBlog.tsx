@@ -5,10 +5,8 @@ import React from 'react';
 export default function HomeBlog() {
     return (
         <div>
-            {/* <div className="-mb-6 h-24 w-full -skew-x-[2deg] -skew-y-[2deg]  bg-red-200"></div> */}
             <div className="h-[24px] w-0 border-b-[0vw] border-r-[100vw] border-t-[5vw] border-r-white border-t-transparent "></div>
-            {/* <div className="inline-block h-0 w-full border-b-[50px] border-r-0 border-t-0 border-solid border-b-blue-500 border-l-[100%] border-l-transparent border-r-transparent border-t-transparent"></div> */}
-            <div className="bg-white">
+            <div className="bg-white py-8">
                 <div className="container flex items-center justify-between ">
                     <div className="max-w-lg  flex-1 ">
                         <h1 className="mb-4 font-koulen text-4xl font-bold">

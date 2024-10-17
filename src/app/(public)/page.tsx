@@ -5,18 +5,31 @@ import HomeData from '@/components/base/Homepage/HomeData';
 import HomeFeature from '@/components/base/Homepage/HomeFeature';
 import HomeJoinUs from '@/components/base/Homepage/HomeJoinUs';
 import HomeTop from '@/components/base/Homepage/HomeTop';
+import fetchServer from '@/lib/fetchServer';
+import { IDataLanding } from '@/types/landing';
 import React from 'react';
 
-export default function page() {
+async function getData() {
+    try {
+        const res = await fetchServer({
+            url: `/landing`,
+        });
+        console.log(res);
+        return res.data.data as IDataLanding;
+    } catch {
+        new Error('my error message');
+    }
+}
+export default async function page() {
+    const data = await getData();
     return (
         <div className="mt-20 bg-[#EEEEEE] ">
             <HomeTop />
             <HomeFeature />
-            <HomeData />
+            <HomeData data={data} />
             <HomeBlog />
             <HomeCommercials />
             <HomeJoinUs />
-
             <FooterPublic />
         </div>
     );
