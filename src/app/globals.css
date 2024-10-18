@@ -100,3 +100,7 @@
 .rdp-vhidden {
     @apply hidden;
 }
+
+html {
+    scroll-behavior: smooth;
+}

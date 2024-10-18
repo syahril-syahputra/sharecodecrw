@@ -23,7 +23,7 @@ async function getData() {
 export default async function page() {
     const data = await getData();
     return (
-        <div className="mt-20 bg-[#EEEEEE] ">
+        <div className="mt-20 bg-[#EEEEEE]">
             <HomeTop />
             <HomeCommercials />
             <HomeFeature />

@@ -3,7 +3,7 @@ import CardCommercials from '../Card/CardCommercials';
 
 export default function HomeCommercials() {
     return (
-        <div className="bg-white">
+        <div className="bg-white scroll-mt-20" id='commercials'>
             <div className="bg-[#E9F2FF]">
                 <div className="container  pb-32 pt-8">
                     <h2 className="pb-2 pt-8 text-center font-koulen text-6xl">
