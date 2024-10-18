@@ -4,7 +4,7 @@ import React from 'react';
 
 function Block(props: { title: string; href: string; buttonTitle: string }) {
     return (
-        <div className="flex flex-col items-center justify-center space-y-4 rounded-md border bg-white p-16 shadow-md">
+        <div className="flex w-1/4 flex-col items-center justify-center space-y-4 rounded-xl border bg-white p-16 shadow-md">
             <div className="font-koulen text-2xl font-bold">{props.title}</div>
             <Link href={props.href}>
                 <Button className="rounded-full" variant={'secondary'}>
