@@ -25,10 +25,10 @@ export default async function page() {
     return (
         <div className="mt-20 bg-[#EEEEEE] ">
             <HomeTop />
+            <HomeCommercials />
             <HomeFeature />
             <HomeData data={data} />
             <HomeBlog />
-            <HomeCommercials />
             <HomeJoinUs />
             <FooterPublic />
         </div>

@@ -1,5 +1,6 @@
 import { Button } from '@/components/ui/button';
 import Image from 'next/image';
+import Link from 'next/link';
 import React from 'react';
 
 export default function HomeBlog() {
@@ -19,7 +20,14 @@ export default function HomeBlog() {
                             1500s, when an unknown printer took a galley of type
                             and scrambled it to make a type specimen book.
                         </p>
-                        <Button variant={'secondary'}>Read now</Button>
+                        <Link href={'/blog'}>
+                            <Button
+                                className="rounded-full"
+                                variant={'secondary'}
+                            >
+                                Read now
+                            </Button>
+                        </Link>
                     </div>
                     <div className="flex max-w-6xl items-center gap-10 p-10">
                         {/* Section Text */}

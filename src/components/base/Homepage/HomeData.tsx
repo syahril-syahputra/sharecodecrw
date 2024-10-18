@@ -17,9 +17,11 @@ export default function HomeData(props: { data?: IDataLanding }) {
             <div>
                 <div className="flex items-center justify-between py-2">
                     <h1 className="font-koulen text-4xl">Events</h1>
-                    <span className="text-xl font-semibold underline">
-                        discover more
-                    </span>
+                    <Link href="/crowner/events">
+                        <span className="text-lg  underline">
+                            discover more
+                        </span>
+                    </Link>
                 </div>
                 <Carousel className="w-full">
                     <CarouselContent className="">
@@ -48,10 +50,10 @@ export default function HomeData(props: { data?: IDataLanding }) {
             </div>
             <div>
                 <div className="flex items-center justify-between py-2">
-                    <h1 className="font-koulen text-4xl">COMMUNITIES</h1>
-                    <span className="text-xl font-semibold underline">
-                        discover more
-                    </span>
+                    <h1 className="font-koulen text-4xl">COMMUNITIES</h1>{' '}
+                    <Link href="/crowner/communities">
+                        <span className="text-lg underline">discover more</span>
+                    </Link>
                 </div>
                 <Carousel className="w-full">
                     <CarouselContent className="">
@@ -84,9 +86,11 @@ export default function HomeData(props: { data?: IDataLanding }) {
             <div>
                 <div className="flex items-center justify-between py-2">
                     <h1 className="font-koulen text-4xl">COMMUNITY TUTORS</h1>
-                    <span className="text-xl font-semibold underline">
-                        discover more
-                    </span>
+                    <Link href="/crowner/community-tutors">
+                        <span className="text-lg  underline">
+                            discover more
+                        </span>
+                    </Link>
                 </div>
                 <Carousel className="w-full">
                     <CarouselContent className="">

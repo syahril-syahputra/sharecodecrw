@@ -1,4 +1,4 @@
-import { Diamond } from 'lucide-react';
+import { Mail, Phone } from 'lucide-react';
 import Link from 'next/link';
 import React from 'react';
 
@@ -24,11 +24,11 @@ export default function FooterPublic() {
             <div className="container flex items-start justify-around">
                 <div className=" space-y-4 text-xl">
                     <div className="flex items-center space-x-2">
-                        <Diamond />
+                        <Phone />
                         <span>0089 009 002 443</span>
                     </div>
                     <div className="flex items-center space-x-2">
-                        <Diamond />
+                        <Mail />
                         <span>info@crowner.ca</span>
                     </div>
                 </div>
