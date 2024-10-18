@@ -11,7 +11,10 @@ export default function HomeTop() {
                     <br />
                     Use
                 </div>
-                <a className="font-koulen text-2xl underline" href="#commercials">
+                <a
+                    className="font-koulen text-2xl underline"
+                    href="#commercials"
+                >
                     Explore more
                 </a>
             </div>
