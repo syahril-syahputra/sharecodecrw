@@ -24,9 +24,9 @@ export default function CardArticle(props: { data: IArticle }) {
                 </div>
             </div>
             <Link href={'/blog/' + props.data.id}>
-                <div className="flex items-center space-x-1 font-semibold text-gray-400 hover:cursor-pointer hover:text-primary">
+                <div className="flex items-center space-x-1 text-sm  text-gray-400 hover:cursor-pointer hover:text-primary">
                     <span>Read More</span>
-                    <ArrowRight />
+                    <ArrowRight size={16} />
                 </div>
             </Link>
         </div>
