@@ -11,6 +11,8 @@ export interface IArticle {
     body: string;
     tags: ITags[];
     creator_picture_url?: string;
+    created_at: string;
+    updated_at: string;
 }
 export interface IFilterArticle {
     category_id?: string;
