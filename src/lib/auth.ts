@@ -88,6 +88,9 @@ export const authOptions: NextAuthOptions = {
                     token.email = session.email;
                     token.email_verified_at = null;
                 }
+                if (session.profile_picture_url) {
+                    token.profile_picture_url = session.profile_picture_url;
+                }
             }
             // if (trigger === 'update') {
 

@@ -23,7 +23,7 @@ export default function CardMember() {
                 <Check />
             </div>
             <div className="text-sm">
-                <b>Location</b> : City, Province
+                <b>Location</b> : {session?.user.province ? session.user.province+", "+session.user.city : "..." }
             </div>
         </section>
     );

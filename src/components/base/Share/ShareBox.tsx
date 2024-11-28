@@ -11,8 +11,18 @@ import {
     LinkedinShareButton,
     LinkedinIcon,
 } from 'next-share';
+import { Link } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { useToast } from '@/components/ui/use-toast';
 
 export default function ShareBox(props: { about: string }) {
+    const { toast } = useToast();
+    const handleCopy = () => {
+        navigator.clipboard.writeText(window.location.href)
+        toast({
+            description: 'Copied to clipboard',
+        });
+    }
     return (
         <div className="flex items-center justify-center space-x-2">
             <FacebookShareButton url={window.location.href} quote={props.about}>
@@ -37,6 +47,9 @@ export default function ShareBox(props: { about: string }) {
             <LinkedinShareButton url={window.location.href}>
                 <LinkedinIcon size={42} round />
             </LinkedinShareButton>
+            <Button onClick={handleCopy} className="bg-primary-foreground rounded-full" variant="secondary" size="icon">
+                <Link/>
+            </Button>
         </div>
     );
 }

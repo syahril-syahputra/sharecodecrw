@@ -85,7 +85,7 @@ const formBasicSchema = z.object({
 });
 export default function Page() {
     const { update, data: userData } = useSession();
-    const [currentProfule, setcurrentProfule] = useState<IProfile>({});
+    const [currentProfile, setcurrentProfile] = useState<IProfile>({});
     const router = useRouter();
     const {
         mutate: mutateFP,
@@ -93,7 +93,11 @@ export default function Page() {
         isSuccess: isSuccessUpdateFoto,
         data: updateFotoResponse,
     } = useUpdateProfilePhoto({
-        onSuccess: () => {},
+        onSuccess: async (success) => {
+            await update({
+                profile_picture_url: success.data.data.url
+            });
+        },
         onError: (error) => errorHelper(form.setError, error),
     });
     async function onSubmit(data: z.infer<typeof formSchema>) {
@@ -112,7 +116,7 @@ export default function Page() {
     //email controller
     async function onSubmitEmail(data: z.infer<typeof formEmailSchema>) {
         // alert(data.email);
-        if (dataCurrentProtile?.email !== data.email) {
+        if (dataCurrentProfile?.email !== data.email) {
             mutateEmail.mutate(data.email);
         }
         // mutateEmail.mutate(data.email);
@@ -149,7 +153,7 @@ export default function Page() {
         formBasic.getValues('province'),
         () => {
             if (
-                formBasic.getValues('province') !== currentProfule.province_id
+                formBasic.getValues('province') !== currentProfile.province_id
             ) {
                 formBasic.setValue('city', '');
             }
@@ -169,8 +173,8 @@ export default function Page() {
         onSuccess: () => {},
         onError: (error) => errorHelper(formBasic.setError, error),
     });
-    const { mutate, data: dataCurrentProtile } = useFetchProfile((data) => {
-        setcurrentProfule(data);
+    const { mutate, data: dataCurrentProfile } = useFetchProfile((data) => {
+        setcurrentProfile(data);
         formEmail.reset({
             email: data.email,
         });
@@ -216,8 +220,8 @@ export default function Page() {
                                                     src={
                                                         filePreview
                                                             ? (filePreview as string)
-                                                            : dataCurrentProtile?.profile_picture_url
-                                                              ? dataCurrentProtile?.profile_picture_url
+                                                            : dataCurrentProfile?.profile_picture_url
+                                                              ? dataCurrentProfile?.profile_picture_url
                                                               : '/icons/user.png'
                                                     }
                                                     width={200}
@@ -289,8 +293,8 @@ export default function Page() {
                     <Button
                         type="submit"
                         disabled={
-                            !dataCurrentProtile?.email ||
-                            dataCurrentProtile?.email ===
+                            !dataCurrentProfile?.email ||
+                            dataCurrentProfile?.email ===
                                 formEmail.getValues('email')
                         }
                         loading={mutateEmail.isPending}

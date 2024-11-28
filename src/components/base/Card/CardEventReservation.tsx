@@ -42,7 +42,7 @@ export default function CardEventReservation(props: IProps) {
                 </Link>
                 <Link href={'/user/event-reservation/chat/' + props.data.id}>
                     <Button variant={'link'} className="text-foreground">
-                        <MessageCircleMore className="mr-2" /> Chat Group
+                        <MessageCircleMore className="mr-2" /> Group Chat
                     </Button>
                 </Link>
             </div>
