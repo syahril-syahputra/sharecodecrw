@@ -95,7 +95,7 @@ export default function Page() {
     } = useUpdateProfilePhoto({
         onSuccess: async (success) => {
             await update({
-                profile_picture_url: success.data.data.url
+                profile_picture_url: success.data.data.url,
             });
         },
         onError: (error) => errorHelper(form.setError, error),
