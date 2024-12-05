@@ -60,7 +60,8 @@ export default function LocationNavbar() {
                 >
                     <MapPin size={18} className="text-primary" />
                     <span>
-                        {userLocation.city}, {userLocation.province}
+                        {userLocation.city ? `${userLocation.city}, ` : null}{' '}
+                        {userLocation.province}
                     </span>
                 </span>
             ) : (

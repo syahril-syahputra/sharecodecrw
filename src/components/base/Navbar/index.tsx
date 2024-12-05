@@ -33,7 +33,7 @@ export default async function Navbar() {
         }
     }
     return (
-        <div className="fixed left-0 right-0 top-0 z-50  bg-background">
+        <div className="fixed left-0 right-0 top-0 z-50 bg-background">
             {!verified && <ResendVerificationEmail />}
             <div className=" sticky flex items-center space-x-4 p-4">
                 <div className="flex items-center space-x-4 pt-2 ">

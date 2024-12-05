@@ -1,11 +1,10 @@
 import React from 'react';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { Check } from 'lucide-react';
 import { useSession } from 'next-auth/react';
 export default function CardMember() {
     const { data: session } = useSession();
     return (
-        <section className="space-y-4 p-4 text-center">
+        <section className="space-y-4 pb-4 text-center">
             <Avatar className="mx-auto h-32 w-32">
                 <AvatarImage
                     src={
@@ -19,11 +18,11 @@ export default function CardMember() {
             <div>
                 {session?.user.first_name} {session?.user.last_name}
             </div>
-            <div className="flex items-center justify-center">
+            {/* <div className="flex items-center justify-center">
                 <Check />
-            </div>
+            </div> */}
             <div className="text-sm">
-                <b>Location</b> :{'.'}
+                <b>Location</b> :{' '}
                 {session?.user.province
                     ? session.user.province + ', ' + session.user.city
                     : '...'}

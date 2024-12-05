@@ -281,7 +281,7 @@ export default function Page() {
 
                     {isError && (
                         <ErrorMessage>
-                            {error.response?.data?.message || 'Samething Wrong'}
+                            {error.response?.data?.message || 'Something Wrong'}
                         </ErrorMessage>
                     )}
                     <Button block type="submit" loading={isPending}>

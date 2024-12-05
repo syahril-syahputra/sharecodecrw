@@ -16,7 +16,7 @@ function Block(props: { title: string; href: string; buttonTitle: string }) {
 }
 export default function HomeFeature() {
     return (
-        <div className="container -mt-24  flex justify-center space-x-8">
+        <div className="container -mt-24 flex justify-center space-x-8">
             <Block
                 title="EVENTS"
                 href="/crowner/events"

@@ -14,6 +14,7 @@ import CommunityTutorInterests from './Interest';
 import AcceptanceStatus from '@/components/base/ListingUtilities/AcceptanceStatus';
 import VisibilityStatus from '@/components/base/ListingUtilities/VisibilityStatus';
 import React from 'react';
+import ErrorMessage from '@/components/base/Error/ErrorMessage';
 
 export default function Page({ params }: { params: { id: string } }) {
     const { data, isLoading, refetch } = useFetchCommunityTutor(params.id);
@@ -22,6 +23,16 @@ export default function Page({ params }: { params: { id: string } }) {
         return (
             <div className="flex-1">
                 <LoadingPage />
+            </div>
+        );
+    }
+
+    if (!data) {
+        return (
+            <div className="flex-1 p-4">
+                <ErrorMessage>
+                    {'No data was found, please check again your listing'}
+                </ErrorMessage>
             </div>
         );
     }

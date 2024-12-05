@@ -47,7 +47,7 @@ export default async function page({
     };
     return (
         <div className="space-y-8 py-4">
-            <div className="mx-auto max-w-2xl rounded-md p-4 shadow-xl">
+            <div className="mx-auto max-w-2xl rounded-md bg-white p-4 shadow-xl">
                 <TitleSearchResult>Related Results</TitleSearchResult>
                 <ul>
                     {data.related.map((item) => (
@@ -67,7 +67,7 @@ export default async function page({
                         searchParams?.search
                     }
                 >
-                    <div className="rounded-md p-4 shadow-xl">
+                    <div className="rounded-md bg-white p-4 shadow-xl">
                         <TitleSearchResult>Community Tutors</TitleSearchResult>
                         <span className="block py-8">
                             {data.community_tutors} Listing Found
@@ -78,7 +78,7 @@ export default async function page({
                     className="block flex-1 "
                     href={'/crowner/events?title=' + searchParams?.search}
                 >
-                    <div className="rounded-md p-4 shadow-xl">
+                    <div className="rounded-md bg-white p-4 shadow-xl">
                         <TitleSearchResult>Events</TitleSearchResult>
                         <span className="block py-8">
                             {data.events} Listing Found
@@ -89,7 +89,7 @@ export default async function page({
                     className="block flex-1 "
                     href={'/crowner/communities?title=' + searchParams?.search}
                 >
-                    <div className="rounded-md p-4 shadow-xl">
+                    <div className="rounded-md bg-white p-4 shadow-xl">
                         <TitleSearchResult>Communitites</TitleSearchResult>
                         <span className="block py-8">
                             {data.communities} Listing Found

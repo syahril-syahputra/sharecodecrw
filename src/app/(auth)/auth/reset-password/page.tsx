@@ -179,7 +179,7 @@ export default function Page() {
 
                             {errorResponse && (
                                 <ErrorMessage>
-                                    {errorResponse || 'Samething Wrong'}
+                                    {errorResponse || 'Something Wrong'}
                                 </ErrorMessage>
                             )}
                             <Button

@@ -18,9 +18,7 @@ export default function HomeData(props: { data?: IDataLanding }) {
                 <div className="flex items-center justify-between py-2">
                     <h1 className="font-koulen text-4xl">Events</h1>
                     <Link href="/crowner/events">
-                        <span className="text-lg  underline">
-                            discover more
-                        </span>
+                        <span className="text-sm underline">discover more</span>
                     </Link>
                 </div>
                 <Carousel className="w-full">
@@ -52,7 +50,7 @@ export default function HomeData(props: { data?: IDataLanding }) {
                 <div className="flex items-center justify-between py-2">
                     <h1 className="font-koulen text-4xl">COMMUNITIES</h1>{' '}
                     <Link href="/crowner/communities">
-                        <span className="text-lg underline">discover more</span>
+                        <span className="text-sm underline">discover more</span>
                     </Link>
                 </div>
                 <Carousel className="w-full">
@@ -87,9 +85,7 @@ export default function HomeData(props: { data?: IDataLanding }) {
                 <div className="flex items-center justify-between py-2">
                     <h1 className="font-koulen text-4xl">COMMUNITY TUTORS</h1>
                     <Link href="/crowner/community-tutors">
-                        <span className="text-lg  underline">
-                            discover more
-                        </span>
+                        <span className="text-sm underline">discover more</span>
                     </Link>
                 </div>
                 <Carousel className="w-full">

@@ -4,7 +4,7 @@ import React from 'react';
 
 export default function HomeJoinUs() {
     return (
-        <div className="bg-white">
+        <div className="overflow-x-hidden bg-white">
             <div className="h-[24px] w-0 border-b-[0vw] border-l-[100vw] border-t-[5vw] border-l-[#D9D9D9] border-t-transparent "></div>
 
             <div className="  bg-[#D9D9D9] ">

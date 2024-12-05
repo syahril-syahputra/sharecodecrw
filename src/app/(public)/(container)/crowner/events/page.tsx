@@ -38,7 +38,7 @@ export default async function Page({
                 <div className="flex-1 ">
                     {/* {isError && (
                         <ErrorMessage>
-                            {error.message || 'Samething Wrong'}
+                            {error.message || 'Something Wrong'}
                         </ErrorMessage>
                     )} */}
                     <section className="px-4">

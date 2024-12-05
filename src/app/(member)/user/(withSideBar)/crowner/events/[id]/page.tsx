@@ -23,6 +23,7 @@ import DeleteEvent from './Delete';
 import RsvpInterest from './RsvpInterest';
 import AcceptanceStatus from '@/components/base/ListingUtilities/AcceptanceStatus';
 import VisibilityStatus from '@/components/base/ListingUtilities/VisibilityStatus';
+import ErrorMessage from '@/components/base/Error/ErrorMessage';
 
 export default function Page({ params }: { params: { id: string } }) {
     const { data, isLoading, refetch } = useDetailEvent(params.id);
@@ -31,6 +32,16 @@ export default function Page({ params }: { params: { id: string } }) {
         return (
             <div className="flex-1">
                 <LoadingPage />
+            </div>
+        );
+    }
+
+    if (!data) {
+        return (
+            <div className="flex-1 p-4">
+                <ErrorMessage>
+                    {'No data was found, please check again your listing'}
+                </ErrorMessage>
             </div>
         );
     }
@@ -59,9 +70,13 @@ export default function Page({ params }: { params: { id: string } }) {
                     </TitlePage>
 
                     <div className="space-x-2">
-                        {data?.tags.map((tag) => {
-                            return <Badge key={tag.id}>{tag.title}</Badge>;
-                        })}
+                        {data?.tags
+                            ? data?.tags.map((tag) => {
+                                  return (
+                                      <Badge key={tag.id}>{tag.title}</Badge>
+                                  );
+                              })
+                            : null}
                     </div>
                     <div className="flex items-center space-x-4">
                         <AcceptanceStatus

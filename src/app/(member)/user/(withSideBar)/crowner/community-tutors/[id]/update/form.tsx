@@ -514,7 +514,7 @@ export default function FormUpdateCommunityTutor({ data }: IProps) {
                         {isError && (
                             <ErrorMessage>
                                 {error.response?.data?.message ||
-                                    'Samething Wrong'}
+                                    'Something Wrong'}
                             </ErrorMessage>
                         )}
                         {isSuccess && (

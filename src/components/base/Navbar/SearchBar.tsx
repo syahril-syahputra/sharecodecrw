@@ -20,13 +20,13 @@ export default function SearchBar() {
         }
     };
     return (
-        <div className="flex flex-1  items-center divide-x divide-border rounded-lg border border-border px-4 py-2 shadow-md">
+        <div className="flex flex-1 items-center  divide-x divide-border rounded-lg border border-border bg-white px-4 py-2 shadow-md">
             <Input
                 placeholder="Search"
                 value={search}
                 onChange={(v) => setsearch(v.target.value)}
                 onKeyDown={handleSearch}
-                className="h-min border-0  focus:ring-0 focus-visible:ring-0"
+                className="h-min border-0 bg-white focus:ring-0 focus-visible:ring-0"
             />
 
             <div

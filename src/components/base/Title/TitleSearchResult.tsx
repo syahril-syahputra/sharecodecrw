@@ -8,7 +8,7 @@ export default function TitleSearchResult(props: IProps) {
     return (
         <div
             className={clsx(
-                ' border-b py-4 text-2xl  capitalize',
+                'border-b py-4 text-2xl capitalize',
                 props.className
             )}
         >

@@ -22,7 +22,7 @@ export default function FooterPublic() {
                 </div>
             </div>
             <div className="container flex items-start justify-around">
-                <div className=" space-y-4 text-xl">
+                <div className=" text-md space-y-4">
                     <div className="flex items-center space-x-2">
                         <Phone />
                         <span>0089 009 002 443</span>
@@ -33,7 +33,7 @@ export default function FooterPublic() {
                     </div>
                 </div>
 
-                <div className="flex list-none flex-col space-y-4 text-2xl">
+                <div className="text-md flex list-none flex-col space-y-4">
                     <Link href={'/'}>
                         <li>Home</li>
                     </Link>
@@ -45,7 +45,7 @@ export default function FooterPublic() {
                     </Link>
                 </div>
             </div>
-            <div className="pb-20 pt-24 text-center text-xl">
+            <div className="pb-10 pt-24 text-center text-sm">
                 Crowner - {new Date().getFullYear()}
             </div>
         </div>

@@ -39,6 +39,7 @@ export default function Page() {
     const fcmToken = useFCMToken();
     const [loginFail, setloginFail] = useState('');
     const [loadingGoogle, setloadingGoogle] = useState(false);
+    const [isLoadingForm, setIsLoadingForm] = useState(false);
 
     const searchParams = useSearchParams();
     const router = useRouter();
@@ -65,6 +66,7 @@ export default function Page() {
     };
     async function onSubmit(data: z.infer<typeof formSchema>) {
         setloginFail('');
+        setIsLoadingForm(true);
         // handle submitting the form
         try {
             const callbackUrl = searchParams.get('callbackUrl') || '/';
@@ -85,6 +87,7 @@ export default function Page() {
                 router.push('/user');
             }
         } catch (error) {
+            setIsLoadingForm(false);
             console.log(error);
         }
     }
@@ -144,12 +147,8 @@ export default function Page() {
                     </div>
                     {loginFail && <ErrorMessage>{loginFail}</ErrorMessage>}
 
-                    <Button
-                        block
-                        type="submit"
-                        loading={form.formState.isSubmitting}
-                    >
-                        Sign in
+                    <Button block type="submit" loading={isLoadingForm}>
+                        {form.formState.isSubmitted ? 'Redirecting' : 'Sign in'}
                     </Button>
                 </form>
             </Form>

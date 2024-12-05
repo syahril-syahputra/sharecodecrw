@@ -14,7 +14,6 @@ async function getData() {
         const res = await fetchServer({
             url: `/landing`,
         });
-        console.log(res);
         return res.data.data as IDataLanding;
     } catch {
         new Error('my error message');

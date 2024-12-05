@@ -50,7 +50,7 @@ export default function Page() {
         <section className="flex-1 p-4">
             <div className="font-bold">
                 <h1 className="text-2xl">
-                    Welcome back, {session?.user.first_name}
+                    Welcome back, {session?.user.first_name}!
                 </h1>
             </div>
             <div className="flex items-center justify-between font-bold">
@@ -92,7 +92,7 @@ export default function Page() {
                 </div>
             </div>
             <div className="divide-y-2">
-                <div className="py-4">
+                <div className="pt-4">
                     <h1 className="pb-2 text-lg font-bold">
                         Your upcoming event
                     </h1>
@@ -157,7 +157,7 @@ export default function Page() {
                                 </Link>
                             ))}
                     </div>
-                    <div className="flex justify-end">
+                    <div className="mt-2 flex justify-end">
                         <Link href={'/user/crowner/communities'}>
                             <Button variant={'ghost'}>More</Button>
                         </Link>

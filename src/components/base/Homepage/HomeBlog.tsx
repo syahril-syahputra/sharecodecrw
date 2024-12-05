@@ -5,7 +5,7 @@ import React from 'react';
 
 export default function HomeBlog() {
     return (
-        <div>
+        <div className="overflow-x-hidden">
             <div className="h-[24px] w-0 border-b-[0vw] border-r-[100vw] border-t-[5vw] border-r-white border-t-transparent "></div>
             <div className="bg-white py-8">
                 <div className="container flex items-center justify-between ">

@@ -468,7 +468,7 @@ export default function FormUpdateCommunity({ data }: IProps) {
                         {isError && (
                             <ErrorMessage>
                                 {error.response?.data?.message ||
-                                    'Samething Wrong'}
+                                    'Something Wrong'}
                             </ErrorMessage>
                         )}
                         {isSuccess && (
