@@ -5,6 +5,7 @@ import SSRPagination from '@/components/ui/ssr-pagination';
 import fetchServer from '@/lib/fetchServer';
 import { IPaginationMeta } from '@/types/base/pagination';
 import { IArticle } from '@/types/blog';
+import { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import React from 'react';
 
@@ -18,6 +19,11 @@ async function getData() {
         return notFound();
     }
 }
+
+export const metadata: Metadata = {
+    title: 'Blogs | Crowner - Simplest to Use',
+};
+
 async function getArticle(filter: string | undefined) {
     try {
         const baseUrl = `/articles`;

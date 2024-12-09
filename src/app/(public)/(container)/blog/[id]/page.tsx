@@ -1,8 +1,10 @@
+import JsonLd from '@/components/base/JsonLd/JsonLd';
 import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
 import fetchServer from '@/lib/fetchServer';
 import { IArticle } from '@/types/blog';
 import dayjs from 'dayjs';
+import { Metadata } from 'next';
 import Image from 'next/image';
 import { notFound } from 'next/navigation';
 import React from 'react';
@@ -17,10 +19,29 @@ async function getData(id: string) {
         return notFound();
     }
 }
+
+export async function generateMetadata({
+    params,
+}: {
+    params: { id: string };
+}): Promise<Metadata> {
+    const data = await getData(params.id);
+    return {
+        title: data.title + ' | Blog - Crowner',
+        description: data.category,
+    };
+}
+
 export default async function page({ params }: { params: { id: string } }) {
     const data = await getData(params.id);
     return (
         <div className="space-y-4">
+            <JsonLd
+                name="blog"
+                image={data.image_url}
+                description={data.category}
+                type="blog"
+            />
             {/* {JSON.stringify(data)} */}
             <div className="space-y-2">
                 <h2 className="font-bold text-gray-600 text-primary">
@@ -32,7 +53,7 @@ export default async function page({ params }: { params: { id: string } }) {
                     {dayjs(data.createdAt).format('HH MMM YYYY')}
                 </div>
                 <div className=" space-x-2">
-                    {data.tags.map((item) => (
+                    {data.tags.map((item: any) => (
                         <Badge key={item.id}>{item.title}</Badge>
                     ))}
                 </div>

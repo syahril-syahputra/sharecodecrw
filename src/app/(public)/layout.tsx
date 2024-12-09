@@ -1,5 +1,10 @@
 import Navbar from '@/components/base/Navbar';
+import { Metadata } from 'next';
 import React from 'react';
+
+export const metadata: Metadata = {
+    title: 'Crowner - Simplest to Use',
+};
 
 export default function layout({ children }: { children: React.ReactNode }) {
     return (

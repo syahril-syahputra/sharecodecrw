@@ -4,8 +4,9 @@ import ImageUser from '../Image/ImageUser';
 import { humanize } from '@/lib/humanizeDate';
 import Report from '../report';
 import Link from 'next/link';
+import DeleteMessage from './DeleteMessage/DeleteMessage';
 
-export default function CardAnswer(props: { data: IAnswer }) {
+export default function CardAnswer(props: { data: IAnswer; userId: string }) {
     return (
         <div className="border-Input space-y-4 border-b px-4 py-4">
             <div className="flex items-center justify-between">
@@ -23,10 +24,18 @@ export default function CardAnswer(props: { data: IAnswer }) {
                         {humanize(props.data.created_at)}
                     </span>
                 </div>
-                <Report
-                    entityId={props.data.id}
-                    entityType="question_answers"
-                />
+                {props.userId !== props.data.user_id && (
+                    <Report
+                        entityId={props.data.id}
+                        entityType="question_answers"
+                    />
+                )}
+                {props.userId == props.data.user_id && (
+                    <DeleteMessage
+                        entityId={props.data.id}
+                        entityType="question_answers"
+                    />
+                )}
             </div>
             <div>{props.data.message}</div>
         </div>

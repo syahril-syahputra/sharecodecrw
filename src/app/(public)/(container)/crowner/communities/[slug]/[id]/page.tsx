@@ -22,6 +22,8 @@ import Link from 'next/link';
 import { Separator } from '@/components/ui/separator';
 import Related from './related';
 import { getCurrentUser } from '@/lib/session';
+import { Metadata } from 'next';
+import JsonLd from '@/components/base/JsonLd/JsonLd';
 
 async function getData(id: string) {
     try {
@@ -34,11 +36,29 @@ async function getData(id: string) {
     }
 }
 
+export async function generateMetadata({
+    params,
+}: {
+    params: { id: string };
+}): Promise<Metadata> {
+    const data = await getData(params.id);
+    return {
+        title: data?.title + ' | Community Details - Crowner',
+        description: data?.about,
+    };
+}
+
 export default async function Page({ params }: { params: { id: string } }) {
     const user = await getCurrentUser();
     const data = await getData(params.id);
     return (
         <div className="container space-y-4 py-8">
+            <JsonLd
+                name="community"
+                image={data.image_url}
+                description={data.about}
+                type="community"
+            />
             <Breadcrumb>
                 <BreadcrumbList>
                     <BreadcrumbItem>
@@ -71,7 +91,7 @@ export default async function Page({ params }: { params: { id: string } }) {
                         </Link>
                     </div>
                 </TitlePage>
-                <EventAction data={data} useId={user?.id || ''} />
+                <EventAction data={data} userId={user?.id || ''} />
             </div>
             <section className="flex items-start  justify-between space-x-4">
                 <div className="flex-1 space-y-4">
@@ -118,7 +138,7 @@ export default async function Page({ params }: { params: { id: string } }) {
                         <div className="space-y-2">
                             <div>Interests</div>
                             <div className="">
-                                {data.tags.map((item) => (
+                                {data.tags.map((item: any) => (
                                     <Badge
                                         variant={'outline'}
                                         className="text-base"
@@ -140,6 +160,7 @@ export default async function Page({ params }: { params: { id: string } }) {
             <Separator className="h-0.5" />
             <section>
                 <QuestionAndAnswer
+                    user_id={user?.id || ''}
                     entity_id={params.id}
                     entity_type="crowners"
                 />

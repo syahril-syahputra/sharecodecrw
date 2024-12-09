@@ -23,6 +23,8 @@ import Link from 'next/link';
 import Related from './related';
 import { Separator } from '@/components/ui/separator';
 import { getCurrentUser } from '@/lib/session';
+import { Metadata } from 'next';
+import JsonLd from '@/components/base/JsonLd/JsonLd';
 
 async function getData(id: string) {
     try {
@@ -35,11 +37,29 @@ async function getData(id: string) {
     }
 }
 
+export async function generateMetadata({
+    params,
+}: {
+    params: { id: string };
+}): Promise<Metadata> {
+    const data = await getData(params.id);
+    return {
+        title: data.title + ' | Event Details - Crowner',
+        description: data.about,
+    };
+}
+
 export default async function Page({ params }: { params: { id: string } }) {
     const user = await getCurrentUser();
     const data = await getData(params.id);
     return (
         <div className="container space-y-4 py-8">
+            <JsonLd
+                name="event"
+                image={data.image_url}
+                description={data.about}
+                type="event"
+            />
             <Breadcrumb>
                 <BreadcrumbList>
                     <BreadcrumbItem>
@@ -164,7 +184,7 @@ export default async function Page({ params }: { params: { id: string } }) {
                         <div className="space-y-2">
                             <div>Interests</div>
                             <div className="">
-                                {data.tags.map((item) => (
+                                {data.tags.map((item: any) => (
                                     <Badge
                                         variant={'outline'}
                                         className="text-base"
@@ -177,8 +197,10 @@ export default async function Page({ params }: { params: { id: string } }) {
                         </div>
                         <div className="space-y-2">
                             <div>TIPS : </div>
-                            <div>HOW TO STAY SAFE</div>
-                            <div>Do not send money before the event</div>
+                            <div>
+                                <div>HOW TO STAY SAFE</div>
+                                <div>Do not send money before the event</div>
+                            </div>
                         </div>
                     </div>
                 </div>

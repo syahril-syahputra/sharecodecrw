@@ -40,4 +40,13 @@ export interface ICommunityTutorLanding {
 }
 
 // Commercials interface (currently empty)
-export interface ICommercialLanding {}
+export interface ICommercialLanding {
+    id: string;
+    title: string;
+    slug: string;
+    city: string;
+    province: string;
+    image_url: string;
+    service_name: string;
+    commercial_name: string;
+}

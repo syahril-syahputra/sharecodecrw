@@ -52,7 +52,7 @@ export default async function Navbar() {
                 </Link>
                 <Link href={'/blog'}>
                     <span className="px-2  font-semibold text-primary">
-                        BLOG
+                        Blog
                     </span>
                 </Link>
                 {user ? (

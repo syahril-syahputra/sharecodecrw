@@ -1,7 +1,7 @@
 'use client';
 import React, { useState } from 'react';
 import InputQuestion from './InputQuestion';
-import { useFetchQuestion } from '@/feature/qa/useFetchQueystion';
+import { useFetchQuestion } from '@/feature/qa/useFetchQuestion';
 import useTableConfig from '@/lib/useTableConfig';
 import CardQuestion from './CardQuestion';
 import { useCreateQuestion } from '@/feature/qa/useCreateQuestion';
@@ -11,6 +11,7 @@ import { Skeleton } from '@/components/ui/skeleton';
 interface IProps {
     entity_id: string;
     entity_type: string;
+    user_id: string;
 }
 export default function QuestionAndAnswer(props: IProps) {
     const [questionValue, setquestionValue] = useState('');
@@ -52,7 +53,11 @@ export default function QuestionAndAnswer(props: IProps) {
                     {data &&
                         data.pages.map((page) =>
                             page.items.map((item) => (
-                                <CardQuestion key={item.id} data={item} />
+                                <CardQuestion
+                                    key={item.id}
+                                    data={item}
+                                    userId={props.user_id}
+                                />
                             ))
                         )}
                 </div>

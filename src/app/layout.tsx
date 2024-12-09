@@ -5,6 +5,7 @@ import { ThemeProvider } from './ThemeProvider';
 import Providers from './providers';
 import { SessionProvider } from 'next-auth/react';
 import { Toaster } from '@/components/ui/toaster';
+import { Metadata } from 'next';
 
 const inter = Inter({
     subsets: ['latin'],
@@ -18,6 +19,18 @@ const koulen = Koulen({
     display: 'swap',
     variable: '--font-koulen',
 });
+
+const metadata: Metadata = {
+    title: {
+        template: '%s | Simplest to Use',
+        default: 'Crowner',
+    },
+    icons: {
+        icon: '/favicon.ico',
+    },
+    description: 'Simplest to Use',
+    metadataBase: new URL('https://crowner.ca'),
+};
 
 export default function RootLayout({
     children,

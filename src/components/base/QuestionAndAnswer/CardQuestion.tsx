@@ -6,8 +6,12 @@ import ListAnswer from './ListAnswer';
 import { humanize } from '@/lib/humanizeDate';
 import Report from '../report';
 import Link from 'next/link';
+import DeleteMessage from './DeleteMessage/DeleteMessage';
 
-export default function CardQuestion(props: { data: IQuestion }) {
+export default function CardQuestion(props: {
+    data: IQuestion;
+    userId: string;
+}) {
     const [showInputAnswer, setshowInputAnswer] = useState(false);
 
     return (
@@ -27,10 +31,18 @@ export default function CardQuestion(props: { data: IQuestion }) {
                         {humanize(props.data.created_at)}
                     </span>
                 </div>
-                <Report
-                    entityId={props.data.id}
-                    entityType="question_answers"
-                />
+                {props.userId !== props.data.user_id && (
+                    <Report
+                        entityId={props.data.id}
+                        entityType="question_answers"
+                    />
+                )}
+                {props.userId == props.data.user_id && (
+                    <DeleteMessage
+                        entityId={props.data.id}
+                        entityType="question_answers"
+                    />
+                )}
             </div>
             <div>{props.data.message}</div>
             <div className="space-x-4">
@@ -46,6 +58,7 @@ export default function CardQuestion(props: { data: IQuestion }) {
                         showInput={showInputAnswer}
                         setShowInput={setshowInputAnswer}
                         questionId={props.data.id}
+                        userId={props.userId}
                     />
                 </div>
             </div>

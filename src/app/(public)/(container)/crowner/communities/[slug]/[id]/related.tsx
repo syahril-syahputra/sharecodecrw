@@ -42,7 +42,7 @@ export default async function Related(props: IProps) {
     const data = await getData(props.id, tags);
     return (
         <div>
-            <h1 className="py-4 text-2xl font-semibold">Other Comminities</h1>
+            <h1 className="py-4 text-2xl font-semibold">Other Communities</h1>
             <Carousel className="w-full ">
                 <CarouselContent className="-ml-1">
                     {data?.items.map((item, index) => {

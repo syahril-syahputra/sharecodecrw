@@ -11,7 +11,6 @@ export const useFetchQuestion = (
 ) => {
     return useInfiniteQuery({
         queryFn: async ({ pageParam }) => {
-            console.log(pageParam);
             const baseUrl = `/discussions`;
             const queryParams = new URLSearchParams({
                 page: pageParam + '',

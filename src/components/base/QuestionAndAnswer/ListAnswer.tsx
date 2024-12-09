@@ -7,8 +7,10 @@ import InputAnswer from './InputAnswer';
 import { Button } from '@/components/ui/button';
 import { ChevronDown, ChevronUp } from 'lucide-react';
 import { useCreateAnswer } from '@/feature/qa/useCreateAnswer';
+import { Skeleton } from '@/components/ui/skeleton';
 
 interface IProps {
+    userId: string;
     counter: number;
     questionId: string;
     showInput: boolean;
@@ -69,8 +71,19 @@ export default function ListAnswer(props: IProps) {
             {showReplies && (
                 <div className="border-Border border-l p-4">
                     {data?.items.map((item: IAnswer) => (
-                        <CardAnswer key={item.id} data={item} />
+                        <CardAnswer
+                            key={item.id}
+                            data={item}
+                            userId={props.userId}
+                        />
                     ))}
+                </div>
+            )}
+
+            {isLoading && (
+                <div className="space-y-1">
+                    <Skeleton className="h-6 rounded"></Skeleton>
+                    <Skeleton className="h-8 rounded"></Skeleton>
                 </div>
             )}
         </div>

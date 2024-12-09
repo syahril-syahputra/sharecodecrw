@@ -2,8 +2,11 @@ import React from 'react';
 import CardCommercials from '../Card/CardCommercials';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
+import { ICommercialLanding } from '@/types/landing';
 
-export default function HomeCommercials() {
+export default async function HomeCommercials(props: {
+    data?: ICommercialLanding[];
+}) {
     return (
         <div className="scroll-mt-20 bg-white" id="commercials">
             <div className="bg-[#E9F2FF]">
@@ -11,44 +14,30 @@ export default function HomeCommercials() {
                     <h2 className="pb-2 pt-8 text-center font-koulen text-6xl">
                         COMMERCIALS
                     </h2>
-                    <div className="grid grid-cols-3 gap-8 p-10">
-                        <CardCommercials
-                            data={{
-                                image_url: 'https://picsum.photos/300/200',
-                                title: 'Lawyer',
-                            }}
-                        />
-                        <CardCommercials
-                            data={{
-                                image_url: 'https://picsum.photos/300/200',
-                                title: 'Lawyer',
-                            }}
-                        />
-                        <CardCommercials
-                            data={{
-                                image_url: 'https://picsum.photos/300/200',
-                                title: 'Lawyer',
-                            }}
-                        />
-                        <CardCommercials
-                            data={{
-                                image_url: 'https://picsum.photos/300/200',
-                                title: 'Lawyer',
-                            }}
-                        />
-                        <CardCommercials
-                            data={{
-                                image_url: 'https://picsum.photos/300/200',
-                                title: 'Lawyer',
-                            }}
-                        />
-                        <CardCommercials
-                            data={{
-                                image_url: 'https://picsum.photos/300/400',
-                                title: 'Lawyer',
-                            }}
-                        />
+                    <div className="">
+                        <div className="grid grid-cols-3 gap-8 py-5">
+                            {props.data?.map((item) => (
+                                <CardCommercials
+                                    data={{
+                                        id: item.id,
+                                        title: item.title,
+                                        slug: item.slug,
+                                        image_url:
+                                            'https://picsum.photos/300/200',
+                                        city: item.city,
+                                        province: item.province,
+                                    }}
+                                />
+                            ))}
+                        </div>
                     </div>
+                    {props.data?.length == 0 && (
+                        <div className="mb-16 text-center">
+                            <span className="italic">
+                                No commercial to appears
+                            </span>
+                        </div>
+                    )}
                     <div className="mx-auto max-w-xl py-4 text-center text-xl">
                         Lorem Ipsum is simply dummy text of the printing and
                         typesetting industry. Lorem Ipsum has been the
@@ -56,7 +45,7 @@ export default function HomeCommercials() {
                         1500s.
                     </div>
                     <div className="mt-4 flex justify-center">
-                        <Link className="block" href={'/post-a-listing'}>
+                        <Link className="block" href={'/commercial/listings'}>
                             <Button
                                 variant={'default'}
                                 className="rounded-full"

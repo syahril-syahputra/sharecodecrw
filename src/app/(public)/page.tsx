@@ -16,15 +16,16 @@ async function getData() {
         });
         return res.data.data as IDataLanding;
     } catch {
-        new Error('my error message');
+        new Error('can not request landing page data');
     }
 }
+
 export default async function page() {
     const data = await getData();
     return (
         <div className="mt-20 bg-[#EEEEEE]">
             <HomeTop />
-            <HomeCommercials />
+            <HomeCommercials data={data?.commercials} />
             <HomeFeature />
             <HomeData data={data} />
             <HomeBlog />

@@ -11,7 +11,7 @@ export default function HomeBlog() {
                 <div className="container flex items-center justify-between ">
                     <div className="max-w-lg  flex-1 ">
                         <h1 className="mb-4 font-koulen text-4xl font-bold">
-                            BLOGS
+                            Blogs
                         </h1>
                         <p className="mb-6 font-inter text-lg text-gray-700">
                             Lorem Ipsum is simply dummy text of the printing and

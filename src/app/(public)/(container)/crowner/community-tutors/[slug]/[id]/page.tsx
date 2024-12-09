@@ -22,6 +22,8 @@ import Link from 'next/link';
 import { Separator } from '@/components/ui/separator';
 import Related from './related';
 import { getCurrentUser } from '@/lib/session';
+import { Metadata } from 'next';
+import JsonLd from '@/components/base/JsonLd/JsonLd';
 
 async function getData(id: string) {
     try {
@@ -34,11 +36,29 @@ async function getData(id: string) {
     }
 }
 
+export async function generateMetadata({
+    params,
+}: {
+    params: { id: string };
+}): Promise<Metadata> {
+    const data = await getData(params.id);
+    return {
+        title: data.title + ' | Community Tutor Details - Crowner',
+        description: data.about,
+    };
+}
+
 export default async function Page({ params }: { params: { id: string } }) {
     const user = await getCurrentUser();
     const data = await getData(params.id);
     return (
         <div className="container space-y-4 py-8">
+            <JsonLd
+                name="tutor"
+                image={data.image_url}
+                description={data.about}
+                type="tutor"
+            />
             <Breadcrumb>
                 <BreadcrumbList>
                     <BreadcrumbItem>
@@ -140,7 +160,7 @@ export default async function Page({ params }: { params: { id: string } }) {
                         <div className="space-y-2">
                             <div>Interests</div>
                             <div className="">
-                                {data.tags.map((item) => (
+                                {data.tags.map((item: any) => (
                                     <Badge
                                         variant={'outline'}
                                         className="text-base"

@@ -19,7 +19,7 @@ import { useToast } from '@/components/ui/use-toast';
 
 export default function EventAction(props: {
     data: IDetailCommunity;
-    useId: string;
+    userId: string;
 }) {
     const { toast } = useToast();
     const { status } = useSession();
@@ -37,7 +37,7 @@ export default function EventAction(props: {
 
     return (
         <div className="flex items-center space-x-2">
-            {props.useId !== props.data.user_id && (
+            {props.userId !== props.data.user_id && (
                 <Button
                     loading={isePendingInterest}
                     onClick={() =>
