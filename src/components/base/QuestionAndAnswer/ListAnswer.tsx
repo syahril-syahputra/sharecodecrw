@@ -75,6 +75,8 @@ export default function ListAnswer(props: IProps) {
                             key={item.id}
                             data={item}
                             userId={props.userId}
+                            refetch={refetch}
+                            setCounter={setcounter}
                         />
                     ))}
                 </div>

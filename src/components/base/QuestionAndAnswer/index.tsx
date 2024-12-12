@@ -57,6 +57,7 @@ export default function QuestionAndAnswer(props: IProps) {
                                     key={item.id}
                                     data={item}
                                     userId={props.user_id}
+                                    refetch={refetch}
                                 />
                             ))
                         )}

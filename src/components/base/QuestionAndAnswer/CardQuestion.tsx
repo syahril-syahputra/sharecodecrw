@@ -11,6 +11,7 @@ import DeleteMessage from './DeleteMessage/DeleteMessage';
 export default function CardQuestion(props: {
     data: IQuestion;
     userId: string;
+    refetch: () => void;
 }) {
     const [showInputAnswer, setshowInputAnswer] = useState(false);
 
@@ -38,10 +39,7 @@ export default function CardQuestion(props: {
                     />
                 )}
                 {props.userId == props.data.user_id && (
-                    <DeleteMessage
-                        entityId={props.data.id}
-                        entityType="question_answers"
-                    />
+                    <DeleteMessage refetch={props.refetch} id={props.data.id} />
                 )}
             </div>
             <div>{props.data.message}</div>

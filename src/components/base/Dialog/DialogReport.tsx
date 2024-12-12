@@ -20,11 +20,12 @@ import { Input } from '@/components/ui/input';
 import { useCreateReport } from '@/feature/report/useCreateReport';
 import ErrorMessage from '../Error/ErrorMessage';
 import { useToast } from '@/components/ui/use-toast';
+import { IReport } from '@/types/report';
 export default function DialogReport(props: {
     open: boolean;
     entityId: string;
-    entityType: 'crowners' | 'question_answers';
-    entitySubType?: 'events' | 'communities' | 'community-tutors';
+    entityType: IReport['entityType'];
+    entitySubType?: IReport['entitySubType'];
     setOpen: (arg: boolean) => void;
 }) {
     const { toast } = useToast();
@@ -34,13 +35,13 @@ export default function DialogReport(props: {
     const { data: dataReason } = useFetchReportReason();
     const [error, seterror] = useState('');
     const { mutate, isPending } = useCreateReport({
-        onSuccess: () => {
+        onSuccess: (s) => {
             seterror('');
             setreason('');
             setotherReason('');
             toast({
                 title: 'Report success',
-                description: 'your report has been send!',
+                description: s.data.message || 'Your report has been sent!',
             });
             props.setOpen(false);
         },

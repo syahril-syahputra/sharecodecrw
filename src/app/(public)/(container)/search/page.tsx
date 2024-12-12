@@ -1,7 +1,8 @@
-import CardCommercials from '@/components/base/Card/CardCommercials';
+import { CardCommercials } from '@/components/base/Card/CardCommercials';
 import TitleSearchResult from '@/components/base/Title/TitleSearchResult';
 import { Button } from '@/components/ui/button';
 import fetchServer from '@/lib/fetchServer';
+import { ICommercialLanding } from '@/types/landing';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import React, { Fragment } from 'react';
@@ -12,14 +13,6 @@ interface Listing {
     title: string;
     listing_type: string;
     listing_type_formatted: string;
-}
-
-interface CommercialListing {
-    id: string;
-    title: string;
-    slug: string;
-    service_name: string;
-    commercial_name: string;
 }
 
 interface ISearchResult {
@@ -45,9 +38,9 @@ async function getCommercials(value?: string) {
         const res = await fetchServer({
             url: `/commercials/search?query=${value || ''}`,
         });
-        return res.data.data as CommercialListing[];
+        return res.data.data as ICommercialLanding[];
     } catch {
-        return [] as CommercialListing[];
+        return [] as ICommercialLanding[];
     }
 }
 
@@ -70,9 +63,6 @@ export default async function page({
     };
 
     const commercials = await getCommercials(searchParams?.search);
-    const createCommercialUrl = (commercials: CommercialListing) => {
-        return `/commercial/listings/${commercials.slug}/${commercials.id}`;
-    };
     return (
         <Fragment>
             <h1 className="text-xl text-primary">Search Result</h1>
@@ -82,14 +72,7 @@ export default async function page({
                 </h2>
                 <div className="grid grid-cols-3 gap-8 py-5">
                     {commercials?.map((item) => (
-                        <CardCommercials
-                            data={{
-                                title: item.title,
-                                slug: item.slug,
-                                id: item.id,
-                                image_url: 'https://picsum.photos/300/200',
-                            }}
-                        />
+                        <CardCommercials key={item.id} data={item} />
                     ))}
                 </div>
                 {commercials.length == 0 && (
@@ -121,6 +104,11 @@ export default async function page({
                 <h2 className="text-center font-koulen text-5xl">Crowners</h2>
                 <div className="mx-auto max-w-2xl rounded-md bg-white p-4 shadow-xl">
                     <TitleSearchResult>Related Results</TitleSearchResult>
+                    {data.related.length == 0 ? (
+                        <span className="italic">
+                            We cant find anything, try another keyword
+                        </span>
+                    ) : null}
                     <ul>
                         {data.related.map((item) => (
                             <Link href={createUrl(item)} key={item.id}>
@@ -144,7 +132,10 @@ export default async function page({
                                 Community Tutors
                             </TitleSearchResult>
                             <span className="block py-8">
-                                {data.community_tutors} Listing Found
+                                {data.community_tutors == 0
+                                    ? 'No'
+                                    : data.community_tutors}{' '}
+                                listing found
                             </span>
                         </div>
                     </Link>
@@ -155,7 +146,8 @@ export default async function page({
                         <div className="rounded-md bg-white p-4 shadow-xl">
                             <TitleSearchResult>Events</TitleSearchResult>
                             <span className="block py-8">
-                                {data.events} Listing Found
+                                {data.events == 0 ? 'No' : data.events} listing
+                                found
                             </span>
                         </div>
                     </Link>
@@ -168,7 +160,10 @@ export default async function page({
                         <div className="rounded-md bg-white p-4 shadow-xl">
                             <TitleSearchResult>Communitites</TitleSearchResult>
                             <span className="block py-8">
-                                {data.communities} Listing Found
+                                {data.communities == 0
+                                    ? 'No'
+                                    : data.communities}{' '}
+                                listing found
                             </span>
                         </div>
                     </Link>

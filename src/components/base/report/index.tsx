@@ -4,13 +4,9 @@ import React, { useState } from 'react';
 import DialogReport from '../Dialog/DialogReport';
 import DialogLoginRequired from '../Dialog/DialogLoginRequired';
 import { useSession } from 'next-auth/react';
+import { IReport } from '@/types/report';
 
-interface IProps {
-    entityId: string;
-    entityType: 'crowners' | 'question_answers';
-    entitySubType?: 'events' | 'communities' | 'community-tutors';
-}
-export default function Report(props: IProps) {
+export default function Report(props: IReport) {
     const { status } = useSession();
 
     const isLogin = status === 'authenticated';

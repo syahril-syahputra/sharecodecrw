@@ -1,6 +1,5 @@
 import fetchClient from '@/lib/FetchClient';
 import { IError } from '@/types/error';
-import { IReport } from '@/types/report';
 import { useMutation } from '@tanstack/react-query';
 import { AxiosError, AxiosResponse } from 'axios';
 
@@ -8,18 +7,15 @@ interface IProps {
     onSuccess: (data: AxiosResponse) => void;
     onError: (error: AxiosError<IError>) => void;
 }
-export const useCreateReport = ({ onSuccess, onError }: IProps) => {
+export const useToggleCommercialListingInterest = ({
+    onSuccess,
+    onError,
+}: IProps) => {
     return useMutation({
-        mutationFn: async (body: {
-            entity_id: string;
-            entity_type: IReport['entityType'];
-            entity_sub_type?: IReport['entitySubType'];
-            message: string;
-        }) => {
+        mutationFn: async (id: string) => {
             const response = await fetchClient({
-                method: 'POST',
-                url: `/reports/entities`,
-                body: body,
+                method: 'PATCH',
+                url: `/commercials/listings/${id}/interests`,
             });
 
             return response;

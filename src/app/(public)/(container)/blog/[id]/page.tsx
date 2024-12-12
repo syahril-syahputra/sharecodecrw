@@ -37,7 +37,7 @@ export default async function page({ params }: { params: { id: string } }) {
     return (
         <div className="space-y-4">
             <JsonLd
-                name="blog"
+                name={data.title}
                 image={data.image_url}
                 description={data.category}
                 type="blog"
@@ -53,7 +53,7 @@ export default async function page({ params }: { params: { id: string } }) {
                     {dayjs(data.createdAt).format('HH MMM YYYY')}
                 </div>
                 <div className=" space-x-2">
-                    {data.tags.map((item: any) => (
+                    {data.tags.map((item) => (
                         <Badge key={item.id}>{item.title}</Badge>
                     ))}
                 </div>

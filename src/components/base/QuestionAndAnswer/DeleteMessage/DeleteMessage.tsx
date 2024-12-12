@@ -1,14 +1,13 @@
 'use client';
 import { Trash } from 'lucide-react';
 import React, { useState } from 'react';
-import DialogReport from '../../Dialog/DialogReport';
 import DialogLoginRequired from '../../Dialog/DialogLoginRequired';
 import { useSession } from 'next-auth/react';
 import DialogDelete from './DialogDelete';
 
 interface IProps {
-    entityId: string;
-    entityType: 'question_answers';
+    id: string;
+    refetch: () => void;
 }
 export default function DeleteMessage(props: IProps) {
     const { status } = useSession();
@@ -31,10 +30,10 @@ export default function DeleteMessage(props: IProps) {
                 onOpenChange={(value) => setisNotLoginModal(value)}
             />
             <DialogDelete
-                entityId={props.entityId}
-                entityType={props.entityType}
+                id={props.id}
                 open={open}
                 setOpen={setopen}
+                refetch={props.refetch}
             />
         </div>
     );

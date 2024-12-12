@@ -1,5 +1,5 @@
 import React from 'react';
-import CardCommercials from '../Card/CardCommercials';
+import { CardCommercials } from '../Card/CardCommercials';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { ICommercialLanding } from '@/types/landing';
@@ -17,17 +17,7 @@ export default async function HomeCommercials(props: {
                     <div className="">
                         <div className="grid grid-cols-3 gap-8 py-5">
                             {props.data?.map((item) => (
-                                <CardCommercials
-                                    data={{
-                                        id: item.id,
-                                        title: item.title,
-                                        slug: item.slug,
-                                        image_url:
-                                            'https://picsum.photos/300/200',
-                                        city: item.city,
-                                        province: item.province,
-                                    }}
-                                />
+                                <CardCommercials key={item.id} data={item} />
                             ))}
                         </div>
                     </div>

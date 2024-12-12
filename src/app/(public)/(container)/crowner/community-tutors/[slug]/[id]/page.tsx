@@ -54,7 +54,7 @@ export default async function Page({ params }: { params: { id: string } }) {
     return (
         <div className="container space-y-4 py-8">
             <JsonLd
-                name="tutor"
+                name={data.title}
                 image={data.image_url}
                 description={data.about}
                 type="tutor"
@@ -160,7 +160,7 @@ export default async function Page({ params }: { params: { id: string } }) {
                         <div className="space-y-2">
                             <div>Interests</div>
                             <div className="">
-                                {data.tags.map((item: any) => (
+                                {data.tags.map((item) => (
                                     <Badge
                                         variant={'outline'}
                                         className="text-base"
@@ -181,6 +181,7 @@ export default async function Page({ params }: { params: { id: string } }) {
             <Separator className="h-0.5" />
             <section>
                 <QuestionAndAnswer
+                    user_id={user?.id || ''}
                     entity_id={params.id}
                     entity_type="crowners"
                 />

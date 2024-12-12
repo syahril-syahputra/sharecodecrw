@@ -19,7 +19,6 @@ async function getData(filter: string | undefined) {
         const res = await fetchServer({
             url: url,
         });
-        console.log(res);
         return res.data.data as {
             items: IDetailCommunity[];
             meta: IPaginationMeta;

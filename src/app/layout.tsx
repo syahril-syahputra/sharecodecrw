@@ -20,6 +20,7 @@ const koulen = Koulen({
     variable: '--font-koulen',
 });
 
+/* eslint-disable @typescript-eslint/no-unused-vars */
 const metadata: Metadata = {
     title: {
         template: '%s | Simplest to Use',
@@ -31,6 +32,7 @@ const metadata: Metadata = {
     description: 'Simplest to Use',
     metadataBase: new URL('https://crowner.ca'),
 };
+/* eslint-disable @typescript-eslint/no-unused-vars */
 
 export default function RootLayout({
     children,

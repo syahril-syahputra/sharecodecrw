@@ -6,7 +6,16 @@ import Report from '../report';
 import Link from 'next/link';
 import DeleteMessage from './DeleteMessage/DeleteMessage';
 
-export default function CardAnswer(props: { data: IAnswer; userId: string }) {
+export default function CardAnswer(props: {
+    data: IAnswer;
+    userId: string;
+    refetch: () => void;
+    setCounter: (val: (prevCount: number) => number) => void;
+}) {
+    const deleteMesage = () => {
+        props.refetch();
+        props.setCounter((prevCount: number) => prevCount - 1);
+    };
     return (
         <div className="border-Input space-y-4 border-b px-4 py-4">
             <div className="flex items-center justify-between">
@@ -31,10 +40,7 @@ export default function CardAnswer(props: { data: IAnswer; userId: string }) {
                     />
                 )}
                 {props.userId == props.data.user_id && (
-                    <DeleteMessage
-                        entityId={props.data.id}
-                        entityType="question_answers"
-                    />
+                    <DeleteMessage refetch={deleteMesage} id={props.data.id} />
                 )}
             </div>
             <div>{props.data.message}</div>

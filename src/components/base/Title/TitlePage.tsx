@@ -6,13 +6,13 @@ interface IProps {
 }
 export default function TitlePage(props: IProps) {
     return (
-        <div
+        <h1
             className={clsx(
                 ' text-2xl font-semibold capitalize',
                 props.className
             )}
         >
             {props.children}
-        </div>
+        </h1>
     );
 }

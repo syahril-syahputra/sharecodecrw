@@ -11,7 +11,7 @@ export default function IframeMap(props: {
             ${props?.longitude}`;
     return (
         <iframe
-            className="mb-4 h-60 w-full"
+            className="mb-4 h-60 w-full rounded-lg"
             frameBorder="0"
             style={{ border: 0 }}
             src={iframeSrc}

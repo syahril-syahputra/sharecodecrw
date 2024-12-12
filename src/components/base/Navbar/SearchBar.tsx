@@ -22,7 +22,7 @@ export default function SearchBar() {
     return (
         <div className="flex flex-1 items-center  divide-x divide-border rounded-lg border border-border bg-white px-4 py-2 shadow-md">
             <Input
-                placeholder="Search for commercials, events, community and tutor around you"
+                placeholder="Search for commercials, events, communities and tutors around you"
                 value={search}
                 onChange={(v) => setsearch(v.target.value)}
                 onKeyDown={handleSearch}
