@@ -42,7 +42,7 @@ export default function Page() {
     return (
         <div className="flex-1 space-y-4 p-4">
             <div className="flex items-center justify-between border-b">
-                <TitleFormHeader>Community you manage</TitleFormHeader>
+                <TitleFormHeader>Community You Manage</TitleFormHeader>
                 <Link href={'/user/create-community'}>
                     <Button variant={'ghost'}>
                         <Plus />
@@ -79,9 +79,7 @@ export default function Page() {
                                 <SelectValue placeholder="Acceptance (all)" />
                             </SelectTrigger>
                             <SelectContent>
-                                <SelectItem value={'idle'}>
-                                    Acceptance: Idle
-                                </SelectItem>
+                                <SelectItem value={'idle'}>All</SelectItem>
                                 <SelectItem value={'accepted'}>
                                     Accepted
                                 </SelectItem>

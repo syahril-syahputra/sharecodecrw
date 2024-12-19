@@ -37,8 +37,8 @@ export default function Page() {
         defaultComlumn: 'title',
         defaultFilter: {
             event_schedule: 'upcoming',
-            acceptance_status: 'idle',
-            is_visible: 'true',
+            acceptance_status: '',
+            is_visible: '',
             start_date: '',
             end_date: '',
         },
@@ -48,7 +48,7 @@ export default function Page() {
     return (
         <div className="flex-1 space-y-4 p-4">
             <div className="flex items-center justify-between border-b">
-                <TitleFormHeader>Your Personal Event</TitleFormHeader>
+                <TitleFormHeader>Your Personal Events</TitleFormHeader>
                 <Link href={'events/create-event'}>
                     <Button variant={'ghost'}>
                         <Plus />
@@ -164,9 +164,7 @@ export default function Page() {
                                 <SelectValue placeholder="Acceptance (all)" />
                             </SelectTrigger>
                             <SelectContent>
-                                <SelectItem value={'idle'}>
-                                    Acceptance: Idle
-                                </SelectItem>
+                                <SelectItem value={'idle'}>Idle</SelectItem>
                                 <SelectItem value={'accepted'}>
                                     Accepted
                                 </SelectItem>

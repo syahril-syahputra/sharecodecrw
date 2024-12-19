@@ -7,6 +7,7 @@ import { humanize } from '@/lib/humanizeDate';
 import Report from '../report';
 import Link from 'next/link';
 import DeleteMessage from './DeleteMessage/DeleteMessage';
+import { Badge } from '@/components/ui/badge';
 
 export default function CardQuestion(props: {
     data: IQuestion;
@@ -27,7 +28,7 @@ export default function CardQuestion(props: {
                             </span>
                         </Link>
                     </span>
-
+                    {props.data.is_author && <Badge>Author</Badge>}
                     <span className="text-sm">
                         {humanize(props.data.created_at)}
                     </span>

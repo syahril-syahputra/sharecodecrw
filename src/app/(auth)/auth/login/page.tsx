@@ -78,9 +78,9 @@ export default function Page() {
                 redirect: false,
                 callbackUrl: callbackUrl,
             });
-            // console.log(request);
 
             if (request?.error) {
+                setIsLoadingForm(false);
                 setloginFail(request?.error);
             } else {
                 router.refresh();
@@ -148,13 +148,15 @@ export default function Page() {
                     {loginFail && <ErrorMessage>{loginFail}</ErrorMessage>}
 
                     <Button block type="submit" loading={isLoadingForm}>
-                        {form.formState.isSubmitted ? 'Redirecting' : 'Sign in'}
+                        {isLoadingForm && form.formState.isSubmitSuccessful
+                            ? 'Redirecting'
+                            : 'Sign in'}
                     </Button>
                 </form>
             </Form>
             <TitleSeparator>Or With</TitleSeparator>
             <div className="flex flex-col justify-center space-y-4 text-center md:flex-row md:space-x-4 md:space-y-0">
-                <Button variant={'outline'} size={'lg'}>
+                {/* <Button variant={'outline'} size={'lg'}>
                     <Image
                         src={'/icons/apple-logo.png'}
                         alt="apple"
@@ -163,7 +165,7 @@ export default function Page() {
                         height={20}
                     />{' '}
                     Sign in with Apple
-                </Button>
+                </Button> */}
 
                 <Button
                     variant={'outline'}

@@ -141,7 +141,7 @@ export default async function Page({ params }: { params: { id: string } }) {
                                 {data.tags.map((item) => (
                                     <Badge
                                         variant={'outline'}
-                                        className="text-base"
+                                        className="mb-2 mr-1 text-base"
                                         key={item.id}
                                     >
                                         {item.title}

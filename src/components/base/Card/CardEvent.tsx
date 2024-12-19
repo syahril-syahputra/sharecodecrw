@@ -117,6 +117,7 @@ export default function CardEvent(props: IProps) {
                                 />
                                 <VisibilityStatus
                                     is_visible={props.data.is_visible}
+                                    acceptance={props.data.acceptance_status}
                                 />
                             </span>
                         </div>

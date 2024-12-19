@@ -41,9 +41,9 @@ export default function CommunityEvents({
         defaultComlumn: 'title',
         defaultFilter: {
             event_schedule: 'upcoming',
-            acceptance_status: 'idle',
+            acceptance_status: '',
             community_id: community_id,
-            is_visible: 'true',
+            is_visible: '',
             event_type: 'community',
             start_date: '',
             end_date: '',

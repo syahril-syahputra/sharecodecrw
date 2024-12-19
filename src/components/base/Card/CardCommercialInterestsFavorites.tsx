@@ -7,11 +7,9 @@ interface IProps {
     data: IInterestFavorites;
     variant?: 'horizontal' | 'vertical';
 }
-export default function CardInterestsFavorites(props: IProps) {
+export default function CardCommercialInterestsFavorites(props: IProps) {
     const url =
-        '/crowner/' +
-        props.data?.listing_type_formatted?.replace(' ', '-') +
-        '/' +
+        '/commercial/listings/' +
         (props.data?.slug || 'slug') +
         '/' +
         props.data.id;

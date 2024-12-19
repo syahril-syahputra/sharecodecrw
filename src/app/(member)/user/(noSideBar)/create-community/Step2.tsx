@@ -38,7 +38,7 @@ export default function Step2(props: IProps) {
                     onSubmit={form.handleSubmit(onSubmitProfile)}
                     className="space-y-8"
                 >
-                    <div className="text-center">Community Name*</div>
+                    <div className="text-center">Community Interest*</div>
 
                     <FormField
                         control={form.control}

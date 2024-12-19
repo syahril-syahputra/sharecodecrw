@@ -45,6 +45,7 @@ export default function CardCommunity(props: IProps) {
                             />
                             <VisibilityStatus
                                 is_visible={props.data.is_visible}
+                                acceptance={props.data.acceptance_status}
                             />
                         </span>
                     </div>

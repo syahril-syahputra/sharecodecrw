@@ -50,13 +50,15 @@ export default function ListAnswer(props: IProps) {
     return (
         <div className="flex-1">
             <div>
-                <Button
-                    variant={'ghost'}
-                    onClick={() => setshowReplies(!showReplies)}
-                >
-                    {showReplies ? <ChevronUp /> : <ChevronDown />} {counter}{' '}
-                    Replies
-                </Button>
+                {counter != 0 && (
+                    <Button
+                        variant={'ghost'}
+                        onClick={() => setshowReplies(!showReplies)}
+                    >
+                        {showReplies ? <ChevronUp /> : <ChevronDown />}{' '}
+                        {counter} Replies
+                    </Button>
+                )}
             </div>
             {props.showInput && (
                 <InputAnswer

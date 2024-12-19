@@ -49,7 +49,10 @@ export default function Page({ params }: { params: { id: string } }) {
                         <AcceptanceStatus
                             acceptance={data?.acceptance_status}
                         />
-                        <VisibilityStatus is_visible={data?.is_visible} />
+                        <VisibilityStatus
+                            is_visible={data?.is_visible}
+                            acceptance={data?.acceptance_status}
+                        />
                     </div>
                 </div>
                 <div className="flex items-center space-x-2">
