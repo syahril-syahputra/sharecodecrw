@@ -9,7 +9,7 @@ export default function TitleAuth(props: IProps) {
     return (
         <div
             className={clsx(
-                'text-center text-2xl font-bold text-primary',
+                'font-bold text-primary',
                 props.className
             )}
         >

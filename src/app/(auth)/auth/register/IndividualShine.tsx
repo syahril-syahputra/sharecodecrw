@@ -1,0 +1,299 @@
+import { PasswordInput } from '@/components/ui/password-input';
+import { BodyUserRegistration } from '@/types/auth';
+import { errorHelper } from '@/lib/formErrorHelper';
+import { useUserRegistration } from '@/feature/auth/register';
+import { useFetchCity, useFetchState } from '@/feature/base/city';
+import dayjs from 'dayjs';
+import { signIn } from 'next-auth/react';
+import { useForm } from 'react-hook-form';
+import { z } from 'zod';
+import DatePicker from '@/components/ui/datePicker';
+import {
+    Select,
+    SelectContent,
+    SelectItem,
+    SelectTrigger,
+    SelectValue,
+} from '@/components/ui/select';
+import { Checkbox } from '@/components/ui/checkbox';
+import { zodResolver } from '@hookform/resolvers/zod';
+import {
+    Form,
+    FormControl,
+    FormField,
+    FormItem,
+    FormLabel,
+    FormMessage,
+} from '@/components/ui/form';
+import { Input } from '@/components/ui/input';
+import ErrorMessage from '@/components/base/Error/ErrorMessage';
+import { Button } from "@/components/ui/button";
+import Link from 'next/link';
+import TitleSeparator from '@/components/base/Title/TitleSeparator';
+import Image from 'next/image';
+import { AtSign, Key, Mail, MapPin } from 'lucide-react';
+
+const formSchema = z
+    .object({
+        first_name: z.string().min(1, { message: 'Name is required' }),
+        last_name: z.string().min(1, { message: 'Surname is required' }),
+        email: z
+            .string()
+            .min(1, { message: 'Email is required' })
+            .email({ message: 'Invalid Email' }),
+        birthday: z.date({
+            required_error: 'Date of birth is required.',
+        }),
+        province: z.string().min(1, { message: 'Province is required' }),
+        city: z.string().min(1, { message: 'City is required' }),
+        password: z.string().min(1, { message: 'Password is required' }),
+        confirm_password: z
+            .string()
+            .min(1, { message: 'Comfirm Password is required' }),
+        newsletter: z.boolean().optional(),
+    })
+    .refine((data) => data.password === data.confirm_password, {
+        message: "Confirm Passwords don't match",
+        path: ['confirm_password'],
+    });
+
+export default function IndividuRegistrationShine(){
+    const { mutate, isPending, isError, error } = useUserRegistration({
+        onSuccess: onSucces,
+        onError: (error) => errorHelper(form.setError, error),
+    });
+
+    async function onSucces() {
+        await signIn('credentials', {
+            email: form.getValues().email,
+            password: form.getValues().password,
+            remember_me: false,
+            callbackUrl: '/email-verification',
+        });
+        form.reset();
+        // console.log(data);
+    }
+    async function onSubmit(values: z.infer<typeof formSchema>) {
+        const body: BodyUserRegistration = {
+            first_name: values.first_name,
+            last_name: values.last_name,
+            email: values.email,
+            dob: dayjs(values.birthday).format('YYYY-MM-DD'),
+            city_id: values.city,
+            password: values.password,
+            password_confirmation: values.confirm_password,
+            subscribe_newsletter: values.newsletter || false,
+        };
+        mutate(body);
+    }
+    const form = useForm<z.infer<typeof formSchema>>({
+        resolver: zodResolver(formSchema),
+        mode: 'onChange',
+        defaultValues: {
+            newsletter: false,
+        },
+    });
+    const { data: dataState } = useFetchState();
+    const { data: dataCity } = useFetchCity(form.getValues('province'), () => {
+        form.setValue('city', '');
+    });
+
+    return (
+        <div>
+            <Form {...form}>
+                <form
+                    onSubmit={form.handleSubmit(onSubmit)}
+                    className="space-y-4 mb-5"
+                >
+                    <div className="grid w-full grid-cols-2 gap-4">
+                        <FormField
+                            control={form.control}
+                            name="first_name"
+                            render={({ field }) => (
+                                <FormItem>
+                                    <FormLabel className='!font-light'>First Name</FormLabel>
+                                    <FormControl>
+                                        <Input placeholder="Ella" {...field} />
+                                    </FormControl>
+                                    <FormMessage />
+                                </FormItem>
+                            )}
+                        />
+                        <FormField
+                            control={form.control}
+                            name="last_name"
+                            render={({ field }) => (
+                                <FormItem>
+                                    <FormLabel className='!font-light'>Last Name</FormLabel>
+                                    <FormControl>
+                                        <Input placeholder="Martin" {...field} />
+                                    </FormControl>
+                                    <FormMessage />
+                                </FormItem>
+                            )}
+                        />
+                    </div>
+                    
+                    <FormField
+                        control={form.control}
+                        name="email"
+                        render={({ field }) => (
+                            <FormItem>
+                                <FormLabel className='!font-light flex items-end space-x-1'>
+                                    <AtSign size={18}/>
+                                    <span>Email</span>
+                                </FormLabel>
+                                <FormControl>
+                                    <Input placeholder="ellamartin@example.com" {...field} />
+                                </FormControl>
+                                <FormMessage />
+                            </FormItem>
+                        )}
+                    />
+                    <FormField
+                        control={form.control}
+                        name="password"
+                        render={({ field }) => (
+                            <FormItem>
+                                <FormLabel className='!font-light flex items-end space-x-1'>
+                                    <Key size={18}/>
+                                    <span>Password</span>
+                                </FormLabel>
+                                <FormControl>
+                                    <PasswordInput
+                                        placeholder="Password"
+                                        {...field}
+                                    />
+                                </FormControl>
+                                <FormMessage />
+                            </FormItem>
+                        )}
+                    />
+
+                    <FormField
+                        control={form.control}
+                        name="confirm_password"
+                        render={({ field }) => (
+                            <FormItem>
+                                <FormLabel className='!font-light flex items-end space-x-1'>
+                                    <Key size={18}/>
+                                    <span>Confirm Password</span>
+                                </FormLabel>
+                                <FormControl>
+                                    <PasswordInput
+                                        placeholder="Confirm Password"
+                                        {...field}
+                                    />
+                                </FormControl>
+                                <FormMessage />
+                            </FormItem>
+                        )}
+                    />
+                    <div>
+                        <FormLabel className='!font-light flex items-end space-x-1 mb-2'>
+                            <MapPin size={18}/>
+                            <span>Location</span>
+                        </FormLabel>
+                        <div className="flex space-x-2">                        
+                            <FormField
+                                control={form.control}
+                                name="province"
+                                render={({ field }) => (
+                                    <FormItem className="flex-1">
+                                        <Select
+                                            onValueChange={field.onChange}
+                                            defaultValue={field.value}
+                                        >
+                                            <FormControl>
+                                                <SelectTrigger className='rounded-xl'>
+                                                    <SelectValue placeholder="Province" />
+                                                </SelectTrigger>
+                                            </FormControl>
+                                            <SelectContent>
+                                                {dataState?.map((item) => (
+                                                    <SelectItem
+                                                        key={item.id}
+                                                        value={item.id}
+                                                    >
+                                                        {item.name}
+                                                    </SelectItem>
+                                                ))}
+                                            </SelectContent>
+                                        </Select>
+                                        <FormMessage />
+                                    </FormItem>
+                                )}
+                            />
+                            <FormField
+                                control={form.control}
+                                name="city"
+                                render={({ field }) => (
+                                    <FormItem className="flex-1">
+                                        <Select
+                                            onValueChange={field.onChange}
+                                            defaultValue={field.value}
+                                        >
+                                            <FormControl>
+                                                <SelectTrigger className='rounded-xl'>
+                                                    <SelectValue placeholder="City" />
+                                                </SelectTrigger>
+                                            </FormControl>
+                                            <SelectContent>
+                                                {dataCity?.map((item) => (
+                                                    <SelectItem
+                                                        key={item.id}
+                                                        value={item.id}
+                                                    >
+                                                        {item.name}
+                                                    </SelectItem>
+                                                ))}
+                                            </SelectContent>
+                                        </Select>
+                                        <FormMessage />
+                                    </FormItem>
+                                )}
+                            />
+                        </div>
+                    </div>
+                    
+                    {isError && (
+                        <ErrorMessage>
+                            {error.response?.data?.message || 'Something Wrong'}
+                        </ErrorMessage>
+                    )}
+                    <div className="text-center">
+                        By registering for an account, you agree to the{' '}
+                        <Link className="font-semibold" href={'#'}>
+                            Terms of Use
+                        </Link>
+                        . Please read our{' '}
+                        <Link className="font-semibold" href={'#'}>
+                            Privacy Policy
+                        </Link>
+                        .
+                    </div>
+                    <div className='w-full flex justify-center'>
+                        <Button className="!font-semibold bg-blue-500 rounded-xl relative group text-white px-6 py-3 transition-all duration-300" type="submit" loading={isPending}>
+                            <span className="absolute -inset-1 rounded-lg bg-blue-500 blur-lg opacity-10 group-hover:opacity-100 transition-all duration-300"></span>
+                            Sign Up
+                        </Button>
+                    </div>
+                </form>
+            </Form>
+
+            <TitleSeparator>Or With</TitleSeparator>
+            <div className="flex flex-col justify-center space-y-4 text-center md:flex-row md:space-x-4 md:space-y-0">
+                <Button variant={'outline'}>
+                    <Image
+                        src={'/icons/google.png'}
+                        alt="google"
+                        width={20}
+                        className="mr-2"
+                        height={20}
+                    />
+                    Sign Up with Google
+                </Button>
+            </div>            
+        </div>
+    )
+}

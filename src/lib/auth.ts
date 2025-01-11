@@ -52,6 +52,7 @@ export const authOptions: NextAuthOptions = {
                     const response = await api.post('/auth/login', {
                         email: credentials.email,
                         password: credentials.password,
+                        role: "business",
                         token: credentials.token,
                         remember_me: JSON.parse(credentials.remember_me),
                     });
