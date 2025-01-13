@@ -8,3 +8,11 @@ export function cn(...inputs: ClassValue[]) {
 export function emptyValueCheck(input: string | number | boolean) {
     return input ? input : '-';
 }
+
+export const FileToBase64 = (file: File) =>
+    new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onload = () => resolve(reader.result);
+        reader.onerror = reject;
+    });
