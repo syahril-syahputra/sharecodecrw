@@ -24,12 +24,17 @@ import {
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import ErrorMessage from '@/components/base/Error/ErrorMessage';
-import { Button } from "@/components/ui/button";
+import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 import TitleSeparator from '@/components/base/Title/TitleSeparator';
 import Image from 'next/image';
 import { AtSign, Info, Key, Mail, MapPin } from 'lucide-react';
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
+import {
+    Tooltip,
+    TooltipContent,
+    TooltipProvider,
+    TooltipTrigger,
+} from '@/components/ui/tooltip';
 
 const formSchema = z
     .object({
@@ -52,7 +57,7 @@ const formSchema = z
         path: ['confirm_password'],
     });
 
-export default function IndividuRegistration(){
+export default function IndividuRegistration() {
     const { mutate, isPending, isError, error } = useUserRegistration({
         onSuccess: onSucces,
         onError: (error) => errorHelper(form.setError, error),
@@ -95,7 +100,7 @@ export default function IndividuRegistration(){
             <Form {...form}>
                 <form
                     onSubmit={form.handleSubmit(onSubmit)}
-                    className="space-y-4 mb-5"
+                    className="mb-5 space-y-4"
                 >
                     <div className="grid w-full grid-cols-2 gap-4">
                         <FormField
@@ -103,9 +108,15 @@ export default function IndividuRegistration(){
                             name="first_name"
                             render={({ field }) => (
                                 <FormItem>
-                                    <FormLabel className='text-white !font-light'>First Name</FormLabel>
+                                    <FormLabel className="!font-light text-white">
+                                        First Name
+                                    </FormLabel>
                                     <FormControl>
-                                        <Input className="bg-transparent text-white" placeholder="Ella" {...field} />
+                                        <Input
+                                            className="bg-transparent text-white"
+                                            placeholder="Ella"
+                                            {...field}
+                                        />
                                     </FormControl>
                                     <FormMessage />
                                 </FormItem>
@@ -116,63 +127,87 @@ export default function IndividuRegistration(){
                             name="last_name"
                             render={({ field }) => (
                                 <FormItem>
-                                    <FormLabel className='text-white !font-light'>Last Name</FormLabel>
+                                    <FormLabel className="!font-light text-white">
+                                        Last Name
+                                    </FormLabel>
                                     <FormControl>
-                                        <Input className="bg-transparent text-white" placeholder="Martin" {...field} />
+                                        <Input
+                                            className="bg-transparent text-white"
+                                            placeholder="Martin"
+                                            {...field}
+                                        />
                                     </FormControl>
                                     <FormMessage />
                                 </FormItem>
                             )}
                         />
                     </div>
-                    
+
                     <FormField
                         control={form.control}
                         name="email"
                         render={({ field }) => (
                             <FormItem>
-                                <FormLabel className='text-white !font-light flex items-end space-x-1'>
-                                    <Mail size={18}/>
+                                <FormLabel className="flex items-end space-x-1 !font-light text-white">
+                                    <Mail size={18} />
                                     <span>Email</span>
                                 </FormLabel>
                                 <FormControl>
-                                    <Input className="bg-transparent text-white" placeholder="ellamartin@example.com" {...field} />
+                                    <Input
+                                        className="bg-transparent text-white"
+                                        placeholder="ellamartin@example.com"
+                                        {...field}
+                                    />
                                 </FormControl>
                                 <FormMessage />
                             </FormItem>
                         )}
                     />
                     <FormField
-                            control={form.control}
-                            name="username"
-                            render={({ field }) => (
-                                <FormItem>
-                                    <FormLabel className='text-white !font-light flex items-end space-x-1'>
-                                        <AtSign size={18}/>
-                                        <span>Username</span>
-                                        <TooltipProvider>
-                                            <Tooltip>
-                                                <TooltipTrigger><Info className="text-blue-500" size={16}/></TooltipTrigger>
-                                                <TooltipContent className='w-48 text-center'>
-                                                    <p>Only your username will appear on your profile. Name and last name are to be kept private.</p>
-                                                </TooltipContent>
-                                            </Tooltip>
-                                        </TooltipProvider>
-                                    </FormLabel>
-                                    <FormControl>
-                                        <Input className="bg-transparent text-white" placeholder="ella_martin" {...field} />
-                                    </FormControl>
-                                    <FormMessage />
-                                </FormItem>
-                            )}
-                        />
+                        control={form.control}
+                        name="username"
+                        render={({ field }) => (
+                            <FormItem>
+                                <FormLabel className="flex items-end space-x-1 !font-light text-white">
+                                    <AtSign size={18} />
+                                    <span>Username</span>
+                                    <TooltipProvider>
+                                        <Tooltip>
+                                            <TooltipTrigger>
+                                                <Info
+                                                    className="text-blue-500"
+                                                    size={16}
+                                                />
+                                            </TooltipTrigger>
+                                            <TooltipContent className="w-48 text-center">
+                                                <p>
+                                                    Only your username will
+                                                    appear on your profile. Name
+                                                    and last name are to be kept
+                                                    private.
+                                                </p>
+                                            </TooltipContent>
+                                        </Tooltip>
+                                    </TooltipProvider>
+                                </FormLabel>
+                                <FormControl>
+                                    <Input
+                                        className="bg-transparent text-white"
+                                        placeholder="ella_martin"
+                                        {...field}
+                                    />
+                                </FormControl>
+                                <FormMessage />
+                            </FormItem>
+                        )}
+                    />
                     <FormField
                         control={form.control}
                         name="password"
                         render={({ field }) => (
                             <FormItem>
-                                <FormLabel className='text-white !font-light flex items-end space-x-1'>
-                                    <Key size={18}/>
+                                <FormLabel className="flex items-end space-x-1 !font-light text-white">
+                                    <Key size={18} />
                                     <span>Password</span>
                                 </FormLabel>
                                 <FormControl>
@@ -192,8 +227,8 @@ export default function IndividuRegistration(){
                         name="confirm_password"
                         render={({ field }) => (
                             <FormItem>
-                                <FormLabel className='text-white !font-light flex items-end space-x-1'>
-                                    <Key size={18}/>
+                                <FormLabel className="flex items-end space-x-1 !font-light text-white">
+                                    <Key size={18} />
                                     <span>Confirm Password</span>
                                 </FormLabel>
                                 <FormControl>
@@ -208,19 +243,30 @@ export default function IndividuRegistration(){
                         )}
                     />
                     <div>
-                        <FormLabel className='text-white !font-light flex items-end space-x-1 mb-2'>
-                            <MapPin size={18}/>
+                        <FormLabel className="mb-2 flex items-end space-x-1 !font-light text-white">
+                            <MapPin size={18} />
                             <span>Location</span>
                             <TooltipProvider>
                                 <Tooltip>
-                                    <TooltipTrigger><Info className="text-blue-500" size={16}/></TooltipTrigger>
-                                    <TooltipContent className='w-48 text-center'>
-                                        <p>If you are registering from outside of Canada, please enter the province and city that you are interested in. Services will be recommended accordingly.</p>
+                                    <TooltipTrigger>
+                                        <Info
+                                            className="text-blue-500"
+                                            size={16}
+                                        />
+                                    </TooltipTrigger>
+                                    <TooltipContent className="w-48 text-center">
+                                        <p>
+                                            If you are registering from outside
+                                            of Canada, please enter the province
+                                            and city that you are interested in.
+                                            Services will be recommended
+                                            accordingly.
+                                        </p>
                                     </TooltipContent>
                                 </Tooltip>
                             </TooltipProvider>
                         </FormLabel>
-                        <div className="flex space-x-2">                        
+                        <div className="flex space-x-2">
                             <FormField
                                 control={form.control}
                                 name="province"
@@ -231,7 +277,7 @@ export default function IndividuRegistration(){
                                             defaultValue={field.value}
                                         >
                                             <FormControl>
-                                                <SelectTrigger className='rounded-xl bg-transparent text-white'>
+                                                <SelectTrigger className="rounded-xl bg-transparent text-white">
                                                     <SelectValue placeholder="Province" />
                                                 </SelectTrigger>
                                             </FormControl>
@@ -260,7 +306,7 @@ export default function IndividuRegistration(){
                                             defaultValue={field.value}
                                         >
                                             <FormControl>
-                                                <SelectTrigger className='rounded-xl bg-transparent text-white'>
+                                                <SelectTrigger className="rounded-xl bg-transparent text-white">
                                                     <SelectValue placeholder="City" />
                                                 </SelectTrigger>
                                             </FormControl>
@@ -281,7 +327,7 @@ export default function IndividuRegistration(){
                             />
                         </div>
                     </div>
-                    
+
                     {isError && (
                         <ErrorMessage>
                             {error.response?.data?.message || 'Something Wrong'}
@@ -298,9 +344,13 @@ export default function IndividuRegistration(){
                         </Link>
                         .
                     </div>
-                    <div className='w-full flex justify-center'>
-                        <Button className="!font-semibold bg-blue-700 rounded-xl relative group text-white px-6 py-3 transition-all duration-300" type="submit" loading={isPending}>
-                            <span className="absolute -inset-1 rounded-lg bg-blue-500 blur-lg opacity-50 group-hover:opacity-100 transition-all duration-300"></span>
+                    <div className="flex w-full justify-center">
+                        <Button
+                            className="group relative rounded-xl bg-blue-700 px-6 py-3 !font-semibold text-white transition-all duration-300"
+                            type="submit"
+                            loading={isPending}
+                        >
+                            <span className="absolute -inset-1 rounded-lg bg-blue-500 opacity-50 blur-lg transition-all duration-300 group-hover:opacity-100"></span>
                             Sign Up
                         </Button>
                     </div>
@@ -319,7 +369,7 @@ export default function IndividuRegistration(){
                     />
                     Sign Up with Google
                 </Button>
-            </div>            
+            </div>
         </div>
-    )
+    );
 }

@@ -5,7 +5,7 @@ export interface BodyUserRegistration {
     email: string; // required
     password: string; // required
     password_confirmation: string; // required
-    city_id: string; // required    
+    city_id: string; // required
 }
 
 export interface BodyCompanyRegistration {
@@ -16,5 +16,5 @@ export interface BodyCompanyRegistration {
     password_confirmation: string; // required
     business_license_name?: string; // required base 64
     business_license: string; // required base 64
-    city_id: string; // required    
+    city_id: string; // required
 }

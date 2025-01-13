@@ -1,6 +1,6 @@
 import { notFound } from 'next/navigation';
 import fetchServer from '@/lib/fetchServer';
-import React, { Fragment } from 'react';
+import React from 'react';
 import {
     Breadcrumb,
     BreadcrumbItem,

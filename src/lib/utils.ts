@@ -15,4 +15,4 @@ export const FileToBase64 = (file: File) =>
         reader.readAsDataURL(file);
         reader.onload = () => resolve(reader.result);
         reader.onerror = reject;
-});
+    });

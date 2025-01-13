@@ -27,7 +27,7 @@ export const useUserRegistration = ({ onSuccess, onError }: IProps) => {
 export const useCompanyRegistration = ({ onSuccess, onError }: IProps) => {
     return useMutation({
         mutationFn: async (body: BodyCompanyRegistration) => {
-            console.log(123)
+            console.log(123);
             const response = await fetchClient({
                 method: 'POST',
                 url: '/businesses/register/company',

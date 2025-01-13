@@ -7,12 +7,7 @@ interface IProps {
 }
 export default function TitleAuth(props: IProps) {
     return (
-        <div
-            className={clsx(
-                'font-bold text-primary',
-                props.className
-            )}
-        >
+        <div className={clsx('font-bold text-primary', props.className)}>
             {props.children}
         </div>
     );

@@ -15,9 +15,7 @@ export default function SideMenuClient() {
             <Menu>
                 <MenuGroupChild href="/user/crowner" title="Crowner Management">
                     <Link href={'/user/crowner/services'}>
-                        <MenuItem url={'community-tutors'}>
-                            Services
-                        </MenuItem>
+                        <MenuItem url={'community-tutors'}>Services</MenuItem>
                     </Link>
                 </MenuGroupChild>
 
