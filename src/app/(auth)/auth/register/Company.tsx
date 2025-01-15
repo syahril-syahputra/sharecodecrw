@@ -26,8 +26,6 @@ import { Input } from '@/components/ui/input';
 import ErrorMessage from '@/components/base/Error/ErrorMessage';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
-import TitleSeparator from '@/components/base/Title/TitleSeparator';
-import Image from 'next/image';
 import { File, Info, Key, Mail, MapPin, Upload } from 'lucide-react';
 import {
     Tooltip,
@@ -106,8 +104,8 @@ export default function CompanyRegistration() {
         const file = e.target.files?.[0] ?? null;
         if (file && file.type === 'application/pdf') {
             let base64 = undefined;
-            const imageBase64 = (await FileToBase64(file)) as string;
-            base64 = imageBase64.replace('data:', '').replace(/^.+,/, '');
+            const fileBase64 = (await FileToBase64(file)) as string;
+            base64 = fileBase64.replace('data:', '').replace(/^.+,/, '');
             form.setValue('business_license', base64);
             form.setValue('business_license_name', file?.name);
         } else {
@@ -371,7 +369,7 @@ export default function CompanyRegistration() {
                 </form>
             </Form>
 
-            <TitleSeparator>Or With</TitleSeparator>
+            {/* <TitleSeparator>Or With</TitleSeparator>
             <div className="flex flex-col justify-center space-y-4 text-center md:flex-row md:space-x-4 md:space-y-0">
                 <Button variant={'outline'}>
                     <Image
@@ -383,7 +381,7 @@ export default function CompanyRegistration() {
                     />
                     Sign Up with Google
                 </Button>
-            </div>
+            </div> */}
         </div>
     );
 }

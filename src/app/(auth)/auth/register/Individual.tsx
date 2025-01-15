@@ -26,8 +26,6 @@ import { Input } from '@/components/ui/input';
 import ErrorMessage from '@/components/base/Error/ErrorMessage';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
-import TitleSeparator from '@/components/base/Title/TitleSeparator';
-import Image from 'next/image';
 import { AtSign, Info, Key, Mail, MapPin } from 'lucide-react';
 import {
     Tooltip,
@@ -51,6 +49,7 @@ const formSchema = z
         confirm_password: z
             .string()
             .min(1, { message: 'Comfirm Password is required' }),
+        address: z.string().min(1, { message: 'Address is required' }),
     })
     .refine((data) => data.password === data.confirm_password, {
         message: "Confirm Passwords don't match",
@@ -82,6 +81,7 @@ export default function IndividuRegistration() {
             city_id: values.city,
             password: values.password,
             password_confirmation: values.confirm_password,
+            address: values.address,
         };
         mutate(body);
     }
@@ -266,7 +266,7 @@ export default function IndividuRegistration() {
                                 </Tooltip>
                             </TooltipProvider>
                         </FormLabel>
-                        <div className="flex space-x-2">
+                        <div className="mb-4 flex space-x-2">
                             <FormField
                                 control={form.control}
                                 name="province"
@@ -326,6 +326,22 @@ export default function IndividuRegistration() {
                                 )}
                             />
                         </div>
+                        <FormField
+                            control={form.control}
+                            name="address"
+                            render={({ field }) => (
+                                <FormItem>
+                                    <FormControl>
+                                        <Input
+                                            className="bg-transparent text-white"
+                                            placeholder="Address"
+                                            {...field}
+                                        />
+                                    </FormControl>
+                                    <FormMessage />
+                                </FormItem>
+                            )}
+                        />
                     </div>
 
                     {isError && (
@@ -357,7 +373,7 @@ export default function IndividuRegistration() {
                 </form>
             </Form>
 
-            <TitleSeparator>Or With</TitleSeparator>
+            {/* <TitleSeparator>Or With</TitleSeparator>
             <div className="flex flex-col justify-center space-y-4 text-center md:flex-row md:space-x-4 md:space-y-0">
                 <Button variant={'outline'}>
                     <Image
@@ -369,7 +385,7 @@ export default function IndividuRegistration() {
                     />
                     Sign Up with Google
                 </Button>
-            </div>
+            </div> */}
         </div>
     );
 }

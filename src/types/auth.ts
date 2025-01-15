@@ -6,6 +6,7 @@ export interface BodyUserRegistration {
     password: string; // required
     password_confirmation: string; // required
     city_id: string; // required
+    address: string; //required
 }
 
 export interface BodyCompanyRegistration {
