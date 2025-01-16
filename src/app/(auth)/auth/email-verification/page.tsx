@@ -8,6 +8,11 @@ import { useRouter } from 'next/navigation';
 import React, { useEffect, useState } from 'react';
 
 export default function Page() {
+    const { data, update } = useSession();
+    if(data?.user.email_verified_at) {
+        redirect('/user');
+    }
+
     const searchParams = useSearchParams();
     const [isTokenResend, setisTokenResend] = useState(false);
     const [timer, settimer] = useState(5);
@@ -17,7 +22,7 @@ export default function Page() {
 
     const [isVerified, setisVerified] = useState(false);
     const [isFailed, setisFailed] = useState(false);
-    const { update } = useSession();
+    
     async function resend() {
         try {
             await fetchClient({
@@ -65,7 +70,7 @@ export default function Page() {
             }
             if (timer === 0) {
                 router.refresh();
-                redirect('/user/upload-photo');
+                redirect('/user');
             }
 
             // exit early when we reach 0
@@ -81,44 +86,60 @@ export default function Page() {
     return (
         <div className="container">
             {!isVerified && !isFailed && (
-                <div className="mx-auto my-8 flex max-w-xl flex-col  items-center space-y-8 rounded-lg  p-8 text-center">
-                    <TitleAuth className="text-lg font-bold">
-                        Verifying email, please wait...{' '}
-                        {/* {`key=${key}&confirmation_key=${confirmation_key}`} */}
-                    </TitleAuth>
-                    <Spinner />
+                <div className='w-full lg:w-6/12 mx-auto'>
+                    <div className="overflow-hidden relative my-8 p-6 bg-gray-900 rounded-xl shadow-lg text-white">
+                        <div className="absolute -top-72 left-1/2 h-96 w-96 -translate-x-1/2 transform rounded-full bg-blue-800 opacity-40 blur-2xl"></div>
+                        <div className="relative text-white text-center space-y-8">
+                            <div className="text-lg font-bold text-white">
+                                Verifying email, please wait...{' '}
+                            </div>
+                            <div className='flex justify-center'>
+                                <Spinner />
+                            </div>
+                        </div>
+                    </div>
                 </div>
             )}
             {isVerified && (
-                <div className="mx-auto my-8 max-w-xl space-y-8 rounded-lg  p-8 text-center">
-                    <div className="text-lg font-bold text-primary">
-                        Your email has been verified successfully
-                    </div>
-                    <div>
-                        You will be redirect to homepage in {timer} second
+                <div className='w-full lg:w-6/12 mx-auto'>
+                    <div className="overflow-hidden relative my-8 p-6 bg-gray-900 rounded-xl shadow-lg text-white">
+                        <div className="absolute -top-72 left-1/2 h-96 w-96 -translate-x-1/2 transform rounded-full bg-blue-800 opacity-40 blur-2xl"></div>
+                        <div className="relative text-white text-center space-y-8">
+                            <div className="text-lg font-bold text-white">
+                                Your email has been verified successfully
+                            </div>
+                            <div>
+                                You will be redirect to homepage in {timer} second
+                            </div>
+                        </div>
                     </div>
                 </div>
             )}
             {isFailed && !isVerified && (
-                <div className="mx-auto my-8 max-w-xl space-y-8 rounded-lg  p-8 text-center">
-                    <div className="text-lg font-bold text-primary">
-                        Your token is invalid or expired, please request new
-                        email verification token
-                    </div>
-                    <div>
-                        {isTokenResend ? (
-                            <div>
-                                Your token has been sent, verify your email to
-                                continue
+                <div className='w-full lg:w-6/12 mx-auto'>
+                    <div className="overflow-hidden relative my-8 p-6 bg-gray-900 rounded-xl shadow-lg text-white">
+                        <div className="absolute -top-72 left-1/2 h-96 w-96 -translate-x-1/2 transform rounded-full bg-blue-800 opacity-40 blur-2xl"></div>
+                        <div className="relative text-white text-center space-y-8">
+                            <div className="text-lg font-bold text-white">
+                                Your token is invalid or expired, please request new
+                                email verification token
                             </div>
-                        ) : (
-                            <label
-                                onClick={resend}
-                                className="cursor-pointer text-primary underline hover:opacity-70"
-                            >
-                                Resend
-                            </label>
-                        )}
+                            <div>
+                                {isTokenResend ? (
+                                    <div>
+                                        Your token has been sent, verify your email to
+                                        continue
+                                    </div>
+                                ) : (
+                                    <label
+                                        onClick={resend}
+                                        className="cursor-pointer text-blue-500 underline hover:opacity-70"
+                                    >
+                                        Resend
+                                    </label>
+                                )}
+                            </div>
+                        </div>
                     </div>
                 </div>
             )}

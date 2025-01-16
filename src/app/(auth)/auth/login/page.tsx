@@ -17,13 +17,11 @@ import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
 import Link from 'next/link';
-import Image from 'next/image';
 import ErrorMessage from '@/components/base/Error/ErrorMessage';
-import TitleSeparator from '@/components/base/Title/TitleSeparator';
 import { PasswordInput } from '@/components/ui/password-input';
 import { useSearchParams, useRouter } from 'next/navigation';
 import { signIn } from 'next-auth/react';
-import fetchClient from '@/lib/FetchClient';
+// import fetchClient from '@/lib/FetchClient';
 import useFCMToken from '@/lib/hooks/useFCMToken';
 
 const formSchema = z.object({
@@ -38,7 +36,7 @@ const formSchema = z.object({
 export default function Page() {
     const fcmToken = useFCMToken();
     const [loginFail, setloginFail] = useState('');
-    const [loadingGoogle, setloadingGoogle] = useState(false);
+    // const [loadingGoogle, setloadingGoogle] = useState(false);
     const [isLoadingForm, setIsLoadingForm] = useState(false);
 
     const searchParams = useSearchParams();
@@ -53,17 +51,17 @@ export default function Page() {
             remember_me: false,
         },
     });
-    const getUrl = async () => {
-        setloadingGoogle(true);
-        try {
-            const response = await fetchClient({ url: '/auth/google' });
-            router.push(response.data.data.url);
-        } catch (error) {
-            console.log(error);
-        } finally {
-            setloadingGoogle(false);
-        }
-    };
+    // const getUrl = async () => {
+    //     setloadingGoogle(true);
+    //     try {
+    //         const response = await fetchClient({ url: '/auth/google' });
+    //         router.push(response.data.data.url);
+    //     } catch (error) {
+    //         console.log(error);
+    //     } finally {
+    //         setloadingGoogle(false);
+    //     }
+    // };
     async function onSubmit(data: z.infer<typeof formSchema>) {
         setloginFail('');
         setIsLoadingForm(true);
@@ -92,10 +90,11 @@ export default function Page() {
         }
     }
     return (
-        <div className="mx-auto max-w-xl space-y-8">
-            <section className="space-y-4 text-center">
-                <TitleAuth>Sign In</TitleAuth>
-            </section>
+        <div className="relative mx-auto max-w-xl space-y-8 overflow-hidden rounded-xl bg-gray-900 p-10">
+            <div className="absolute -top-72 left-1/2 h-96 w-96 -translate-x-1/2 transform rounded-full bg-blue-800 opacity-40 blur-2xl"></div>
+            <TitleAuth className="!text-4xl !text-white underline">
+                Sign Up
+            </TitleAuth>
             <Form {...form}>
                 <form
                     onSubmit={form.handleSubmit(onSubmit)}
@@ -107,7 +106,7 @@ export default function Page() {
                         render={({ field }) => (
                             <FormItem>
                                 <FormControl>
-                                    <Input placeholder="Email" {...field} />
+                                    <Input className="bg-transparent text-white" placeholder="Email" {...field} />
                                 </FormControl>
                                 <FormMessage />
                             </FormItem>
@@ -120,6 +119,7 @@ export default function Page() {
                             <FormItem>
                                 <FormControl>
                                     <PasswordInput
+                                        className="bg-transparent text-white"
                                         placeholder="Password"
                                         {...field}
                                     />
@@ -133,40 +133,36 @@ export default function Page() {
                             <Checkbox id="terms" />
                             <label
                                 htmlFor="terms"
-                                className="text-sm leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                                className="text-sm leading-none text-white peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
                             >
                                 Remember Me
                             </label>
                         </div>
                         <Link
                             href={'/auth/forget-password'}
-                            className="text-sm font-semibold text-primary"
+                            className="text-sm font-semibold text-white"
                         >
                             Forgot Password?
                         </Link>
                     </div>
                     {loginFail && <ErrorMessage>{loginFail}</ErrorMessage>}
 
-                    <Button block type="submit" loading={isLoadingForm}>
-                        {isLoadingForm && form.formState.isSubmitSuccessful
-                            ? 'Redirecting'
-                            : 'Sign in'}
-                    </Button>
+                    <div className="flex w-full justify-center">
+                        <Button
+                            className="group relative rounded-xl bg-blue-700 px-6 py-3 !font-semibold text-white transition-all duration-300"
+                            type="submit"
+                            loading={isLoadingForm}
+                        >
+                            <span className="group-hover:opacity-300 absolute -inset-1 rounded-lg bg-blue-500 opacity-20 blur-sm transition-all duration-300"></span>
+                            {isLoadingForm && form.formState.isSubmitSuccessful
+                                ? 'Redirecting'
+                                : 'Sign in'}
+                        </Button>
+                    </div>
                 </form>
             </Form>
-            <TitleSeparator>Or With</TitleSeparator>
-            <div className="flex flex-col justify-center space-y-4 text-center md:flex-row md:space-x-4 md:space-y-0">
-                {/* <Button variant={'outline'} size={'lg'}>
-                    <Image
-                        src={'/icons/apple-logo.png'}
-                        alt="apple"
-                        className="mr-2"
-                        width={20}
-                        height={20}
-                    />{' '}
-                    Sign in with Apple
-                </Button> */}
-
+            {/* <TitleSeparator>Or With</TitleSeparator> */}
+            {/* <div className="flex flex-col justify-center space-y-4 text-center md:flex-row md:space-x-4 md:space-y-0">
                 <Button
                     variant={'outline'}
                     loading={loadingGoogle}
@@ -181,16 +177,18 @@ export default function Page() {
                     />
                     Sign in with Google
                 </Button>
-            </div>
+            </div> */}
             <div className="text-center">
-                <span className="text-sm">Don&apos;t have an account?</span>{' '}
+                <span className="text-sm text-white">
+                    Don&apos;t have an account?
+                </span>{' '}
                 <Link
                     href={'/auth/register'}
                     className="text-sm font-semibold text-primary"
                 >
                     Sign Up
                 </Link>
-            </div>
+            </div>            
         </div>
     );
 }
