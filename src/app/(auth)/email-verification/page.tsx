@@ -8,7 +8,7 @@ import { redirect } from 'next/navigation';
 
 export default function Page() {
     const { data } = useSession();
-    if(data?.user.email_verified_at) {
+    if (data?.user.email_verified_at) {
         redirect('/user');
     }
 
@@ -28,7 +28,7 @@ export default function Page() {
             setisLoading(false);
         }
     }
-    
+
     return (
         <div className="mx-auto flex max-w-xl flex-col items-center space-y-8 py-8">
             <TitleAuth>Verify your email to continue</TitleAuth>

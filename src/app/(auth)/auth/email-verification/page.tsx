@@ -1,5 +1,4 @@
 'use client';
-import TitleAuth from '@/components/base/Title/TitleAuth';
 import Spinner from '@/components/ui/spinner';
 import fetchClient from '@/lib/FetchClient';
 import { useSession } from 'next-auth/react';
@@ -9,7 +8,7 @@ import React, { useEffect, useState } from 'react';
 
 export default function Page() {
     const { data, update } = useSession();
-    if(data?.user.email_verified_at) {
+    if (data?.user.email_verified_at) {
         redirect('/user');
     }
 
@@ -22,7 +21,7 @@ export default function Page() {
 
     const [isVerified, setisVerified] = useState(false);
     const [isFailed, setisFailed] = useState(false);
-    
+
     async function resend() {
         try {
             await fetchClient({
@@ -86,14 +85,14 @@ export default function Page() {
     return (
         <div className="container">
             {!isVerified && !isFailed && (
-                <div className='w-full lg:w-6/12 mx-auto'>
-                    <div className="overflow-hidden relative my-8 p-6 bg-gray-900 rounded-xl shadow-lg text-white">
+                <div className="mx-auto w-full lg:w-6/12">
+                    <div className="relative my-8 overflow-hidden rounded-xl bg-gray-900 p-6 text-white shadow-lg">
                         <div className="absolute -top-72 left-1/2 h-96 w-96 -translate-x-1/2 transform rounded-full bg-blue-800 opacity-40 blur-2xl"></div>
-                        <div className="relative text-white text-center space-y-8">
+                        <div className="relative space-y-8 text-center text-white">
                             <div className="text-lg font-bold text-white">
                                 Verifying email, please wait...{' '}
                             </div>
-                            <div className='flex justify-center'>
+                            <div className="flex justify-center">
                                 <Spinner />
                             </div>
                         </div>
@@ -101,34 +100,35 @@ export default function Page() {
                 </div>
             )}
             {isVerified && (
-                <div className='w-full lg:w-6/12 mx-auto'>
-                    <div className="overflow-hidden relative my-8 p-6 bg-gray-900 rounded-xl shadow-lg text-white">
+                <div className="mx-auto w-full lg:w-6/12">
+                    <div className="relative my-8 overflow-hidden rounded-xl bg-gray-900 p-6 text-white shadow-lg">
                         <div className="absolute -top-72 left-1/2 h-96 w-96 -translate-x-1/2 transform rounded-full bg-blue-800 opacity-40 blur-2xl"></div>
-                        <div className="relative text-white text-center space-y-8">
+                        <div className="relative space-y-8 text-center text-white">
                             <div className="text-lg font-bold text-white">
                                 Your email has been verified successfully
                             </div>
                             <div>
-                                You will be redirect to homepage in {timer} second
+                                You will be redirect to homepage in {timer}{' '}
+                                second
                             </div>
                         </div>
                     </div>
                 </div>
             )}
             {isFailed && !isVerified && (
-                <div className='w-full lg:w-6/12 mx-auto'>
-                    <div className="overflow-hidden relative my-8 p-6 bg-gray-900 rounded-xl shadow-lg text-white">
+                <div className="mx-auto w-full lg:w-6/12">
+                    <div className="relative my-8 overflow-hidden rounded-xl bg-gray-900 p-6 text-white shadow-lg">
                         <div className="absolute -top-72 left-1/2 h-96 w-96 -translate-x-1/2 transform rounded-full bg-blue-800 opacity-40 blur-2xl"></div>
-                        <div className="relative text-white text-center space-y-8">
+                        <div className="relative space-y-8 text-center text-white">
                             <div className="text-lg font-bold text-white">
-                                Your token is invalid or expired, please request new
-                                email verification token
+                                Your token is invalid or expired, please request
+                                new email verification token
                             </div>
                             <div>
                                 {isTokenResend ? (
                                     <div>
-                                        Your token has been sent, verify your email to
-                                        continue
+                                        Your token has been sent, verify your
+                                        email to continue
                                     </div>
                                 ) : (
                                     <label

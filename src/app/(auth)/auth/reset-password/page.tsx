@@ -99,7 +99,7 @@ export default function Page() {
     return (
         <div className="container">
             {isSet && (
-                <div className='w-full lg:w-6/12 mx-auto'>
+                <div className="mx-auto w-full lg:w-6/12">
                     <div className="mx-auto flex max-w-xl flex-col items-center rounded-lg text-center">
                         <CardDarkNeonGlow>
                             <TitleAuth>
@@ -107,7 +107,10 @@ export default function Page() {
                             </TitleAuth>
                             <div>
                                 <Link href={'/auth/login'}>
-                                    <Button variant={'ghost'} className="text-blue-500">
+                                    <Button
+                                        variant={'ghost'}
+                                        className="text-blue-500"
+                                    >
                                         Login
                                     </Button>
                                 </Link>
@@ -117,13 +120,13 @@ export default function Page() {
                 </div>
             )}
             {isValidating && (
-                <div className='w-full lg:w-6/12 mx-auto'>
+                <div className="mx-auto w-full lg:w-6/12">
                     <div className="mx-auto flex max-w-xl flex-col  items-center rounded-lg text-center">
                         <CardDarkNeonGlow>
                             <TitleAuth>
                                 Verifying your reset password link, please wait…
                             </TitleAuth>
-                            <div className='flex justify-center'>
+                            <div className="flex justify-center">
                                 <Spinner />
                             </div>
                         </CardDarkNeonGlow>
@@ -134,12 +137,15 @@ export default function Page() {
                 <div className="mx-auto flex max-w-xl flex-col  items-center space-y-8 rounded-lg text-center">
                     <CardDarkNeonGlow>
                         <TitleAuth>
-                            Your reset password link is not valid, please resend new
-                            request
+                            Your reset password link is not valid, please resend
+                            new request
                         </TitleAuth>
                         <div>
                             <Link href={'/auth/forget-password'}>
-                                <Button variant={'ghost'} className="text-blue-500">
+                                <Button
+                                    variant={'ghost'}
+                                    className="text-blue-500"
+                                >
                                     Resend
                                 </Button>
                             </Link>
