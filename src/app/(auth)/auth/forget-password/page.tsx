@@ -45,49 +45,51 @@ export default function Page() {
     return (
         <div className="container mt-8">
             {!sended && (
-            <div className='w-6/12 mx-auto'>
-                <div className="overflow-hidden relative my-8 p-6 bg-gray-900 rounded-xl shadow-lg text-white">
-                    <div className="absolute -top-72 left-1/2 h-96 w-96 -translate-x-1/2 transform rounded-full bg-blue-800 opacity-40 blur-2xl"></div>
-                    <div className="relative text-white text-center space-y-8">
-                        <section className="text-center">
-                            <div className="text-lg font-bold text-white">
-                                Enter your email address
-                            </div>
-                        </section>
-                        <Form {...form}>
-                            <form
-                                onSubmit={form.handleSubmit(onSubmit)}
-                                className="space-y-4"
-                            >
-                                <FormField
-                                    control={form.control}
-                                    name="email"
-                                    render={({ field }) => (
-                                        <FormItem>
-                                            <FormControl>
-                                                <Input
-                                                    placeholder="Email"
-                                                    {...field}
-                                                />
-                                            </FormControl>
-                                            <FormMessage />
-                                        </FormItem>
-                                    )}
-                                />
-                                <div className="flex w-full justify-center">
-                                    <Button
-                                        className="group relative rounded-xl bg-blue-700 px-6 py-3 !font-semibold text-white transition-all duration-300"
-                                        type="submit"
-                                        loading={form.formState.isSubmitting}
-                                    >
-                                        Reset Password
-                                    </Button>
+                <div className="mx-auto w-6/12">
+                    <div className="relative my-8 overflow-hidden rounded-xl bg-gray-900 p-6 text-white shadow-lg">
+                        <div className="absolute -top-72 left-1/2 h-96 w-96 -translate-x-1/2 transform rounded-full bg-blue-800 opacity-40 blur-2xl"></div>
+                        <div className="relative space-y-8 text-center text-white">
+                            <section className="text-center">
+                                <div className="text-lg font-bold text-white">
+                                    Enter your email address
                                 </div>
-                            </form>
-                        </Form>
+                            </section>
+                            <Form {...form}>
+                                <form
+                                    onSubmit={form.handleSubmit(onSubmit)}
+                                    className="space-y-4"
+                                >
+                                    <FormField
+                                        control={form.control}
+                                        name="email"
+                                        render={({ field }) => (
+                                            <FormItem>
+                                                <FormControl>
+                                                    <Input
+                                                        placeholder="Email"
+                                                        {...field}
+                                                    />
+                                                </FormControl>
+                                                <FormMessage />
+                                            </FormItem>
+                                        )}
+                                    />
+                                    <div className="flex w-full justify-center">
+                                        <Button
+                                            className="group relative rounded-xl bg-blue-700 px-6 py-3 !font-semibold text-white transition-all duration-300"
+                                            type="submit"
+                                            loading={
+                                                form.formState.isSubmitting
+                                            }
+                                        >
+                                            Reset Password
+                                        </Button>
+                                    </div>
+                                </form>
+                            </Form>
+                        </div>
                     </div>
                 </div>
-            </div>
             )}
             {sended && (
                 <div className="mx-auto my-8 max-w-xl space-y-8 rounded-lg  p-8 text-center">

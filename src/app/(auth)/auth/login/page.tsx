@@ -106,7 +106,11 @@ export default function Page() {
                         render={({ field }) => (
                             <FormItem>
                                 <FormControl>
-                                    <Input className="bg-transparent text-white" placeholder="Email" {...field} />
+                                    <Input
+                                        className="bg-transparent text-white"
+                                        placeholder="Email"
+                                        {...field}
+                                    />
                                 </FormControl>
                                 <FormMessage />
                             </FormItem>
@@ -188,7 +192,7 @@ export default function Page() {
                 >
                     Sign Up
                 </Link>
-            </div>            
+            </div>
         </div>
     );
 }
