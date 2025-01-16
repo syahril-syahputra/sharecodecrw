@@ -1,4 +1,5 @@
 'use client';
+import CardDarkNeonGlow from '@/components/base/Card/CardDarkNeonGlow';
 import ErrorMessage from '@/components/base/Error/ErrorMessage';
 import TitleAuth from '@/components/base/Title/TitleAuth';
 import { Button } from '@/components/ui/button';
@@ -96,101 +97,117 @@ export default function Page() {
         }
     }
     return (
-        <div className="container  mt-8 pt-4">
+        <div className="container">
             {isSet && (
-                <div className="mx-auto my-8 flex max-w-xl flex-col  items-center space-y-8 rounded-lg  p-8 text-center">
-                    <TitleAuth>
-                        Your password has been successfully reset
-                    </TitleAuth>
-                    <div>
-                        <Link href={'/auth/login'}>
-                            <Button variant={'ghost'} className="text-primary">
-                                Login
-                            </Button>
-                        </Link>
+                <div className='w-full lg:w-6/12 mx-auto'>
+                    <div className="mx-auto flex max-w-xl flex-col items-center rounded-lg text-center">
+                        <CardDarkNeonGlow>
+                            <TitleAuth>
+                                Your password has been successfully reset
+                            </TitleAuth>
+                            <div>
+                                <Link href={'/auth/login'}>
+                                    <Button variant={'ghost'} className="text-blue-500">
+                                        Login
+                                    </Button>
+                                </Link>
+                            </div>
+                        </CardDarkNeonGlow>
                     </div>
                 </div>
             )}
             {isValidating && (
-                <div className="mx-auto my-8 flex max-w-xl flex-col  items-center space-y-8 rounded-lg  p-8 text-center">
-                    <TitleAuth>
-                        Verifying your reset password link, please wait…
-                    </TitleAuth>
-                    <div>
-                        <Spinner />
+                <div className='w-full lg:w-6/12 mx-auto'>
+                    <div className="mx-auto flex max-w-xl flex-col  items-center rounded-lg text-center">
+                        <CardDarkNeonGlow>
+                            <TitleAuth>
+                                Verifying your reset password link, please wait…
+                            </TitleAuth>
+                            <div className='flex justify-center'>
+                                <Spinner />
+                            </div>
+                        </CardDarkNeonGlow>
                     </div>
                 </div>
             )}
             {!isTokenValid && !isValidating && (
-                <div className="mx-auto my-8 flex max-w-xl flex-col  items-center space-y-8 rounded-lg  p-8 text-center">
-                    <TitleAuth>
-                        Your reset password link is not valid, please resend new
-                        request
-                    </TitleAuth>
-                    <div>
-                        <Link href={'/auth/forget-password'}>
-                            <Button variant={'ghost'} className="text-primary">
-                                Resend
-                            </Button>
-                        </Link>
-                    </div>
+                <div className="mx-auto flex max-w-xl flex-col  items-center space-y-8 rounded-lg text-center">
+                    <CardDarkNeonGlow>
+                        <TitleAuth>
+                            Your reset password link is not valid, please resend new
+                            request
+                        </TitleAuth>
+                        <div>
+                            <Link href={'/auth/forget-password'}>
+                                <Button variant={'ghost'} className="text-blue-500">
+                                    Resend
+                                </Button>
+                            </Link>
+                        </div>
+                    </CardDarkNeonGlow>
                 </div>
             )}
             {isTokenValid && !isValidating && !isSet && (
-                <div className="mx-auto max-w-xl space-y-8">
-                    <section className="text-center">
-                        <TitleAuth>Reset Password</TitleAuth>
-                    </section>
-                    <Form {...form}>
-                        <form
-                            onSubmit={form.handleSubmit(onSubmit)}
-                            className="space-y-4"
-                        >
-                            <FormField
-                                control={form.control}
-                                name="password"
-                                render={({ field }) => (
-                                    <FormItem>
-                                        <FormControl>
-                                            <PasswordInput
-                                                placeholder="Password"
-                                                {...field}
-                                            />
-                                        </FormControl>
-                                        <FormMessage />
-                                    </FormItem>
-                                )}
-                            />
-                            <FormField
-                                control={form.control}
-                                name="confirm_password"
-                                render={({ field }) => (
-                                    <FormItem>
-                                        <FormControl>
-                                            <PasswordInput
-                                                placeholder="Confirm Password"
-                                                {...field}
-                                            />
-                                        </FormControl>
-                                        <FormMessage />
-                                    </FormItem>
-                                )}
-                            />
-
-                            {errorResponse && (
-                                <ErrorMessage>
-                                    {errorResponse || 'Something Wrong'}
-                                </ErrorMessage>
-                            )}
-                            <Button
-                                block
-                                type="submit"
-                                loading={form.formState.isSubmitting}
+                <div className="mx-auto max-w-xl">
+                    <CardDarkNeonGlow>
+                        <section className="text-center">
+                            <TitleAuth>Reset Password</TitleAuth>
+                        </section>
+                        <Form {...form}>
+                            <form
+                                onSubmit={form.handleSubmit(onSubmit)}
+                                className="space-y-4"
                             >
-                                Reset Password
-                            </Button>
-                        </form>
-                    </Form>
+                                <FormField
+                                    control={form.control}
+                                    name="password"
+                                    render={({ field }) => (
+                                        <FormItem>
+                                            <FormControl>
+                                                <PasswordInput
+                                                    placeholder="Password"
+                                                    {...field}
+                                                />
+                                            </FormControl>
+                                            <FormMessage />
+                                        </FormItem>
+                                    )}
+                                />
+                                <FormField
+                                    control={form.control}
+                                    name="confirm_password"
+                                    render={({ field }) => (
+                                        <FormItem>
+                                            <FormControl>
+                                                <PasswordInput
+                                                    placeholder="Confirm Password"
+                                                    {...field}
+                                                />
+                                            </FormControl>
+                                            <FormMessage />
+                                        </FormItem>
+                                    )}
+                                />
+
+                                {errorResponse && (
+                                    <ErrorMessage>
+                                        {errorResponse || 'Something Wrong'}
+                                    </ErrorMessage>
+                                )}
+
+                                <div className="flex w-full justify-center">
+                                    <Button
+                                        className="group relative rounded-xl bg-blue-700 px-6 py-3 !font-semibold text-white transition-all duration-300"
+                                        type="submit"
+                                        loading={form.formState.isSubmitting}
+                                    >
+                                        <span className="group-hover:opacity-300 absolute -inset-1 rounded-lg bg-blue-500 opacity-20 blur-sm transition-all duration-300"></span>
+                                        Reset Password
+                                    </Button>
+                                </div>
+                            </form>
+                        </Form>
+                    </CardDarkNeonGlow>
                 </div>
             )}
         </div>
