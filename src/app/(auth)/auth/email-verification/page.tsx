@@ -9,9 +9,9 @@ import React, { useEffect, useState } from 'react';
 
 export default function Page() {
     const { data, update } = useSession();
-    // if(data?.user.email_verified_at) {
-    //     redirect('/user');
-    // }
+    if(data?.user.email_verified_at) {
+        redirect('/user');
+    }
 
     const searchParams = useSearchParams();
     const [isTokenResend, setisTokenResend] = useState(false);
