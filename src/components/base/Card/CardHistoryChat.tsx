@@ -4,7 +4,7 @@ import { IChatHistory } from '@/types/chat';
 import { useSession } from 'next-auth/react';
 import React from 'react';
 
-export default function CardHistoryChat(props: { data: IChatHistory }) {
+export default function CardHistoryChat(props: { data: IChatHistory}) {
     const { data } = useSession();
     const name =
         data?.user.id === props.data.user_id
