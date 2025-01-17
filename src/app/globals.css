@@ -104,3 +104,17 @@
 html {
     scroll-behavior: smooth;
 }
+
+.masonry {
+    display: grid;
+    grid-template-columns: repeat(
+        auto-fill,
+        minmax(200px, 1fr)
+    ); /* Flexible columns */
+    grid-auto-rows: 0; /* Default row height */
+    gap: 16px; /* Spacing between items */
+}
+
+.masonry > * {
+    break-inside: avoid; /* Prevent content from breaking into another column */
+}

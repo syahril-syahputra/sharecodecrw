@@ -2,8 +2,6 @@
 import TitleFormHeader from '@/components/base/Title/TitleFormHeader';
 import { Alert, AlertTitle } from '@/components/ui/alert';
 import { Button } from '@/components/ui/button';
-import { Checkbox } from '@/components/ui/checkbox';
-import DatePicker from '@/components/ui/datePicker';
 import {
     Form,
     FormControl,
@@ -20,7 +18,6 @@ import {
     SelectValue,
 } from '@/components/ui/select';
 import Spinner from '@/components/ui/spinner';
-import { Textarea } from '@/components/ui/textarea';
 import { useFetchCity, useFetchState } from '@/feature/base/city';
 import {
     useFetchProfile,
@@ -341,7 +338,7 @@ export default function Page() {
                             )}
                         />
                     </div>
-                    <div className="flex items-start space-x-4">
+                    {/* <div className="flex items-start space-x-4">
                         <FormField
                             control={formBasic.control}
                             name="birthday"
@@ -358,7 +355,7 @@ export default function Page() {
                             )}
                         />
                         <div className="flex-1"></div>
-                    </div>
+                    </div> */}
                     <TitleFormHeader>Location</TitleFormHeader>
                     <div className="flex space-x-2">
                         <FormField
@@ -426,7 +423,7 @@ export default function Page() {
                             </div>
                         )}
                     </div>
-                    <TitleFormHeader>About Me</TitleFormHeader>
+                    {/* <TitleFormHeader>About Me</TitleFormHeader>
                     <FormField
                         control={formBasic.control}
                         name="about_me"
@@ -441,8 +438,8 @@ export default function Page() {
                                 <FormMessage />
                             </FormItem>
                         )}
-                    />
-                    <FormField
+                    /> */}
+                    {/* <FormField
                         control={formBasic.control}
                         name="newsletter"
                         render={({ field }) => (
@@ -464,7 +461,7 @@ export default function Page() {
                                 </FormControl>
                             </FormItem>
                         )}
-                    />
+                    /> */}
                     {isSuccessUpdate && (
                         <Alert variant={'success'}>
                             <AlertTitle className="flex items-center space-x-2">

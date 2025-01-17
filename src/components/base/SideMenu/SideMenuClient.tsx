@@ -19,15 +19,20 @@ export default function SideMenuClient() {
                     </Link>
                 </MenuGroupChild>
 
-                <MenuGroup>
+                {/* <MenuGroup>
                     <Link href={'/user/interests-favorites'}>
                         <MenuItem url={'interests-favorites'}>
                             Interest & Favorites
                         </MenuItem>
                     </Link>
+                </MenuGroup> */}
+                <MenuGroup>
+                    <Link href={'/user/direct-chats'}>
+                        <MenuItem url={'direct-chats'}>Chats</MenuItem>
+                    </Link>
                 </MenuGroup>
                 <MenuGroup>
-                    <MenuItem url={''}>Plans & Payments</MenuItem>
+                    <MenuItem url={''}>Plans</MenuItem>
                 </MenuGroup>
                 <MenuGroup>
                     <Link href={'/user/setting'}>
