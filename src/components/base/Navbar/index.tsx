@@ -6,8 +6,6 @@ import { getCurrentUser } from '@/lib/session';
 import MenuUser from './MenuUser';
 import fetchServer from '@/lib/fetchServer';
 import ResendVerificationEmail from './ResendVerificationEmail';
-import LocationNavbar from './LocationNavbar';
-import SearchBar from './SearchBar';
 async function getDataUser() {
     const session = await getCurrentUser();
     try {
@@ -35,26 +33,13 @@ export default async function Navbar() {
     return (
         <div className="fixed left-0 right-0 top-0 z-50 bg-background">
             {!verified && <ResendVerificationEmail />}
-            <div className=" sticky flex items-center space-x-4 p-4">
+            <div className=" container sticky flex max-w-xl items-center justify-between space-x-4 p-4">
                 <div className="flex items-center space-x-4 pt-2 ">
                     <Link href={'/'}>
                         <Logo />
                     </Link>
                 </div>
-                <div className="flex flex-1 items-center">
-                    <SearchBar />
-                    <LocationNavbar />
-                </div>
-                <Link href={'/post-a-listing'}>
-                    <span className="px-2 font-semibold text-primary">
-                        Post a Listing
-                    </span>
-                </Link>
-                <Link href={'/blog'}>
-                    <span className="px-2  font-semibold text-primary">
-                        Blog
-                    </span>
-                </Link>
+
                 {user ? (
                     <MenuUser session={user} />
                 ) : (
