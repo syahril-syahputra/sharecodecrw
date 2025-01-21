@@ -5,6 +5,7 @@ import fetchClient from '@/lib/FetchClient';
 import { useSession } from 'next-auth/react';
 import React, { useState } from 'react';
 import { redirect } from 'next/navigation';
+import CardDarkNeonGlow from '@/components/base/Card/CardDarkNeonGlow';
 
 export default function Page() {
     const { data } = useSession();
@@ -30,18 +31,20 @@ export default function Page() {
     }
 
     return (
-        <div className="mx-auto flex max-w-xl flex-col items-center space-y-8 py-8">
-            <TitleAuth>Verify your email to continue</TitleAuth>
-            {!isSend && (
-                <Button
-                    className="text-primary"
-                    loading={isLoading}
-                    onClick={resend}
-                    variant={'ghost'}
-                >
-                    Resend
-                </Button>
-            )}
+        <div className="mx-auto max-w-xl text-center">
+            <CardDarkNeonGlow>
+                <TitleAuth>Verify your email to continue</TitleAuth>
+                {!isSend && (
+                    <Button
+                        className="text-blue-500"
+                        loading={isLoading}
+                        onClick={resend}
+                        variant={'ghost'}
+                    >
+                        Resend
+                    </Button>
+                )}
+            </CardDarkNeonGlow>
         </div>
     );
 }

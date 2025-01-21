@@ -1,6 +1,7 @@
 'use client';
-import CardChat from '@/components/base/Card/CardChat';
-import CardHistoryChat from '@/components/base/Card/CardHistoryChat';
+import CardChat from '@/components/base/Card/Chat/CardChat';
+import CardDarkNeonGlow from '@/components/base/Card/CardDarkNeonGlow';
+import CardHistoryChat from '@/components/base/Card//Chat/CardHistoryChat';
 import { Button } from '@/components/ui/button';
 import InfiniteScroll from '@/components/ui/InfiniteScroll';
 import { Input } from '@/components/ui/input';
@@ -9,15 +10,21 @@ import { Skeleton } from '@/components/ui/skeleton';
 import { useFetchHistoryChat } from '@/feature/chat/useFetchHistoryChat';
 import fetchClient from '@/lib/FetchClient';
 import useTableConfig from '@/lib/useTableConfig';
-import { IChat } from '@/types/chat';
+import { IDirectChat } from '@/types/chat';
 import clsx from 'clsx';
-import React, { KeyboardEvent, useEffect, useRef, useState } from 'react';
+import React, {
+    Fragment,
+    KeyboardEvent,
+    useEffect,
+    useRef,
+    useState,
+} from 'react';
 
 export default function Page({ params }: { params: { id: string } }) {
     const [socket, setSocket] = useState<WebSocket | null>(null);
     const [message, setMessage] = useState('');
     const first = useRef<HTMLDivElement>(null);
-    const [dataChat, setdataChat] = useState<IChat[]>([]);
+    const [dataChat, setdataChat] = useState<IDirectChat[]>([]);
     const [init, setinit] = useState(false);
     const { pagination } = useTableConfig({
         pageSize: 5,
@@ -123,7 +130,7 @@ export default function Page({ params }: { params: { id: string } }) {
                 ping();
                 socket.send(
                     JSON.stringify({
-                        event: 'chat-group-user-send-message',
+                        event: 'chat-direct-user-send-message',
                         data: {
                             message: message,
                         },
@@ -142,90 +149,160 @@ export default function Page({ params }: { params: { id: string } }) {
         }
     };
     return (
-        <div className="flex-1 p-4">
-            <div className=" border-Border rounded-md border bg-input">
-                <ScrollArea className=" h-[500px] ">
-                    <div
-                        className="flex min-h-[500px] flex-col-reverse "
-                        ref={first}
-                    >
-                        {dataChat.map((item, index) => (
-                            <CardChat key={index} data={item} />
-                        ))}
-                        {historyChat &&
-                            historyChat.pages.map((page, index) => (
-                                <div key={index}>
-                                    {page.items.map((item, i) => (
-                                        <CardHistoryChat key={i} data={item} />
+        <Fragment>
+            <div className="flex-1 px-6">
+                <CardDarkNeonGlow>
+                    <div className="rounded-md">
+                        <ScrollArea className="h-[700px]">
+                            <div
+                                className="flex min-h-[700px] flex-col-reverse"
+                                ref={first}
+                            >
+                                {dataChat.map((item, index) => (
+                                    <CardChat key={index} data={item} />
+                                ))}
+                                {historyChat &&
+                                    historyChat.pages.map((page, index) => (
+                                        <div key={index}>
+                                            {page.items.map((item, i) => (
+                                                <CardHistoryChat
+                                                    key={i}
+                                                    data={item}
+                                                />
+                                            ))}
+                                        </div>
                                     ))}
+                                <div className="mt-2 space-y-2">
+                                    <CardChat
+                                        data={{
+                                            event: 'chat-direct-user-receive-message',
+                                            message: 'huhuhu',
+                                        }}
+                                    />
+                                    <CardChat
+                                        data={{
+                                            event: 'chat-direct-user-receive-message',
+                                            message: 'huhuhu',
+                                        }}
+                                    />
                                 </div>
-                            ))}
 
-                        <InfiniteScroll
-                            hasMore={hasNextPage}
-                            isLoading={isLoading}
-                            reverse
-                            next={() => {
-                                fetchNextPage();
-                            }}
-                            threshold={0}
-                        >
-                            {hasNextPage && (
-                                <div className="border-Input mt-[1000px] flex items-center justify-between space-x-2 border-b px-4  ">
-                                    <Skeleton className="aspect-square h-14 rounded-full" />
-                                    <div className="flex-1 space-y-1">
-                                        <Skeleton className="h-6 w-full" />
-                                        <Skeleton className="h-4 w-full" />
-                                    </div>
+                                <div className="space-y-2">
+                                    <CardHistoryChat
+                                        data={{
+                                            user_id: 'yes',
+                                            first_name: 'string',
+                                            last_name: 'string',
+                                            id: 'string',
+                                            message:
+                                                'flex items-center justify-between rounded-lg bg-white/10 p-4 shadow-lg backdrop-blur-md',
+                                            created_at: '2025-01-01 20:00:23',
+                                            profile_picture_url: 'string',
+                                        }}
+                                    />
+
+                                    <CardHistoryChat
+                                        data={{
+                                            user_id: 'true',
+                                            first_name: 'string',
+                                            last_name: 'string',
+                                            id: 'string',
+                                            message:
+                                                'flex items-center justify-between rounded-lg bg-white/10 p-4 shadow-lg backdrop-blur-md',
+                                            created_at: '2025-01-01 20:00:23',
+                                            profile_picture_url: 'string',
+                                        }}
+                                    />
+
+                                    <CardHistoryChat
+                                        data={{
+                                            user_id: 'true',
+                                            first_name: 'string',
+                                            last_name: 'string',
+                                            id: 'string',
+                                            message:
+                                                'flex tween-white/10 p-4 shadow-lg backdrop-blur-md',
+                                            created_at: '2025-01-01 20:00:23',
+                                            profile_picture_url: 'string',
+                                        }}
+                                    />
+
+                                    <CardHistoryChat
+                                        data={{
+                                            user_id: 'yes',
+                                            first_name: 'string',
+                                            last_name: 'string',
+                                            id: 'string',
+                                            message:
+                                                'flex tween-white/10 p-4 shadow-lg backdrop-blur-md',
+                                            created_at: '2025-01-01 20:00:23',
+                                            profile_picture_url: 'string',
+                                        }}
+                                    />
+
+                                    <CardHistoryChat
+                                        data={{
+                                            user_id: 'yes',
+                                            first_name: 'string',
+                                            last_name: 'string',
+                                            id: 'string',
+                                            message:
+                                                'flex tween-wdow-lg backdrop-blur-md',
+                                            created_at: '2025-01-01 20:00:23',
+                                            profile_picture_url: 'string',
+                                        }}
+                                    />
                                 </div>
-                            )}
-                        </InfiniteScroll>
-                        {/* {Array(2)
-                            .fill(0)
-                            .map((i) => (
-                                <div
-                                    className="mb-2 rounded-md bg-gray-100 p-4 shadow-lg"
-                                    key={new Date().getTime()}
+
+                                <InfiniteScroll
+                                    hasMore={hasNextPage}
+                                    isLoading={isLoading}
+                                    reverse
+                                    next={() => {
+                                        fetchNextPage();
+                                    }}
+                                    threshold={0}
                                 >
-                                    <h3 className="text-lg font-bold">{`Card #${i + 1}`}</h3>
-                                    <p className="text-sm text-gray-700">
-                                        {`Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras at libero ac mi sodales convallis. In hac habitasse platea dictumst. Lorem ipsum dolor sit amet, consectetur adipiscing elit.`}
-                                    </p>
-                                </div>
-                            ))} */}
-                    </div>
-                    {/* <div>
-                        {dataChat.map((item, index) => (
-                            <CardChat key={index} data={item} />
-                        ))}
-                    </div> */}
-                </ScrollArea>
-                <div className="flex items-center space-x-2 p-4">
-                    <div className="flex flex-1 items-center space-x-2">
-                        <div
-                            className={clsx(
-                                socket?.readyState === WebSocket.OPEN
-                                    ? 'bg-green-500'
-                                    : socket?.readyState ===
-                                        WebSocket.CONNECTING
-                                      ? 'bg-yellow-400'
-                                      : 'bg-red-500',
-                                'aspect-square animate-pulse rounded-full  p-2'
-                            )}
-                        ></div>
+                                    {hasNextPage && (
+                                        <div className="border-Input mt-[1000px] flex items-center justify-between space-x-2 border-b px-4  ">
+                                            <Skeleton className="aspect-square h-14 rounded-full" />
+                                            <div className="flex-1 space-y-1">
+                                                <Skeleton className="h-6 w-full" />
+                                                <Skeleton className="h-4 w-full" />
+                                            </div>
+                                        </div>
+                                    )}
+                                </InfiniteScroll>
+                            </div>
+                        </ScrollArea>
+                        <div className="flex items-center space-x-2 pt-5">
+                            <div className="flex flex-1 items-center space-x-2">
+                                <div
+                                    className={clsx(
+                                        socket?.readyState === WebSocket.OPEN
+                                            ? 'bg-green-500'
+                                            : socket?.readyState ===
+                                                WebSocket.CONNECTING
+                                              ? 'bg-yellow-400'
+                                              : 'bg-red-500',
+                                        'aspect-square animate-pulse rounded-full  p-2'
+                                    )}
+                                ></div>
 
-                        <Input
-                            placeholder="Insert message here..."
-                            className="flex-1
-                            !outline-none !ring-0"
-                            value={message}
-                            onChange={(e) => setMessage(e.target.value)}
-                            onKeyDown={handleType}
-                        />
+                                <Input
+                                    placeholder="Insert message here..."
+                                    className="flex-1 text-black
+                                    !outline-none !ring-0"
+                                    value={message}
+                                    onChange={(e) => setMessage(e.target.value)}
+                                    onKeyDown={handleType}
+                                />
+                            </div>
+                            <Button onClick={handleSendMessage}>Send</Button>
+                        </div>
                     </div>
-                    <Button onClick={handleSendMessage}>Send</Button>
-                </div>
+                </CardDarkNeonGlow>
             </div>
-        </div>
+        </Fragment>
     );
 }

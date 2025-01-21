@@ -1,3 +1,4 @@
+import RateBusiness from '@/components/base/Rate/RateBusiness';
 import React from 'react';
 
 export default function CoolCard() {
@@ -207,6 +208,7 @@ export default function CoolCard() {
 
     return (
         <div className="flex w-6/12 gap-4">
+            <RateBusiness businessId={'01JHHRTAEHDD1GBGS9ZYSGY5TX'} rate={1} />
             {/* Column 1 */}
             <div className="flex w-1/2 flex-col gap-4">
                 {column1.map((item) => (
