@@ -4,8 +4,8 @@ import { useSession } from 'next-auth/react';
 export default function CardMember() {
     const { data: session } = useSession();
     return (
-        <section className="space-y-4 pb-4 text-center">
-            <Avatar className="mx-auto h-32 w-32">
+        <section className="space-y-1 pb-2 text-center">
+            <Avatar className="mx-auto h-32 w-32 mb-5">
                 <AvatarImage
                     src={
                         session?.user.profile_picture_url
@@ -18,9 +18,6 @@ export default function CardMember() {
             <div>
                 {session?.user.first_name} {session?.user.last_name}
             </div>
-            {/* <div className="flex items-center justify-center">
-                <Check />
-            </div> */}
             <div className="text-sm">
                 <b>Location</b> :{' '}
                 {session?.user.province

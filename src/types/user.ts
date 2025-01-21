@@ -9,12 +9,21 @@ export interface User {
 }
 export interface IOtherUser {
     id: string;
-    first_name: string;
-    last_name: string;
-    profile_picture_url: string | null;
-    about?: string | null;
+    user_id: string;
+    cmp_name: string;
+    about?: string;
+    address?: string;
+    phone_number?: string;
+    email?: string;
+    image_url?: string;
+    latitude?: null;
+    longitude?: null;
+    is_company: false;
+    rating: null;
+    total_reviews: 0;
     province?: string | null;
     city?: string | null;
+    service_name?: string;
 }
 export interface ITags {
     id: string;

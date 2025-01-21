@@ -5,8 +5,8 @@ export function cn(...inputs: ClassValue[]) {
     return twMerge(clsx(inputs));
 }
 
-export function emptyValueCheck(input: string | number | boolean) {
-    return input ? input : '-';
+export function emptyValueCheck(input: string | number | boolean, message: any = '-'): any {
+    return input ? input : message;
 }
 
 export const FileToBase64 = (file: File) =>

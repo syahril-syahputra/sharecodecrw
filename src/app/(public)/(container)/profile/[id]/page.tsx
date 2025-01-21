@@ -6,9 +6,8 @@ import ProfileUser from './client';
 async function getData(id: string) {
     try {
         const res = await fetchServer({
-            url: `/user/profile/${id || ''}`,
+            url: `/businesses/registries/${id || ''}`,
         });
-        console.log(res);
         return res.data.data as IOtherUser;
     } catch {
         return notFound();

@@ -7,32 +7,29 @@ import MenuGroup from '../Menu/MenuGroup';
 import CardMember from '../Card/CardMember';
 import Link from 'next/link';
 import MenuGroupChild from '../Menu/MenuGroupChild';
+import { Separator } from '@/components/ui/separator';
 
 export default function SideMenuClient() {
     return (
-        <div className="divide-y-2">
+        <div className="">
             <CardMember />
+            <Separator className='my-4 bg-blue-400 opacity-20'/>
             <Menu>
-                <MenuGroupChild href="/user/crowner" title="Crowner Management">
+                <MenuGroup>
                     <Link href={'/user/crowner/services'}>
                         <MenuItem url={'community-tutors'}>Services</MenuItem>
                     </Link>
-                </MenuGroupChild>
-
-                {/* <MenuGroup>
-                    <Link href={'/user/interests-favorites'}>
-                        <MenuItem url={'interests-favorites'}>
-                            Interest & Favorites
-                        </MenuItem>
-                    </Link>
-                </MenuGroup> */}
+                </MenuGroup>
                 <MenuGroup>
                     <Link href={'/user/direct-chats'}>
                         <MenuItem url={'direct-chats'}>Chats</MenuItem>
                     </Link>
                 </MenuGroup>
                 <MenuGroup>
-                    <MenuItem url={''}>Plans</MenuItem>
+                    <Link href={'/user/plans'}>
+                        <MenuItem url={'plans'}>Plans & Pricing</MenuItem>
+                    </Link>
+                    {/* <MenuItem url={''}>Plans</MenuItem> */}
                 </MenuGroup>
                 <MenuGroup>
                     <Link href={'/user/setting'}>

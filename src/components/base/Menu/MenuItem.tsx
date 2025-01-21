@@ -10,7 +10,7 @@ const Item = (props: { selected: boolean; children: ReactNode }) => {
         <li
             className={clsx(
                 'cursor-pointer rounded-xl p-2 hover:text-primary',
-                props.selected && 'bg-border'
+                props.selected && 'bg-gray-700'
             )}
         >
             {props.children}
