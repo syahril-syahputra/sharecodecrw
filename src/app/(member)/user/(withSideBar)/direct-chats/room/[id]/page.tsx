@@ -10,9 +10,15 @@ import { Skeleton } from '@/components/ui/skeleton';
 import { useFetchHistoryChat } from '@/feature/chat/useFetchHistoryChat';
 import fetchClient from '@/lib/FetchClient';
 import useTableConfig from '@/lib/useTableConfig';
-import { IChat, IDirectChat } from '@/types/chat';
+import { IDirectChat } from '@/types/chat';
 import clsx from 'clsx';
-import React, { Fragment, KeyboardEvent, useEffect, useRef, useState } from 'react';
+import React, {
+    Fragment,
+    KeyboardEvent,
+    useEffect,
+    useRef,
+    useState,
+} from 'react';
 
 export default function Page({ params }: { params: { id: string } }) {
     const [socket, setSocket] = useState<WebSocket | null>(null);
@@ -159,76 +165,93 @@ export default function Page({ params }: { params: { id: string } }) {
                                     historyChat.pages.map((page, index) => (
                                         <div key={index}>
                                             {page.items.map((item, i) => (
-                                                <CardHistoryChat key={i} data={item} />
+                                                <CardHistoryChat
+                                                    key={i}
+                                                    data={item}
+                                                />
                                             ))}
                                         </div>
                                     ))}
-                                <div className='space-y-2 mt-2'>
-                                    <CardChat data={{
-                                        event:'chat-direct-user-receive-message',
-                                        message: 'huhuhu',
-                                    }} />
-                                    <CardChat data={{
-                                        event:'chat-direct-user-receive-message',
-                                        message: 'huhuhu',
-                                    }} />
+                                <div className="mt-2 space-y-2">
+                                    <CardChat
+                                        data={{
+                                            event: 'chat-direct-user-receive-message',
+                                            message: 'huhuhu',
+                                        }}
+                                    />
+                                    <CardChat
+                                        data={{
+                                            event: 'chat-direct-user-receive-message',
+                                            message: 'huhuhu',
+                                        }}
+                                    />
                                 </div>
 
-                                <div className='space-y-2'>
-                                    <CardHistoryChat data={{
-                                        user_id: 'yes',
-                                        first_name: 'string',
-                                        last_name: 'string',
-                                        id: 'string',
-                                        message: 'flex items-center justify-between rounded-lg bg-white/10 p-4 shadow-lg backdrop-blur-md',
-                                        created_at: '2025-01-01 20:00:23',
-                                        profile_picture_url: 'string',
-                                        
-                                    }} />
+                                <div className="space-y-2">
+                                    <CardHistoryChat
+                                        data={{
+                                            user_id: 'yes',
+                                            first_name: 'string',
+                                            last_name: 'string',
+                                            id: 'string',
+                                            message:
+                                                'flex items-center justify-between rounded-lg bg-white/10 p-4 shadow-lg backdrop-blur-md',
+                                            created_at: '2025-01-01 20:00:23',
+                                            profile_picture_url: 'string',
+                                        }}
+                                    />
 
-                                    <CardHistoryChat data={{
-                                        user_id: 'true',
-                                        first_name: 'string',
-                                        last_name: 'string',
-                                        id: 'string',
-                                        message: 'flex items-center justify-between rounded-lg bg-white/10 p-4 shadow-lg backdrop-blur-md',
-                                        created_at: '2025-01-01 20:00:23',
-                                        profile_picture_url: 'string',
-                                        
-                                    }} />
+                                    <CardHistoryChat
+                                        data={{
+                                            user_id: 'true',
+                                            first_name: 'string',
+                                            last_name: 'string',
+                                            id: 'string',
+                                            message:
+                                                'flex items-center justify-between rounded-lg bg-white/10 p-4 shadow-lg backdrop-blur-md',
+                                            created_at: '2025-01-01 20:00:23',
+                                            profile_picture_url: 'string',
+                                        }}
+                                    />
 
-                                    <CardHistoryChat data={{
-                                        user_id: 'true',
-                                        first_name: 'string',
-                                        last_name: 'string',
-                                        id: 'string',
-                                        message: 'flex tween-white/10 p-4 shadow-lg backdrop-blur-md',
-                                        created_at: '2025-01-01 20:00:23',
-                                        profile_picture_url: 'string',
-                                        
-                                    }} />
+                                    <CardHistoryChat
+                                        data={{
+                                            user_id: 'true',
+                                            first_name: 'string',
+                                            last_name: 'string',
+                                            id: 'string',
+                                            message:
+                                                'flex tween-white/10 p-4 shadow-lg backdrop-blur-md',
+                                            created_at: '2025-01-01 20:00:23',
+                                            profile_picture_url: 'string',
+                                        }}
+                                    />
 
-                                    <CardHistoryChat data={{
-                                        user_id: 'yes',
-                                        first_name: 'string',
-                                        last_name: 'string',
-                                        id: 'string',
-                                        message: 'flex tween-white/10 p-4 shadow-lg backdrop-blur-md',
-                                        created_at: '2025-01-01 20:00:23',
-                                        profile_picture_url: 'string',
-                                        
-                                    }} />
+                                    <CardHistoryChat
+                                        data={{
+                                            user_id: 'yes',
+                                            first_name: 'string',
+                                            last_name: 'string',
+                                            id: 'string',
+                                            message:
+                                                'flex tween-white/10 p-4 shadow-lg backdrop-blur-md',
+                                            created_at: '2025-01-01 20:00:23',
+                                            profile_picture_url: 'string',
+                                        }}
+                                    />
 
-                                    <CardHistoryChat data={{
-                                        user_id: 'yes',
-                                        first_name: 'string',
-                                        last_name: 'string',
-                                        id: 'string',
-                                        message: 'flex tween-wdow-lg backdrop-blur-md',
-                                        created_at: '2025-01-01 20:00:23',
-                                        profile_picture_url: 'string',
-                                        
-                                    }} />
+                                    <CardHistoryChat
+                                        data={{
+                                            user_id: 'yes',
+                                            first_name: 'string',
+                                            last_name: 'string',
+                                            id: 'string',
+                                            message:
+                                                'flex tween-wdow-lg backdrop-blur-md',
+                                            created_at: '2025-01-01 20:00:23',
+                                            profile_picture_url: 'string',
+                                        }}
+                                    />
                                 </div>
 
                                 <InfiniteScroll
@@ -260,8 +283,8 @@ export default function Page({ params }: { params: { id: string } }) {
                                             ? 'bg-green-500'
                                             : socket?.readyState ===
                                                 WebSocket.CONNECTING
-                                            ? 'bg-yellow-400'
-                                            : 'bg-red-500',
+                                              ? 'bg-yellow-400'
+                                              : 'bg-red-500',
                                         'aspect-square animate-pulse rounded-full  p-2'
                                     )}
                                 ></div>

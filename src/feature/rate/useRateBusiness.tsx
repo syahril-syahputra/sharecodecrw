@@ -15,8 +15,8 @@ export const useRateBusiness = ({ id, onSuccess, onError }: IProps) => {
                 method: 'POST',
                 url: `/businesses/rate/${id}`,
                 body: {
-                    rate
-                }
+                    rate,
+                },
             });
 
             return response;

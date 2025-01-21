@@ -13,7 +13,7 @@ export const useBuyPlan = ({ onSuccess, onError }: IProps) => {
             const response = await fetchClient({
                 method: 'POST',
                 url: '/businesses/publisher/plans',
-                body
+                body,
             });
 
             return response;

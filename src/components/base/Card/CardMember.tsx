@@ -5,7 +5,7 @@ export default function CardMember() {
     const { data: session } = useSession();
     return (
         <section className="space-y-1 pb-2 text-center">
-            <Avatar className="mx-auto h-32 w-32 mb-5">
+            <Avatar className="mx-auto mb-5 h-32 w-32">
                 <AvatarImage
                     src={
                         session?.user.profile_picture_url

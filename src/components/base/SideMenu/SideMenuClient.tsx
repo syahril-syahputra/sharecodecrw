@@ -6,14 +6,13 @@ import MenuItem from '../Menu/MenuItem';
 import MenuGroup from '../Menu/MenuGroup';
 import CardMember from '../Card/CardMember';
 import Link from 'next/link';
-import MenuGroupChild from '../Menu/MenuGroupChild';
 import { Separator } from '@/components/ui/separator';
 
 export default function SideMenuClient() {
     return (
         <div className="">
             <CardMember />
-            <Separator className='my-4 bg-blue-400 opacity-20'/>
+            <Separator className="my-4 bg-blue-400 opacity-20" />
             <Menu>
                 <MenuGroup>
                     <Link href={'/user/crowner/services'}>

@@ -1,32 +1,48 @@
 'use client';
-import { Button } from "@/components/ui/button";
-import { useToast } from "@/components/ui/use-toast";
-import { useRateBusiness } from "@/feature/rate/useRateBusiness";
-import { Star } from "lucide-react";
-import { useSession } from "next-auth/react";
-import { Fragment, useState } from "react";
-import DialogLoginRequired from "../Dialog/DialogLoginRequired";
-import { AlertDialog, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogAction } from "@/components/ui/alert-dialog";
+import { Button } from '@/components/ui/button';
+import { useToast } from '@/components/ui/use-toast';
+import { useRateBusiness } from '@/feature/rate/useRateBusiness';
+import { Star } from 'lucide-react';
+import { useSession } from 'next-auth/react';
+import { Fragment, useState } from 'react';
+import DialogLoginRequired from '../Dialog/DialogLoginRequired';
+import {
+    AlertDialog,
+    AlertDialogCancel,
+    AlertDialogContent,
+    AlertDialogDescription,
+    AlertDialogFooter,
+    AlertDialogHeader,
+    AlertDialogTitle,
+    AlertDialogAction,
+} from '@/components/ui/alert-dialog';
 
-export default function RateBusiness({ businessId, rate, variant = 'default'}: {businessId: string; rate: number, variant?: 'default' | 'blue'}){
+export default function RateBusiness({
+    businessId,
+    rate,
+    variant = 'default',
+}: {
+    businessId: string;
+    rate: number;
+    variant?: 'default' | 'blue';
+}) {
     const { toast } = useToast();
     const { status } = useSession();
     const [isOpen, setIsModalLogin] = useState(false);
-    
 
     const isLogin = status === 'authenticated';
     const { mutate, isPending } = useRateBusiness({
         id: businessId,
         onSuccess: (data) => {
-            toast({description: data.data.message});
+            toast({ description: data.data.message });
         },
         onError: (data) => {
             toast({
                 variant: 'destructive',
                 description: data.message,
             });
-        }
-    })
+        },
+    });
 
     const [isRateModal, setIsRateModal] = useState(false);
     const [giveNewRate, setGiveNewRate] = useState<number>(0);
@@ -41,13 +57,13 @@ export default function RateBusiness({ businessId, rate, variant = 'default'}: {
         setGiveNewRate(value);
     };
     const giveRateHandler = () => {
-        mutate(giveNewRate)
-        setGiveNewRate(0)
-    }
+        mutate(giveNewRate);
+        setGiveNewRate(0);
+    };
 
     return (
         <Fragment>
-            <DialogLoginRequired 
+            <DialogLoginRequired
                 title="Sign in to give a rate"
                 isOpen={isOpen}
                 onOpenChange={(value) => setIsModalLogin(value)}
@@ -57,7 +73,9 @@ export default function RateBusiness({ businessId, rate, variant = 'default'}: {
                 <AlertDialogContent className="sm:max-w-[425px]">
                     <AlertDialogHeader>
                         <AlertDialogTitle>Rate</AlertDialogTitle>
-                        <AlertDialogDescription>Give your rate!</AlertDialogDescription>
+                        <AlertDialogDescription>
+                            Give your rate!
+                        </AlertDialogDescription>
 
                         <div className="flex justify-center">
                             {[1, 2, 3, 4, 5].map((star) => (
@@ -67,12 +85,15 @@ export default function RateBusiness({ businessId, rate, variant = 'default'}: {
                                     onMouseEnter={() => handleMouseEnter(star)}
                                     onMouseLeave={handleMouseLeave}
                                     onClick={() => handleClick(star)}
-                                    fill={star <= (hoveredStar || giveNewRate) ? "blue" : "black"}
+                                    fill={
+                                        star <= (hoveredStar || giveNewRate)
+                                            ? 'blue'
+                                            : 'black'
+                                    }
                                     stroke="white"
                                 />
                             ))}
                         </div>
-
                     </AlertDialogHeader>
                     <AlertDialogFooter>
                         <AlertDialogCancel
@@ -92,26 +113,35 @@ export default function RateBusiness({ businessId, rate, variant = 'default'}: {
                 </AlertDialogContent>
             </AlertDialog>
             {variant == 'default' && (
-                <Button className="bg-amber-500 p-2 rounded-full" onClick={() => isLogin ? setIsRateModal(true) : setIsModalLogin(true)}>
+                <Button
+                    className="rounded-full bg-amber-500 p-2"
+                    onClick={() =>
+                        isLogin ? setIsRateModal(true) : setIsModalLogin(true)
+                    }
+                >
                     {[1, 2, 3, 4, 5].map((star) => (
-                        <Fragment>
-                            {star <= rate && 
-                                <Star fill="white" strokeWidth={0} key={star}/>
-                            }
+                        <Fragment key={star}>
+                            {star <= rate && (
+                                <Star fill="white" strokeWidth={0} />
+                            )}
 
-                            {star > rate && 
-                                <Star key={star}/>
-                            }
+                            {star > rate && <Star />}
                         </Fragment>
                     ))}
                 </Button>
             )}
             {variant == 'blue' && (
-                <Button size={'sm'} className="bg-blue-500 rounded-full" onClick={() => isLogin ? setIsRateModal(true) : setIsModalLogin(true)}>
-                    <Star size={18} className="mr-2"/>
+                <Button
+                    size={'sm'}
+                    className="rounded-full bg-blue-500"
+                    onClick={() =>
+                        isLogin ? setIsRateModal(true) : setIsModalLogin(true)
+                    }
+                >
+                    <Star size={18} className="mr-2" />
                     Rate
                 </Button>
             )}
         </Fragment>
-    )
+    );
 }

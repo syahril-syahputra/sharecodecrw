@@ -4,14 +4,13 @@ import { cn } from '@/lib/utils';
 export default function CardDarkNeonGlow({
     className,
     children,
-    variant = 'default'
+    variant = 'default',
 }: {
     children: React.ReactNode;
     className?: string;
-    variant?: 'silver' | 'gold' | 'default'
+    variant?: 'silver' | 'gold' | 'default';
 }) {
-
-    if(variant == 'default') {
+    if (variant == 'default') {
         return (
             <div
                 className={cn(
@@ -25,7 +24,7 @@ export default function CardDarkNeonGlow({
         );
     }
 
-    if(variant == 'silver') {
+    if (variant == 'silver') {
         return (
             <div
                 className={cn(
@@ -39,7 +38,7 @@ export default function CardDarkNeonGlow({
         );
     }
 
-    if(variant == 'gold') {
+    if (variant == 'gold') {
         return (
             <div
                 className={cn(
@@ -52,5 +51,4 @@ export default function CardDarkNeonGlow({
             </div>
         );
     }
-    
 }

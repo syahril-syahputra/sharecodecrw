@@ -1,4 +1,3 @@
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { humanize } from '@/lib/humanizeDate';
 import { IDirectChat } from '@/types/chat';
 import { useSession } from 'next-auth/react';
@@ -13,7 +12,7 @@ export default function CardChat(props: { data: IDirectChat }) {
     if (props.data.event === 'chat-direct-user-receive-message') {
         return (
             <div className="flex justify-start">
-                <div className="rounded-lg p-2 shadow-md rounded-lg bg-white/10 backdrop-blur-md">
+                <div className="rounded-lg rounded-lg bg-white/10 p-2 shadow-md backdrop-blur-md">
                     <div>
                         <p>{props.data.message}</p>
                     </div>

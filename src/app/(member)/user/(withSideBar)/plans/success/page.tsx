@@ -1,16 +1,16 @@
 'use client';
-import Spinner from "@/components/ui/spinner";
-import { useCheckPaymentStatus } from "@/feature/payments/useCheckPaymentStatus";
-import { Check, X } from "lucide-react";
+import Spinner from '@/components/ui/spinner';
+import { useCheckPaymentStatus } from '@/feature/payments/useCheckPaymentStatus';
+import { Check, X } from 'lucide-react';
 
 export default function Page({ params }: { params: { id: string } }) {
     const { isPending, isError } = useCheckPaymentStatus(params.id!);
 
     if (isPending) {
         return (
-            <div className="mx-auto flex flex-col justify-center items-center py-10 space-y-4">
+            <div className="mx-auto flex flex-col items-center justify-center space-y-4 py-10">
                 <Spinner />
-                <div className="font-bold  text-lg text-primary">
+                <div className="text-lg  font-bold text-primary">
                     Please Wait
                 </div>
             </div>
@@ -19,8 +19,8 @@ export default function Page({ params }: { params: { id: string } }) {
 
     if (isError) {
         return (
-            <div className="mx-auto flex flex-col justify-center items-center space-y-2">
-                <div className="flex rounded-full p-2 bg-red-600 shadow-lg shadow-green-100">
+            <div className="mx-auto flex flex-col items-center justify-center space-y-2">
+                <div className="flex rounded-full bg-red-600 p-2 shadow-lg shadow-green-100">
                     <X className="text-white" size={40} />
                 </div>
                 <h1 className="text-center text-4xl font-bold text-primary">
@@ -31,8 +31,8 @@ export default function Page({ params }: { params: { id: string } }) {
     }
 
     return (
-        <div className="mx-auto flex flex-col justify-center items-center space-y-2">
-            <div className="flex rounded-full p-2 bg-green-600 shadow-lg shadow-green-100">
+        <div className="mx-auto flex flex-col items-center justify-center space-y-2">
+            <div className="flex rounded-full bg-green-600 p-2 shadow-lg shadow-green-100">
                 <Check className="text-white" size={40} />
             </div>
             <h1 className="text-center text-4xl font-bold text-primary">
