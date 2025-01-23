@@ -1,6 +1,6 @@
 'use client';
 import './globals.css';
-import { Inter, Koulen } from 'next/font/google';
+import { Inter, Koulen, Roboto, Urbanist } from 'next/font/google';
 import { ThemeProvider } from './ThemeProvider';
 import Providers from './providers';
 import { SessionProvider } from 'next-auth/react';
@@ -11,6 +11,18 @@ const inter = Inter({
     subsets: ['latin'],
     display: 'swap',
     variable: '--font-inter',
+});
+
+const urbanist = Urbanist({
+    subsets: ['latin'],
+    display: 'swap',
+    variable: '--font-urbanist',
+});
+const roboto = Roboto({
+    subsets: ['latin'],
+    display: 'swap',
+    weight: '400',
+    variable: '--font-roboto',
 });
 
 const koulen = Koulen({
@@ -40,8 +52,11 @@ export default function RootLayout({
     children: React.ReactNode;
 }) {
     return (
-        <html lang="en" className={`${inter.variable} ${koulen.variable}`}>
-            <body className="font-inter">
+        <html
+            lang="en"
+            className={`${inter.variable} ${koulen.variable} ${roboto.variable} ${urbanist.variable}`}
+        >
+            <body className="font-roboto">
                 <Toaster />
                 <ThemeProvider
                     attribute="class"

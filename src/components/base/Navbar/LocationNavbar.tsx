@@ -45,7 +45,7 @@ export default function LocationNavbar() {
         localStorage.setItem('location', JSON.stringify(result));
     };
     return (
-        <div className="flex items-center  pl-4  text-sm">
+        <div className=" invisible flex items-center  pl-4  text-sm">
             <DialogLocation
                 open={open}
                 setOpen={(value) => setOpen(value)}

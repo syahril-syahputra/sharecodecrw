@@ -1,5 +1,5 @@
 'use client';
-import { Input } from '@/components/ui/input';
+import { InputSearch } from '@/components/ui/inputSearch';
 import { Search } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import React, { KeyboardEvent, useState } from 'react';
@@ -27,12 +27,12 @@ export default function HomeSearchBar() {
             >
                 <Search size={36} className="px-2 text-gray-600 " />
             </div>
-            <Input
+            <InputSearch
                 placeholder="Search for service"
                 value={search}
                 onChange={(v) => setsearch(v.target.value)}
                 onKeyDown={handleSearch}
-                className="h-min border-0 bg-gray-300 outline-none  focus:ring-0 focus-visible:ring-0"
+                className="h-min !border-0 !border-none bg-gray-300  !outline-none !ring-0 focus:ring-0 focus-visible:ring-0"
             />
         </div>
     );

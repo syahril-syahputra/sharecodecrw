@@ -19,7 +19,7 @@ export default function Notification() {
         useFetchNotification(pagination);
 
     return (
-        <div className="bg-background p-4">
+        <div className="mb-4 bg-background">
             <div>
                 {data &&
                     data.pages.map((page) =>

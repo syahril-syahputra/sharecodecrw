@@ -63,8 +63,8 @@ const Map: React.FC<MapProps> = ({
     userLocationBase,
 }) => {
     const [zoom] = useState<number>(13);
-    const defaultLat = parseInt(process.env.NEXT_PUBLIC_DEFAULT_LAT || '0');
-    const defaultLng = parseInt(process.env.NEXT_PUBLIC_DEFAULT_LNG || '0');
+    const defaultLat = parseFloat(process.env.NEXT_PUBLIC_DEFAULT_LAT || '0');
+    const defaultLng = parseFloat(process.env.NEXT_PUBLIC_DEFAULT_LNG || '0');
     const [userLocation, setUserLocation] = useState<LatLng | null>(
         userLocationBase || {
             lat: defaultLat,

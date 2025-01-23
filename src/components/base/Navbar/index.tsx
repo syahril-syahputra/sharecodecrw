@@ -6,6 +6,7 @@ import { getCurrentUser } from '@/lib/session';
 import MenuUser from './MenuUser';
 import fetchServer from '@/lib/fetchServer';
 import ResendVerificationEmail from './ResendVerificationEmail';
+import LocationNavbar from './LocationNavbar';
 async function getDataUser() {
     const session = await getCurrentUser();
     try {
@@ -39,9 +40,13 @@ export default async function Navbar() {
                         <Logo />
                     </Link>
                 </div>
+                <LocationNavbar />
 
                 {user ? (
-                    <MenuUser session={user} />
+                    <MenuUser
+                        session={user}
+                        image={user.profile_picture_url || ''}
+                    />
                 ) : (
                     <div className="flex space-x-2">
                         <Link href={'/auth/login'}>

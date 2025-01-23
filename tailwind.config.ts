@@ -84,6 +84,8 @@ const config = {
             fontFamily: {
                 inter: ['var(--font-inter)'],
                 koulen: ['var(--font-koulen)'],
+                roboto: ['var(--font-roboto)'],
+                urbanist: ['var(--font-urbanist)'],
             },
         },
     },

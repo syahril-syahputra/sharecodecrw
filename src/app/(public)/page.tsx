@@ -2,7 +2,10 @@
 // import { IDataLanding } from '@/types/landing';
 import HomeHero from '@/components/base/Homepage/HomeHero';
 import HomeServices from '@/components/base/Homepage/HomeServices';
-import { Bell, Bot, Home, Search } from 'lucide-react';
+import ButtonNotification from '@/components/base/Navbar/ButtonNotification';
+import { getCurrentUser } from '@/lib/session';
+import { Bot, Home, Search } from 'lucide-react';
+import Link from 'next/link';
 import React from 'react';
 
 // async function getData() {
@@ -17,6 +20,7 @@ import React from 'react';
 // }
 
 export default async function page() {
+    const user = await getCurrentUser();
     // const data = await getData();
     return (
         <div className="z-20 mt-20">
@@ -24,11 +28,17 @@ export default async function page() {
             <HomeServices />
             <div className="fixed bottom-0 left-0 right-0 flex items-center justify-center space-x-4 p-4">
                 <div className="flex w-min space-x-4 rounded-2xl bg-white p-4 shadow-xl">
-                    <Home />
-                    <Search />
-                    <Bell />
+                    {user && (
+                        <Link href={'/user'}>
+                            <Home />
+                        </Link>
+                    )}
+                    <Link href={'/'}>
+                        <Search />
+                    </Link>
+                    {user && <ButtonNotification />}
                 </div>
-                <div className="w-min space-x-4 rounded-2xl bg-white p-4 shadow-xl">
+                <div className="hidden w-min space-x-4 rounded-2xl bg-white p-4 shadow-xl">
                     <Bot />
                 </div>
             </div>
