@@ -1,169 +1,434 @@
 'use client';
-import CardCommunity from '@/components/base/Card/CardCommunity';
-import CardEvent from '@/components/base/Card/CardEvent';
-import { Badge } from '@/components/ui/badge';
+import CardDarkNeonGlow from '@/components/base/Card/CardDarkNeonGlow';
+import DialogChangeBusinessAdditionalDocument from '@/components/base/Dialog/DialogChangeBusinessAdditionalDocument';
+import DialogChangeBusinessLicense from '@/components/base/Dialog/DialogChangeBusinessLicense';
+import DialogChangeBusinessPicture from '@/components/base/Dialog/DialogChangeBusinessPicture';
+import DialogChangeUserEmail from '@/components/base/Dialog/DialogChangeUserEmail';
+import DialogVerifyPhoneNumber from '@/components/base/Dialog/DialogVerifyPhoneNumber';
+import LoadingPage from '@/components/base/Loading/LoadingPage';
+import IframeMap from '@/components/base/Maps/IframeMap';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
-import { useFetchCommunity } from '@/feature/community/useFetchCommunity';
-import { useFetchEvent } from '@/feature/events/useFetchEvent';
-import { useFetchProfile } from '@/feature/user/profile';
-import { IDetailCommunity } from '@/types/community';
-import { IDetailEvent } from '@/types/events';
-import { IProfile } from '@/types/user';
-import { Edit, Plus } from 'lucide-react';
-import { useSession } from 'next-auth/react';
+import { useFetchBusiness } from '@/feature/business/useFetchBusiness';
+import { emptyValueCheck } from '@/lib/utils';
+import {
+    BookMarked,
+    CheckCircle,
+    Contact,
+    Eye,
+    File,
+    HardDriveUpload,
+    Mail,
+    MapPin,
+    MinusCircle,
+    PenLine,
+    Phone,
+    ShieldCheck,
+    Star,
+    Upload,
+    UserCheck,
+} from 'lucide-react';
 import Link from 'next/link';
-import React, { useEffect, useState } from 'react';
+import { Fragment, useState } from 'react';
 
 export default function Page() {
-    const { data: session } = useSession();
-    const [currentProfile, setcurrentProfile] = useState<IProfile>({});
-    const { mutate } = useFetchProfile((data) => {
-        setcurrentProfile(data);
-    });
-    const { data: event } = useFetchEvent(
-        {
-            pageIndex: 1,
-            pageSize: 4,
-        },
-        {
-            event_schedule: 'upcoming',
-            acceptance_status: '',
-            is_visible: 'true',
-        },
-        { sort_by: 'date_time', sort_type: 'asc' }
-    );
-    const { data: communities } = useFetchCommunity(
-        {
-            pageIndex: 1,
-            pageSize: 7,
-        },
-        {
-            acceptance_status: 'accepted',
-            is_visible: 'true',
-        },
-        { sort_by: 'title', sort_type: 'asc' }
-    );
-    useEffect(() => {
-        mutate();
-    }, []);
+    const { data: business, isLoading, refetch } = useFetchBusiness();
+    const initialUserName = business?.name ? business?.name.charAt(0) : '';
+
+    const [dialogChangeBusinessPicture, setDialogChangeBusinessPicture] =
+        useState(false);
+    const [dialogChangeBusinessLicense, setDialogChangeBusinessLicense] =
+        useState(false);
+    const [dialogChangeAdditionalDocument, setDialogChangeAdditionalDocument] =
+        useState(false);
+    const [dialogChangeEmail, setDialogChangeEmail] = useState(false);
     return (
-        <section className="flex-1 p-4">
-            <div className="font-bold">
-                <h1 className="text-2xl">
-                    Welcome back, {session?.user.first_name}!
-                </h1>
-            </div>
-            <div className="flex items-center justify-between font-bold">
-                <h2>Introduction</h2>
-                <Link href={'/user/setting/profile'}>
-                    <Button variant={'ghost'}>
-                        <Edit size={18} className="mr-2" /> Edit Profile
-                    </Button>
-                </Link>
-            </div>
-            {currentProfile.about ? (
-                <div className="min-h-24">
-                    <span className="">{currentProfile.about}</span>
-                </div>
-            ) : (
-                <div className="flex flex-col items-center space-y-2 p-4">
-                    <Plus />
-                    <span className="font-bold">{currentProfile.about}</span>
+        <div className="flex-1 px-6">
+            {isLoading && <LoadingPage />}
+
+            {!isLoading && (
+                <div className="space-y-4">
+                    <CardDarkNeonGlow>
+                        <div className="flex justify-between">
+                            <h1 className="flex space-x-2 text-3xl">
+                                <p>
+                                    <span className="italic">
+                                        Welcome back,
+                                    </span>{' '}
+                                    {business?.name}!
+                                </p>
+                            </h1>
+                        </div>
+                    </CardDarkNeonGlow>
+                    <CardDarkNeonGlow>
+                        <div className="space-y-10 px-4 pb-20">
+                            <div className="flex justify-between">
+                                <div className="flex space-x-4">
+                                    <div className="my-auto mb-2">
+                                        <div className="relative inline-block cursor-pointer">
+                                            <Avatar className="mb-2 h-24 w-24">
+                                                <AvatarImage
+                                                    src={business?.image_url}
+                                                    alt={business?.name}
+                                                />
+                                                <AvatarFallback>
+                                                    {initialUserName}
+                                                </AvatarFallback>
+                                            </Avatar>
+                                            <div
+                                                onClick={() =>
+                                                    setDialogChangeBusinessPicture(
+                                                        true
+                                                    )
+                                                }
+                                                className="absolute bottom-0 left-0 right-0 top-0 flex cursor-pointer items-center justify-center rounded-full bg-neutral-800 bg-opacity-60 opacity-0 transition duration-100 hover:opacity-100"
+                                            >
+                                                <HardDriveUpload
+                                                    className="text-white"
+                                                    size={20}
+                                                />
+                                            </div>
+                                            <DialogChangeBusinessPicture
+                                                imageUrl={business?.image_url}
+                                                isOpen={
+                                                    dialogChangeBusinessPicture
+                                                }
+                                                onOpenChange={(value) =>
+                                                    setDialogChangeBusinessPicture(
+                                                        value
+                                                    )
+                                                }
+                                                refetch={refetch}
+                                            />
+                                        </div>
+                                    </div>
+                                    <div className="space-y-2">
+                                        <div className="flex space-x-4">
+                                            <p className="text-3xl font-semibold">
+                                                {business?.name}
+                                            </p>
+                                            <div className="mt-2">
+                                                {business?.is_company ? (
+                                                    <div className="flex space-x-2">
+                                                        <ShieldCheck />
+                                                        <span>Company</span>
+                                                    </div>
+                                                ) : (
+                                                    <div className="flex space-x-2">
+                                                        <UserCheck />
+                                                        <span>Individual</span>
+                                                    </div>
+                                                )}
+                                            </div>
+                                        </div>
+                                        <div className="flex items-center space-x-4">
+                                            {business?.total_reviews == 0 ? (
+                                                <span className="text-lg italic text-muted-foreground">
+                                                    No review
+                                                </span>
+                                            ) : (
+                                                <div className="flex">
+                                                    {[1, 2, 3, 4, 5].map(
+                                                        (star) => (
+                                                            <Fragment
+                                                                key={star}
+                                                            >
+                                                                {star <=
+                                                                    (business?.rating ??
+                                                                        0) && (
+                                                                    <Star
+                                                                        fill="#3b82f6"
+                                                                        strokeWidth={
+                                                                            0
+                                                                        }
+                                                                    />
+                                                                )}
+                                                                {star >
+                                                                    (business?.rating ??
+                                                                        0) && (
+                                                                    <Star
+                                                                        fill="gray"
+                                                                        strokeWidth={
+                                                                            0
+                                                                        }
+                                                                    />
+                                                                )}
+                                                            </Fragment>
+                                                        )
+                                                    )}
+                                                    <span className="ml-2 text-muted-foreground">
+                                                        {
+                                                            business?.total_reviews
+                                                        }
+                                                    </span>
+                                                </div>
+                                            )}
+                                        </div>
+                                        <div>
+                                            {business?.service_name && (
+                                                <div className="flex items-center">
+                                                    <span className="flex items-center space-x-2 rounded-full bg-gray-700 px-4 py-2 text-sm font-light">
+                                                        {business?.service_name}
+                                                        <CheckCircle className="ml-2 text-blue-500" />
+                                                    </span>
+                                                </div>
+                                            )}
+                                        </div>
+                                    </div>
+                                </div>
+                                <Link href={'/user/edit'}>
+                                    <Button className="rounded-xl bg-blue-500">
+                                        <PenLine className="mr-2" />
+                                        Edit
+                                    </Button>
+                                </Link>
+                            </div>
+                            {/* about */}
+                            <div className="space-y-5">
+                                <div>
+                                    <div className="flex items-center space-x-2">
+                                        <BookMarked size={25} />
+                                        <span className="text-2xl font-semibold">
+                                            About
+                                        </span>
+                                    </div>
+                                    <span className="font-thin">
+                                        {emptyValueCheck(
+                                            business?.about ?? '',
+                                            <span className="italic text-muted-foreground">
+                                                no about given
+                                            </span>
+                                        )}
+                                    </span>
+                                </div>
+                                <div className="space-y-2">
+                                    <div className="flex items-center space-x-2">
+                                        <Contact size={25} />
+                                        <span className="text-2xl font-semibold">
+                                            Contact
+                                        </span>
+                                    </div>
+                                    <div className="flex items-center space-x-2 font-thin text-white">
+                                        <Phone size={15} />
+                                        <span className="text-md">
+                                            {emptyValueCheck(
+                                                business?.phone_number ?? '',
+                                                <span className="italic text-muted-foreground">
+                                                    no phone number given
+                                                </span>
+                                            )}
+                                        </span>
+                                        {business?.phone_number_verified_at && (
+                                            <span className="text-md flex items-center rounded-full bg-gray-700 px-2">
+                                                verified
+                                                <CheckCircle
+                                                    size={18}
+                                                    className="ml-2 text-blue-500"
+                                                />
+                                            </span>
+                                        )}
+                                        {business?.phone_number &&
+                                            !business?.phone_number_verified_at && (
+                                                <DialogVerifyPhoneNumber
+                                                    userPhoneNumber={
+                                                        business?.phone_number ??
+                                                        ''
+                                                    }
+                                                    refetch={refetch}
+                                                />
+                                            )}
+                                    </div>
+                                    <div className="flex items-center space-x-2 font-thin text-white">
+                                        <Mail size={15} />
+                                        <span className="text-md">
+                                            {business?.email}
+                                        </span>
+                                        {business?.email_verified_at ? (
+                                            <div className="flex space-x-2">
+                                                <span className="text-md flex items-center rounded-full bg-gray-700 px-2">
+                                                    verified
+                                                    <CheckCircle
+                                                        size={18}
+                                                        className="ml-2 text-blue-500"
+                                                    />
+                                                </span>
+                                                <span
+                                                    onClick={() =>
+                                                        setDialogChangeEmail(
+                                                            true
+                                                        )
+                                                    }
+                                                    className="text-md flex cursor-pointer items-center rounded-full bg-gray-700 px-2 transition duration-100 hover:bg-gray-800"
+                                                >
+                                                    change email
+                                                </span>
+                                                <DialogChangeUserEmail
+                                                    currentEmail={
+                                                        business.email
+                                                    }
+                                                    isOpen={dialogChangeEmail}
+                                                    onOpenChange={(value) =>
+                                                        setDialogChangeEmail(
+                                                            value
+                                                        )
+                                                    }
+                                                />
+                                            </div>
+                                        ) : (
+                                            <span className="text-md flex cursor-pointer items-center rounded-full bg-gray-700 px-2 transition duration-100 hover:bg-gray-800">
+                                                verify email
+                                                <MinusCircle
+                                                    size={18}
+                                                    className="ml-2 text-gray-900"
+                                                />
+                                            </span>
+                                        )}
+                                    </div>
+                                    <div className="items-top flex space-x-2 font-thin text-white">
+                                        <div>
+                                            <MapPin
+                                                size={15}
+                                                className="mt-1"
+                                            />
+                                        </div>
+                                        <div className="w-full">
+                                            <p className="text-md">
+                                                {business?.city},{' '}
+                                                {business?.province}
+                                            </p>
+                                            <p className="text-md">
+                                                {business?.address}
+                                            </p>
+                                            <div>
+                                                <IframeMap
+                                                    latitude={
+                                                        business?.latitude
+                                                    }
+                                                    longitude={
+                                                        business?.longitude
+                                                    }
+                                                />
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                {business?.is_company && (
+                                    <div>
+                                        <div className="flex items-center space-x-2">
+                                            <File size={25} />
+                                            <span className="text-2xl font-semibold">
+                                                Document
+                                            </span>
+                                        </div>
+                                        <div className="mt-4">
+                                            <div className="grid w-full grid-cols-2 gap-2 lg:w-6/12">
+                                                <div className="rounded-xl bg-gray-700 p-10">
+                                                    <span className="flex justify-center text-center">
+                                                        Business License
+                                                    </span>
+                                                    <div className="mt-2 flex justify-center space-x-2">
+                                                        <Link
+                                                            href={
+                                                                business?.license_url ??
+                                                                ''
+                                                            }
+                                                            target="_blank"
+                                                        >
+                                                            <Button
+                                                                size={'sm'}
+                                                                variant={
+                                                                    'ghost'
+                                                                }
+                                                            >
+                                                                <Eye
+                                                                    size={18}
+                                                                />
+                                                            </Button>
+                                                        </Link>
+                                                        <Button
+                                                            onClick={() =>
+                                                                setDialogChangeBusinessLicense(
+                                                                    true
+                                                                )
+                                                            }
+                                                            size={'sm'}
+                                                            variant={'ghost'}
+                                                        >
+                                                            <Upload size={18} />
+                                                        </Button>
+                                                        <DialogChangeBusinessLicense
+                                                            isOpen={
+                                                                dialogChangeBusinessLicense
+                                                            }
+                                                            onOpenChange={(
+                                                                value
+                                                            ) =>
+                                                                setDialogChangeBusinessLicense(
+                                                                    value
+                                                                )
+                                                            }
+                                                            refetch={refetch}
+                                                        />
+                                                    </div>
+                                                </div>
+                                                <div className="rounded-xl bg-gray-700 p-10">
+                                                    <span className="flex justify-center text-center">
+                                                        Vocational License
+                                                    </span>
+                                                    <div className="mt-2 flex justify-center space-x-2">
+                                                        <Link
+                                                            href={
+                                                                business?.document_url ??
+                                                                ''
+                                                            }
+                                                            target="_blank"
+                                                        >
+                                                            <Button
+                                                                size={'sm'}
+                                                                variant={
+                                                                    'ghost'
+                                                                }
+                                                            >
+                                                                <Eye
+                                                                    size={18}
+                                                                />
+                                                            </Button>
+                                                        </Link>
+                                                        <Button
+                                                            onClick={() =>
+                                                                setDialogChangeAdditionalDocument(
+                                                                    true
+                                                                )
+                                                            }
+                                                            size={'sm'}
+                                                            variant={'ghost'}
+                                                        >
+                                                            <Upload size={18} />
+                                                        </Button>
+                                                        <DialogChangeBusinessAdditionalDocument
+                                                            isOpen={
+                                                                dialogChangeAdditionalDocument
+                                                            }
+                                                            onOpenChange={(
+                                                                value
+                                                            ) =>
+                                                                setDialogChangeAdditionalDocument(
+                                                                    value
+                                                                )
+                                                            }
+                                                            refetch={refetch}
+                                                        />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                )}
+                            </div>
+                        </div>
+                    </CardDarkNeonGlow>
                 </div>
             )}
-
-            <div className="flex items-center justify-between border-b">
-                <div className="space-x-2">
-                    <span className="font-semibold">Interests :</span>{' '}
-                    {currentProfile.tags?.map((item) => {
-                        return (
-                            <Badge key={item.id} variant={'secondary'}>
-                                {item.title}
-                            </Badge>
-                        );
-                    })}
-                </div>
-                <div>
-                    <Link href="/user/interest">
-                        <Button variant={'ghost'}>
-                            <Edit size={18} className="mr-2" /> Edit Interest
-                        </Button>
-                    </Link>
-                </div>
-            </div>
-            <div className="divide-y-2">
-                <div className="pt-4">
-                    <h1 className="pb-2 text-lg font-bold">
-                        Your upcoming event
-                    </h1>
-                    <div>
-                        <div className="flex items-start justify-between">
-                            {/* <div className="flex p-4">
-                            <div className="flex w-24  flex-col items-center justify-between bg-primary px-4 py-2 text-secondary">
-                                <span>2</span>
-                                <span>Interested</span>
-                            </div>
-                            <div className="flex  w-24 flex-col items-center justify-between bg-secondary px-4 py-2 ">
-                                <span>3</span>
-                                <span>RSVP</span>
-                            </div>
-                        </div> */}
-                            <div className="grid flex-1 grid-cols-4 gap-4">
-                                {event &&
-                                    event.items.map((item: IDetailEvent) => (
-                                        <Link
-                                            href={
-                                                '/user/crowner/events/' +
-                                                item.id
-                                            }
-                                            key={item.id}
-                                        >
-                                            <CardEvent
-                                                variant="vertical"
-                                                data={item}
-                                            />
-                                        </Link>
-                                    ))}
-                            </div>
-                        </div>
-                        <div className="flex justify-end">
-                            <Link href={'/user/crowner/events'}>
-                                <Button variant={'ghost'}>More</Button>
-                            </Link>
-                        </div>
-                    </div>
-                </div>
-                <div className="py-4">
-                    <h1 className="pb-2 text-lg font-bold">My Communities</h1>
-                    <div className="grid grid-cols-4 gap-4">
-                        <Link href={'/user/create-community'}>
-                            <div className="flex h-full flex-col items-center justify-center space-y-2 rounded-md border p-4  shadow-md hover:bg-secondary">
-                                <Plus size={48} />
-                                <span>Start Your Community</span>
-                            </div>
-                        </Link>
-                        {communities &&
-                            communities.items.map((item: IDetailCommunity) => (
-                                <Link
-                                    href={
-                                        '/user/crowner/communities/' + item.id
-                                    }
-                                    key={item.id}
-                                >
-                                    <CardCommunity
-                                        variant="vertical"
-                                        data={item}
-                                    />
-                                </Link>
-                            ))}
-                    </div>
-                    <div className="mt-2 flex justify-end">
-                        <Link href={'/user/crowner/communities'}>
-                            <Button variant={'ghost'}>More</Button>
-                        </Link>
-                    </div>
-                </div>
-            </div>
-        </section>
+        </div>
     );
 }

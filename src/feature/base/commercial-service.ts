@@ -6,7 +6,7 @@ export const useFetchCommercialServices = () => {
     return useQuery({
         queryFn: async () => {
             const response = await fetchClient({
-                url: '/commercials/services',
+                url: '/businesses/services',
             });
             return response.data.data as CommercialService[];
         },
