@@ -61,3 +61,40 @@ export interface IUpdatePassword {
     new_password: string;
     new_password_confirmation: string;
 }
+
+export interface IBusiness {
+    city_id: string;
+    province_id: string;
+    service_id?: string;
+    service_name?: string;
+    is_service_accepted?: boolean;
+    is_company: boolean;
+    city: string;
+    province: string;
+    name: string;
+    address: string;
+    about: string;
+    phone_number: string;
+    phone_number_verified_at: string;
+    image_url?: string;
+    license_url?: string;
+    document_url?: string;
+    latitude: number;
+    longitude: number;
+    rating?: number;
+    total_reviews: number;
+    email: string;
+    email_verified_at: string;
+}
+
+export interface IBusinessUpdate {
+    city_id: string;
+    service_id?: string;
+    service_other?: string;
+    name: string;
+    address: string;
+    phone_number: string;
+    latitude: number;
+    longitude: number;
+    about: string;
+}
