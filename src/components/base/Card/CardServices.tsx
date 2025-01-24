@@ -12,7 +12,7 @@ interface IProps {
 export default function CardServices(props: IProps) {
     if (props.data.is_boost_color) {
         return (
-            <Card className="relative overflow-hidden rounded-lg !border-none bg-[#E9E1D3] p-6 ">
+            <Card className="relative overflow-hidden rounded-lg !border-none bg-[#E9E1D3] p-10">
                 <div className="flex items-center space-x-4 font-bold capitalize">
                     <Avatar>
                         <AvatarImage
@@ -38,36 +38,36 @@ export default function CardServices(props: IProps) {
                     </div>
                 </div>
 
-                <div className=" justify-between space-y-8 py-8">
+                <div className="justify-between space-y-8 py-5">
                     <div className="relative flex-1 ">
-                        <h2 className="mb-4 text-3xl font-bold">
+                        <h2 className="font-roboto mb-3 text-3xl font-bold">
                             {props.data.title}
                         </h2>
-                        <p className="bg-gradient-to-b from-gray-900 to-transparent bg-clip-text  text-transparent">
-                            {props.data.description}
+                        <p className="font-urbanist bg-gradient-to-b from-gray-900 to-transparent bg-clip-text  text-transparent">
+                            Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s
                         </p>
                     </div>
 
                     <Image
-                        src={props.data.image_url}
-                        width={100}
-                        height={100}
+                        src={'/image/learn.png'}
+                        width={500}
+                        height={500}
                         alt="picture"
-                        className=" h-96 w-full rounded-2xl"
+                        className="w-full rounded-2xl mx-auto"
                     />
                 </div>
                 <div className="flex justify-between">
-                    <div className="flex items-center space-x-2 px-4 ">
+                    <div className="flex items-center space-x-2 text-gray-600">
                         <Radius />
                         <span>
                             {parseFloat(props.data.distance.toFixed(2))} KM
                         </span>
                     </div>
-                    <div className="flex flex-1 flex-col text-right">
+                    <div className="flex flex-1 flex-col font-urbanist text-right">
                         <span className="text-2xl font-bold">
                             ${props.data.price}
                         </span>{' '}
-                        <span className="text-base">
+                        <span className="text-base -mt-2">
                             {props.data.payment_type}
                         </span>
                     </div>
@@ -76,7 +76,7 @@ export default function CardServices(props: IProps) {
         );
     }
     return (
-        <Card className="relative overflow-hidden rounded-lg bg-gray-900 p-6 text-white shadow-lg">
+        <Card className="relative overflow-hidden rounded-lg bg-gray-900 p-10 text-white shadow-lg">
             <div className="absolute -top-72 left-1/2 h-96 w-96 -translate-x-1/2 transform rounded-full bg-blue-800 opacity-40 blur-2xl"></div>
             {/* {JSON.stringify(props.data)} */}
             <div className="flex items-center space-x-4 font-bold capitalize">
@@ -89,7 +89,7 @@ export default function CardServices(props: IProps) {
                 </Avatar>
                 <div className="space-y-0">
                     <div className="space-y-0">
-                        <div className="flex items-center space-x-2 font-light">
+                        <div className="font-urbanist flex items-center space-x-2 font-light">
                             <span>{props.data.cmp_name}</span>
 
                             {props.data.is_company ? (
@@ -110,13 +110,13 @@ export default function CardServices(props: IProps) {
                 </div>
             </div>
 
-            <div className="flex justify-between space-x-8 py-8">
+            <div className="flex justify-between space-x-10 py-5">
                 <div className="relative flex-1 text-white">
-                    <h2 className="mb-4 text-3xl font-bold">
+                    <h2 className="font-roboto mb-3 text-3xl font-bold">
                         {props.data.title}
                     </h2>
-                    <p className="bg-gradient-to-b from-gray-200 to-transparent bg-clip-text text-transparent">
-                        {props.data.description}
+                    <p className="font-urbanist bg-gradient-to-b from-gray-200 to-transparent bg-clip-text text-transparent">
+                        Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s
                     </p>
                 </div>
 
@@ -125,19 +125,19 @@ export default function CardServices(props: IProps) {
                     width={100}
                     height={100}
                     alt="picture"
-                    className="h-48 w-48 rounded-2xl"
+                    className="h-48 w-40 rounded-2xl"
                 />
             </div>
             <div className="flex justify-between">
-                <div className="flex items-center space-x-2 px-4 text-gray-200">
+                <div className="flex items-center space-x-2 text-gray-400">
                     <Radius />
                     <span>{parseFloat(props.data.distance.toFixed(2))} KM</span>
                 </div>
-                <div className="flex flex-1 flex-col text-right">
+                <div className="flex flex-1 flex-col text-right font-urbanist">
                     <span className="text-2xl font-bold">
                         ${props.data.price}
                     </span>{' '}
-                    <span className="text-base">{props.data.payment_type}</span>
+                    <span className="text-base -mt-2">{props.data.payment_type}</span>
                 </div>
             </div>
         </Card>
