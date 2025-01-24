@@ -40,11 +40,14 @@ export default function CardServices(props: IProps) {
 
                 <div className="justify-between space-y-8 py-5">
                     <div className="relative flex-1 ">
-                        <h2 className="font-roboto mb-3 text-3xl font-bold">
+                        <h2 className="mb-3 font-roboto text-3xl font-bold">
                             {props.data.title}
                         </h2>
-                        <p className="font-urbanist bg-gradient-to-b from-gray-900 to-transparent bg-clip-text  text-transparent">
-                            Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s
+                        <p className="bg-gradient-to-b from-gray-900 to-transparent bg-clip-text font-urbanist  text-transparent">
+                            Lorem Ipsum is simply dummy text of the printing and
+                            typesetting industry. Lorem Ipsum has been the
+                            industry&apos;s standard dummy text ever since the
+                            1500s
                         </p>
                     </div>
 
@@ -53,7 +56,7 @@ export default function CardServices(props: IProps) {
                         width={500}
                         height={500}
                         alt="picture"
-                        className="w-full rounded-2xl mx-auto"
+                        className="mx-auto w-full rounded-2xl"
                     />
                 </div>
                 <div className="flex justify-between">
@@ -63,11 +66,11 @@ export default function CardServices(props: IProps) {
                             {parseFloat(props.data.distance.toFixed(2))} KM
                         </span>
                     </div>
-                    <div className="flex flex-1 flex-col font-urbanist text-right">
+                    <div className="flex flex-1 flex-col text-right font-urbanist">
                         <span className="text-2xl font-bold">
                             ${props.data.price}
                         </span>{' '}
-                        <span className="text-base -mt-2">
+                        <span className="-mt-2 text-base">
                             {props.data.payment_type}
                         </span>
                     </div>
@@ -89,7 +92,7 @@ export default function CardServices(props: IProps) {
                 </Avatar>
                 <div className="space-y-0">
                     <div className="space-y-0">
-                        <div className="font-urbanist flex items-center space-x-2 font-light">
+                        <div className="flex items-center space-x-2 font-urbanist font-light">
                             <span>{props.data.cmp_name}</span>
 
                             {props.data.is_company ? (
@@ -112,11 +115,13 @@ export default function CardServices(props: IProps) {
 
             <div className="flex justify-between space-x-10 py-5">
                 <div className="relative flex-1 text-white">
-                    <h2 className="font-roboto mb-3 text-3xl font-bold">
+                    <h2 className="mb-3 font-roboto text-3xl font-bold">
                         {props.data.title}
                     </h2>
-                    <p className="font-urbanist bg-gradient-to-b from-gray-200 to-transparent bg-clip-text text-transparent">
-                        Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s
+                    <p className="bg-gradient-to-b from-gray-200 to-transparent bg-clip-text font-urbanist text-transparent">
+                        Lorem Ipsum is simply dummy text of the printing and
+                        typesetting industry. Lorem Ipsum has been the
+                        industry&apos;s standard dummy text ever since the 1500s
                     </p>
                 </div>
 
@@ -137,7 +142,9 @@ export default function CardServices(props: IProps) {
                     <span className="text-2xl font-bold">
                         ${props.data.price}
                     </span>{' '}
-                    <span className="text-base -mt-2">{props.data.payment_type}</span>
+                    <span className="-mt-2 text-base">
+                        {props.data.payment_type}
+                    </span>
                 </div>
             </div>
         </Card>

@@ -401,7 +401,7 @@ export default function HomeServices() {
                     <span>Personal Services</span>
                 </Button>
             </div>
-            <div className="pb-10 mt-10">
+            <div className="mt-10 pb-10">
                 <div className="container flex max-w-6xl gap-4 ">
                     <div className="flex w-1/2 flex-col gap-4">
                         {column1 &&
