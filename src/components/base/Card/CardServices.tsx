@@ -76,8 +76,8 @@ export default function CardServices(props: IProps) {
         );
     }
     return (
-        <Card className="relative overflow-hidden rounded-lg bg-gray-900 p-10 text-white shadow-lg">
-            <div className="absolute -top-72 left-1/2 h-96 w-96 -translate-x-1/2 transform rounded-full bg-blue-800 opacity-40 blur-2xl"></div>
+        <Card className="relative overflow-hidden rounded-lg bg-gray-950 p-10 text-white shadow-lg">
+            <div className="absolute -top-64 left-80 h-96 w-96 -translate-x-1/2 transform rounded-full bg-[#E9E1D3] opacity-35 blur-3xl"></div>
             {/* {JSON.stringify(props.data)} */}
             <div className="flex items-center space-x-4 font-bold capitalize">
                 <Avatar>
