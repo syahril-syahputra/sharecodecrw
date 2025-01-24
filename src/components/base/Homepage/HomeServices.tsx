@@ -1,5 +1,5 @@
 'use client';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, KeyboardEvent } from 'react';
 import CardServices from '../Card/CardServices';
 import { useFetchServices } from '@/feature/services/useFetchServices';
 import { IFilterServices } from '@/types/services';
@@ -14,6 +14,7 @@ import {
     MapPin,
     Radar,
     RotateCcw,
+    Search,
     SlidersHorizontal,
     Tags,
     X,
@@ -35,6 +36,7 @@ import {
 import { InputCustom } from '@/components/ui/inputCustom';
 import { Slider } from '@/components/ui/slider';
 import clsx from 'clsx';
+import { InputSearch } from '@/components/ui/inputSearch';
 
 interface ICordinate {
     lat: number;
@@ -61,20 +63,22 @@ export default function HomeServices() {
         defaultFilter: {
             title: '',
             provider: '',
-            rad: '40.79509100',
-            lat: userLocation ? userLocation.lat + '' : '',
-            lng: userLocation ? userLocation.lng + '' : '',
+            rad: '50',
+            lat: '40.79509100',
+            lng: '-73.96828500',
         },
     });
     useEffect(() => {
         const location = localStorage.getItem('location');
-
+        console.log(userLocation);
         if (location) {
             setUserLocation(JSON.parse(location) as ICordinate);
             setfilterValue({
                 ...filterValue,
-                lat: userLocation.lat + '',
-                lng: userLocation.lng + '',
+                // lat: userLocation.lat + '',
+                // lng: userLocation.lng + '',
+                lat: '40.79509100',
+                lng: '-73.96828500',
             });
         } else {
             console.log('Geolocation is not available in your browser.');
@@ -92,6 +96,9 @@ export default function HomeServices() {
             });
         }
     );
+    useEffect(() => {
+        filterHandler();
+    }, [filterValue.provider]);
 
     const { data, fetchNextPage, isLoading, hasNextPage } = useFetchServices(
         filter,
@@ -112,6 +119,27 @@ export default function HomeServices() {
         );
     return (
         <div>
+            <div className="container my-2 flex max-w-xl flex-1 items-center  divide-x divide-border rounded-full border border-border bg-gray-300 p-4 px-4 py-2 shadow-md">
+                <div className="flex cursor-pointer items-center text-primary hover:text-foreground">
+                    <Search size={36} className="px-2 text-gray-600 " />
+                </div>
+                <InputSearch
+                    placeholder="Search for service"
+                    onChange={(value) => {
+                        setfilterValue({
+                            ...filterValue,
+                            title: value.target.value,
+                        });
+                    }}
+                    value={filterValue.title}
+                    onKeyDown={(event: KeyboardEvent<HTMLInputElement>) => {
+                        if (event.key === 'Enter') {
+                            filterHandler();
+                        }
+                    }}
+                    className="h-min !border-0 !border-none bg-gray-300  !outline-none !ring-0 focus:ring-0 focus-visible:ring-0"
+                />
+            </div>
             <div className="container flex max-w-xl justify-between space-x-2 px-4 py-4 text-center">
                 <Popover>
                     <PopoverTrigger asChild>
@@ -328,7 +356,6 @@ export default function HomeServices() {
                             ...filterValue,
                             provider: '',
                         });
-                        filterHandler();
                     }}
                     className={clsx(
                         filterValue.provider === ''
@@ -346,7 +373,6 @@ export default function HomeServices() {
                             ...filterValue,
                             provider: 'company',
                         });
-                        filterHandler();
                     }}
                     className={clsx(
                         filterValue.provider === 'company'
@@ -364,7 +390,6 @@ export default function HomeServices() {
                             ...filterValue,
                             provider: 'personal',
                         });
-                        filterHandler();
                     }}
                     className={clsx(
                         filterValue.provider === 'personal'
