@@ -93,7 +93,7 @@ export default function Page() {
         <div className="relative mx-auto max-w-xl space-y-8 overflow-hidden rounded-xl bg-gray-900 p-10">
             <div className="absolute -top-72 left-1/2 h-96 w-96 -translate-x-1/2 transform rounded-full bg-blue-800 opacity-40 blur-2xl"></div>
             <TitleAuth className="!text-4xl !text-white underline">
-                Sign Up
+                Sign In
             </TitleAuth>
             <Form {...form}>
                 <form
@@ -107,7 +107,7 @@ export default function Page() {
                             <FormItem>
                                 <FormControl>
                                     <Input
-                                        className="bg-transparent text-white"
+                                        className="rounded-full border-white bg-transparent text-white"
                                         placeholder="Email"
                                         {...field}
                                     />
@@ -123,7 +123,7 @@ export default function Page() {
                             <FormItem>
                                 <FormControl>
                                     <PasswordInput
-                                        className="bg-transparent text-white"
+                                        className="rounded-full border-white bg-transparent text-white"
                                         placeholder="Password"
                                         {...field}
                                     />
@@ -153,7 +153,7 @@ export default function Page() {
 
                     <div className="flex w-full justify-center">
                         <Button
-                            className="group relative rounded-xl bg-blue-700 px-6 py-3 !font-semibold text-white transition-all duration-300"
+                            className="group relative rounded-xl px-6 py-3 !font-semibold text-white transition-all duration-300"
                             type="submit"
                             loading={isLoadingForm}
                         >

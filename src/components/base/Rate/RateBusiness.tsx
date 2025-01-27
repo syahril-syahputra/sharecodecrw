@@ -90,7 +90,7 @@ export default function RateBusiness({
                                             ? 'blue'
                                             : 'black'
                                     }
-                                    stroke="white"
+                                    strokeWidth={0}
                                 />
                             ))}
                         </div>

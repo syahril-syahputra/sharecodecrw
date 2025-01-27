@@ -402,8 +402,8 @@ export default function HomeServices() {
                 </Button>
             </div>
             <div className="mt-10 pb-10">
-                <div className="container flex max-w-6xl gap-4 ">
-                    <div className="flex w-1/2 flex-col gap-4">
+                <div className="container flex max-w-6xl gap-6">
+                    <div className="flex w-1/2 flex-col gap-6">
                         {column1 &&
                             column1.map((items) =>
                                 items.map((item) => (
@@ -411,7 +411,7 @@ export default function HomeServices() {
                                 ))
                             )}
                     </div>
-                    <div className="flex w-1/2 flex-col gap-4">
+                    <div className="flex w-1/2 flex-col gap-6">
                         {column2 &&
                             column2.map((items) =>
                                 items.map((item) => (
