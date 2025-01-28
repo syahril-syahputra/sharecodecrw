@@ -18,7 +18,8 @@ export default function CardDarkNeonGlow({
                     className
                 )}
             >
-                <div className="absolute -top-72 left-1/2 h-96 w-96 -translate-x-1/2 transform rounded-full bg-blue-800 opacity-40 blur-2xl"></div>
+                {/* <div className="absolute -top-72 left-1/2 h-96 w-96 -translate-x-1/2 transform rounded-full bg-blue-800 opacity-40 blur-2xl"></div> */}
+                <div className="absolute -right-80 -top-64 h-96 w-full -translate-x-1/2 transform rounded-full bg-primary opacity-30 blur-3xl"></div>
                 <div className="relative text-white">{children}</div>
             </div>
         );

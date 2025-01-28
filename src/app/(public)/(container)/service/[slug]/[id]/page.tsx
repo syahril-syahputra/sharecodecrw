@@ -18,10 +18,17 @@ import { IBusinessListing } from '@/types/business/listings';
 import Rating from '@/components/ui/rating';
 import RateBusiness from '@/components/base/Rate/RateBusiness';
 import Link from 'next/link';
-import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from '@/components/ui/carousel';
+import {
+    Carousel,
+    CarouselContent,
+    CarouselItem,
+    CarouselNext,
+    CarouselPrevious,
+} from '@/components/ui/carousel';
 import CardService from '@/components/base/Card/CardService';
 import { getCurrentUser } from '@/lib/session';
 import QuestionAndAnswerDark from '@/components/base/QuestionAndAnswerDark';
+import { Button } from '@/components/ui/button';
 
 async function getData(id: string) {
     try {
@@ -61,35 +68,37 @@ export default async function Page({ params }: { params: { id: string } }) {
                             <div className="flex items-center space-x-2">
                                 <Avatar>
                                     <AvatarImage src={data.cmp_image_url} />
-                                    <AvatarFallback>{initialUserName}</AvatarFallback>
+                                    <AvatarFallback>
+                                        {initialUserName}
+                                    </AvatarFallback>
                                 </Avatar>
-                                <span className="font-urbanist text-white">{data.cmp_name}</span>
+                                <span className="font-urbanist text-white">
+                                    {data.cmp_name}
+                                </span>
                             </div>
                             <div className="flex items-center space-x-2 font-light">
                                 {data.is_company ? (
                                     <Badge className="flex bg-gray-900 p-2 px-4">
-                                        <ShieldCheck className='mr-2' />
+                                        <ShieldCheck className="mr-2" />
                                         Company
                                     </Badge>
                                 ) : (
                                     <Badge className="flex bg-gray-900 p-2 px-4">
-                                        <UserCheck className='mr-2' />
+                                        <UserCheck className="mr-2" />
                                         Individual
                                     </Badge>
                                 )}
                             </div>
                         </div>
                         <div>
-                            <div className="font-urbanist flex items-center space-x-2">
+                            <div className="flex items-center space-x-2 font-urbanist">
                                 <Badge className="bg-gray-700 bg-gray-900 p-2 font-light">
                                     {data.service_name}
                                 </Badge>
                             </div>
                         </div>
                         <div className="font-urbanist text-lg font-light text-white">
-                            <span>
-                                {data.description}
-                            </span>
+                            <span>{data.description}</span>
                         </div>
                         <div className="flex justify-center">
                             <Rating
@@ -100,56 +109,96 @@ export default async function Page({ params }: { params: { id: string } }) {
                         </div>
                         {/* listings */}
                         <div>
-                            <div className="mb-3 text-4xl text-white"> 
+                            <div className="mb-3 text-4xl text-white">
                                 Similar Services
-                            </div>   
+                            </div>
                             <Carousel className="">
                                 <CarouselContent className="space-x-4">
                                     {/* {props.data?.events.map((data) => ( */}
-                                    <CarouselItem key={data.id} className="basis-96">
-                                        <Link href={'/crowner/events/'} key={data.id}>
+                                    <CarouselItem
+                                        key={data.id}
+                                        className="basis-96"
+                                    >
+                                        <Link
+                                            href={'/crowner/events/'}
+                                            key={data.id}
+                                        >
                                             <CardService
-                                                image_url={data?.image_url ?? ''}
+                                                image_url={
+                                                    data?.image_url ?? ''
+                                                }
                                                 title="House moving"
                                                 price="66"
                                                 payment_type="per hour"
                                             />
                                         </Link>
                                     </CarouselItem>
-                                    <CarouselItem key={data.id} className="basis-96">
-                                        <Link href={'/crowner/events/'} key={data.id}>
+                                    <CarouselItem
+                                        key={data.id}
+                                        className="basis-96"
+                                    >
+                                        <Link
+                                            href={'/crowner/events/'}
+                                            key={data.id}
+                                        >
                                             <CardService
-                                                image_url={data?.image_url ?? ''}
+                                                image_url={
+                                                    data?.image_url ?? ''
+                                                }
                                                 title="House moving"
                                                 price="66"
                                                 payment_type="per hour"
                                             />
                                         </Link>
                                     </CarouselItem>
-                                    <CarouselItem key={data.id} className="basis-96">
-                                        <Link href={'/crowner/events/'} key={data.id}>
+                                    <CarouselItem
+                                        key={data.id}
+                                        className="basis-96"
+                                    >
+                                        <Link
+                                            href={'/crowner/events/'}
+                                            key={data.id}
+                                        >
                                             <CardService
-                                                image_url={data?.image_url ?? ''}
+                                                image_url={
+                                                    data?.image_url ?? ''
+                                                }
                                                 title="House moving"
                                                 price="66"
                                                 payment_type="per hour"
                                             />
                                         </Link>
                                     </CarouselItem>
-                                    <CarouselItem key={data.id} className="basis-96">
-                                        <Link href={'/crowner/events/'} key={data.id}>
+                                    <CarouselItem
+                                        key={data.id}
+                                        className="basis-96"
+                                    >
+                                        <Link
+                                            href={'/crowner/events/'}
+                                            key={data.id}
+                                        >
                                             <CardService
-                                                image_url={data?.image_url ?? ''}
+                                                image_url={
+                                                    data?.image_url ?? ''
+                                                }
                                                 title="House moving"
                                                 price="66"
                                                 payment_type="per hour"
                                             />
                                         </Link>
                                     </CarouselItem>
-                                    <CarouselItem key={data.id} className="basis-96">
-                                        <Link href={'/crowner/events/'} key={data.id}>
+                                    <CarouselItem
+                                        key={data.id}
+                                        className="basis-96"
+                                    >
+                                        <Link
+                                            href={'/crowner/events/'}
+                                            key={data.id}
+                                        >
                                             <CardService
-                                                image_url={data?.image_url ?? ''}
+                                                image_url={
+                                                    data?.image_url ?? ''
+                                                }
                                                 title="House moving"
                                                 price="66"
                                                 payment_type="per hour"
@@ -174,39 +223,49 @@ export default async function Page({ params }: { params: { id: string } }) {
                         <div className="flex items-center space-x-2">
                             <Avatar>
                                 <AvatarImage src={data.cmp_image_url} />
-                                <AvatarFallback>{initialUserName}</AvatarFallback>
+                                <AvatarFallback>
+                                    {initialUserName}
+                                </AvatarFallback>
                             </Avatar>
-                            <span className="text-white font-urbanist">{data.cmp_name}</span>
+                            <span className="font-urbanist text-white">
+                                {data.cmp_name}
+                            </span>
                         </div>
                         <div className="flex items-center space-x-2 font-light">
                             {data.is_company ? (
-                                <Badge className="flex bg-gray-500 p-1 px-4">
-                                    <ShieldCheck />
+                                <Badge className="flex bg-gray-500 px-3">
+                                    <ShieldCheck className="mr-2" size={18} />
                                     Company
                                 </Badge>
                             ) : (
-                                <Badge className="flex bg-gray-500 p-1 px-4">
-                                    <UserCheck />
+                                <Badge className="flex bg-gray-500 px-3">
+                                    <UserCheck className="mr-2" size={18} />
                                     Individual
                                 </Badge>
                             )}
                         </div>
-                        <Link href={`/profile/${data.cmp_id}`} className='text-white'>
-                            <SquareArrowOutUpRight />
+                        <Link
+                            href={`/profile/${data.cmp_id}`}
+                            className="text-primary"
+                        >
+                            <SquareArrowOutUpRight size={16} />
                         </Link>
                     </div>
                     <div>
-                        <span className="font-thin text-white font-urbanist">
+                        <span className="font-urbanist font-thin text-white">
                             {data.cmp_about}
                         </span>
                     </div>
                     <div className="flex justify-center">
                         <div className="">
-                            <p className="text-lg text-white mb-1">
+                            <p className="mb-1 text-lg text-white">
                                 Rate {data.cmp_name}
                             </p>
                             <div className="flex justify-center">
-                                <RateBusiness businessId={data.cmp_id} rate={data.rating}/>
+                                <RateBusiness
+                                    businessId={data.cmp_id}
+                                    rate={data.rating}
+                                />
                             </div>
                         </div>
                     </div>
@@ -217,15 +276,17 @@ export default async function Page({ params }: { params: { id: string } }) {
                         </div>
                         {data?.phone && (
                             <div className="">
-                                <div className="flex items-center space-x-2 font-thin text-white font-urbanist">
+                                <div className="flex items-center space-x-2 font-urbanist font-thin text-white">
                                     <Phone size={15} />
-                                    <span className="text-md">{data.phone}</span>
+                                    <span className="text-md">
+                                        {data.phone}
+                                    </span>
                                 </div>
                             </div>
                         )}
                         {data?.email && (
                             <div className="">
-                                <div className="flex items-center space-x-2 font-thin text-white font-urbanist">
+                                <div className="flex items-center space-x-2 font-urbanist font-thin text-white">
                                     <Mail size={15} />
                                     <span className="text-md">
                                         {data.email}
@@ -234,11 +295,14 @@ export default async function Page({ params }: { params: { id: string } }) {
                             </div>
                         )}
                         <div className="mt-4">
-                            <div className="flex items-center space-x-2 font-thin text-white font-urbanist">
-                                <MapPin size={15} />
-                                <span className="text-md">
-                                    {data.address}
-                                </span>
+                            <div className="mb-1 flex items-start space-x-2 font-urbanist font-thin text-white">
+                                <div>
+                                    <MapPin
+                                        size={15}
+                                        className="mt-1 text-white"
+                                    />
+                                </div>
+                                <span className="text-md">{data.address}</span>
                             </div>
                             <div className="mb-4">
                                 <IframeMap
@@ -249,15 +313,17 @@ export default async function Page({ params }: { params: { id: string } }) {
                         </div>
                     </div>
                     <div className="flex justify-between">
-                        <div className="text-xl text-white font-urbanist">
-                            <p>${data.price}</p>
-                            <p className="text-sm">{data.payment_type}</p>
+                        <div className="text-xl text-white">
+                            <p className="font-bold">${data.price}</p>
+                            <p className="font-urbanist text-sm">
+                                {data.payment_type}
+                            </p>
                         </div>
                         <div>
-                            <Badge className="bg-blue-500 px-5 py-2 text-lg">
+                            <Button className="rounded-full">
                                 <MessageCircle className="mr-2" />
-                                    Message
-                            </Badge>
+                                Message
+                            </Button>
                         </div>
                     </div>
                 </div>

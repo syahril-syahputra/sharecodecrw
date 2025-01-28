@@ -31,7 +31,7 @@ export default function ProfileUser(props: { data: IOtherUser }) {
 
     const initialUserName = data?.cmp_name ? data?.cmp_name.charAt(0) : '';
     return (
-        <CardDarkNeonGlow className='mt-4'>
+        <CardDarkNeonGlow className="mt-4">
             <div className="space-y-10 px-10 pb-20 pt-20">
                 <div className="flex space-x-4">
                     <div className="my-auto">

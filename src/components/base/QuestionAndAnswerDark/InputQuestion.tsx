@@ -30,7 +30,7 @@ export default function InputQuestion(props: IProps) {
                 onChange={(e) => props.onChange(e.target.value)}
                 placeholder="Input Question"
                 minHeight={86}
-                className='!bg-transparent border !border-white text-white'
+                className="border !border-white !bg-transparent text-white"
             />
             <div className="flex justify-end">
                 <Button

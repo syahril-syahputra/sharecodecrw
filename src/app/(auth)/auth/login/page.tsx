@@ -91,14 +91,14 @@ export default function Page() {
     }
     return (
         <div className="relative mx-auto max-w-xl space-y-8 overflow-hidden rounded-xl bg-gray-900 p-10">
-            <div className="absolute -top-72 left-1/2 h-96 w-96 -translate-x-1/2 transform rounded-full bg-blue-800 opacity-40 blur-2xl"></div>
+            <div className="absolute -right-80 -top-64 h-96 w-full -translate-x-1/2 transform rounded-full bg-primary opacity-30 blur-3xl"></div>
             <TitleAuth className="!text-4xl !text-white underline">
                 Sign In
             </TitleAuth>
             <Form {...form}>
                 <form
                     onSubmit={form.handleSubmit(onSubmit)}
-                    className="space-y-8"
+                    className="space-y-4"
                 >
                     <FormField
                         control={form.control}

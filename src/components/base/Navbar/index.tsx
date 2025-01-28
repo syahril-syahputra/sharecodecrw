@@ -50,7 +50,9 @@ export default async function Navbar() {
                 ) : (
                     <div className="flex space-x-2">
                         <Link href={'/auth/login'}>
-                            <Button block variant={'default'}>Sign In</Button>
+                            <Button block variant={'default'}>
+                                Sign In
+                            </Button>
                         </Link>
                         <Link href={'/auth/register'}>
                             <Button block variant={'secondary'} className="">

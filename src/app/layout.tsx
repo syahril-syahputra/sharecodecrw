@@ -56,7 +56,7 @@ export default function RootLayout({
             lang="en"
             className={`${inter.variable} ${koulen.variable} ${roboto.variable} ${urbanist.variable}`}
         >
-            <body className="font-roboto">
+            <body className="font-saans">
                 <Toaster />
                 <ThemeProvider
                     attribute="class"

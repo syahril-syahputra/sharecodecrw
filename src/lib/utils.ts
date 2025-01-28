@@ -21,3 +21,7 @@ export const FileToBase64 = (file: File) =>
         reader.onload = () => resolve(reader.result);
         reader.onerror = reject;
     });
+
+export const truncateText = (text: string, maxChars: number) => {
+    return text.length > maxChars ? text.substring(0, maxChars) + '...' : text;
+};

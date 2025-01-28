@@ -333,7 +333,7 @@ export default function IndividuRegistration() {
                                 <FormItem>
                                     <FormControl>
                                         <Input
-                                            className="bg-transparent text-white border-white rounded-full"
+                                            className="rounded-full border-white bg-transparent text-white"
                                             placeholder="Address"
                                             {...field}
                                         />

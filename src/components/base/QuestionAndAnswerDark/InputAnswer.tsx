@@ -27,7 +27,7 @@ export default function InputAnswer(props: IProps) {
         <div className="space-y-4 py-4">
             <AutosizeTextarea
                 placeholder="Input Answer"
-                className='flex-1 !bg-transparent border !border-white text-white'
+                className="flex-1 border !border-white !bg-transparent text-white"
                 readOnly={props.isLoading}
                 onChange={(e) => props.setvalue(e.target.value)}
                 value={props.value}
