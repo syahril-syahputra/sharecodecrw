@@ -1,4 +1,5 @@
 import type { Config } from 'tailwindcss';
+import { fontFamily } from 'tailwindcss/defaultTheme';
 
 const config = {
     darkMode: ['class'],
@@ -86,6 +87,7 @@ const config = {
                 koulen: ['var(--font-koulen)'],
                 roboto: ['var(--font-roboto)'],
                 urbanist: ['var(--font-urbanist)'],
+                saans: ['SaansTrial', ...fontFamily.sans],
             },
         },
     },

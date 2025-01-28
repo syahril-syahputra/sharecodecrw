@@ -46,13 +46,13 @@ export default function ListAnswer(props: IProps) {
         mutate({ message: value });
     };
 
-    const counterString = counter != 0 ? `${counter} answers` : '';
+    const counterString = counter != 0 ? `${counter} answers` : '0 answer';
 
     return (
         <div className="flex-1 items-center font-urbanist">
             {!showReplies && (
                 <div
-                    className="mt-2 flex px-2"
+                    className="mt-2 flex items-center px-2"
                     onClick={() => setshowReplies(!showReplies)}
                 >
                     <PlusCircle

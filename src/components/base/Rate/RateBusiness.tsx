@@ -87,8 +87,8 @@ export default function RateBusiness({
                                     onClick={() => handleClick(star)}
                                     fill={
                                         star <= (hoveredStar || giveNewRate)
-                                            ? 'blue'
-                                            : 'black'
+                                            ? '#258AD8'
+                                            : '#888888'
                                     }
                                     strokeWidth={0}
                                 />
@@ -97,7 +97,7 @@ export default function RateBusiness({
                     </AlertDialogHeader>
                     <AlertDialogFooter>
                         <AlertDialogCancel
-                            className="rounded-xl"
+                            className="rounded-xl border-0"
                             onClick={() => setIsRateModal(false)}
                         >
                             Cancel
@@ -114,7 +114,7 @@ export default function RateBusiness({
             </AlertDialog>
             {variant == 'default' && (
                 <Button
-                    className="rounded-full bg-amber-500 p-2"
+                    className="rounded-full bg-accent p-2"
                     onClick={() =>
                         isLogin ? setIsRateModal(true) : setIsModalLogin(true)
                     }
@@ -133,7 +133,7 @@ export default function RateBusiness({
             {variant == 'blue' && (
                 <Button
                     size={'sm'}
-                    className="rounded-full bg-blue-500"
+                    className="rounded-full bg-primary"
                     onClick={() =>
                         isLogin ? setIsRateModal(true) : setIsModalLogin(true)
                     }

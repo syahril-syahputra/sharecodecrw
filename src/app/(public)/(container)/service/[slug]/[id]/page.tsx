@@ -28,6 +28,7 @@ import {
 import CardService from '@/components/base/Card/CardService';
 import { getCurrentUser } from '@/lib/session';
 import QuestionAndAnswerDark from '@/components/base/QuestionAndAnswerDark';
+import { Button } from '@/components/ui/button';
 
 async function getData(id: string) {
     try {
@@ -232,22 +233,22 @@ export default async function Page({ params }: { params: { id: string } }) {
                         </div>
                         <div className="flex items-center space-x-2 font-light">
                             {data.is_company ? (
-                                <Badge className="flex bg-gray-500 p-1 px-4">
-                                    <ShieldCheck />
+                                <Badge className="flex bg-gray-500 px-3">
+                                    <ShieldCheck className="mr-2" size={18} />
                                     Company
                                 </Badge>
                             ) : (
-                                <Badge className="flex bg-gray-500 p-1 px-4">
-                                    <UserCheck />
+                                <Badge className="flex bg-gray-500 px-3">
+                                    <UserCheck className="mr-2" size={18} />
                                     Individual
                                 </Badge>
                             )}
                         </div>
                         <Link
                             href={`/profile/${data.cmp_id}`}
-                            className="text-white"
+                            className="text-primary"
                         >
-                            <SquareArrowOutUpRight />
+                            <SquareArrowOutUpRight size={16} />
                         </Link>
                     </div>
                     <div>
@@ -294,8 +295,13 @@ export default async function Page({ params }: { params: { id: string } }) {
                             </div>
                         )}
                         <div className="mt-4">
-                            <div className="flex items-center space-x-2 font-urbanist font-thin text-white">
-                                <MapPin size={15} />
+                            <div className="mb-1 flex items-start space-x-2 font-urbanist font-thin text-white">
+                                <div>
+                                    <MapPin
+                                        size={15}
+                                        className="mt-1 text-white"
+                                    />
+                                </div>
                                 <span className="text-md">{data.address}</span>
                             </div>
                             <div className="mb-4">
@@ -307,15 +313,17 @@ export default async function Page({ params }: { params: { id: string } }) {
                         </div>
                     </div>
                     <div className="flex justify-between">
-                        <div className="font-urbanist text-xl text-white">
-                            <p>${data.price}</p>
-                            <p className="text-sm">{data.payment_type}</p>
+                        <div className="text-xl text-white">
+                            <p className="font-bold">${data.price}</p>
+                            <p className="font-urbanist text-sm">
+                                {data.payment_type}
+                            </p>
                         </div>
                         <div>
-                            <Badge className="bg-blue-500 px-5 py-2 text-lg">
+                            <Button className="rounded-full">
                                 <MessageCircle className="mr-2" />
                                 Message
-                            </Badge>
+                            </Button>
                         </div>
                     </div>
                 </div>

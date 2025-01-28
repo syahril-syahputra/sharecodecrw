@@ -16,7 +16,7 @@ export default function Rating(props: IProps) {
     if (props.variant == 'big') {
         return (
             <div className="flex items-center">
-                <span className="text-6xl text-blue-500">{props.star}</span>
+                <span className="text-6xl text-primary">{props.star}</span>
                 <div className="ml-2">
                     <p className="font-urbanist font-thin text-white">
                         {props.rater} Endorsements
@@ -25,9 +25,9 @@ export default function Rating(props: IProps) {
                         {Array.from({ length: props.star }).map((_, index) => (
                             <Star
                                 key={index}
-                                fill="#07b1fb"
+                                fill="#258AD8"
                                 strokeWidth={0}
-                                className="text-[#07b1fb]"
+                                className="text-primary"
                             />
                         ))}
                         {Array.from({ length: 5 - props.star }).map(
@@ -50,10 +50,10 @@ export default function Rating(props: IProps) {
             {Array.from({ length: props.star }).map((_, index) => (
                 <Star
                     key={index}
-                    fill="#07b1fb"
+                    fill="#258AD8"
                     strokeWidth={0}
                     size={16}
-                    className="text-[#07b1fb]"
+                    className="text-[#258AD8]"
                 />
             ))}
             {Array.from({ length: 5 - props.star }).map((_, index) => (

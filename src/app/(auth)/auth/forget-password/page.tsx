@@ -68,6 +68,7 @@ export default function Page() {
                                                     <Input
                                                         placeholder="Email"
                                                         {...field}
+                                                        className="rounded-full border-white bg-transparent text-white"
                                                     />
                                                 </FormControl>
                                                 <FormMessage />
@@ -76,7 +77,7 @@ export default function Page() {
                                     />
                                     <div className="flex w-full justify-center">
                                         <Button
-                                            className="group relative rounded-xl bg-blue-700 px-6 py-3 !font-semibold text-white transition-all duration-300"
+                                            className="group relative rounded-xl px-6 py-3 !font-semibold text-white transition-all duration-300"
                                             type="submit"
                                             loading={
                                                 form.formState.isSubmitting

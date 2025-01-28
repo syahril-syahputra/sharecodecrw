@@ -80,3 +80,97 @@ html {
 .masonry > * {
     break-inside: avoid; /* Prevent content from breaking into another column */
 }
+
+@font-face {
+    font-family: 'SaansTrial';
+    src: url('/fonts/SaansTrial/Saans-TRIAL-Bold.woff2') format('truetype');
+    font-weight: 700;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'SaansTrial';
+    src: url('/fonts/SaansTrial/Saans-TRIAL-BoldItalic.woff2')
+        format('truetype');
+    font-weight: 700;
+    font-style: italic;
+}
+
+@font-face {
+    font-family: 'SaansTrial';
+    src: url('/fonts/SaansTrial/Saans-TRIAL-Heavy.woff2') format('truetype');
+    font-weight: 800;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'SaansTrial';
+    src: url('/fonts/SaansTrial/Saans-TRIAL-HeavyItalic.woff2')
+        format('truetype');
+    font-weight: 800;
+    font-style: italic;
+}
+
+@font-face {
+    font-family: 'SaansTrial';
+    src: url('/fonts/SaansTrial/Saans-TRIAL-Light.woff2') format('truetype');
+    font-weight: 300;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'SaansTrial';
+    src: url('/fonts/SaansTrial/Saans-TRIAL-LightItalic.woff2')
+        format('truetype');
+    font-weight: 300;
+    font-style: italic;
+}
+
+@font-face {
+    font-family: 'SaansTrial';
+    src: url('/fonts/SaansTrial/Saans-TRIAL-Medium.woff2') format('truetype');
+    font-weight: 500;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'SaansTrial';
+    src: url('/fonts/SaansTrial/Saans-TRIAL-MediumItalic.woff2')
+        format('truetype');
+    font-weight: 500;
+    font-style: italic;
+}
+
+@font-face {
+    font-family: 'SaansTrial';
+    src: url('/fonts/SaansTrial/Saans-TRIAL-Regular.woff2') format('truetype');
+    font-weight: 400;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'SaansTrial';
+    src: url('/fonts/SaansTrial/Saans-TRIAL-RegularItalic.woff2')
+        format('truetype');
+    font-weight: 400;
+    font-style: italic;
+}
+
+@font-face {
+    font-family: 'SaansTrial';
+    src: url('/fonts/SaansTrial/Saans-TRIAL-SemiBold.woff2') format('truetype');
+    font-weight: 600;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'SaansTrial';
+    src: url('/fonts/SaansTrial/Saans-TRIAL-SemiBoldItalic.woff2')
+        format('truetype');
+    font-weight: 600;
+    font-style: italic;
+}
+
+body {
+    font-family: 'SaansTrial', sans-serif !important;
+}
