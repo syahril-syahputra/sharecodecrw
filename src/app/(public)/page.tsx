@@ -27,7 +27,7 @@ export default async function page() {
             <HomeHero />
             <HomeServices />
             <div className="fixed bottom-0 left-0 right-0 flex items-center justify-center space-x-4 p-4">
-                <div className="flex w-min space-x-4 rounded-2xl bg-white p-4 shadow-xl">
+                <div className="flex w-min space-x-4 rounded-full bg-white p-4 shadow-xl">
                     {user && (
                         <Link href={'/user'}>
                             <Home />
@@ -38,7 +38,7 @@ export default async function page() {
                     </Link>
                     {user && <ButtonNotification />}
                 </div>
-                <div className="hidden w-min space-x-4 rounded-2xl bg-white p-4 shadow-xl">
+                <div className="hidden w-min space-x-4 rounded-full bg-white p-4 shadow-xl">
                     <Bot />
                 </div>
             </div>

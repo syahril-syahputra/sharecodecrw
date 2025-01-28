@@ -1,55 +1,73 @@
 'use client';
 import TitleAuth from '@/components/base/Title/TitleAuth';
-import React from 'react';
+import React, { useState } from 'react';
 import Link from 'next/link';
 import CompanyRegistration from './Company';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import IndividuRegistration from './Individual';
-import { User, Users } from 'lucide-react';
+import { ArrowLeftCircle, User, Users } from 'lucide-react';
+import { useRouter } from 'next/navigation';
 
 // // dark
 export default function Page() {
+    const router = useRouter();
+    const [tab, setTab] = useState("individual");
+
+    const onTabChange = (value: string) => {
+        setTab(value);
+        console.log(value)
+    }
+
     return (
         <div className="relative mx-auto max-w-xl space-y-8 overflow-hidden rounded-xl bg-gray-900 p-10">
-            <div className="absolute -top-72 left-1/2 h-96 w-96 -translate-x-1/2 transform rounded-full bg-blue-800 opacity-40 blur-2xl"></div>
-            <TitleAuth className="!text-4xl !text-white underline">
-                Sign Up
-            </TitleAuth>
-            <div className="">
-                <Tabs defaultValue="account" className="w-full">
-                    <TabsList className="mb-4 grid w-full grid-cols-2 bg-transparent text-white">
-                        <TabsTrigger
-                            className="space-x-2 rounded-lg"
-                            value="account"
-                        >
-                            <User size={18} />
-                            <span>Individual</span>
-                        </TabsTrigger>
-                        <TabsTrigger
-                            className="space-x-2 rounded-lg"
-                            value="password"
-                        >
-                            <Users size={18} />
-                            <span>Company</span>
-                        </TabsTrigger>
-                    </TabsList>
-                    <TabsContent value="account">
-                        <IndividuRegistration />
-                    </TabsContent>
-                    <TabsContent value="password">
-                        <CompanyRegistration />
-                    </TabsContent>
-                </Tabs>
-            </div>
+            {tab == 'individual' ? (
+                <div className="absolute -top-64 -right-80 h-96 w-full -translate-x-1/2 transform rounded-full bg-primary opacity-30 blur-3xl"></div>
+            ) : (
+                <div className="absolute -top-64 -right-80 h-96 w-full -translate-x-1/2 transform rounded-full bg-accent opacity-30 blur-3xl"></div>
+            )}
+            <div className='relative'>
+                <div className='flex items-center space-x-2 mb-6'>
+                    <ArrowLeftCircle className='cursor-pointer text-white' size={28} onClick={() => router.push('/auth/login')}/>
+                    <TitleAuth className="!text-4xl !text-white underline">
+                        Sign Up
+                    </TitleAuth>
+                </div>
+                <div className="">
+                    <Tabs value={tab} onValueChange={onTabChange} defaultValue="individual" className="w-full">
+                        <TabsList className="mb-4 grid w-full grid-cols-2 bg-transparent text-white">
+                            <TabsTrigger
+                                className="space-x-2 !rounded-sm"
+                                value="individual"
+                            >
+                                <User size={18} />
+                                <span>Individual</span>
+                            </TabsTrigger>
+                            <TabsTrigger
+                                className="space-x-2 !rounded-sm"
+                                value="company"
+                            >
+                                <Users size={18} />
+                                <span>Company</span>
+                            </TabsTrigger>
+                        </TabsList>
+                        <TabsContent value="individual">
+                            <IndividuRegistration />
+                        </TabsContent>
+                        <TabsContent value="company">
+                            <CompanyRegistration />
+                        </TabsContent>
+                    </Tabs>
+                </div>
 
-            <div className="text-center text-white">
-                <span className="text-sm">Already have an account?</span>{' '}
-                <Link
-                    href={'/auth/login'}
-                    className="text-sm font-semibold text-primary"
-                >
-                    Sign In
-                </Link>
+                <div className="text-center text-white">
+                    <span className="text-sm">Already have an account?</span>{' '}
+                    <Link
+                        href={'/auth/login'}
+                        className="text-sm font-semibold text-primary"
+                    >
+                        Sign In
+                    </Link>
+                </div>
             </div>
         </div>
     );

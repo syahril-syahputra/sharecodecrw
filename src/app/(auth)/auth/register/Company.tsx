@@ -130,7 +130,7 @@ export default function CompanyRegistration() {
                                 </FormLabel>
                                 <FormControl>
                                     <Input
-                                        className="bg-transparent text-white"
+                                        className="rounded-full border-white bg-transparent text-white"
                                         placeholder="Company LLC"
                                         {...field}
                                     />
@@ -151,7 +151,7 @@ export default function CompanyRegistration() {
                                 </FormLabel>
                                 <FormControl>
                                     <Input
-                                        className="bg-transparent text-white"
+                                        className="rounded-full border-white bg-transparent text-white"
                                         placeholder="ellamartin@example.com"
                                         {...field}
                                     />
@@ -172,7 +172,7 @@ export default function CompanyRegistration() {
                                 </FormLabel>
                                 <FormControl>
                                     <PasswordInput
-                                        className="bg-transparent text-white"
+                                        className="rounded-full border-white bg-transparent text-white"
                                         placeholder="Password"
                                         {...field}
                                     />
@@ -193,7 +193,7 @@ export default function CompanyRegistration() {
                                 </FormLabel>
                                 <FormControl>
                                     <PasswordInput
-                                        className="bg-transparent text-white"
+                                        className="rounded-full border-white bg-transparent text-white"
                                         placeholder="Confirm Password"
                                         {...field}
                                     />
@@ -273,7 +273,7 @@ export default function CompanyRegistration() {
                                             defaultValue={field.value}
                                         >
                                             <FormControl>
-                                                <SelectTrigger className="rounded-xl bg-transparent text-white">
+                                                <SelectTrigger className="rounded-full border-white bg-transparent text-white">
                                                     <SelectValue placeholder="Province" />
                                                 </SelectTrigger>
                                             </FormControl>
@@ -302,7 +302,7 @@ export default function CompanyRegistration() {
                                             defaultValue={field.value}
                                         >
                                             <FormControl>
-                                                <SelectTrigger className="rounded-xl bg-transparent text-white">
+                                                <SelectTrigger className="rounded-full border-white bg-transparent text-white">
                                                     <SelectValue placeholder="City" />
                                                 </SelectTrigger>
                                             </FormControl>
@@ -329,7 +329,7 @@ export default function CompanyRegistration() {
                                 <FormItem>
                                     <FormControl>
                                         <Input
-                                            className="bg-transparent text-white"
+                                            className="rounded-full border-white bg-transparent text-white"
                                             placeholder="Address"
                                             {...field}
                                         />
@@ -358,11 +358,11 @@ export default function CompanyRegistration() {
                     </div>
                     <div className="flex w-full justify-center">
                         <Button
-                            className="group relative rounded-xl bg-blue-700 px-6 py-3 !font-semibold text-white transition-all duration-300"
+                            className="group relative rounded-xl px-6 py-3 !font-semibold text-white transition-all duration-300"
                             type="submit"
                             loading={isPending}
                         >
-                            <span className="absolute -inset-1 rounded-lg bg-blue-500 opacity-50 blur-lg transition-all duration-300 group-hover:opacity-100"></span>
+                            <span className="group-hover:opacity-300 absolute -inset-1 rounded-lg bg-blue-500 opacity-20 blur-sm transition-all duration-300"></span>
                             Sign Up
                         </Button>
                     </div>

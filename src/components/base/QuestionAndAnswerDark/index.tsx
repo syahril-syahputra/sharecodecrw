@@ -13,7 +13,7 @@ interface IProps {
     entity_type: string;
     user_id: string;
 }
-export default function QuestionAndAnswerDark(props: IProps) {
+export default function QuestionAndAnswer(props: IProps) {
     const [questionValue, setquestionValue] = useState('');
     const { pagination, filterValue } = useTableConfig<{
         entity_type: string;
