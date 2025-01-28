@@ -1,4 +1,4 @@
-import { Star, StarHalf } from 'lucide-react';
+import { Star } from 'lucide-react';
 import React from 'react';
 
 interface IProps {
@@ -13,14 +13,12 @@ export default function Rating(props: IProps) {
         );
     }
 
-    if(props.variant == 'big') {
+    if (props.variant == 'big') {
         return (
             <div className="flex items-center">
-                <span className="text-6xl text-blue-500">
-                    {props.star}
-                </span>
+                <span className="text-6xl text-blue-500">{props.star}</span>
                 <div className="ml-2">
-                    <p className="font-thin text-white font-urbanist">
+                    <p className="font-urbanist font-thin text-white">
                         {props.rater} Endorsements
                     </p>
                     <div className="flex items-center space-x-1 text-gray-500">
@@ -32,13 +30,19 @@ export default function Rating(props: IProps) {
                                 className="text-[#07b1fb]"
                             />
                         ))}
-                        {Array.from({ length: 5 - props.star }).map((_, index) => (
-                            <Star key={index} fill="#888888" strokeWidth={0} />
-                        ))}
+                        {Array.from({ length: 5 - props.star }).map(
+                            (_, index) => (
+                                <Star
+                                    key={index}
+                                    fill="#888888"
+                                    strokeWidth={0}
+                                />
+                            )
+                        )}
                     </div>
                 </div>
             </div>
-        )
+        );
     }
 
     return (

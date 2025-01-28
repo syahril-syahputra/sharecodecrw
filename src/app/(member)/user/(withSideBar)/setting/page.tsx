@@ -1,4 +1,4 @@
-import { KeyRound, Phone, UserCog } from 'lucide-react';
+import { KeyRound } from 'lucide-react';
 import Link from 'next/link';
 import React from 'react';
 

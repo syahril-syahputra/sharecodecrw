@@ -4,8 +4,7 @@ import React, { useState } from 'react';
 import CardAnswer from './CardAnswer';
 import { IAnswer } from '@/types/base/QA';
 import InputAnswer from './InputAnswer';
-import { Button } from '@/components/ui/button';
-import { ChevronDown, ChevronUp, MinusCircle, PlusCircle } from 'lucide-react';
+import { MinusCircle, PlusCircle } from 'lucide-react';
 import { useCreateAnswer } from '@/feature/qa/useCreateAnswer';
 import { Skeleton } from '@/components/ui/skeleton';
 
@@ -47,34 +46,40 @@ export default function ListAnswer(props: IProps) {
         mutate({ message: value });
     };
 
-    const counterString = counter != 0 ?
-        `${counter} answers` : ''
+    const counterString = counter != 0 ? `${counter} answers` : '';
 
     return (
-        <div className="flex-1 font-urbanist items-center">
+        <div className="flex-1 items-center font-urbanist">
             {!showReplies && (
-                <div className='px-2 mt-2 flex'
-                    onClick={() => setshowReplies(!showReplies)}    
+                <div
+                    className="mt-2 flex px-2"
+                    onClick={() => setshowReplies(!showReplies)}
                 >
-                    <PlusCircle className='text-white cursor-pointer mr-1' size={20} strokeWidth={1.5}/>
-                    <span className='text-gray-400'>{counterString}</span>
+                    <PlusCircle
+                        className="mr-1 cursor-pointer text-white"
+                        size={20}
+                        strokeWidth={1.5}
+                    />
+                    <span className="text-gray-400">{counterString}</span>
                 </div>
             )}
             {showReplies && (
-                <div className='px-2 mt-2 flex'
-                    onClick={() => setshowReplies(!showReplies)}    
+                <div
+                    className="mt-2 flex px-2"
+                    onClick={() => setshowReplies(!showReplies)}
                 >
-                    <MinusCircle className='text-white cursor-pointer mr-1' size={20} strokeWidth={1.5}/>
-                    <span className='text-gray-400'>{counterString}</span>
-
+                    <MinusCircle
+                        className="mr-1 cursor-pointer text-white"
+                        size={20}
+                        strokeWidth={1.5}
+                    />
+                    <span className="text-gray-400">{counterString}</span>
                 </div>
             )}
 
-            
-
             {showReplies && (
-                <div className='relative ml-8'>
-                    <div className="absolute bg-gradient-to-b from-white to-transparent -left-[14px] -top-[5px] w-px h-full"></div>
+                <div className="relative ml-8">
+                    <div className="absolute -left-[14px] -top-[5px] h-full w-px bg-gradient-to-b from-white to-transparent"></div>
                     <InputAnswer
                         value={value}
                         isLoading={isPending || isLoading}

@@ -11,29 +11,38 @@ import { useRouter } from 'next/navigation';
 // // dark
 export default function Page() {
     const router = useRouter();
-    const [tab, setTab] = useState("individual");
+    const [tab, setTab] = useState('individual');
 
     const onTabChange = (value: string) => {
         setTab(value);
-        console.log(value)
-    }
+        console.log(value);
+    };
 
     return (
         <div className="relative mx-auto max-w-xl space-y-8 overflow-hidden rounded-xl bg-gray-900 p-10">
             {tab == 'individual' ? (
-                <div className="absolute -top-64 -right-80 h-96 w-full -translate-x-1/2 transform rounded-full bg-primary opacity-30 blur-3xl"></div>
+                <div className="absolute -right-80 -top-64 h-96 w-full -translate-x-1/2 transform rounded-full bg-primary opacity-30 blur-3xl"></div>
             ) : (
-                <div className="absolute -top-64 -right-80 h-96 w-full -translate-x-1/2 transform rounded-full bg-accent opacity-30 blur-3xl"></div>
+                <div className="absolute -right-80 -top-64 h-96 w-full -translate-x-1/2 transform rounded-full bg-accent opacity-30 blur-3xl"></div>
             )}
-            <div className='relative'>
-                <div className='flex items-center space-x-2 mb-6'>
-                    <ArrowLeftCircle className='cursor-pointer text-white' size={28} onClick={() => router.push('/auth/login')}/>
+            <div className="relative">
+                <div className="mb-6 flex items-center space-x-2">
+                    <ArrowLeftCircle
+                        className="cursor-pointer text-white"
+                        size={28}
+                        onClick={() => router.push('/auth/login')}
+                    />
                     <TitleAuth className="!text-4xl !text-white underline">
                         Sign Up
                     </TitleAuth>
                 </div>
                 <div className="">
-                    <Tabs value={tab} onValueChange={onTabChange} defaultValue="individual" className="w-full">
+                    <Tabs
+                        value={tab}
+                        onValueChange={onTabChange}
+                        defaultValue="individual"
+                        className="w-full"
+                    >
                         <TabsList className="mb-4 grid w-full grid-cols-2 bg-transparent text-white">
                             <TabsTrigger
                                 className="space-x-2 !rounded-sm"

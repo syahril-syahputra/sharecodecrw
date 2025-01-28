@@ -11,7 +11,9 @@ interface IProps {
     data: IServices;
 }
 export default function CardServices(props: IProps) {
-    const initialUserName = props.data.cmp_name ? props.data.cmp_name.charAt(0) : '';
+    const initialUserName = props.data.cmp_name
+        ? props.data.cmp_name.charAt(0)
+        : '';
 
     if (props.data.is_boost_size) {
         return (
@@ -49,9 +51,10 @@ export default function CardServices(props: IProps) {
                                 {props.data.title}
                             </h2>
                             <p className="bg-gradient-to-b from-gray-200 to-transparent bg-clip-text font-urbanist text-transparent">
-                                Lorem Ipsum is simply dummy text of the printing and
-                                typesetting industry. Lorem Ipsum has been the
-                                industry&apos;s standard dummy text ever since the 1500s
+                                Lorem Ipsum is simply dummy text of the printing
+                                and typesetting industry. Lorem Ipsum has been
+                                the industry&apos;s standard dummy text ever
+                                since the 1500s
                             </p>
                         </div>
 
@@ -122,7 +125,8 @@ export default function CardServices(props: IProps) {
                         <p className="bg-gradient-to-b from-gray-200 to-transparent bg-clip-text font-urbanist text-transparent">
                             Lorem Ipsum is simply dummy text of the printing and
                             typesetting industry. Lorem Ipsum has been the
-                            industry&apos;s standard dummy text ever since the 1500s
+                            industry&apos;s standard dummy text ever since the
+                            1500s
                         </p>
                     </div>
 
@@ -137,7 +141,9 @@ export default function CardServices(props: IProps) {
                 <div className="flex justify-between">
                     <div className="flex items-center space-x-2 text-gray-400">
                         <Radius />
-                        <span>{parseFloat(props.data.distance.toFixed(2))} KM</span>
+                        <span>
+                            {parseFloat(props.data.distance.toFixed(2))} KM
+                        </span>
                     </div>
                     <div className="flex flex-1 flex-col text-right font-urbanist">
                         <span className="text-2xl font-bold">
