@@ -29,6 +29,8 @@ import CardService from '@/components/base/Card/CardService';
 import { getCurrentUser } from '@/lib/session';
 import QuestionAndAnswerDark from '@/components/base/QuestionAndAnswerDark';
 import { Button } from '@/components/ui/button';
+import { IServices } from '@/types/services';
+import { getRelatedListing } from '@/feature/business/useFetchBusinessListingRelated';
 
 async function getData(id: string) {
     try {
@@ -44,6 +46,7 @@ async function getData(id: string) {
 export default async function Page({ params }: { params: { id: string } }) {
     const user = await getCurrentUser();
     const data = await getData(params.id);
+    const relatedListing = await getRelatedListing(params.id, 'listing');
     const initialUserName = data?.cmp_name ? data?.cmp_name.charAt(0) : '';
     return (
         <div className="container space-y-4 py-8">
@@ -107,105 +110,34 @@ export default async function Page({ params }: { params: { id: string } }) {
                                 rater={data.total_reviews}
                             />
                         </div>
-                        {/* listings */}
                         <div>
                             <div className="mb-3 text-4xl text-white">
                                 Similar Services
                             </div>
                             <Carousel className="">
                                 <CarouselContent className="space-x-4">
-                                    {/* {props.data?.events.map((data) => ( */}
-                                    <CarouselItem
-                                        key={data.id}
-                                        className="basis-96"
-                                    >
-                                        <Link
-                                            href={'/crowner/events/'}
+                                    {relatedListing?.map((data: IServices) => (
+                                        <CarouselItem
                                             key={data.id}
+                                            className="basis-96"
                                         >
-                                            <CardService
-                                                image_url={
-                                                    data?.image_url ?? ''
-                                                }
-                                                title="House moving"
-                                                price="66"
-                                                payment_type="per hour"
-                                            />
-                                        </Link>
-                                    </CarouselItem>
-                                    <CarouselItem
-                                        key={data.id}
-                                        className="basis-96"
-                                    >
-                                        <Link
-                                            href={'/crowner/events/'}
-                                            key={data.id}
-                                        >
-                                            <CardService
-                                                image_url={
-                                                    data?.image_url ?? ''
-                                                }
-                                                title="House moving"
-                                                price="66"
-                                                payment_type="per hour"
-                                            />
-                                        </Link>
-                                    </CarouselItem>
-                                    <CarouselItem
-                                        key={data.id}
-                                        className="basis-96"
-                                    >
-                                        <Link
-                                            href={'/crowner/events/'}
-                                            key={data.id}
-                                        >
-                                            <CardService
-                                                image_url={
-                                                    data?.image_url ?? ''
-                                                }
-                                                title="House moving"
-                                                price="66"
-                                                payment_type="per hour"
-                                            />
-                                        </Link>
-                                    </CarouselItem>
-                                    <CarouselItem
-                                        key={data.id}
-                                        className="basis-96"
-                                    >
-                                        <Link
-                                            href={'/crowner/events/'}
-                                            key={data.id}
-                                        >
-                                            <CardService
-                                                image_url={
-                                                    data?.image_url ?? ''
-                                                }
-                                                title="House moving"
-                                                price="66"
-                                                payment_type="per hour"
-                                            />
-                                        </Link>
-                                    </CarouselItem>
-                                    <CarouselItem
-                                        key={data.id}
-                                        className="basis-96"
-                                    >
-                                        <Link
-                                            href={'/crowner/events/'}
-                                            key={data.id}
-                                        >
-                                            <CardService
-                                                image_url={
-                                                    data?.image_url ?? ''
-                                                }
-                                                title="House moving"
-                                                price="66"
-                                                payment_type="per hour"
-                                            />
-                                        </Link>
-                                    </CarouselItem>
-                                    {/* ))} */}
+                                            <Link
+                                                href={`/service/${data.slug}/${data.id}`}
+                                                key={data.id}
+                                            >
+                                                <CardService
+                                                    image_url={
+                                                        data?.image_url ?? ''
+                                                    }
+                                                    title={data.title}
+                                                    price={data.price}
+                                                    payment_type={
+                                                        data.payment_type
+                                                    }
+                                                />
+                                            </Link>
+                                        </CarouselItem>
+                                    ))}
                                 </CarouselContent>
                                 <CarouselPrevious />
                                 <CarouselNext />

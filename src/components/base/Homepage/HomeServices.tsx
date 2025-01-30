@@ -381,7 +381,7 @@ export default function HomeServices() {
                         'flex-1 rounded-xl  text-white'
                     )}
                 >
-                    <span>Professional Services</span>
+                    <span>Company Services</span>
                 </Button>
                 <Button
                     variant={'default'}
