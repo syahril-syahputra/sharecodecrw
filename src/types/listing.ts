@@ -7,7 +7,7 @@ export interface BodyCreateListing {
     latitude: number;
     longitude: number;
     duration: number;
-    color_hexadecimal?: '#258ad8' | '#d87925' | '#E9E1D3';
+    color_hexadecimal?: string;
     is_direct: boolean;
     hashtags: string[]; // Array of strings
     boosters: string[]; // Array of strings
