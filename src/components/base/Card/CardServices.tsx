@@ -48,7 +48,7 @@ export default function CardServices(props: IProps) {
 
                     <div className="justify-between space-y-8 py-5">
                         <div className="relative flex-1 text-white">
-                            <h2 className="mb-3 font-saans text-3xl font-bold">
+                            <h2 className="font-saans mb-3 text-3xl font-bold">
                                 {props.data.title}
                             </h2>
                             <p className="bg-gradient-to-b from-gray-200 to-transparent bg-clip-text font-urbanist text-transparent">
@@ -65,13 +65,13 @@ export default function CardServices(props: IProps) {
                         />
                     </div>
                     <div className="flex justify-between">
-                        <div className="flex items-center space-x-2 font-saans font-bold text-gray-400">
+                        <div className="font-saans flex items-center space-x-2 font-bold text-gray-400">
                             <Radius />
                             <span>
                                 {parseFloat(props.data.distance.toFixed(2))} KM
                             </span>
                         </div>
-                        <div className="flex flex-1 flex-col text-right font-saans">
+                        <div className="font-saans flex flex-1 flex-col text-right">
                             <span className="text-2xl font-bold">
                                 ${props.data.price}
                             </span>{' '}
@@ -115,7 +115,7 @@ export default function CardServices(props: IProps) {
 
                 <div className="flex justify-between space-x-10 py-5">
                     <div className="relative flex-1 text-white">
-                        <h2 className="mb-3 font-saans text-3xl font-bold">
+                        <h2 className="font-saans mb-3 text-3xl font-bold">
                             {props.data.title}
                         </h2>
                         <p className="bg-gradient-to-b from-gray-200 to-transparent bg-clip-text font-urbanist text-transparent">
@@ -132,7 +132,7 @@ export default function CardServices(props: IProps) {
                     />
                 </div>
                 <div className="flex justify-between">
-                    <div className="flex items-center space-x-2 font-saans font-bold text-gray-400">
+                    <div className="font-saans flex items-center space-x-2 font-bold text-gray-400">
                         <Radius />
                         <span>
                             {parseFloat(props.data.distance.toFixed(2))} KM

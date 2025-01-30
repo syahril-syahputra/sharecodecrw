@@ -25,23 +25,19 @@ import {
     SelectValue,
 } from '@/components/ui/select';
 import { LatLng } from '@/types/maps';
-import { Check, HardDriveUpload, Zap } from 'lucide-react';
+import { Check, HardDriveUpload } from 'lucide-react';
 import Image from 'next/image';
 import useFilePreview from '@/lib/useFilePreview';
 import { Alert, AlertTitle } from '@/components/ui/alert';
-import { Button } from '@/components/ui/button';
-import { useCreateListing } from '@/feature/listing/useCreateListing';
 import { useRouter } from 'next/navigation';
 import { errorHelper } from '@/lib/formErrorHelper';
-import CardDarkNeonGlow from '@/components/base/Card/CardDarkNeonGlow';
-import { Switch } from '@/components/ui/switch';
-import { useCalculatePricing } from '@/feature/listing/useCalculatePricing';
-import { BodyCreateListing } from '@/types/listing';
 import { FileToBase64 } from '@/lib/utils';
 import { useFetchCity, useFetchState } from '@/feature/base/city';
 import ErrorMessage from '@/components/base/Error/ErrorMessage';
-import { useFetchDuration } from '@/feature/base/duration';
-import clsx from 'clsx';
+import { useDetailListing } from '@/feature/listing/useDetailListing';
+import { Button } from '@/components/ui/button';
+import { useUpdateListing } from '@/feature/listing/useUpdateListing';
+import { BodyUpdateListing } from '@/types/listing';
 
 const MAX_FILE_SIZE = 500000;
 const ACCEPTED_IMAGE_TYPES = [
@@ -54,7 +50,7 @@ const formSchema = z.object({
     title: z.string().min(1, { message: 'Title is required' }),
     description: z
         .string()
-        .min(50, { message: 'Description is required 20 character' }),
+        .min(20, { message: 'Description is required 20 character' }),
 
     tags: z.array(z.string()).min(3, { message: 'tags is required min 3' }),
     price: z.coerce.number(),
@@ -81,20 +77,6 @@ const formSchema = z.object({
         ),
 
     // city_id: z.string().min(1),
-    duration: z.string().min(1),
-    is_premium: z.boolean().optional(),
-    color_hexadecimal: z
-        .string()
-        .optional()
-        .refine(
-            (val) =>
-                val === '#258ad8' || val === '#d87925' || val === '#E9E1D3',
-            {
-                message: 'Please Select Color',
-            }
-        ),
-    is_color: z.boolean().optional(),
-    is_uplifter: z.boolean().optional(),
 });
 // interface IInterestList {
 //     id: string;
@@ -104,11 +86,34 @@ const formSchema = z.object({
 const Map = dynamic(() => import('@/components/base/Maps/maps'), {
     ssr: false,
 });
-export default function Page() {
+export default function Page({ params }: { params: { id: string } }) {
+    const { data } = useDetailListing(params.id);
+    useEffect(() => {
+        setTags(
+            data
+                ? data?.hashtags.map((x, i) => {
+                      return { id: i + '', text: x } as Tag;
+                  })
+                : []
+        );
+    }, [data]);
+
     const [getAdreessLoading, setgetAdreessLoading] = useState(false);
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         mode: 'onChange',
+        values: {
+            title: data?.title || '',
+            description: data?.description || '',
+            price: parseInt(data?.price || ''),
+            pricing_type: data?.payment_type || '',
+            province: data?.province_id || '',
+            city: data?.city_id || '',
+            address: '',
+            latitude: data?.latitude || 0,
+            longitude: data?.longitude || 0,
+            tags: data?.hashtags || [],
+        },
     });
     const { data: dataState } = useFetchState();
     const { data: dataCity, isPending: isPendingCity } = useFetchCity(
@@ -117,9 +122,6 @@ export default function Page() {
             form.setValue('city', '');
         }
     );
-
-    const { data: dataDuration, isLoading: isLoadingDuration } =
-        useFetchDuration();
     // const [value, setValue] = useState<IInterestList[]>([]);
 
     const [tags, setTags] = React.useState<Tag[]>([]);
@@ -160,80 +162,49 @@ export default function Page() {
         isError,
         error,
         data: createResponse,
-    } = useCreateListing({
+    } = useUpdateListing({
+        id: params.id,
         onSuccess: (result) => {
             // router.push('/user/listing');
             if (result.data.data.url) {
                 window.location.href = result.data.data.url;
             } else {
-                router.push('/user/listing');
+                router.push('/user/listing/' + params.id);
             }
 
             console.log('ok');
         },
         onError: (error) => errorHelper(form.setError, error),
     });
-    async function onSubmit(
-        data: z.infer<typeof formSchema>,
-        event?: React.BaseSyntheticEvent
-    ) {
-        const nativeEvent = event && (event.nativeEvent as SubmitEvent);
-        const paymentMethod = nativeEvent
-            ? (nativeEvent.submitter as HTMLButtonElement).value
-            : '';
-        const booster = [];
-        if (data.is_premium) booster.push('premium');
-        if (data.is_color) booster.push('color');
-        if (data.is_uplifter) booster.push('uplifter');
-
+    async function onSubmit(data: z.infer<typeof formSchema>) {
         const fileBase64 = (await FileToBase64(data.image[0])) as string;
         const base64 = fileBase64.replace('data:', '').replace(/^.+,/, '');
 
-        const dataBody: BodyCreateListing = {
-            boosters: booster,
+        const dataBody: BodyUpdateListing = {
             title: data.title,
             description: data.description,
             latitude: data.latitude,
             longitude: data.longitude,
-            duration: parseInt(data.duration),
             price: data.price,
             payment_type: data.pricing_type,
             city_id: data.city,
             hashtags: data.tags,
-
-            color_hexadecimal: data.is_color
-                ? data.color_hexadecimal
-                : undefined,
-            is_direct: paymentMethod === 'credit_balance' ? false : true,
             image: base64,
         };
         createListing(dataBody);
     }
-    const {
-        data: pricingResult,
-        isLoading: pricingLoading,
-        isSuccess: pricingSuccess,
-    } = useCalculatePricing(
-        form.getValues().duration,
-        form.getValues().is_premium,
-        form.getValues().is_color,
-        form.getValues().is_uplifter
-    );
 
     return (
-        <Form {...form}>
-            <form
-                onSubmit={form.handleSubmit((data, event) =>
-                    onSubmit(data, event)
-                )}
-                className="space-y-4"
-            >
-                <div className="flex w-full flex-1 items-start space-x-4  px-4 text-white">
-                    <div className=" flex-1 rounded-lg bg-gradient-to-b from-[#1A3652] via-[#020508] to-[#020508] p-4 p-8">
-                        <h2 className="font-urbanist text-4xl font-bold text-white">
-                            Create a Service Listing
-                        </h2>
-
+        <div className="flex w-full flex-1 items-start space-x-4  px-4 text-white">
+            <div className=" flex-1 rounded-lg bg-gradient-to-b from-[#1A3652] via-[#020508] to-[#020508] p-4 p-8">
+                <h2 className="font-urbanist text-4xl font-bold text-white">
+                    Update Service Listing
+                </h2>
+                <Form {...form}>
+                    <form
+                        onSubmit={form.handleSubmit((data) => onSubmit(data))}
+                        className="space-y-4"
+                    >
                         <div className="space-y-8 py-8">
                             <FormField
                                 control={form.control}
@@ -283,7 +254,7 @@ export default function Page() {
                                                     setTags(newTags);
                                                 }}
                                                 styleClasses={{
-                                                    input: 'mb-4 bg-transparent border-white',
+                                                    input: 'mb-4 bg-transparent border-gray-500',
                                                 }}
                                                 inlineTags={false}
                                                 inputFieldPosition={'top'}
@@ -537,6 +508,16 @@ export default function Page() {
                                                                     }
                                                                     width={200}
                                                                 />
+                                                            ) : data?.image_url ? (
+                                                                <Image
+                                                                    alt="Avatar"
+                                                                    className="mx-auto w-full rounded-md border border-slate-300 bg-gray-100 object-cover"
+                                                                    height={200}
+                                                                    src={
+                                                                        data?.image_url as string
+                                                                    }
+                                                                    width={200}
+                                                                />
                                                             ) : (
                                                                 <div className="flex aspect-square flex-col items-center justify-center space-y-2 rounded-md border border-slate-300 bg-gray-100 ">
                                                                     <Image
@@ -586,6 +567,7 @@ export default function Page() {
                                 />
                             </div>
                         </div>
+
                         <div className="space-y-8">
                             {isSuccess && (
                                 <Alert variant={'success'}>
@@ -597,319 +579,19 @@ export default function Page() {
                                     </AlertTitle>
                                 </Alert>
                             )}
-                        </div>
-                        {/* <div className="space-y-8">
-                            {isSuccess && (
-                                <Alert variant={'success'}>
-                                    <AlertTitle className="flex items-center space-x-2">
-                                        <Check />
-                                        <span>
-                                            {createResponse.data.message}
-                                        </span>
-                                    </AlertTitle>
-                                </Alert>
+                            {isError && (
+                                <ErrorMessage>
+                                    {error.response?.data?.message ||
+                                        'Something Wrong'}
+                                </ErrorMessage>
                             )}
                             <Button type="submit" loading={isLoadingCreate}>
                                 SAVE
                             </Button>
-                        </div> */}
-                    </div>
-                    <CardDarkNeonGlow className="w-1/3 rounded-lg  bg-gray-900 px-4 py-8">
-                        <h1 className="flex items-center space-x-2">
-                            <Zap />
-                            <span className="text-xl font-semibold">
-                                Booster
-                            </span>
-                        </h1>
-                        <div className="space-y-4 py-4">
-                            <div className="mb-4 flex items-center justify-between rounded-lg bg-gray-800 p-4 shadow-md">
-                                <div>
-                                    <h1 className="text-lg font-semibold">
-                                        Premium Booster
-                                    </h1>
-                                    <h2 className="text-sm text-gray-400">
-                                        $34.99 or 35.99 credits
-                                    </h2>
-                                    <div className="mt-1 text-sm text-gray-300">
-                                        Includes all boosters applied at once by
-                                        scaling up the post, making it appear
-                                        higher and more visible with a
-                                        background color.
-                                    </div>
-                                </div>
-                                <div>
-                                    <FormField
-                                        control={form.control}
-                                        name="is_premium"
-                                        render={({ field }) => (
-                                            <FormItem>
-                                                <FormControl>
-                                                    <Switch
-                                                        checked={field.value}
-                                                        onCheckedChange={
-                                                            field.onChange
-                                                        }
-                                                    />
-                                                </FormControl>
-                                            </FormItem>
-                                        )}
-                                    />
-                                </div>
-                            </div>
-                            <div className="mb-4 flex items-center justify-between rounded-lg bg-gray-800 p-4 shadow-md">
-                                <div>
-                                    <h1 className="text-lg font-semibold">
-                                        Uplifter Booster
-                                    </h1>
-                                    <h2 className="text-sm text-gray-400">
-                                        $12.99* or 12.99 credits
-                                    </h2>
-                                    <div className="mt-1 text-sm text-gray-300">
-                                        Lifts the post up, making it appear more
-                                        on top for interested parties.
-                                    </div>
-                                </div>
-                                <div>
-                                    <FormField
-                                        control={form.control}
-                                        name="is_uplifter"
-                                        render={({ field }) => (
-                                            <FormItem>
-                                                <FormControl>
-                                                    <Switch
-                                                        checked={field.value}
-                                                        onCheckedChange={
-                                                            field.onChange
-                                                        }
-                                                    />
-                                                </FormControl>
-                                            </FormItem>
-                                        )}
-                                    />
-                                </div>
-                            </div>
-                            <div className="mb-4 flex items-center justify-between rounded-lg bg-gray-800 p-4 shadow-md">
-                                <div>
-                                    <h1 className="text-lg font-semibold">
-                                        Color Booster
-                                    </h1>
-                                    <h2 className="text-sm text-gray-400">
-                                        $$4.99* or 4.99 credits
-                                    </h2>
-                                    <div className="mt-1 text-sm text-gray-300">
-                                        Makes the post stand out by
-                                        incorporating a background color.
-                                    </div>
-                                    {form.getValues('is_color') && (
-                                        <div className="space-y-2 py-4">
-                                            <FormField
-                                                control={form.control}
-                                                name="color_hexadecimal"
-                                                render={({ field }) => (
-                                                    <FormItem className="flex-1">
-                                                        <Select
-                                                            value={field.value}
-                                                            onValueChange={
-                                                                field.onChange
-                                                            }
-                                                        >
-                                                            <FormControl>
-                                                                <SelectTrigger>
-                                                                    <SelectValue placeholder="Select Color" />
-                                                                </SelectTrigger>
-                                                            </FormControl>
-                                                            <SelectContent>
-                                                                <SelectItem
-                                                                    key={
-                                                                        '#258ad8'
-                                                                    }
-                                                                    value={
-                                                                        '#258ad8'
-                                                                    }
-                                                                >
-                                                                    <div className="flex items-center space-x-2">
-                                                                        <div
-                                                                            className={clsx(
-                                                                                `h-4 w-4 rounded-full !bg-[#258AD8] `
-                                                                            )}
-                                                                        ></div>
-                                                                        <span>
-                                                                            Blue
-                                                                        </span>
-                                                                    </div>
-                                                                </SelectItem>
-                                                                <SelectItem
-                                                                    key={
-                                                                        '#d87925'
-                                                                    }
-                                                                    value={
-                                                                        '#d87925'
-                                                                    }
-                                                                >
-                                                                    <div className="flex items-center space-x-2">
-                                                                        <div
-                                                                            className={clsx(
-                                                                                `h-4 w-4 rounded-full !bg-[#D87925] `
-                                                                            )}
-                                                                        ></div>
-                                                                        <span>
-                                                                            Orange
-                                                                        </span>
-                                                                    </div>
-                                                                </SelectItem>
-                                                            </SelectContent>
-                                                        </Select>
-                                                        <FormMessage />
-                                                    </FormItem>
-                                                )}
-                                            />
-                                        </div>
-                                    )}
-                                </div>
-                                <div>
-                                    <FormField
-                                        control={form.control}
-                                        name="is_color"
-                                        render={({ field }) => (
-                                            <FormItem>
-                                                <FormControl>
-                                                    <Switch
-                                                        checked={field.value}
-                                                        onCheckedChange={
-                                                            field.onChange
-                                                        }
-                                                    />
-                                                </FormControl>
-                                            </FormItem>
-                                        )}
-                                    />
-                                </div>
-                            </div>
-
-                            {!isLoadingDuration && (
-                                <FormField
-                                    control={form.control}
-                                    name="duration"
-                                    render={({ field }) => (
-                                        <FormItem className="flex-1">
-                                            <FormLabel>
-                                                Select publication duration
-                                            </FormLabel>
-                                            <Select
-                                                value={field.value}
-                                                onValueChange={field.onChange}
-                                            >
-                                                <FormControl>
-                                                    <SelectTrigger>
-                                                        <SelectValue placeholder="Duration" />
-                                                    </SelectTrigger>
-                                                </FormControl>
-                                                <SelectContent>
-                                                    {dataDuration?.map(
-                                                        (item) => (
-                                                            <SelectItem
-                                                                key={item.id}
-                                                                value={
-                                                                    item.duration +
-                                                                    ''
-                                                                }
-                                                            >
-                                                                {item.name}
-                                                            </SelectItem>
-                                                        )
-                                                    )}
-                                                </SelectContent>
-                                            </Select>
-                                            <FormMessage />
-                                        </FormItem>
-                                    )}
-                                />
-                            )}
                         </div>
-                        {!pricingLoading && pricingSuccess && (
-                            <div className="mx-auto max-w-md rounded-xl border p-4 shadow-md">
-                                <div className="mb-4 space-y-2">
-                                    {pricingResult.items.map((item) => (
-                                        <div
-                                            key={item.name}
-                                            className="mb-2 flex items-center justify-between"
-                                        >
-                                            <span className="text-lg capitalize">
-                                                {item.name}
-                                            </span>
-                                            <span className="text-lg font-semibold">
-                                                ${item.price}
-                                            </span>
-                                        </div>
-                                    ))}
-
-                                    <div className="flex items-center justify-between">
-                                        <span className="text-lg capitalize">
-                                            tax amount{' '}
-                                            <a className="text-sm">
-                                                ({pricingResult.tax_percentage}
-                                                %)
-                                            </a>{' '}
-                                        </span>
-                                        <span className="text-lg font-semibold">
-                                            ${pricingResult.tax_amount}
-                                        </span>
-                                    </div>
-                                    <div className="mt-2 flex items-center justify-between border-t border-white pt-2">
-                                        <span className="text-xl font-bold">
-                                            total payment
-                                        </span>
-                                        <span className="text-xl font-bold">
-                                            ${pricingResult.total_payment}
-                                        </span>
-                                    </div>
-                                    <p className="mt-1 text-sm text-gray-500">
-                                        Equivalent to{' '}
-                                        {pricingResult.total_credits} credits
-                                    </p>
-                                </div>
-                                {isError && (
-                                    <ErrorMessage>
-                                        {error.response?.data?.message ||
-                                            'Something Wrong'}
-                                    </ErrorMessage>
-                                )}
-                                {isSuccess && (
-                                    <Alert variant={'success'}>
-                                        <AlertTitle className="flex items-center space-x-2">
-                                            <Check />
-                                            <span>
-                                                {createResponse.data.message}
-                                            </span>
-                                        </AlertTitle>
-                                    </Alert>
-                                )}
-                                <div className="flex flex-col gap-2">
-                                    <Button
-                                        loading={isLoadingCreate}
-                                        type="submit"
-                                        value="credit_card"
-                                    >
-                                        Pay with Credit Card
-                                    </Button>
-                                    <Button
-                                        loading={isLoadingCreate}
-                                        type="submit"
-                                        value="credit_balance"
-                                        disabled={!pricingResult.is_sufficient}
-                                    >
-                                        Pay with Credit Balance
-                                    </Button>
-                                    <div>
-                                        Your credit balance :{' '}
-                                        {pricingResult.credit_balance}
-                                    </div>
-                                </div>
-                            </div>
-                        )}
-                    </CardDarkNeonGlow>
-                </div>
-            </form>
-        </Form>
+                    </form>
+                </Form>
+            </div>
+        </div>
     );
 }

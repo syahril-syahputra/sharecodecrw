@@ -15,8 +15,8 @@ export default function SideMenuClient() {
             <Separator className="my-4 bg-blue-400 opacity-20" />
             <Menu>
                 <MenuGroup>
-                    <Link href={'/user/crowner/services'}>
-                        <MenuItem url={'community-tutors'}>Services</MenuItem>
+                    <Link href={'/user/listing'}>
+                        <MenuItem url={'/user/listing'}>Services</MenuItem>
                     </Link>
                 </MenuGroup>
                 <MenuGroup>
