@@ -134,6 +134,7 @@ export default async function Page({ params }: { params: { id: string } }) {
                                                     payment_type={
                                                         data.payment_type
                                                     }
+                                                    variant='full'
                                                 />
                                             </Link>
                                         </CarouselItem>
