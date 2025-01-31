@@ -18,7 +18,7 @@ interface IProps {
 }
 
 export default function ListAnswer(props: IProps) {
-    const [ errors, setErrors ] = useState<object | undefined>();
+    const [errors, setErrors] = useState<object | undefined>();
     const { toast } = useToast();
     const [counter, setcounter] = useState(props.counter);
     const [value, setvalue] = useState('');
@@ -44,15 +44,15 @@ export default function ListAnswer(props: IProps) {
             setcounter(counter + 1);
         },
         onError: (err) => {
-            setErrors(err.response?.data.errors)
+            setErrors(err.response?.data.errors);
             toast({
                 variant: 'destructive',
-                description: err.response?.data.message
-            })
+                description: err.response?.data.message,
+            });
         },
     });
     const createAnswer = () => {
-        setErrors(undefined)
+        setErrors(undefined);
         mutate({ message: value });
     };
 

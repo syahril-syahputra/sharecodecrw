@@ -126,10 +126,8 @@ export default async function Page({ params }: { params: { id: string } }) {
                                                 key={data.id}
                                             >
                                                 <CardService
-                                                    data={
-                                                        data
-                                                    }
-                                                    variant='full'
+                                                    data={data}
+                                                    variant="full"
                                                 />
                                             </Link>
                                         </CarouselItem>

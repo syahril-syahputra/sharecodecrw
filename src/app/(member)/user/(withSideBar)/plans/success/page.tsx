@@ -2,11 +2,11 @@
 import Spinner from '@/components/ui/spinner';
 import { useCheckPaymentStatus } from '@/feature/payments/useCheckPaymentStatus';
 import { Check, X } from 'lucide-react';
-import { useSearchParams } from 'next/navigation'
+import { useSearchParams } from 'next/navigation';
 
 export default function Page() {
-    const searchParams = useSearchParams()
-    const session_id = searchParams.get('session_id')
+    const searchParams = useSearchParams();
+    const session_id = searchParams.get('session_id');
     const { isPending, isError } = useCheckPaymentStatus(session_id!);
 
     if (isPending) {

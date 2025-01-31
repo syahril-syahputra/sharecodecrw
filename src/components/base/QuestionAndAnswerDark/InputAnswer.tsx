@@ -35,7 +35,8 @@ export default function InputAnswer(props: IProps) {
             />
             {props.errors && (
                 <ErrorMessage>
-                    {(props.errors as any)?.message || "An unknown error occurred"}
+                    {(props.errors as { message: string })?.message ||
+                        'An unknown error occurred'}
                 </ErrorMessage>
             )}
             <div className="flex justify-end">

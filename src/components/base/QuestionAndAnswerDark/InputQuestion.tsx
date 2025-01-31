@@ -15,7 +15,7 @@ interface IProps {
 export default function InputQuestion(props: IProps) {
     const { status } = useSession();
     const isLogin = status === 'authenticated';
-    console.log(props.errors)
+    console.log(props.errors);
 
     const [isShowLogin, setisShowLogin] = useState(false);
     const send = () => {
@@ -37,7 +37,8 @@ export default function InputQuestion(props: IProps) {
             />
             {props.errors && (
                 <ErrorMessage>
-                    {(props.errors as any)?.message || "An unknown error occurred"}
+                    {(props.errors as { message: string })?.message ||
+                        'An unknown error occurred'}
                 </ErrorMessage>
             )}
             <div className="flex justify-end">

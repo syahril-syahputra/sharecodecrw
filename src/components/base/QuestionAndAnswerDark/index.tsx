@@ -17,7 +17,7 @@ interface IProps {
 export default function QuestionAndAnswer(props: IProps) {
     const { toast } = useToast();
     const [questionValue, setquestionValue] = useState('');
-    const [ errors, setErrors ] = useState<object | undefined>();
+    const [errors, setErrors] = useState<object | undefined>();
     const { pagination, filterValue } = useTableConfig<{
         entity_type: string;
         entity_id: string;
@@ -35,15 +35,15 @@ export default function QuestionAndAnswer(props: IProps) {
             setquestionValue('');
         },
         onError: (err) => {
-            setErrors(err.response?.data.errors)
+            setErrors(err.response?.data.errors);
             toast({
                 variant: 'destructive',
-                description: err.response?.data.message
-            })
+                description: err.response?.data.message,
+            });
         },
     });
     const sendQuestion = () => {
-        setErrors(undefined)
+        setErrors(undefined);
         mutate({
             entity_id: props.entity_id,
             entity_type: props.entity_type,

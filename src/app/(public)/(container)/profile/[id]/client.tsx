@@ -118,12 +118,10 @@ export default function ProfileUser(props: {
                                 About
                             </span>
                         </div>
-                        <span className='text-gray-400 font-urbanist'>
+                        <span className="font-urbanist text-gray-400">
                             {emptyValueCheck(
                                 data?.about ?? '',
-                                <span className="italic">
-                                    no about given
-                                </span>
+                                <span className="italic">no about given</span>
                             )}
                         </span>
                     </div>
@@ -135,7 +133,7 @@ export default function ProfileUser(props: {
                             </span>
                         </div>
                         {data?.phone_number && (
-                            <div className="flex items-center space-x-2 text-gray-400 font-urbanist">
+                            <div className="flex items-center space-x-2 font-urbanist text-gray-400">
                                 <Phone size={15} />
                                 <span className="text-md">
                                     {data?.phone_number}
@@ -143,13 +141,13 @@ export default function ProfileUser(props: {
                             </div>
                         )}
                         {data?.email && (
-                            <div className="flex items-center space-x-2 text-gray-400 font-urbanist">
+                            <div className="flex items-center space-x-2 font-urbanist text-gray-400">
                                 <Mail size={15} />
                                 <span className="text-md">{data?.email}</span>
                             </div>
                         )}
                         {data?.address && (
-                            <div className="flex items-center space-x-2 text-gray-400 font-urbanist">
+                            <div className="flex items-center space-x-2 font-urbanist text-gray-400">
                                 <MapPin size={15} />
                                 <span className="text-md">
                                     {data?.city}, {data?.province} |{' '}
@@ -176,9 +174,7 @@ export default function ProfileUser(props: {
                                         href={`/service/${data.slug}/${data.id}`}
                                         key={data.id}
                                     >
-                                        <CardService
-                                            data={data}
-                                        />
+                                        <CardService data={data} />
                                     </Link>
                                 </CarouselItem>
                             ))}

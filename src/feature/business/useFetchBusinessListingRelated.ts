@@ -1,6 +1,5 @@
 import fetchServer from '@/lib/fetchServer';
 import { IServices } from '@/types/services';
-import { notFound } from 'next/navigation';
 
 export async function getRelatedListing(
     id: string,
