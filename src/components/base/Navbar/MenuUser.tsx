@@ -41,14 +41,17 @@ export default function MenuUser(props: IProps) {
                     </DropdownMenuLabel>
                     <DropdownMenuSeparator />
                     <Link href={'/user'}>
-                        <DropdownMenuItem>
+                        <DropdownMenuItem className="cursor-pointer">
                             <User2 className="mr-2 h-4 w-4" />
                             <span>Dashboard</span>
                         </DropdownMenuItem>
                     </Link>
                     <DropdownMenuSeparator />
 
-                    <DropdownMenuItem onClick={() => signOut()}>
+                    <DropdownMenuItem
+                        onClick={() => signOut()}
+                        className="cursor-pointer"
+                    >
                         <LogOut className="mr-2 h-4 w-4" />
                         <span>Log out</span>
                     </DropdownMenuItem>
