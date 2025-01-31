@@ -126,13 +126,8 @@ export default async function Page({ params }: { params: { id: string } }) {
                                                 key={data.id}
                                             >
                                                 <CardService
-                                                    image_url={
-                                                        data?.image_url ?? ''
-                                                    }
-                                                    title={data.title}
-                                                    price={data.price}
-                                                    payment_type={
-                                                        data.payment_type
+                                                    data={
+                                                        data
                                                     }
                                                     variant='full'
                                                 />

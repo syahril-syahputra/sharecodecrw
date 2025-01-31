@@ -7,15 +7,15 @@ export async function getRelatedListing(
     type: 'business' | 'listing'
 ) {
     const fetchType =
-        type == 'business'
+        type == 'listing'
             ? `&listing_id=${id || ''}`
-            : `business_id=${id || ''}`;
+            : `&business_id=${id || ''}`;
     try {
         const res = await fetchServer({
-            url: `/businesses/related-listings?lat=40.79509100&lng=-73.96828500&rad=50${fetchType}`,
+            url: `/businesses/related-listings?lat=40.79509100&lng=-73.96828500&rad=40${fetchType}`,
         });
         return res.data.data.items as IServices[];
     } catch {
-        return notFound();
+        return [] as IServices[];
     }
 }
