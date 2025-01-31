@@ -109,5 +109,5 @@ export interface BodyRepublishListing {
     duration: number;
     is_direct: boolean;
     boosters: string[];
-    color_hex?: string;
+    color_hexadecimal?: string;
 }

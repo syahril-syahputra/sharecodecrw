@@ -100,7 +100,7 @@ export default function Page({ params }: { params: { id: string } }) {
         const dataBody: BodyRepublishListing = {
             duration: parseInt(data.duration),
             boosters: booster,
-            color_hex:
+            color_hexadecimal:
                 data.is_color || data.is_premium
                     ? data.color_hexadecimal
                     : undefined,
