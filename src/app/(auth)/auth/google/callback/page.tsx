@@ -62,7 +62,7 @@ export default function Page() {
                 console.error('Login error:', error);
                 router.push('/auth/login');
             } finally {
-                setLoading(false); 
+                setLoading(false);
             }
         };
 
@@ -73,7 +73,7 @@ export default function Page() {
         <div className="mx-auto my-8 max-w-xl items-center space-y-8 rounded-lg p-8 text-center">
             <CardDarkNeonGlow className="flex justify-center px-10">
                 <TitleAuth className="mb-2 text-lg font-bold">
-                    {loading ? "Logging in..." : "Redirecting..."}
+                    {loading ? 'Logging in...' : 'Redirecting...'}
                     {/* {`key=${key}&confirmation_key=${confirmation_key}`} */}
                 </TitleAuth>
                 <div className="flex justify-center">
