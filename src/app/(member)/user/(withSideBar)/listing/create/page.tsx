@@ -200,10 +200,7 @@ export default function Page() {
             payment_type: data.pricing_type,
             city_id: data.city,
             hashtags: data.tags,
-
-            color_hexadecimal: data.is_color
-                ? data.color_hexadecimal
-                : undefined,
+            color_hexadecimal: data.is_color || data.is_premium ? data.color_hexadecimal : undefined,
             is_direct: paymentMethod === 'credit_balance' ? false : true,
             image: base64,
         };
