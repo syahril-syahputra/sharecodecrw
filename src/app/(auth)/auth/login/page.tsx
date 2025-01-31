@@ -23,6 +23,9 @@ import { useSearchParams, useRouter } from 'next/navigation';
 import { signIn } from 'next-auth/react';
 // import fetchClient from '@/lib/FetchClient';
 import useFCMToken from '@/lib/hooks/useFCMToken';
+import TitleSeparator from '@/components/base/Title/TitleSeparator';
+import Image from 'next/image';
+import fetchClient from '@/lib/FetchClient';
 
 const formSchema = z.object({
     email: z
@@ -89,6 +92,19 @@ export default function Page() {
             console.log(error);
         }
     }
+
+    const [loadingGoogle, setLoadingGoogle] = useState(false);
+    const getUrl = async () => {
+        setLoadingGoogle(true);
+        try {
+            const response = await fetchClient({ url: '/auth/google' });
+            router.push(response.data.data.url);
+        } catch (error) {
+            console.log(error);
+        } finally {
+            setLoadingGoogle(false);
+        }
+    };
     return (
         <div className="relative mx-auto max-w-xl space-y-8 overflow-hidden rounded-xl bg-gray-900 p-10">
             <div className="absolute -right-80 -top-64 h-96 w-full -translate-x-1/2 transform rounded-full bg-primary opacity-30 blur-3xl"></div>
@@ -165,8 +181,8 @@ export default function Page() {
                     </div>
                 </form>
             </Form>
-            {/* <TitleSeparator>Or With</TitleSeparator> */}
-            {/* <div className="flex flex-col justify-center space-y-4 text-center md:flex-row md:space-x-4 md:space-y-0">
+            <TitleSeparator>Or</TitleSeparator>
+            <div className="flex flex-col justify-center space-y-4 text-center md:flex-row md:space-x-4 md:space-y-0">
                 <Button
                     variant={'outline'}
                     loading={loadingGoogle}
@@ -181,7 +197,7 @@ export default function Page() {
                     />
                     Sign in with Google
                 </Button>
-            </div> */}
+            </div>
             <div className="text-center">
                 <span className="text-sm text-white">
                     Don&apos;t have an account?

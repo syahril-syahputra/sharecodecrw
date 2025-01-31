@@ -1,5 +1,6 @@
 'use client';
 
+import CardDarkNeonGlow from '@/components/base/Card/CardDarkNeonGlow';
 import TitleAuth from '@/components/base/Title/TitleAuth';
 import Spinner from '@/components/ui/spinner';
 import fetchClient from '@/lib/FetchClient';
@@ -40,14 +41,16 @@ export default function Page() {
     }, []);
 
     return (
-        <div>
-            <div className="mx-auto my-8 flex max-w-xl flex-col  items-center space-y-8 rounded-lg  p-8 text-center">
-                <TitleAuth className="text-lg font-bold">
+        <div className="mx-auto my-8 max-w-xl items-center space-y-8 rounded-lg p-8 text-center">
+            <CardDarkNeonGlow className="flex justify-center px-10">
+                <TitleAuth className="mb-2 text-lg font-bold">
                     please wait...{' '}
                     {/* {`key=${key}&confirmation_key=${confirmation_key}`} */}
                 </TitleAuth>
-                <Spinner />
-            </div>
+                <div className="flex justify-center">
+                    <Spinner />
+                </div>
+            </CardDarkNeonGlow>
         </div>
     );
 }

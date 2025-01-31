@@ -33,6 +33,11 @@ import {
     TooltipProvider,
     TooltipTrigger,
 } from '@/components/ui/tooltip';
+import TitleSeparator from '@/components/base/Title/TitleSeparator';
+import Image from 'next/image';
+import { useState } from 'react';
+import fetchClient from '@/lib/FetchClient';
+import { useRouter } from 'next/navigation';
 
 const formSchema = z
     .object({
@@ -94,6 +99,20 @@ export default function IndividuRegistration() {
     const { data: dataCity } = useFetchCity(form.getValues('province'), () => {
         form.setValue('city', '');
     });
+
+    const router = useRouter();
+    const [loadingGoogle, setLoadingGoogle] = useState(false);
+    const getUrl = async () => {
+        setLoadingGoogle(true);
+        try {
+            const response = await fetchClient({ url: '/auth/google' });
+            router.push(response.data.data.url);
+        } catch (error) {
+            console.log(error);
+        } finally {
+            setLoadingGoogle(false);
+        }
+    };
 
     return (
         <div>
@@ -373,9 +392,13 @@ export default function IndividuRegistration() {
                 </form>
             </Form>
 
-            {/* <TitleSeparator>Or With</TitleSeparator>
-            <div className="flex flex-col justify-center space-y-4 text-center md:flex-row md:space-x-4 md:space-y-0">
-                <Button variant={'outline'}>
+            <TitleSeparator>Or</TitleSeparator>
+            <div className="mb-5 flex flex-col justify-center space-y-4 text-center md:flex-row md:space-x-4 md:space-y-0">
+                <Button
+                    variant={'outline'}
+                    loading={loadingGoogle}
+                    onClick={getUrl}
+                >
                     <Image
                         src={'/icons/google.png'}
                         alt="google"
@@ -383,9 +406,9 @@ export default function IndividuRegistration() {
                         className="mr-2"
                         height={20}
                     />
-                    Sign Up with Google
+                    Sign up with Google
                 </Button>
-            </div> */}
+            </div>
         </div>
     );
 }
