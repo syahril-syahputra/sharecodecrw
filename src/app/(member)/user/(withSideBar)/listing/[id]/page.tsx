@@ -238,7 +238,7 @@ export default function Page({ params }: { params: { id: string } }) {
                                         Premium Booster
                                     </h1>
                                     <h2 className="text-sm text-gray-400">
-                                        $34.99 or 35.99 credits
+                                        $35* or 35 credits
                                     </h2>
                                     <div className="mt-1 text-sm text-gray-300">
                                         Includes all boosters applied at once by
@@ -246,6 +246,71 @@ export default function Page({ params }: { params: { id: string } }) {
                                         higher and more visible with a
                                         background color.
                                     </div>
+                                    {form.getValues('is_premium') && (
+                                        <div className="space-y-2 py-4">
+                                            <FormField
+                                                control={form.control}
+                                                name="color_hexadecimal"
+                                                render={({ field }) => (
+                                                    <FormItem className="flex-1">
+                                                        <Select
+                                                            value={field.value}
+                                                            onValueChange={
+                                                                field.onChange
+                                                            }
+                                                        >
+                                                            <FormControl>
+                                                                <SelectTrigger>
+                                                                    <SelectValue placeholder="Select Color" />
+                                                                </SelectTrigger>
+                                                            </FormControl>
+                                                            <SelectContent>
+                                                                <SelectItem
+                                                                    key={
+                                                                        '#258ad8'
+                                                                    }
+                                                                    value={
+                                                                        '#258ad8'
+                                                                    }
+                                                                >
+                                                                    <div className="flex items-center space-x-2">
+                                                                        <div
+                                                                            className={clsx(
+                                                                                `h-4 w-4 rounded-full !bg-[#258AD8] `
+                                                                            )}
+                                                                        ></div>
+                                                                        <span>
+                                                                            Blue
+                                                                        </span>
+                                                                    </div>
+                                                                </SelectItem>
+                                                                <SelectItem
+                                                                    key={
+                                                                        '#d87925'
+                                                                    }
+                                                                    value={
+                                                                        '#d87925'
+                                                                    }
+                                                                >
+                                                                    <div className="flex items-center space-x-2">
+                                                                        <div
+                                                                            className={clsx(
+                                                                                `h-4 w-4 rounded-full !bg-[#D87925] `
+                                                                            )}
+                                                                        ></div>
+                                                                        <span>
+                                                                            Orange
+                                                                        </span>
+                                                                    </div>
+                                                                </SelectItem>
+                                                            </SelectContent>
+                                                        </Select>
+                                                        <FormMessage />
+                                                    </FormItem>
+                                                )}
+                                            />
+                                        </div>
+                                    )}
                                 </div>
                                 <div>
                                     <FormField
@@ -272,7 +337,7 @@ export default function Page({ params }: { params: { id: string } }) {
                                         Uplifter Booster
                                     </h1>
                                     <h2 className="text-sm text-gray-400">
-                                        $12.99* or 12.99 credits
+                                        $13* or 13 credits
                                     </h2>
                                     <div className="mt-1 text-sm text-gray-300">
                                         Lifts the post up, making it appear more
@@ -304,7 +369,7 @@ export default function Page({ params }: { params: { id: string } }) {
                                         Color Booster
                                     </h1>
                                     <h2 className="text-sm text-gray-400">
-                                        $$4.99* or 4.99 credits
+                                        $5* or 5 credits
                                     </h2>
                                     <div className="mt-1 text-sm text-gray-300">
                                         Makes the post stand out by
@@ -506,6 +571,7 @@ export default function Page({ params }: { params: { id: string } }) {
                                         loading={isLoadingCreate}
                                         type="submit"
                                         value="credit_balance"
+                                        disabled={!pricingResult.is_sufficient}
                                     >
                                         Pay with Credit Balance
                                     </Button>

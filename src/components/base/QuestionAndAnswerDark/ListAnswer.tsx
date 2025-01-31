@@ -7,6 +7,7 @@ import InputAnswer from './InputAnswer';
 import { MinusCircle, PlusCircle } from 'lucide-react';
 import { useCreateAnswer } from '@/feature/qa/useCreateAnswer';
 import { Skeleton } from '@/components/ui/skeleton';
+import { useToast } from '@/components/ui/use-toast';
 
 interface IProps {
     userId: string;
@@ -17,6 +18,8 @@ interface IProps {
 }
 
 export default function ListAnswer(props: IProps) {
+    const [ errors, setErrors ] = useState<object | undefined>();
+    const { toast } = useToast();
     const [counter, setcounter] = useState(props.counter);
     const [value, setvalue] = useState('');
     const [showReplies, setshowReplies] = useState(false);
@@ -40,9 +43,16 @@ export default function ListAnswer(props: IProps) {
             props.setShowInput(false);
             setcounter(counter + 1);
         },
-        onError: () => {},
+        onError: (err) => {
+            setErrors(err.response?.data.errors)
+            toast({
+                variant: 'destructive',
+                description: err.response?.data.message
+            })
+        },
     });
     const createAnswer = () => {
+        setErrors(undefined)
         mutate({ message: value });
     };
 
@@ -86,6 +96,7 @@ export default function ListAnswer(props: IProps) {
                         setvalue={(val) => setvalue(val)}
                         quertionId={props.questionId}
                         send={createAnswer}
+                        errors={errors}
                     />
                     <div className="">
                         {data?.items.map((item: IAnswer) => (

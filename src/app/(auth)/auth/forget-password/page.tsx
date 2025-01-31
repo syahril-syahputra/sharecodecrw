@@ -1,4 +1,5 @@
 'use client';
+import CardDarkNeonGlow from '@/components/base/Card/CardDarkNeonGlow';
 import TitleAuth from '@/components/base/Title/TitleAuth';
 import { Button } from '@/components/ui/button';
 import {
@@ -94,10 +95,14 @@ export default function Page() {
             )}
             {sended && (
                 <div className="mx-auto my-8 max-w-xl space-y-8 rounded-lg  p-8 text-center">
-                    <TitleAuth>
-                        Your request has been successfully processed
-                    </TitleAuth>
-                    <div>Please check your email to reset your password!</div>
+                    <CardDarkNeonGlow>
+                        <TitleAuth>
+                            Your request has been successfully processed
+                        </TitleAuth>
+                        <div>
+                            Please check your email to reset your password!
+                        </div>
+                    </CardDarkNeonGlow>
                 </div>
             )}
         </div>

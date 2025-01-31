@@ -59,7 +59,7 @@ export default function Rating(props: IProps) {
             {Array.from({ length: 5 - props.star }).map((_, index) => (
                 <Star key={index} size={16} fill="#888888" strokeWidth={0} />
             ))}
-            <span className="pl-2 text-sm font-thin text-white">
+            <span className="pl-2 text-sm font-thin text-white -mt-[2px]">
                 {props.rater}
             </span>
         </div>

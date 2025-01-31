@@ -25,8 +25,12 @@ import {
 import { Fragment } from 'react';
 import Link from 'next/link';
 import CardService from '@/components/base/Card/CardService';
+import { IServices } from '@/types/services';
 
-export default function ProfileUser(props: { data: IOtherUser }) {
+export default function ProfileUser(props: {
+    data: IOtherUser;
+    relatedListing: IServices[];
+}) {
     const { data } = props;
 
     const initialUserName = data?.cmp_name ? data?.cmp_name.charAt(0) : '';
@@ -114,10 +118,10 @@ export default function ProfileUser(props: { data: IOtherUser }) {
                                 About
                             </span>
                         </div>
-                        <span>
+                        <span className='text-gray-400 font-urbanist'>
                             {emptyValueCheck(
                                 data?.about ?? '',
-                                <span className="italic text-muted-foreground">
+                                <span className="italic">
                                     no about given
                                 </span>
                             )}
@@ -131,7 +135,7 @@ export default function ProfileUser(props: { data: IOtherUser }) {
                             </span>
                         </div>
                         {data?.phone_number && (
-                            <div className="flex items-center space-x-2 font-thin text-white">
+                            <div className="flex items-center space-x-2 text-gray-400 font-urbanist">
                                 <Phone size={15} />
                                 <span className="text-md">
                                     {data?.phone_number}
@@ -139,13 +143,13 @@ export default function ProfileUser(props: { data: IOtherUser }) {
                             </div>
                         )}
                         {data?.email && (
-                            <div className="flex items-center space-x-2 font-thin text-white">
+                            <div className="flex items-center space-x-2 text-gray-400 font-urbanist">
                                 <Mail size={15} />
                                 <span className="text-md">{data?.email}</span>
                             </div>
                         )}
                         {data?.address && (
-                            <div className="flex items-center space-x-2 font-thin text-white">
+                            <div className="flex items-center space-x-2 text-gray-400 font-urbanist">
                                 <MapPin size={15} />
                                 <span className="text-md">
                                     {data?.city}, {data?.province} |{' '}
@@ -163,58 +167,21 @@ export default function ProfileUser(props: { data: IOtherUser }) {
                     </div>
                     <Carousel className="">
                         <CarouselContent className="space-x-4">
-                            {/* {props.data?.events.map((data) => ( */}
-                            <CarouselItem key={data.id} className="basis-96">
-                                <Link href={'/crowner/events/'} key={data.id}>
-                                    <CardService
-                                        image_url={data?.image_url ?? ''}
-                                        title="House moving"
-                                        price="66"
-                                        payment_type="per hour"
-                                    />
-                                </Link>
-                            </CarouselItem>
-                            <CarouselItem key={data.id} className="basis-96">
-                                <Link href={'/crowner/events/'} key={data.id}>
-                                    <CardService
-                                        image_url={data?.image_url ?? ''}
-                                        title="House moving"
-                                        price="66"
-                                        payment_type="per hour"
-                                    />
-                                </Link>
-                            </CarouselItem>
-                            <CarouselItem key={data.id} className="basis-96">
-                                <Link href={'/crowner/events/'} key={data.id}>
-                                    <CardService
-                                        image_url={data?.image_url ?? ''}
-                                        title="House moving"
-                                        price="66"
-                                        payment_type="per hour"
-                                    />
-                                </Link>
-                            </CarouselItem>
-                            <CarouselItem key={data.id} className="basis-96">
-                                <Link href={'/crowner/events/'} key={data.id}>
-                                    <CardService
-                                        image_url={data?.image_url ?? ''}
-                                        title="House moving"
-                                        price="66"
-                                        payment_type="per hour"
-                                    />
-                                </Link>
-                            </CarouselItem>
-                            <CarouselItem key={data.id} className="basis-96">
-                                <Link href={'/crowner/events/'} key={data.id}>
-                                    <CardService
-                                        image_url={data?.image_url ?? ''}
-                                        title="House moving"
-                                        price="66"
-                                        payment_type="per hour"
-                                    />
-                                </Link>
-                            </CarouselItem>
-                            {/* ))} */}
+                            {props.relatedListing?.map((data: IServices) => (
+                                <CarouselItem
+                                    key={data.id}
+                                    className="basis-96"
+                                >
+                                    <Link
+                                        href={`/service/${data.slug}/${data.id}`}
+                                        key={data.id}
+                                    >
+                                        <CardService
+                                            data={data}
+                                        />
+                                    </Link>
+                                </CarouselItem>
+                            ))}
                         </CarouselContent>
                         <CarouselPrevious />
                         <CarouselNext />

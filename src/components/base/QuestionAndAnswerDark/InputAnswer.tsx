@@ -3,8 +3,10 @@ import { AutosizeTextarea } from '@/components/ui/useAutosizeTextArea';
 import React, { useState } from 'react';
 import DialogLoginRequired from '../Dialog/DialogLoginRequired';
 import { useSession } from 'next-auth/react';
+import ErrorMessage from '../Error/ErrorMessage';
 
 interface IProps {
+    errors: object | undefined;
     value: string;
     isLoading: boolean;
     setvalue: (value: string) => void;
@@ -14,7 +16,6 @@ interface IProps {
 export default function InputAnswer(props: IProps) {
     const { status } = useSession();
     const isLogin = status === 'authenticated';
-
     const [isShowLogin, setisShowLogin] = useState(false);
     const send = () => {
         if (isLogin) {
@@ -32,6 +33,11 @@ export default function InputAnswer(props: IProps) {
                 onChange={(e) => props.setvalue(e.target.value)}
                 value={props.value}
             />
+            {props.errors && (
+                <ErrorMessage>
+                    {(props.errors as any)?.message || "An unknown error occurred"}
+                </ErrorMessage>
+            )}
             <div className="flex justify-end">
                 <Button
                     size={'sm'}
