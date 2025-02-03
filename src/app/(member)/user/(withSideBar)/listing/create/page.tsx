@@ -56,7 +56,7 @@ const formSchema = z.object({
         .string()
         .min(50, { message: 'Description is required 20 character' }),
 
-    tags: z.array(z.string()).min(3, { message: 'tags is required min 3' }),
+    hastags: z.array(z.string()).min(3, { message: 'tags is required min 3' }),
     price: z.coerce.number(),
     pricing_type: z.string().min(1, { message: 'Pricing Type is required' }),
     province: z.string().min(1, { message: 'Province is required' }),
@@ -125,7 +125,7 @@ export default function Page() {
     const [tags, setTags] = React.useState<Tag[]>([]);
     useEffect(() => {
         const list = tags.map((x) => x.text);
-        form.setValue('tags', list);
+        form.setValue('hastags', list);
     }, [form, tags]);
 
     const [activeTagIndex, setActiveTagIndex] = React.useState<number | null>(
@@ -199,7 +199,7 @@ export default function Page() {
             price: data.price,
             payment_type: data.pricing_type,
             city_id: data.city,
-            hashtags: data.tags,
+            hashtags: data.hastags,
             color_hexadecimal:
                 data.is_color || data.is_premium
                     ? data.color_hexadecimal
@@ -269,7 +269,7 @@ export default function Page() {
                             />
                             <FormField
                                 control={form.control}
-                                name="tags"
+                                name="hastags"
                                 render={({ field }) => (
                                     <FormItem className="flex-1">
                                         <FormLabel>Tags</FormLabel>
@@ -690,6 +690,26 @@ export default function Page() {
                                                                         ></div>
                                                                         <span>
                                                                             Orange
+                                                                        </span>
+                                                                    </div>
+                                                                </SelectItem>
+                                                                <SelectItem
+                                                                    key={
+                                                                        '#e9e1d3'
+                                                                    }
+                                                                    value={
+                                                                        '#e9e1d3'
+                                                                    }
+                                                                >
+                                                                    <div className="flex items-center space-x-2">
+                                                                        <div
+                                                                            className={clsx(
+                                                                                `h-4 w-4 rounded-full !bg-[#e9e1d3] `
+                                                                            )}
+                                                                        ></div>
+                                                                        <span>
+                                                                            light
+                                                                            Beige
                                                                         </span>
                                                                     </div>
                                                                 </SelectItem>

@@ -306,6 +306,26 @@ export default function Page({ params }: { params: { id: string } }) {
                                                                         </span>
                                                                     </div>
                                                                 </SelectItem>
+                                                                <SelectItem
+                                                                    key={
+                                                                        '#e9e1d3'
+                                                                    }
+                                                                    value={
+                                                                        '#e9e1d3'
+                                                                    }
+                                                                >
+                                                                    <div className="flex items-center space-x-2">
+                                                                        <div
+                                                                            className={clsx(
+                                                                                `h-4 w-4 rounded-full !bg-[#e9e1d3] `
+                                                                            )}
+                                                                        ></div>
+                                                                        <span>
+                                                                            light
+                                                                            Beige
+                                                                        </span>
+                                                                    </div>
+                                                                </SelectItem>
                                                             </SelectContent>
                                                         </Select>
                                                         <FormMessage />
