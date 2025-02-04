@@ -7,6 +7,7 @@ import { Radius, ShieldCheck, UserCheck } from 'lucide-react';
 import { IServices } from '@/types/services';
 import Link from 'next/link';
 import { truncateText } from '@/lib/utils';
+import clsx from 'clsx';
 
 interface IProps {
     data: IServices;
@@ -19,7 +20,14 @@ export default function CardServices(props: IProps) {
     if (props.data.is_boost_size) {
         return (
             <Link href={`/service/${props.data.slug}/${props.data.id}`}>
-                <Card className="relative overflow-hidden rounded-lg bg-gray-950 p-10 text-white shadow-lg">
+                <Card
+                    className={clsx(
+                        `relative overflow-hidden rounded-lg p-10 text-white shadow-lg`,
+                        props.data.is_boost_color
+                            ? `bg-[${props.data.color_hexadecimal}]`
+                            : 'bg-gray-950'
+                    )}
+                >
                     <div className="absolute -top-64 left-80 h-96 w-96 -translate-x-1/2 transform rounded-full bg-[#E9E1D3] opacity-35 blur-3xl"></div>
                     <div className="flex items-center space-x-4 font-bold capitalize">
                         <Avatar>
@@ -86,7 +94,14 @@ export default function CardServices(props: IProps) {
     }
     return (
         <Link href={`/service/${props.data.slug}/${props.data.id}`}>
-            <Card className="relative overflow-hidden rounded-lg bg-gray-950 p-10 text-white shadow-lg">
+            <Card
+                className={clsx(
+                    `relative overflow-hidden rounded-lg p-10 text-white shadow-lg`,
+                    props.data.is_boost_color
+                        ? `bg-[${props.data.color_hexadecimal}]`
+                        : 'bg-gray-950'
+                )}
+            >
                 <div className="absolute -top-64 left-80 h-96 w-96 -translate-x-1/2 transform rounded-full bg-[#E9E1D3] opacity-35 blur-3xl"></div>
                 <div className="flex items-center space-x-4 font-bold capitalize">
                     <Avatar>

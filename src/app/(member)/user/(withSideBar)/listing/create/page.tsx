@@ -50,52 +50,121 @@ const ACCEPTED_IMAGE_TYPES = [
     'image/png',
     'image/webp',
 ];
-const formSchema = z.object({
-    title: z.string().min(1, { message: 'Title is required' }),
-    description: z
-        .string()
-        .min(50, { message: 'Description is required 20 character' }),
+// const formSchema = z.object({
+//     title: z.string().min(1, { message: 'Title is required' }),
+//     description: z
+//         .string()
+//         .min(50, { message: 'Description is required 20 character' }),
 
-    hastags: z.array(z.string()).min(3, { message: 'tags is required min 3' }),
-    price: z.coerce.number(),
-    pricing_type: z.string().min(1, { message: 'Pricing Type is required' }),
-    province: z.string().min(1, { message: 'Province is required' }),
-    city: z.string().min(1, { message: 'City is required' }),
-    longitude: z.number({
-        required_error: 'longitude required.',
-    }),
-    latitude: z.number({
-        required_error: 'latitude required.',
-    }),
-    address: z.string().min(1),
-    image: z
-        .any()
-        .refine((files) => files?.length == 1, 'Image is required.')
-        .refine(
-            (files) => files?.[0]?.size <= MAX_FILE_SIZE,
-            `Max file size is 500kb.`
-        )
-        .refine(
-            (files) => ACCEPTED_IMAGE_TYPES.includes(files?.[0]?.type),
-            '.jpg, .jpeg, .png and .webp files are accepted.'
-        ),
+//     hashtags: z.array(z.string()).min(3, { message: 'tags is required min 3' }),
+//     price: z.coerce.number(),
+//     pricing_type: z.string().min(1, { message: 'Pricing Type is required' }),
+//     province: z.string().min(1, { message: 'Province is required' }),
+//     city: z.string().min(1, { message: 'City is required' }),
+//     longitude: z.number({
+//         required_error: 'longitude required.',
+//     }),
+//     latitude: z.number({
+//         required_error: 'latitude required.',
+//     }),
+//     address: z.string().min(1),
+//     image: z
+//         .any()
+//         .refine((files) => files?.length == 1, 'Image is required.')
+//         .refine(
+//             (files) => files?.[0]?.size <= MAX_FILE_SIZE,
+//             `Max file size is 500kb.`
+//         )
+//         .refine(
+//             (files) => ACCEPTED_IMAGE_TYPES.includes(files?.[0]?.type),
+//             '.jpg, .jpeg, .png and .webp files are accepted.'
+//         ),
 
-    // city_id: z.string().min(1),
-    duration: z.string().min(1),
-    is_premium: z.boolean().optional(),
-    color_hexadecimal: z
-        .string()
-        .optional()
-        .refine(
-            (val) =>
-                val === '#258ad8' || val === '#d87925' || val === '#E9E1D3',
-            {
-                message: 'Please Select Color',
+//     // city_id: z.string().min(1),
+//     duration: z.string().min(1),
+//     is_premium: z.boolean().optional(),
+//     color_hexadecimal: z
+//         .string()
+//         .optional()
+//         .refine(
+//             (val) =>
+//                 val === '#258ad8' || val === '#d87925' || val === '#e9e1d3',
+//             {
+//                 message: 'Please Select Color',
+//             }
+//         ),
+//     is_color: z.boolean().optional(),
+//     is_uplifter: z.boolean().optional(),
+// });
+const formSchema = z
+    .object({
+        title: z.string().min(1, { message: 'Title is required' }),
+        description: z
+            .string()
+            .min(50, { message: 'Description is required 20 character' }),
+
+        hashtags: z
+            .array(z.string())
+            .min(3, { message: 'tags is required min 3' }),
+        price: z.coerce.number(),
+        pricing_type: z
+            .string()
+            .min(1, { message: 'Pricing Type is required' }),
+        province: z.string().min(1, { message: 'Province is required' }),
+        city: z.string().min(1, { message: 'City is required' }),
+        longitude: z.number({
+            required_error: 'longitude required.',
+        }),
+        latitude: z.number({
+            required_error: 'latitude required.',
+        }),
+        address: z.string().min(1),
+        image: z
+            .any()
+            .refine((files) => files?.length == 1, 'Image is required.')
+            .refine(
+                (files) => files?.[0]?.size <= MAX_FILE_SIZE,
+                `Max file size is 500kb.`
+            )
+            .refine(
+                (files) => ACCEPTED_IMAGE_TYPES.includes(files?.[0]?.type),
+                '.jpg, .jpeg, .png and .webp files are accepted.'
+            ),
+
+        duration: z.string().min(1),
+        is_premium: z.boolean().optional(),
+        is_color: z.boolean().optional(),
+        is_uplifter: z.boolean().optional(),
+
+        color_hexadecimal: z
+            .string()
+            .optional()
+            .refine(
+                (val) =>
+                    val === undefined ||
+                    val === '' ||
+                    val === '#258ad8' ||
+                    val === '#d87925' ||
+                    val === '#e9e1d3',
+                {
+                    message: 'Please Select a Valid Color',
+                }
+            ),
+    })
+    .refine(
+        (data) => {
+            // Jika `is_color` atau `is_premium` bernilai false, color_hexadecimal boleh undefined
+            if (!data.is_color || !data.is_premium) {
+                return true; // Tidak perlu validasi color_hexadecimal
             }
-        ),
-    is_color: z.boolean().optional(),
-    is_uplifter: z.boolean().optional(),
-});
+            return data.color_hexadecimal !== undefined; // Harus diisi jika is_color dan is_premium true
+        },
+        {
+            message:
+                'Color must be selected when is_color and is_premium are true',
+            path: ['color_hexadecimal'],
+        }
+    );
 // interface IInterestList {
 //     id: string;
 //     data: Option[];
@@ -125,7 +194,7 @@ export default function Page() {
     const [tags, setTags] = React.useState<Tag[]>([]);
     useEffect(() => {
         const list = tags.map((x) => x.text);
-        form.setValue('hastags', list);
+        form.setValue('hashtags', list);
     }, [form, tags]);
 
     const [activeTagIndex, setActiveTagIndex] = React.useState<number | null>(
@@ -199,7 +268,7 @@ export default function Page() {
             price: data.price,
             payment_type: data.pricing_type,
             city_id: data.city,
-            hashtags: data.hastags,
+            hashtags: data.hashtags,
             color_hexadecimal:
                 data.is_color || data.is_premium
                     ? data.color_hexadecimal
@@ -269,7 +338,7 @@ export default function Page() {
                             />
                             <FormField
                                 control={form.control}
-                                name="hastags"
+                                name="hashtags"
                                 render={({ field }) => (
                                     <FormItem className="flex-1">
                                         <FormLabel>Tags</FormLabel>
@@ -356,42 +425,19 @@ export default function Page() {
                                 />
                             </div>
                             <div className="col-span-2 space-y-4">
-                                {getAdreessLoading ? (
-                                    <div className="flex items-center space-x-4 text-sm">
-                                        <Spinner />{' '}
-                                        <span>Searching Address...</span>
-                                    </div>
-                                ) : (
-                                    <FormField
-                                        control={form.control}
-                                        name="address"
-                                        render={({ field }) => (
-                                            <FormItem className="flex-1">
-                                                <FormLabel className="space-y-2">
-                                                    <h2 className="text-lg font-semibold">
-                                                        Location
-                                                    </h2>
-                                                    <span>
-                                                        Select Your Location.{' '}
-                                                        <b>
-                                                            note that it will be
-                                                            visible publicly
-                                                        </b>
-                                                    </span>
-                                                </FormLabel>
-                                                <FormControl>
-                                                    <InputCustom
-                                                        placeholder="Address"
-                                                        {...field}
-                                                    />
-                                                </FormControl>
-                                                <FormMessage />
-                                            </FormItem>
-                                        )}
-                                    />
-                                )}
-
                                 <div>
+                                    <div className="mb-4 space-y-2">
+                                        <h2 className="text-lg font-semibold">
+                                            Location
+                                        </h2>
+                                        <span>
+                                            Select Your Location.{' '}
+                                            <b>
+                                                note that it will be visible
+                                                publicly
+                                            </b>
+                                        </span>
+                                    </div>
                                     <Map
                                         className="relative z-0 h-[200px] w-full"
                                         onLocationSelected={
@@ -419,6 +465,28 @@ export default function Page() {
                                         />
                                     </div>
                                 </div>
+                                {getAdreessLoading ? (
+                                    <div className="flex items-center space-x-4 text-sm">
+                                        <Spinner />{' '}
+                                        <span>Searching Address...</span>
+                                    </div>
+                                ) : (
+                                    <FormField
+                                        control={form.control}
+                                        name="address"
+                                        render={({ field }) => (
+                                            <FormItem className="flex-1">
+                                                <FormControl>
+                                                    <InputCustom
+                                                        placeholder="Address"
+                                                        {...field}
+                                                    />
+                                                </FormControl>
+                                                <FormMessage />
+                                            </FormItem>
+                                        )}
+                                    />
+                                )}
                                 <div className="relative z-10 flex space-x-2">
                                     <FormField
                                         control={form.control}
@@ -708,7 +776,7 @@ export default function Page() {
                                                                             )}
                                                                         ></div>
                                                                         <span>
-                                                                            light
+                                                                            Light
                                                                             Beige
                                                                         </span>
                                                                     </div>
@@ -839,6 +907,26 @@ export default function Page() {
                                                                         ></div>
                                                                         <span>
                                                                             Orange
+                                                                        </span>
+                                                                    </div>
+                                                                </SelectItem>
+                                                                <SelectItem
+                                                                    key={
+                                                                        '#e9e1d3'
+                                                                    }
+                                                                    value={
+                                                                        '#e9e1d3'
+                                                                    }
+                                                                >
+                                                                    <div className="flex items-center space-x-2">
+                                                                        <div
+                                                                            className={clsx(
+                                                                                `h-4 w-4 rounded-full !bg-[#e9e1d3] `
+                                                                            )}
+                                                                        ></div>
+                                                                        <span>
+                                                                            Light
+                                                                            Beige
                                                                         </span>
                                                                     </div>
                                                                 </SelectItem>

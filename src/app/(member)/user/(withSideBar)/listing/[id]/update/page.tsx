@@ -52,7 +52,7 @@ const formSchema = z.object({
         .string()
         .min(20, { message: 'Description is required 20 character' }),
 
-    tags: z.array(z.string()).min(3, { message: 'tags is required min 3' }),
+    hashtags: z.array(z.string()).min(3, { message: 'tags is required min 3' }),
     price: z.coerce.number(),
     pricing_type: z.string().min(1, { message: 'Pricing Type is required' }),
     province: z.string().min(1, { message: 'Province is required' }),
@@ -75,13 +75,7 @@ const formSchema = z.object({
             (files) => ACCEPTED_IMAGE_TYPES.includes(files?.[0]?.type),
             '.jpg, .jpeg, .png and .webp files are accepted.'
         ),
-
-    // city_id: z.string().min(1),
 });
-// interface IInterestList {
-//     id: string;
-//     data: Option[];
-// }
 
 const Map = dynamic(() => import('@/components/base/Maps/maps'), {
     ssr: false,
@@ -112,7 +106,7 @@ export default function Page({ params }: { params: { id: string } }) {
             address: '',
             latitude: data?.latitude || 0,
             longitude: data?.longitude || 0,
-            tags: data?.hashtags || [],
+            hashtags: data?.hashtags || [],
         },
     });
     const { data: dataState } = useFetchState();
@@ -127,7 +121,7 @@ export default function Page({ params }: { params: { id: string } }) {
     const [tags, setTags] = React.useState<Tag[]>([]);
     useEffect(() => {
         const list = tags.map((x) => x.text);
-        form.setValue('tags', list);
+        form.setValue('hashtags', list);
     }, [form, tags]);
 
     const [activeTagIndex, setActiveTagIndex] = React.useState<number | null>(
@@ -188,7 +182,7 @@ export default function Page({ params }: { params: { id: string } }) {
             price: data.price,
             payment_type: data.pricing_type,
             city_id: data.city,
-            hashtags: data.tags,
+            hashtags: data.hashtags,
             image: base64,
         };
         createListing(dataBody);
@@ -240,7 +234,7 @@ export default function Page({ params }: { params: { id: string } }) {
                             />
                             <FormField
                                 control={form.control}
-                                name="tags"
+                                name="hashtags"
                                 render={({ field }) => (
                                     <FormItem className="flex-1">
                                         <FormLabel>Tags</FormLabel>
@@ -327,42 +321,19 @@ export default function Page({ params }: { params: { id: string } }) {
                                 />
                             </div>
                             <div className="col-span-2 space-y-4">
-                                {getAdreessLoading ? (
-                                    <div className="flex items-center space-x-4 text-sm">
-                                        <Spinner />{' '}
-                                        <span>Searching Address...</span>
-                                    </div>
-                                ) : (
-                                    <FormField
-                                        control={form.control}
-                                        name="address"
-                                        render={({ field }) => (
-                                            <FormItem className="flex-1">
-                                                <FormLabel className="space-y-2">
-                                                    <h2 className="text-lg font-semibold">
-                                                        Location
-                                                    </h2>
-                                                    <span>
-                                                        Select Your Location.{' '}
-                                                        <b>
-                                                            note that it will be
-                                                            visible publicly
-                                                        </b>
-                                                    </span>
-                                                </FormLabel>
-                                                <FormControl>
-                                                    <InputCustom
-                                                        placeholder="Address"
-                                                        {...field}
-                                                    />
-                                                </FormControl>
-                                                <FormMessage />
-                                            </FormItem>
-                                        )}
-                                    />
-                                )}
-
                                 <div>
+                                    <div className="mb-4 space-y-2">
+                                        <h2 className="text-lg font-semibold">
+                                            Location
+                                        </h2>
+                                        <span>
+                                            Select Your Location.{' '}
+                                            <b>
+                                                note that it will be visible
+                                                publicly
+                                            </b>
+                                        </span>
+                                    </div>
                                     <Map
                                         className="relative z-0 h-[200px] w-full"
                                         onLocationSelected={
@@ -390,6 +361,28 @@ export default function Page({ params }: { params: { id: string } }) {
                                         />
                                     </div>
                                 </div>
+                                {getAdreessLoading ? (
+                                    <div className="flex items-center space-x-4 text-sm">
+                                        <Spinner />{' '}
+                                        <span>Searching Address...</span>
+                                    </div>
+                                ) : (
+                                    <FormField
+                                        control={form.control}
+                                        name="address"
+                                        render={({ field }) => (
+                                            <FormItem className="flex-1">
+                                                <FormControl>
+                                                    <InputCustom
+                                                        placeholder="Address"
+                                                        {...field}
+                                                    />
+                                                </FormControl>
+                                                <FormMessage />
+                                            </FormItem>
+                                        )}
+                                    />
+                                )}
                                 <div className="relative z-10 flex space-x-2">
                                     <FormField
                                         control={form.control}

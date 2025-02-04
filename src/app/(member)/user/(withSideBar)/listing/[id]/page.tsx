@@ -38,22 +38,42 @@ import { useRepublishListing } from '@/feature/listing/useRepublishListing';
 import Link from 'next/link';
 import { useFetchDuration } from '@/feature/base/duration';
 
-const formSchema = z.object({
-    duration: z.string().min(1),
-    is_premium: z.boolean().optional(),
-    color_hexadecimal: z
-        .string()
-        .refine(
-            (val) =>
-                val === '#258ad8' || val === '#d87925' || val === '#E9E1D3',
-            {
-                message: 'Please Select Color',
+const formSchema = z
+    .object({
+        duration: z.string().min(1),
+        is_premium: z.boolean().optional(),
+
+        is_color: z.boolean().optional(),
+        is_uplifter: z.boolean().optional(),
+        color_hexadecimal: z
+            .string()
+            .optional()
+            .refine(
+                (val) =>
+                    val === undefined ||
+                    val === '' ||
+                    val === '#258ad8' ||
+                    val === '#d87925' ||
+                    val === '#e9e1d3',
+                {
+                    message: 'Please Select a Valid Color',
+                }
+            ),
+    })
+    .refine(
+        (data) => {
+            // Jika `is_color` atau `is_premium` bernilai false, color_hexadecimal boleh undefined
+            if (!data.is_color || !data.is_premium) {
+                return true; // Tidak perlu validasi color_hexadecimal
             }
-        )
-        .optional(),
-    is_color: z.boolean().optional(),
-    is_uplifter: z.boolean().optional(),
-});
+            return data.color_hexadecimal !== undefined; // Harus diisi jika is_color dan is_premium true
+        },
+        {
+            message:
+                'Color must be selected when is_color and is_premium are true',
+            path: ['color_hexadecimal'],
+        }
+    );
 
 export default function Page({ params }: { params: { id: string } }) {
     const { data } = useDetailListing(params.id);
@@ -321,7 +341,7 @@ export default function Page({ params }: { params: { id: string } }) {
                                                                             )}
                                                                         ></div>
                                                                         <span>
-                                                                            light
+                                                                            Light
                                                                             Beige
                                                                         </span>
                                                                     </div>

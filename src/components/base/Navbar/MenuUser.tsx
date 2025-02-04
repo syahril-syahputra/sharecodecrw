@@ -1,5 +1,5 @@
 'use client';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { HandCoins, LogOut, User2 } from 'lucide-react';
 import {
     DropdownMenu,
@@ -12,19 +12,24 @@ import {
 import { signOut } from 'next-auth/react';
 import Link from 'next/link';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { useFetchCreditBusiness } from '@/feature/business/useFetchCreditBusiness';
 interface IProps {
     session?: { email: string };
     image?: string;
 }
 export default function MenuUser(props: IProps) {
+    const { data: creditCounter, status, isLoading } = useFetchCreditBusiness();
+    const [credit, setCredit] = useState(0);
+    useEffect(() => {
+        if (status === 'success') {
+            setCredit(creditCounter);
+        }
+    }, [setCredit, status]);
     return (
         <div className="flex items-center space-x-4 py-4">
-            <Link
-                href={'/user/interests-favorites'}
-                className="flex items-center space-x-2"
-            >
+            <Link href={'/user/plans'} className="flex items-center space-x-2">
                 <HandCoins />
-                <span>2</span>
+                <span>{!isLoading && credit}</span>
             </Link>
             <DropdownMenu>
                 <DropdownMenuTrigger asChild>

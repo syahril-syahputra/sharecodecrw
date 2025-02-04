@@ -25,6 +25,7 @@ export interface IServices {
     rating: number | null;
     total_reviews: number;
     is_company: boolean;
+    color_hexadecimal: string;
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     boosters: any[];
     is_boost_color: boolean;
