@@ -23,7 +23,7 @@ export default function CardServices(props: IProps) {
             <Link href={`/service/${props.data.slug}/${props.data.id}`}>
                 <Card
                     className={clsx(
-                        `relative overflow-hidden rounded-lg p-10 text-white shadow-lg`
+                        `relative overflow-hidden  rounded-lg bg-gray-950 p-10 text-white shadow-lg`
                     )}
                     style={{ backgroundColor: props.data.color_hexadecimal }}
                 >
@@ -95,7 +95,7 @@ export default function CardServices(props: IProps) {
         <Link href={`/service/${props.data.slug}/${props.data.id}`}>
             <Card
                 className={clsx(
-                    `relative overflow-hidden rounded-lg p-10 text-white shadow-lg`
+                    `relative overflow-hidden rounded-lg bg-gray-950 p-10 text-white shadow-lg`
                 )}
                 style={{ backgroundColor: props.data.color_hexadecimal }}
             >
