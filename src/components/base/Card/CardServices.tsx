@@ -95,11 +95,9 @@ export default function CardServices(props: IProps) {
         <Link href={`/service/${props.data.slug}/${props.data.id}`}>
             <Card
                 className={clsx(
-                    `relative overflow-hidden rounded-lg p-10 text-white shadow-lg`,
-                    props.data.is_boost_color
-                        ? `bg-[${props.data.color_hexadecimal}]`
-                        : 'bg-gray-950'
+                    `relative overflow-hidden rounded-lg p-10 text-white shadow-lg`
                 )}
+                style={{ backgroundColor: props.data.color_hexadecimal }}
             >
                 <div className="absolute -top-64 left-80 h-96 w-96 -translate-x-1/2 transform rounded-full bg-[#E9E1D3] opacity-35 blur-3xl"></div>
                 <div className="flex items-center space-x-4 font-bold capitalize">
