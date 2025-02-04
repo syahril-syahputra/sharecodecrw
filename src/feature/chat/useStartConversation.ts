@@ -14,7 +14,7 @@ export const useStartConversation = ({ onSuccess, onError }: IProps) => {
                 method: 'POST',
                 url: `/messages/direct-messages`,
                 body: {
-                    'recipient_id' : recipientId,
+                    recipient_id: recipientId,
                 },
             });
 

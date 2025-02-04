@@ -152,11 +152,14 @@ export default function Page({ params }: { params: { id: string } }) {
     };
     return (
         <Fragment>
-            <div className="flex-1 px-6 space-y-5">
+            <div className="flex-1 space-y-5 px-6">
                 <CardDarkNeonGlow>
                     <div className="flex items-center space-x-4">
-                        <Avatar className='h-12 w-12'>
-                            <AvatarImage src={'https://github.com/shadcn.png'} alt="@shadcn" />
+                        <Avatar className="h-12 w-12">
+                            <AvatarImage
+                                src={'https://github.com/shadcn.png'}
+                                alt="@shadcn"
+                            />
                             <AvatarFallback className="bg-gray-600">
                                 ASD
                             </AvatarFallback>

@@ -1,14 +1,18 @@
-'use client'
-import { Button } from "@/components/ui/button";
-import { useToast } from "@/components/ui/use-toast";
-import { useStartConversation } from "@/feature/chat/useStartConversation";
-import { MessageCircle } from "lucide-react";
-import { useSession } from "next-auth/react";
-import { Fragment, useState } from "react";
-import DialogLoginRequired from "../Dialog/DialogLoginRequired";
-import { useRouter } from "next/navigation";
+'use client';
+import { Button } from '@/components/ui/button';
+import { useToast } from '@/components/ui/use-toast';
+import { useStartConversation } from '@/feature/chat/useStartConversation';
+import { MessageCircle } from 'lucide-react';
+import { useSession } from 'next-auth/react';
+import { Fragment, useState } from 'react';
+import DialogLoginRequired from '../Dialog/DialogLoginRequired';
+import { useRouter } from 'next/navigation';
 
-export default function StartConversation({businessId}: {businessId: string}){
+export default function StartConversation({
+    businessId,
+}: {
+    businessId: string;
+}) {
     const { toast } = useToast();
     const { status } = useSession();
     const [isOpen, setIsModalLogin] = useState(false);
@@ -18,7 +22,7 @@ export default function StartConversation({businessId}: {businessId: string}){
     const { mutate, isPending } = useStartConversation({
         onSuccess: (data) => {
             toast({ description: data.data.message });
-            router.push(`//user/direct-chats/room/${data.data.data.id}`)
+            router.push(`//user/direct-chats/room/${data.data.data.id}`);
         },
         onError: (data) => {
             toast({
@@ -29,8 +33,8 @@ export default function StartConversation({businessId}: {businessId: string}){
     });
 
     const handleStartConversation = () => {
-        mutate(businessId)
-    }
+        mutate(businessId);
+    };
     return (
         <Fragment>
             <DialogLoginRequired
@@ -38,7 +42,8 @@ export default function StartConversation({businessId}: {businessId: string}){
                 isOpen={isOpen}
                 onOpenChange={(value) => setIsModalLogin(value)}
             />
-            <Button className="rounded-full"
+            <Button
+                className="rounded-full"
                 loading={isPending}
                 onClick={() =>
                     isLogin ? handleStartConversation() : setIsModalLogin(true)
@@ -48,5 +53,5 @@ export default function StartConversation({businessId}: {businessId: string}){
                 Message Us
             </Button>
         </Fragment>
-    )
+    );
 }
