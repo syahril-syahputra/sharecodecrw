@@ -19,6 +19,8 @@ import React, {
     useRef,
     useState,
 } from 'react';
+import { Avatar, AvatarFallback } from '@/components/ui/avatar';
+import { AvatarImage } from '@radix-ui/react-avatar';
 
 export default function Page({ params }: { params: { id: string } }) {
     const [socket, setSocket] = useState<WebSocket | null>(null);
@@ -150,12 +152,25 @@ export default function Page({ params }: { params: { id: string } }) {
     };
     return (
         <Fragment>
-            <div className="flex-1 px-6">
+            <div className="flex-1 px-6 space-y-5">
+                <CardDarkNeonGlow>
+                    <div className="flex items-center space-x-4">
+                        <Avatar className='h-12 w-12'>
+                            <AvatarImage src={'https://github.com/shadcn.png'} alt="@shadcn" />
+                            <AvatarFallback className="bg-gray-600">
+                                ASD
+                            </AvatarFallback>
+                        </Avatar>
+                        <div>
+                            <h1 className="text-xl font-semibold">{`Kadek Cahya`}</h1>
+                        </div>
+                    </div>
+                </CardDarkNeonGlow>
                 <CardDarkNeonGlow>
                     <div className="rounded-md">
-                        <ScrollArea className="h-[700px]">
+                        <ScrollArea className="h-[600px]">
                             <div
-                                className="flex min-h-[700px] flex-col-reverse"
+                                className="flex min-h-[600px] flex-col-reverse"
                                 ref={first}
                             >
                                 {dataChat.map((item, index) => (
