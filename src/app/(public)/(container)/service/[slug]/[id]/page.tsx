@@ -5,7 +5,6 @@ import {
     Contact,
     Mail,
     MapPin,
-    MessageCircle,
     Phone,
     ShieldCheck,
     SquareArrowOutUpRight,
@@ -28,9 +27,9 @@ import {
 import CardService from '@/components/base/Card/CardService';
 import { getCurrentUser } from '@/lib/session';
 import QuestionAndAnswerDark from '@/components/base/QuestionAndAnswerDark';
-import { Button } from '@/components/ui/button';
 import { IServices } from '@/types/services';
 import { getRelatedListing } from '@/feature/business/useFetchBusinessListingRelated';
+import StartConversation from '@/components/base/Chat/StartConversation';
 
 async function getData(id: string) {
     try {
@@ -246,10 +245,7 @@ export default async function Page({ params }: { params: { id: string } }) {
                             </p>
                         </div>
                         <div>
-                            <Button className="rounded-full">
-                                <MessageCircle className="mr-2" />
-                                Message
-                            </Button>
+                            <StartConversation businessId={data.cmp_id} />
                         </div>
                     </div>
                 </div>

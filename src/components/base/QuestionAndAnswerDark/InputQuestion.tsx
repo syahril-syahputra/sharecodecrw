@@ -15,7 +15,6 @@ interface IProps {
 export default function InputQuestion(props: IProps) {
     const { status } = useSession();
     const isLogin = status === 'authenticated';
-    console.log(props.errors);
 
     const [isShowLogin, setisShowLogin] = useState(false);
     const send = () => {
