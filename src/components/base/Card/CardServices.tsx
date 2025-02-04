@@ -1,3 +1,4 @@
+'use client';
 import { Card } from '@/components/ui/card';
 import React from 'react';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
