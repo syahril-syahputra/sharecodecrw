@@ -23,9 +23,15 @@ export default function CardServices(props: IProps) {
             <Link href={`/service/${props.data.slug}/${props.data.id}`}>
                 <Card
                     className={clsx(
-                        `relative overflow-hidden  rounded-lg bg-gray-950 p-10 text-white shadow-lg`
+                        `relative overflow-hidden  rounded-lg border-none bg-gray-950 p-10 text-white shadow-lg`
                     )}
-                    style={{ backgroundColor: props.data.color_hexadecimal }}
+                    style={{
+                        color:
+                            props.data.color_hexadecimal === '#e9e1d3'
+                                ? '#111111'
+                                : undefined,
+                        backgroundColor: props.data.color_hexadecimal,
+                    }}
                 >
                     <div className="absolute -top-64 left-80 h-96 w-96 -translate-x-1/2 transform rounded-full bg-[#E9E1D3] opacity-35 blur-3xl"></div>
                     <div className="flex items-center space-x-4 font-bold capitalize">
@@ -54,7 +60,7 @@ export default function CardServices(props: IProps) {
                     </div>
 
                     <div className="justify-between space-y-8 py-5">
-                        <div className="relative flex-1 text-white">
+                        <div className="relative flex-1">
                             <h2 className="mb-3 font-saans text-3xl font-bold">
                                 {props.data.title}
                             </h2>
@@ -72,7 +78,7 @@ export default function CardServices(props: IProps) {
                         />
                     </div>
                     <div className="flex justify-between">
-                        <div className="flex items-center space-x-2 font-saans font-bold text-gray-400">
+                        <div className="flex items-center space-x-2 font-saans font-bold ">
                             <Radius />
                             <span>
                                 {parseFloat(props.data.distance.toFixed(2))} KM
@@ -95,9 +101,15 @@ export default function CardServices(props: IProps) {
         <Link href={`/service/${props.data.slug}/${props.data.id}`}>
             <Card
                 className={clsx(
-                    `relative overflow-hidden rounded-lg bg-gray-950 p-10 text-white shadow-lg`
+                    `relative overflow-hidden rounded-lg border-none bg-gray-950 p-10 text-white shadow-lg`
                 )}
-                style={{ backgroundColor: props.data.color_hexadecimal }}
+                style={{
+                    color:
+                        props.data.color_hexadecimal === '#e9e1d3'
+                            ? '#111111'
+                            : undefined,
+                    backgroundColor: props.data.color_hexadecimal,
+                }}
             >
                 <div className="absolute -top-64 left-80 h-96 w-96 -translate-x-1/2 transform rounded-full bg-[#E9E1D3] opacity-35 blur-3xl"></div>
                 <div className="flex items-center space-x-4 font-bold capitalize">
@@ -126,7 +138,7 @@ export default function CardServices(props: IProps) {
                 </div>
 
                 <div className="flex justify-between space-x-10 py-5">
-                    <div className="relative flex-1 text-white">
+                    <div className="relative flex-1 ">
                         <h2 className="mb-3 font-saans text-3xl font-bold">
                             {props.data.title}
                         </h2>
@@ -144,7 +156,7 @@ export default function CardServices(props: IProps) {
                     />
                 </div>
                 <div className="flex justify-between">
-                    <div className="flex items-center space-x-2 font-saans font-bold text-gray-400">
+                    <div className="flex items-center space-x-2 font-saans font-bold ">
                         <Radius />
                         <span>
                             {parseFloat(props.data.distance.toFixed(2))} KM
