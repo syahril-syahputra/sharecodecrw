@@ -25,3 +25,12 @@ export const FileToBase64 = (file: File) =>
 export const truncateText = (text: string, maxChars: number) => {
     return text.length > maxChars ? text.substring(0, maxChars) + '...' : text;
 };
+
+export const getInitialsName = (name: string) => {
+    return name
+        .split(' ')
+        .map((part) => part[0])
+        .join('')
+        .toUpperCase()
+        .slice(0, 2);
+};

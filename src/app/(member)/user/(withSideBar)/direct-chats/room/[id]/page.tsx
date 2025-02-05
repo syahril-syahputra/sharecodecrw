@@ -7,7 +7,6 @@ import InfiniteScroll from '@/components/ui/InfiniteScroll';
 import { Input } from '@/components/ui/input';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Skeleton } from '@/components/ui/skeleton';
-import { useFetchHistoryChat } from '@/feature/chat/useFetchHistoryChat';
 import fetchClient from '@/lib/FetchClient';
 import useTableConfig from '@/lib/useTableConfig';
 import { IDirectChat } from '@/types/chat';
@@ -21,6 +20,10 @@ import React, {
 } from 'react';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { AvatarImage } from '@radix-ui/react-avatar';
+import { useFetchHistoryDirectChat } from '@/feature/chat/useFetchHistoryDirectChat';
+import { useFetchConversationRoom } from '@/feature/chat/useFetchConversationRoom';
+import { getInitialsName } from '@/lib/utils';
+import Link from 'next/link';
 
 export default function Page({ params }: { params: { id: string } }) {
     const [socket, setSocket] = useState<WebSocket | null>(null);
@@ -58,7 +61,7 @@ export default function Page({ params }: { params: { id: string } }) {
         fetchNextPage,
         isLoading,
         hasNextPage,
-    } = useFetchHistoryChat(params.id, pagination, () => {
+    } = useFetchHistoryDirectChat(params.id, pagination, () => {
         setTimeout(() => {
             if (!init) {
                 first.current?.scrollIntoView(false);
@@ -73,7 +76,7 @@ export default function Page({ params }: { params: { id: string } }) {
             });
 
             connect(
-                `wss://dev-api.crowner.ca/ws?token=${data.data.data.access_token}&room_id=${params.id}`
+                `wss://dev-api.crowner.ca/ws?token=${data.data.data.access_token}&room_id=${params.id}&type=direct-messages`
             );
         } catch (error) {
             console.log(error);
@@ -132,7 +135,7 @@ export default function Page({ params }: { params: { id: string } }) {
                 ping();
                 socket.send(
                     JSON.stringify({
-                        event: 'chat-direct-user-send-message',
+                        event: 'direct-message-sent',
                         data: {
                             message: message,
                         },
@@ -150,34 +153,58 @@ export default function Page({ params }: { params: { id: string } }) {
             handleSendMessage();
         }
     };
+
+    const { data: conversationDetail } = useFetchConversationRoom(params.id);
     return (
         <Fragment>
             <div className="flex-1 space-y-5 px-6">
                 <CardDarkNeonGlow>
-                    <div className="flex items-center space-x-4">
-                        <Avatar className="h-12 w-12">
-                            <AvatarImage
-                                src={'https://github.com/shadcn.png'}
-                                alt="@shadcn"
-                            />
-                            <AvatarFallback className="bg-gray-600">
-                                ASD
-                            </AvatarFallback>
-                        </Avatar>
-                        <div>
-                            <h1 className="text-xl font-semibold">{`Kadek Cahya`}</h1>
+                    <Link
+                        href={`/profile/${conversationDetail?.chat_partner_business_id}`}
+                    >
+                        <div className="flex items-center space-x-4">
+                            <Avatar className="h-12 w-12">
+                                <AvatarImage
+                                    src={
+                                        conversationDetail?.chat_partner_business_image_url
+                                    }
+                                    alt={
+                                        conversationDetail?.chat_partner_business_name
+                                    }
+                                />
+                                <AvatarFallback className="bg-gray-600">
+                                    {getInitialsName(
+                                        conversationDetail?.chat_partner_business_name ||
+                                            ''
+                                    )}
+                                </AvatarFallback>
+                            </Avatar>
+                            <div>
+                                <h1 className="text-xl font-semibold">
+                                    {
+                                        conversationDetail?.chat_partner_business_name
+                                    }
+                                </h1>
+                            </div>
                         </div>
-                    </div>
+                    </Link>
                 </CardDarkNeonGlow>
                 <CardDarkNeonGlow>
                     <div className="rounded-md">
                         <ScrollArea className="h-[600px]">
                             <div
-                                className="flex min-h-[600px] flex-col-reverse"
+                                className="flex min-h-[600px] flex-col-reverse space-y-2"
                                 ref={first}
                             >
                                 {dataChat.map((item, index) => (
-                                    <CardChat key={index} data={item} />
+                                    <CardChat
+                                        key={index}
+                                        data={item}
+                                        chatPartnerId={
+                                            conversationDetail?.chat_partner_business_id ||
+                                            ''
+                                        }
+                                    />
                                 ))}
                                 {historyChat &&
                                     historyChat.pages.map((page, index) => (
@@ -186,91 +213,14 @@ export default function Page({ params }: { params: { id: string } }) {
                                                 <CardHistoryChat
                                                     key={i}
                                                     data={item}
+                                                    chatPartnerId={
+                                                        conversationDetail?.chat_partner_business_id ||
+                                                        ''
+                                                    }
                                                 />
                                             ))}
                                         </div>
                                     ))}
-                                <div className="mt-2 space-y-2">
-                                    <CardChat
-                                        data={{
-                                            event: 'chat-direct-user-receive-message',
-                                            message: 'huhuhu',
-                                        }}
-                                    />
-                                    <CardChat
-                                        data={{
-                                            event: 'chat-direct-user-receive-message',
-                                            message: 'huhuhu',
-                                        }}
-                                    />
-                                </div>
-
-                                <div className="space-y-2">
-                                    <CardHistoryChat
-                                        data={{
-                                            user_id: 'yes',
-                                            first_name: 'string',
-                                            last_name: 'string',
-                                            id: 'string',
-                                            message:
-                                                'flex items-center justify-between rounded-lg bg-white/10 p-4 shadow-lg backdrop-blur-md',
-                                            created_at: '2025-01-01 20:00:23',
-                                            profile_picture_url: 'string',
-                                        }}
-                                    />
-
-                                    <CardHistoryChat
-                                        data={{
-                                            user_id: 'true',
-                                            first_name: 'string',
-                                            last_name: 'string',
-                                            id: 'string',
-                                            message:
-                                                'flex items-center justify-between rounded-lg bg-white/10 p-4 shadow-lg backdrop-blur-md',
-                                            created_at: '2025-01-01 20:00:23',
-                                            profile_picture_url: 'string',
-                                        }}
-                                    />
-
-                                    <CardHistoryChat
-                                        data={{
-                                            user_id: 'true',
-                                            first_name: 'string',
-                                            last_name: 'string',
-                                            id: 'string',
-                                            message:
-                                                'flex tween-white/10 p-4 shadow-lg backdrop-blur-md',
-                                            created_at: '2025-01-01 20:00:23',
-                                            profile_picture_url: 'string',
-                                        }}
-                                    />
-
-                                    <CardHistoryChat
-                                        data={{
-                                            user_id: 'yes',
-                                            first_name: 'string',
-                                            last_name: 'string',
-                                            id: 'string',
-                                            message:
-                                                'flex tween-white/10 p-4 shadow-lg backdrop-blur-md',
-                                            created_at: '2025-01-01 20:00:23',
-                                            profile_picture_url: 'string',
-                                        }}
-                                    />
-
-                                    <CardHistoryChat
-                                        data={{
-                                            user_id: 'yes',
-                                            first_name: 'string',
-                                            last_name: 'string',
-                                            id: 'string',
-                                            message:
-                                                'flex tween-wdow-lg backdrop-blur-md',
-                                            created_at: '2025-01-01 20:00:23',
-                                            profile_picture_url: 'string',
-                                        }}
-                                    />
-                                </div>
 
                                 <InfiniteScroll
                                     hasMore={hasNextPage}

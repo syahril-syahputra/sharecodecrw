@@ -50,7 +50,7 @@ const formSchema = z.object({
     title: z.string().min(1, { message: 'Title is required' }),
     description: z
         .string()
-        .min(20, { message: 'Description is required 20 character' }),
+        .min(50, { message: 'Description is required 50 character' }),
 
     hashtags: z.array(z.string()).min(3, { message: 'tags is required min 3' }),
     price: z.coerce.number(),
