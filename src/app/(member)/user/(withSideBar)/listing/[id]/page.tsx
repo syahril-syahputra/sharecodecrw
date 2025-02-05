@@ -168,6 +168,13 @@ export default function Page({ params }: { params: { id: string } }) {
                     <Separator />
                     <div className="flex flex-col space-y-2">
                         <label className="text-xl font-semibold">
+                            Acceptance Status
+                        </label>
+                        <span>{data?.acceptance_status}</span>
+                    </div>
+                    <Separator />
+                    <div className="flex flex-col space-y-2">
+                        <label className="text-xl font-semibold">
                             Description
                         </label>
                         <span>{data?.description}</span>
@@ -183,7 +190,7 @@ export default function Page({ params }: { params: { id: string } }) {
                     </div>
                     <Separator />
                     <div className="flex flex-col space-y-2">
-                        <label className="text-xl font-semibold">price</label>
+                        <label className="text-xl font-semibold">Price</label>
                         <span>{data?.price}</span>
                     </div>
                     <Separator />

@@ -22,7 +22,7 @@ export default function StartConversation({
     const { mutate, isPending } = useStartConversation({
         onSuccess: (data) => {
             toast({ description: data.data.message });
-            router.push(`//user/direct-chats/room/${data.data.data.id}`);
+            router.push(`/user/direct-chats/room/${data.data.data.id}`);
         },
         onError: (data) => {
             toast({

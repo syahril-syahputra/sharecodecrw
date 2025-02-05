@@ -1,22 +1,37 @@
 import { humanize } from '@/lib/humanizeDate';
 import { IDirectChat } from '@/types/chat';
-import { useSession } from 'next-auth/react';
 import React from 'react';
 
-export default function CardChat(props: { data: IDirectChat }) {
-    const { data } = useSession();
-    const name =
-        data?.user.id === props.data.data?.user_id
-            ? 'You'
-            : props.data.data?.name;
-    if (props.data.event === 'chat-direct-user-receive-message') {
+export default function CardChat(props: {
+    data: IDirectChat;
+    chatPartnerId: string;
+}) {
+    const isLeft =
+        props.chatPartnerId === props.data.data?.business_id ? true : false;
+
+    if (isLeft && props.data.event === 'direct-message-received') {
         return (
-            <div className="flex justify-start">
+            <div className="mt-2 flex justify-start">
                 <div className="rounded-lg rounded-lg bg-white/10 p-2 shadow-md backdrop-blur-md">
                     <div>
-                        <p>{props.data.message}</p>
+                        <p>{props.data.data?.message}</p>
                     </div>
-                    <div className="text-xs">
+                    <div className="text-xs ">
+                        {humanize(props.data.data?.created_at || '')}
+                    </div>
+                </div>
+            </div>
+        );
+    }
+
+    if (!isLeft && props.data.event === 'direct-message-received') {
+        return (
+            <div className="mt-2 flex justify-end">
+                <div className="rounded-lg rounded-lg bg-white/40 p-2 shadow-md backdrop-blur-md">
+                    <div>
+                        <p>{props.data.data?.message}</p>
+                    </div>
+                    <div className="flex justify-end text-xs">
                         {humanize(props.data.data?.created_at || '')}
                     </div>
                 </div>
@@ -28,9 +43,8 @@ export default function CardChat(props: { data: IDirectChat }) {
         props.data.event === 'validation-error'
     ) {
         return (
-            <div className="mx-auto flex items-start space-x-2 p-2">
-                <div className=" space-y-2 rounded-lg  italic text-red-400">
-                    <a className="capitalize">{name}</a>{' '}
+            <div className="mx-auto mt-2 flex items-start p-2">
+                <div className="rounded-lg  italic text-red-400">
                     {props.data.data?.message}
                 </div>
             </div>

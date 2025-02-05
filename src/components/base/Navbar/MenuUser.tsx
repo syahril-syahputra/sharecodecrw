@@ -33,7 +33,7 @@ export default function MenuUser(props: IProps) {
             </Link>
             <DropdownMenu>
                 <DropdownMenuTrigger asChild>
-                    <Avatar className="mx-auto h-12 w-12">
+                    <Avatar className="mx-auto h-12 w-12 cursor-pointer">
                         <AvatarImage
                             src={props.image ? props.image : '/icons/user.png'}
                         />

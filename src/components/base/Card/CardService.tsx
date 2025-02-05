@@ -3,6 +3,7 @@ import ImageCard from '../Image/ImageCard';
 import { IServices } from '@/types/services';
 import { ShieldCheck, UserCheck } from 'lucide-react';
 import Rating from '@/components/ui/rating';
+import { getInitialsName } from '@/lib/utils';
 
 export default function CardService({
     data,
@@ -53,7 +54,9 @@ export default function CardService({
                             src={data.cmp_image_url || ''}
                             alt={data.title}
                         />
-                        <AvatarFallback>{123}</AvatarFallback>
+                        <AvatarFallback>
+                            {getInitialsName(data.cmp_name)}
+                        </AvatarFallback>
                     </Avatar>
                     <div className="space-y-1">
                         <div className="flex items-center space-x-2 font-urbanist text-white">

@@ -24,13 +24,14 @@ export interface IDirectChat {
     event:
         | 'parse-error'
         | 'validation-error'
-        | 'chat-direct-user-receive-message'
-        | 'chat-direct-user-send-message';
+        | 'direct-message-sent'
+        | 'direct-message-received';
     message?: string;
     errors?: {
         [field: string]: string[];
     };
     data?: {
+        business_id: string;
         user_id?: string;
         name?: string;
         id?: string;
@@ -48,4 +49,23 @@ export interface IChatHistory {
     message?: string;
     created_at?: string;
     profile_picture_url: string;
+}
+
+export interface IConversationRoom {
+    id: string;
+    business_id: string;
+    name: string;
+    image_url: string;
+    last_message: string;
+    is_read: boolean;
+    unread_count: number;
+    last_message_created_at: string;
+}
+
+export interface IConversationDetail {
+    id: string;
+    logged_in_business_id: string;
+    chat_partner_business_id: string;
+    chat_partner_business_name: string;
+    chat_partner_business_image_url: string;
 }

@@ -101,7 +101,7 @@ const formSchema = z
         title: z.string().min(1, { message: 'Title is required' }),
         description: z
             .string()
-            .min(50, { message: 'Description is required 20 character' }),
+            .min(50, { message: 'Description is required 50 character' }),
 
         hashtags: z
             .array(z.string())
