@@ -8,9 +8,7 @@ interface IProps {
 }
 export default function Rating(props: IProps) {
     if (props.rater === 0) {
-        return (
-            <div className="flex items-center space-x-1 text-gray-500"></div>
-        );
+        return <div className="flex items-center space-x-1 "></div>;
     }
 
     if (props.variant == 'big') {
@@ -30,7 +28,7 @@ export default function Rating(props: IProps) {
                                 className="text-primary"
                             />
                         ))}
-                        {Array.from({ length: 5 - props.star }).map(
+                        {Array.from({ length: 5 - Math.floor(props.star) }).map(
                             (_, index) => (
                                 <Star
                                     key={index}
@@ -46,7 +44,7 @@ export default function Rating(props: IProps) {
     }
 
     return (
-        <div className="flex space-x-1 text-gray-500">
+        <div className="flex space-x-1 ">
             {Array.from({ length: props.star }).map((_, index) => (
                 <Star
                     key={index}
@@ -56,10 +54,17 @@ export default function Rating(props: IProps) {
                     className="text-[#258AD8]"
                 />
             ))}
-            {Array.from({ length: 5 - props.star }).map((_, index) => (
-                <Star key={index} size={16} fill="#888888" strokeWidth={0} />
-            ))}
-            <span className="-mt-[2px] pl-2 text-sm font-thin text-white">
+            {Array.from({ length: 5 - Math.floor(props.star) }).map(
+                (_, index) => (
+                    <Star
+                        key={index}
+                        size={16}
+                        fill="#888888"
+                        strokeWidth={0}
+                    />
+                )
+            )}
+            <span className="-mt-[2px] pl-2 text-sm font-thin ">
                 {props.rater}
             </span>
         </div>
