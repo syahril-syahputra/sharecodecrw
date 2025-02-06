@@ -25,13 +25,6 @@ export const useFetchHistoryDirectChat = (
                 items: IChatHistory[];
                 meta: IPaginationMeta;
             };
-
-            // const items: IChatHistory[] = response.data.data.data
-            // const meta: IPaginationMeta = response.data.data.meta
-            // return {
-            //     items,
-            //     meta
-            // }
         },
         queryKey: ['fetch.historyDirectChat'],
         initialPageParam: 1,

@@ -32,7 +32,7 @@ export default function Page({ params }: { params: { id: string } }) {
     const [dataChat, setdataChat] = useState<IDirectChat[]>([]);
     const [init, setinit] = useState(false);
     const { pagination } = useTableConfig({
-        pageSize: 5,
+        pageSize: 10,
         defaultFilter: {},
     });
     useEffect(() => {
