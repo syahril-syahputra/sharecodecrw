@@ -75,10 +75,10 @@ export default function HomeServices() {
             setUserLocation(JSON.parse(location) as ICordinate);
             setfilterValue({
                 ...filterValue,
-                // lat: userLocation.lat + '',
-                // lng: userLocation.lng + '',
-                lat: '40.79509100',
-                lng: '-73.96828500',
+                lat: userLocation.lat + '',
+                lng: userLocation.lng + '',
+                // lat: '40.79509100',
+                // lng: '-73.96828500',
             });
         } else {
             console.log('Geolocation is not available in your browser.');

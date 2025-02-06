@@ -232,7 +232,8 @@ export default function Page() {
     } = useCreateListing({
         onSuccess: (result) => {
             // router.push('/user/listing');
-            if (result.data.data.url) {
+
+            if (result.data?.data?.url) {
                 window.location.href = result.data.data.url;
             } else {
                 router.push('/user/listing');
@@ -352,7 +353,7 @@ export default function Page() {
                                                     setTags(newTags);
                                                 }}
                                                 styleClasses={{
-                                                    input: 'mb-4 bg-transparent border-white',
+                                                    input: 'mb-4 bg-transparent border-white !rounded-full',
                                                 }}
                                                 inlineTags={false}
                                                 inputFieldPosition={'top'}
@@ -1069,7 +1070,10 @@ export default function Page() {
                                         loading={isLoadingCreate}
                                         type="submit"
                                         value="credit_balance"
-                                        disabled={!pricingResult.is_sufficient}
+                                        disabled={
+                                            isLoadingCreate ||
+                                            !pricingResult.is_sufficient
+                                        }
                                     >
                                         Pay with Credit Balance
                                     </Button>

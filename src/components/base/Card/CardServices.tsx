@@ -142,7 +142,7 @@ export default function CardServices(props: IProps) {
                         <h2 className="mb-3 font-saans text-3xl font-bold">
                             {props.data.title}
                         </h2>
-                        <p className="bg-gradient-to-b from-gray-200 to-transparent bg-clip-text font-urbanist text-transparent">
+                        <p className="bg-gradient-to-b from-gray-200 to-transparent bg-clip-text font-urbanist">
                             {truncateText(props.data.description, 250)}
                         </p>
                     </div>
