@@ -45,7 +45,7 @@ interface ICordinate {
 export default function HomeServices() {
     const defaultLat = parseFloat(process.env.NEXT_PUBLIC_DEFAULT_LAT || '0');
     const defaultLng = parseFloat(process.env.NEXT_PUBLIC_DEFAULT_LNG || '0');
-    const [userLocation, setUserLocation] = useState<ICordinate>({
+    const [userLocation] = useState<ICordinate>({
         lat: defaultLat,
         lng: defaultLng,
     });
@@ -64,26 +64,61 @@ export default function HomeServices() {
             title: '',
             provider: '',
             rad: '50',
-            lat: '40.79509100',
-            lng: '-73.96828500',
+            lat: userLocation ? userLocation.lat + '' : '',
+            lng: userLocation ? userLocation.lng + '' : '',
         },
     });
     useEffect(() => {
         const location = localStorage.getItem('location');
-        console.log(userLocation);
+
         if (location) {
-            setUserLocation(JSON.parse(location) as ICordinate);
+            const newlock = JSON.parse(location) as ICordinate;
             setfilterValue({
                 ...filterValue,
-                lat: userLocation.lat + '',
-                lng: userLocation.lng + '',
-                // lat: '40.79509100',
-                // lng: '-73.96828500',
+                lat: newlock.lat + '',
+                lng: newlock.lng + '',
             });
         } else {
-            console.log('Geolocation is not available in your browser.');
+            if ('geolocation' in navigator) {
+                navigator.geolocation.getCurrentPosition(
+                    (position) => {
+                        const { latitude, longitude } = position.coords;
+                        setfilterValue({
+                            ...filterValue,
+                            lat: latitude,
+                            lng: longitude,
+                            // lat: '40.79509100',
+                            // lng: '-73.96828500',
+                        });
+                    },
+                    () => {}
+                );
+            } else {
+                console.log('Geolocation is not available in your browser.');
+            }
         }
     }, []);
+
+    useEffect(() => {
+        filterHandler();
+    }, [filterValue.lat]);
+
+    // useEffect(() => {
+    //     const location = localStorage.getItem('location');
+    //     console.log(location);
+    //     if (location) {
+    //         setUserLocation(JSON.parse(location) as ICordinate);
+    //         setfilterValue({
+    //             ...filterValue,
+    //             lat: userLocation.lat + '',
+    //             lng: userLocation.lng + '',
+    //             // lat: '40.79509100',
+    //             // lng: '-73.96828500',
+    //         });
+    //     } else {
+    //         console.log('Geolocation is not available in your browser.');
+    //     }
+    // }, []);
     const { data: dataState, isLoading: isLoadingProvince } = useFetchState();
     const { data: dataCategory, isLoading: isLoadingCategory } =
         useFetchCategory();

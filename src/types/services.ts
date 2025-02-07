@@ -4,8 +4,8 @@ export interface IFilterServices {
     province_id?: string;
     city_id?: string;
     rad?: string;
-    lat?: string;
-    lng?: string;
+    lat?: string | number;
+    lng?: string | number;
     provider: '' | 'company' | 'personal';
 }
 export interface IServices {
