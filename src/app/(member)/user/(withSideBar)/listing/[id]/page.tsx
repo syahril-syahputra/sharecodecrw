@@ -621,7 +621,10 @@ export default function Page({ params }: { params: { id: string } }) {
                                         loading={isLoadingCreate}
                                         type="submit"
                                         value="credit_balance"
-                                        disabled={!pricingResult.is_sufficient}
+                                        disabled={
+                                            isLoadingCreate ||
+                                            !pricingResult.is_sufficient
+                                        }
                                     >
                                         Pay with Credit Balance
                                     </Button>

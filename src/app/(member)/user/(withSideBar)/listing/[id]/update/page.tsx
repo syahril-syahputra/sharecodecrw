@@ -39,13 +39,6 @@ import { Button } from '@/components/ui/button';
 import { useUpdateListing } from '@/feature/listing/useUpdateListing';
 import { BodyUpdateListing } from '@/types/listing';
 
-const MAX_FILE_SIZE = 500000;
-const ACCEPTED_IMAGE_TYPES = [
-    'image/jpeg',
-    'image/jpg',
-    'image/png',
-    'image/webp',
-];
 const formSchema = z.object({
     title: z.string().min(1, { message: 'Title is required' }),
     description: z
@@ -64,24 +57,14 @@ const formSchema = z.object({
         required_error: 'latitude required.',
     }),
     address: z.string().min(1),
-    image: z
-        .any()
-        .refine((files) => files?.length == 1, 'Image is required.')
-        .refine(
-            (files) => files?.[0]?.size <= MAX_FILE_SIZE,
-            `Max file size is 500kb.`
-        )
-        .refine(
-            (files) => ACCEPTED_IMAGE_TYPES.includes(files?.[0]?.type),
-            '.jpg, .jpeg, .png and .webp files are accepted.'
-        ),
+    image: z.any().optional(),
 });
 
 const Map = dynamic(() => import('@/components/base/Maps/maps'), {
     ssr: false,
 });
 export default function Page({ params }: { params: { id: string } }) {
-    const { data } = useDetailListing(params.id);
+    const { data, isFetching } = useDetailListing(params.id);
     useEffect(() => {
         setTags(
             data
@@ -160,7 +143,7 @@ export default function Page({ params }: { params: { id: string } }) {
         id: params.id,
         onSuccess: (result) => {
             // router.push('/user/listing');
-            if (result.data.data.url) {
+            if (result.data?.data?.url) {
                 window.location.href = result.data.data.url;
             } else {
                 router.push('/user/listing/' + params.id);
@@ -187,7 +170,18 @@ export default function Page({ params }: { params: { id: string } }) {
         };
         createListing(dataBody);
     }
+    const [baseLocation, setBaseLocation] = useState<LatLng | undefined>();
 
+    useEffect(() => {
+        setBaseLocation({
+            lat: Number(data?.latitude),
+            lng: Number(data?.longitude),
+        });
+        handleLocationSelected({
+            lat: Number(data?.latitude),
+            lng: Number(data?.longitude),
+        });
+    }, [isFetching]);
     return (
         <div className="flex w-full flex-1 items-start space-x-4  px-4 text-white">
             <div className=" flex-1 rounded-lg bg-gradient-to-b from-[#1A3652] via-[#020508] to-[#020508] p-4 p-8">
@@ -243,12 +237,12 @@ export default function Page({ params }: { params: { id: string } }) {
                                                 {...field}
                                                 placeholder="Enter a topic"
                                                 tags={tags}
-                                                className="!bg-red-200"
+                                                className="!bg-red-200 "
                                                 setTags={(newTags) => {
                                                     setTags(newTags);
                                                 }}
                                                 styleClasses={{
-                                                    input: 'mb-4 bg-transparent border-gray-500',
+                                                    input: 'mb-4 bg-transparent border-white !rounded-full',
                                                 }}
                                                 inlineTags={false}
                                                 inputFieldPosition={'top'}
@@ -334,12 +328,16 @@ export default function Page({ params }: { params: { id: string } }) {
                                             </b>
                                         </span>
                                     </div>
-                                    <Map
-                                        className="relative z-0 h-[200px] w-full"
-                                        onLocationSelected={
-                                            handleLocationSelected
-                                        }
-                                    />
+                                    {!isFetching && (
+                                        <Map
+                                            className="relative z-0 h-[200px] w-full"
+                                            onLocationSelected={
+                                                handleLocationSelected
+                                            }
+                                            userLocationBase={baseLocation}
+                                        />
+                                    )}
+
                                     <div className="flex space-x-4">
                                         <FormField
                                             control={form.control}
