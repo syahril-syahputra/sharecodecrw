@@ -124,9 +124,9 @@ export default function Page() {
     return (
         <CardDarkNeonGlow className=" mx-4 ">
             <div className="space-y-8 p-0">
-                <h1 className="text-2xl font-bold">Listing</h1>
+                <h1 className="text-2xl font-bold">Services</h1>
 
-                <div className="flex flex-1 items-center rounded-lg border border-gray-400 p-4">
+                <div className="flex flex-1 items-center rounded-lg">
                     <div className="grid  flex-1 grid-cols-4 gap-4">
                         <InputCustom
                             className="w-full"
@@ -205,7 +205,7 @@ export default function Page() {
                         <Link href={'/user/listing/create'}>
                             <Button size="sm">
                                 <Plus />
-                                Create Listing
+                                Create Service
                             </Button>
                         </Link>
                     }
