@@ -1,11 +1,12 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 export interface IFilterServices {
     title?: string;
     category?: string;
     province_id?: string;
     city_id?: string;
     rad?: string;
-    lat?: string | number;
-    lng?: string | number;
+    lat?: any;
+    lng?: any;
     provider: '' | 'company' | 'personal';
 }
 export interface IServices {
