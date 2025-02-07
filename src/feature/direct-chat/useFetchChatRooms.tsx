@@ -25,10 +25,14 @@ export const useFetchChatRooms = (
                 meta: IPaginationMeta;
             };
         },
-        queryKey: ['fetch.direct-chat-rooms'],
+        queryKey: ['fetch.direct-chat-rooms', page],
         initialPageParam: 1,
         refetchOnWindowFocus: false,
-        getNextPageParam: ({ meta }) =>
-            meta.page < meta.total_page ? meta.page + 1 : null,
+        getNextPageParam: ({ meta }) => {
+            if (meta.page === meta.total_page) {
+                return undefined;
+            }
+            return meta.page + 1;
+        },
     });
 };

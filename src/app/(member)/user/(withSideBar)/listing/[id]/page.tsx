@@ -198,7 +198,7 @@ export default function Page({ params }: { params: { id: string } }) {
                         <label className="text-xl font-semibold">
                             Payment Type
                         </label>
-                        <span>{data?.payment_type}</span>
+                        <span>{data?.payment_type_formatted}</span>
                     </div>
                     <Separator />
                     <div className="flex items-center">

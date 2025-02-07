@@ -94,6 +94,7 @@ export interface IDetailListing {
     title: string;
     price: string; // Price as string
     payment_type: string; // Can be replaced with enum if there are fixed options
+    payment_type_formatted: string;
     description: string;
     image_url: string;
     acceptance_status: typeAcceptanceStatus; // Can be replaced with enum if there are fixed options

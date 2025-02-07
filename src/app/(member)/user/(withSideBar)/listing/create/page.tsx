@@ -301,7 +301,7 @@ export default function Page() {
                 <div className="flex w-full flex-1 items-start space-x-4  px-4 text-white">
                     <div className=" flex-1 rounded-lg bg-gradient-to-b from-[#1A3652] via-[#020508] to-[#020508] p-4 p-8">
                         <h2 className="font-urbanist text-4xl font-bold text-white">
-                            Create a Service Listing
+                            Create a Service
                         </h2>
 
                         <div className="space-y-8 py-8">
