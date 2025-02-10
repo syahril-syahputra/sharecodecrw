@@ -6,6 +6,8 @@ import Providers from './providers';
 import { SessionProvider } from 'next-auth/react';
 import { Toaster } from '@/components/ui/toaster';
 import { Metadata } from 'next';
+import ErrorBoundary from '@/components/error-boundaries/ErrorBoundary';
+import GlobalErrorHandler from '@/components/error-boundaries/GlobalErrorHandler';
 
 const inter = Inter({
     subsets: ['latin'],
@@ -57,18 +59,21 @@ export default function RootLayout({
             className={`${inter.variable} ${koulen.variable} ${roboto.variable} ${urbanist.variable}`}
         >
             <body className="font-saans">
-                <Toaster />
-                <ThemeProvider
-                    attribute="class"
-                    defaultTheme="system"
-                    enableSystem
-                >
-                    <Providers>
-                        <SessionProvider>
-                            <div>{children}</div>
-                        </SessionProvider>
-                    </Providers>
-                </ThemeProvider>
+                <ErrorBoundary>
+                    <GlobalErrorHandler />
+                    <Toaster />
+                    <ThemeProvider
+                        attribute="class"
+                        defaultTheme="system"
+                        enableSystem
+                    >
+                        <Providers>
+                            <SessionProvider>
+                                <div>{children}</div>
+                            </SessionProvider>
+                        </Providers>
+                    </ThemeProvider>
+                </ErrorBoundary>
             </body>
         </html>
     );
