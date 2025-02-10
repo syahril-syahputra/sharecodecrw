@@ -22,13 +22,8 @@ import React from 'react';
 export default async function page() {
     const user = await getCurrentUser();
     // const data = await getData();
-    const handleClick = () => {
-        // This will throw a ReferenceError
-        console.log((undefined as any).foo);
-      };
     return (
         <div className="z-20 mt-20">
-            <button onClick={handleClick}>Trigger Error</button>
             <HomeHero />
             <HomeServices />
             <div className="fixed bottom-0 left-0 right-0 flex items-center justify-center space-x-4 p-4">
