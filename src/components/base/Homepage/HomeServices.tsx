@@ -15,8 +15,10 @@ import {
     Radar,
     RotateCcw,
     Search,
+    ShieldCheck,
     SlidersHorizontal,
     Tags,
+    User,
 } from 'lucide-react';
 import {
     Popover,
@@ -153,26 +155,28 @@ export default function HomeServices() {
         );
     return (
         <div>
-            <div className="container my-2 flex max-w-xl flex-1 items-center  divide-x divide-border rounded-full border border-border bg-gray-300 p-4 px-4 py-2 shadow-md">
-                <div className="flex cursor-pointer items-center text-primary hover:text-foreground">
-                    <Search size={36} className="px-2 text-gray-600 " />
+            <div className="mx-4">
+                <div className="container my-2 flex max-w-xl flex-1 items-center divide-x  divide-border rounded-full border border-border bg-gray-300 p-4 px-4  py-2 shadow-md">
+                    <div className="flex  cursor-pointer items-center text-primary hover:text-foreground">
+                        <Search size={36} className="px-2 text-gray-600 " />
+                    </div>
+                    <InputSearch
+                        placeholder="Search for service"
+                        onChange={(value) => {
+                            setfilterValue({
+                                ...filterValue,
+                                title: value.target.value,
+                            });
+                        }}
+                        value={filterValue.title}
+                        onKeyDown={(event: KeyboardEvent<HTMLInputElement>) => {
+                            if (event.key === 'Enter') {
+                                filterHandler();
+                            }
+                        }}
+                        className="h-min !border-0 !border-none bg-gray-300  !outline-none !ring-0 focus:ring-0 focus-visible:ring-0"
+                    />
                 </div>
-                <InputSearch
-                    placeholder="Search for service"
-                    onChange={(value) => {
-                        setfilterValue({
-                            ...filterValue,
-                            title: value.target.value,
-                        });
-                    }}
-                    value={filterValue.title}
-                    onKeyDown={(event: KeyboardEvent<HTMLInputElement>) => {
-                        if (event.key === 'Enter') {
-                            filterHandler();
-                        }
-                    }}
-                    className="h-min !border-0 !border-none bg-gray-300  !outline-none !ring-0 focus:ring-0 focus-visible:ring-0"
-                />
             </div>
             <div className="container flex max-w-xl justify-between space-x-2 px-4 py-4 text-center">
                 <Popover>
@@ -395,7 +399,7 @@ export default function HomeServices() {
                         filterValue.provider === ''
                             ? 'bg-blue-500'
                             : 'bg-gray-900',
-                        'rounded-xl  text-white'
+                        '  rounded-xl text-white '
                     )}
                 >
                     <span>All</span>
@@ -410,12 +414,15 @@ export default function HomeServices() {
                     }}
                     className={clsx(
                         filterValue.provider === 'company'
-                            ? 'bg-blue-500'
+                            ? '!bg-blue-500'
                             : 'bg-gray-900',
                         'flex-1 rounded-xl  text-white'
                     )}
                 >
-                    <span>Company Services</span>
+                    <span className="inline md:hidden">
+                        <ShieldCheck />
+                    </span>
+                    <span className="hidden md:inline">Company Services</span>
                 </Button>
                 <Button
                     variant={'default'}
@@ -427,12 +434,16 @@ export default function HomeServices() {
                     }}
                     className={clsx(
                         filterValue.provider === 'personal'
-                            ? 'bg-blue-500'
+                            ? '!bg-blue-500'
                             : 'bg-gray-900',
                         'flex-1 rounded-xl  text-white'
                     )}
                 >
-                    <span>Personal Services</span>
+                    <span className="inline md:hidden">
+                        <User />
+                    </span>
+                    <span className="hidden md:inline">Personal Services</span>
+                    <span></span>
                 </Button>
             </div>
             <div className="mt-10 pb-10">

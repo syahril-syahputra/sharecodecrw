@@ -1,5 +1,4 @@
 import React from 'react';
-import { Button } from '@/components/ui/button';
 import Logo from '../Logo';
 import Link from 'next/link';
 import { getCurrentUser } from '@/lib/session';
@@ -7,6 +6,7 @@ import MenuUser from './MenuUser';
 import fetchServer from '@/lib/fetchServer';
 import ResendVerificationEmail from './ResendVerificationEmail';
 import LocationNavbar from './LocationNavbar';
+import AuthButton from './AuthButton';
 async function getDataUser() {
     const session = await getCurrentUser();
     try {
@@ -48,18 +48,7 @@ export default async function Navbar() {
                         image={user.profile_picture_url || ''}
                     />
                 ) : (
-                    <div className="flex space-x-2">
-                        <Link href={'/auth/login'}>
-                            <Button block variant={'default'}>
-                                Sign In
-                            </Button>
-                        </Link>
-                        <Link href={'/auth/register'}>
-                            <Button block variant={'secondary'} className="">
-                                Sign Up
-                            </Button>
-                        </Link>
-                    </div>
+                    <AuthButton />
                 )}
             </div>
         </div>
