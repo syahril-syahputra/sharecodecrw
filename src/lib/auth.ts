@@ -114,6 +114,7 @@ export const authOptions: NextAuthOptions = {
             session.user.longitude = token.longitude || 0;
             session.user.city = token.city || '';
             session.user.province = token.province || '';
+            session.user.business_id = token.business_id || '';
 
             return session;
         },

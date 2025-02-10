@@ -17,7 +17,6 @@ import {
     Search,
     SlidersHorizontal,
     Tags,
-    X,
 } from 'lucide-react';
 import {
     Popover,
@@ -185,14 +184,14 @@ export default function HomeServices() {
                             <SlidersHorizontal />
                         </Button>
                     </PopoverTrigger>
-                    <PopoverContent className="w-[500px] border-gray-900 bg-gray-900">
+                    <PopoverContent className="w-96 border-gray-900 bg-gray-900">
                         <div className="grid gap-4">
-                            <div className="space-y-2 px-7 py-4 text-center">
+                            <div className="space-y-2 px-4 py-4 text-center">
                                 <h4 className="flex  items-center space-x-2 text-2xl font-medium leading-none text-white">
-                                    <X /> <span>Advance Filter</span>
+                                    <span>Advance Filter</span>
                                 </h4>
                             </div>
-                            <div className="text- space-y-6 px-8 text-white">
+                            <div className="space-y-6 px-4 text-white">
                                 <div className="space-y-2">
                                     <Label className="space-x-3 text-lg ">
                                         <span className="font-serif text-2xl">
@@ -209,7 +208,7 @@ export default function HomeServices() {
                                                 });
                                             }}
                                             value={filterValue.title}
-                                            placeholder="Insert Title"
+                                            placeholder="Insert Keyword"
                                         />
                                     </div>
                                 </div>
@@ -257,7 +256,7 @@ export default function HomeServices() {
                                         <MapPin />
                                         <span>Location</span>
                                     </Label>
-                                    <div className=" flex  space-x-2">
+                                    <div className="  space-y-4">
                                         {isLoadingProvince ? (
                                             <Spinner />
                                         ) : (
@@ -437,7 +436,21 @@ export default function HomeServices() {
                 </Button>
             </div>
             <div className="mt-10 pb-10">
-                <div className="container flex max-w-6xl gap-6">
+                {isLoading && (
+                    <div className="container max-w-6xl  ">
+                        <div className="border-Input  grid grid-cols-1 items-center justify-between space-x-2 px-4  md:grid-cols-2 ">
+                            <div className="flex-1 space-y-2">
+                                <Skeleton className="h-48 w-full" />
+                                <Skeleton className="h-48 w-full" />
+                            </div>
+                            <div className="flex-1 space-y-2">
+                                <Skeleton className="h-48 w-full" />
+                                <Skeleton className="h-48 w-full" />
+                            </div>
+                        </div>
+                    </div>
+                )}
+                <div className="container  hidden max-w-6xl gap-6 md:flex">
                     <div className="flex w-1/2 flex-col gap-6">
                         {column1 &&
                             column1.map((items) =>
@@ -453,6 +466,17 @@ export default function HomeServices() {
                                     <CardServices key={item.id} data={item} />
                                 ))
                             )}
+                    </div>
+                </div>
+                <div className="container flex max-w-6xl gap-6 md:hidden">
+                    <div className="grid grid-cols-1  gap-6">
+                        {data &&
+                            data.pages.map((page) =>
+                                page.items.map((item) => (
+                                    <CardServices key={item.id} data={item} />
+                                ))
+                            )}
+                        ;
                     </div>
                 </div>
 

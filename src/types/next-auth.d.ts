@@ -22,6 +22,7 @@ declare module 'next-auth' {
         city?: string | null;
         province?: string | null;
         email_verified_at?: string | null;
+        business_id?: string | null;
     }
 }
 

@@ -9,12 +9,13 @@ const useNotificationPermission = () => {
         const handler = () => setPermission(Notification.permission);
         handler();
         Notification.requestPermission().then(handler);
-
-        navigator.permissions
-            .query({ name: 'notifications' })
-            .then((notificationPerm) => {
-                notificationPerm.onchange = handler;
-            });
+        if (navigator.permissions && navigator.permissions.query) {
+            navigator.permissions
+                .query({ name: 'notifications' })
+                .then((notificationPerm) => {
+                    notificationPerm.onchange = handler;
+                });
+        }
     }, []);
 
     return permission;
