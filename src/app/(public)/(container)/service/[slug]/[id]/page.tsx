@@ -245,13 +245,7 @@ export default async function Page({ params }: { params: { id: string } }) {
                             </p>
                         </div>
                         <div>
-                            {/* <div className="text-white">
-                                {' '}
-                                {user?.business_id}
-                                <br />
-                                {data.cmp_id}
-                            </div> */}
-                            {user?.id !== data.cmp_id && (
+                            {user?.business_id !== data.cmp_id && (
                                 <StartConversation businessId={data.cmp_id} />
                             )}
                         </div>
