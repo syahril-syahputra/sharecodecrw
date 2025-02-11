@@ -31,26 +31,34 @@ import { IServices } from '@/types/services';
 import { getRelatedListing } from '@/feature/business/useFetchBusinessListingRelated';
 import StartConversation from '@/components/base/Chat/StartConversation';
 
-async function getData(id: string) {
+async function getData(id: string, slug: string) {
     try {
         const res = await fetchServer({
             url: `/businesses/listings/${id || ''}?lat=40.79509100&lng=-73.96828500`,
         });
-        return res.data.data as IBusinessListing;
+        const result = res.data.data as IBusinessListing;
+        if (slug === result.slug) {
+            return result;
+        }
+        return notFound();
     } catch {
         return notFound();
     }
 }
 
-export default async function Page({ params }: { params: { id: string } }) {
+export default async function Page({
+    params,
+}: {
+    params: { id: string; slug: string };
+}) {
     const user = await getCurrentUser();
-    const data = await getData(params.id);
+    const data = await getData(params.id, params.slug);
     const relatedListing = await getRelatedListing(params.id, 'listing');
     const initialUserName = data?.cmp_name ? data?.cmp_name.charAt(0) : '';
     return (
-        <div className="container space-y-4 py-8">
-            <section className="flex items-start justify-between space-x-4">
-                <div className="relative flex-1 space-y-4 overflow-hidden rounded-xl bg-gradient-to-b from-teal-700 to-gray-900 p-20">
+        <div className="container py-8">
+            <section className="flex flex-col-reverse items-start justify-between space-y-4 md:flex-row md:space-x-4 md:space-y-0">
+                <div className="relative mt-4 w-full flex-1 space-y-4 overflow-hidden rounded-xl bg-gradient-to-b from-teal-700 to-gray-900 p-20 md:mt-0">
                     <div className="space-y-10">
                         <div className="z-20 mb-4 rounded-xl">
                             <Image
@@ -143,7 +151,7 @@ export default async function Page({ params }: { params: { id: string } }) {
                         />
                     </div>
                 </div>
-                <div className="w-4/12 space-y-6 rounded-xl bg-gray-900 p-10">
+                <div className="w-full space-y-6 rounded-xl bg-gray-900 p-10 md:w-4/12">
                     <div className="flex items-center space-x-4">
                         <div className="flex items-center space-x-2">
                             <Avatar>
