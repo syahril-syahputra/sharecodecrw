@@ -35,22 +35,6 @@ export default function Page() {
                                 <p>Chats</p>
                             </h1>
                         </div>
-                        {/* <div className="space-y-4">
-                            <LastChat
-                                picture_url="https://github.com/shadcn.png"
-                                name="Kadek Cahya"
-                                message="Haleluya"
-                                createdAt="2025-01-10 10:10:10"
-                                isRead={false}
-                            />
-                            <LastChat
-                                picture_url="https://github.com/sha"
-                                name="Kadek Cahya"
-                                message="Haleluya"
-                                createdAt="2025-01-10 10:10:10"
-                                isRead={false}
-                            />
-                        </div> */}
 
                         {data &&
                             data?.items.map((item) => {
