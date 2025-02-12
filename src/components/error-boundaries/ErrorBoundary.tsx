@@ -39,7 +39,11 @@ export default class ErrorBoundary extends Component<
     render(): ReactNode {
         if (this.state.hasError) {
             // Render fallback UI
-            return <h1>Something went wrong.</h1>;
+            return (
+                <h1 className="flex justify-center p-10">
+                    Something went wrong.
+                </h1>
+            );
         }
 
         return this.props.children;

@@ -72,6 +72,9 @@ export interface IBusiness {
     city: string;
     province: string;
     name: string;
+    first_name: string;
+    last_name: string;
+    username?: string;
     address: string;
     about: string;
     phone_number: string;
@@ -91,7 +94,10 @@ export interface IBusinessUpdate {
     city_id: string;
     service_id?: string;
     service_other?: string;
-    name: string;
+    name?: string;
+    first_name?: string | null;
+    last_name?: string | null;
+    username?: string | null;
     address: string;
     phone_number: string;
     latitude: number;

@@ -30,7 +30,7 @@ import {
 } from '@/components/ui/select';
 import Spinner from '@/components/ui/spinner';
 import { LatLng } from '@/types/maps';
-import { useState } from 'react';
+import { Fragment, useEffect, useState } from 'react';
 import dynamic from 'next/dynamic';
 import { useFetchCommercialServices } from '@/feature/base/commercial-service';
 import { Textarea } from '@/components/ui/textarea';
@@ -40,31 +40,66 @@ const Map = dynamic(() => import('@/components/base/Maps/maps'), {
     ssr: false,
 });
 
-const formSchema = z.object({
-    name: z.string().min(1, { message: 'Name is required' }),
-    province: z.string().min(1, { message: 'Province is required' }),
-    city: z.string().min(1, { message: 'City is required' }),
-    service_id: z.string().min(1, { message: 'Service is required' }),
-    service_other: z.string().optional(),
-    phone_number: z.string().min(8),
-    code: z.string().min(1),
-    address: z.string().min(10, { message: 'Address is required' }),
-    longitude: z.number({
-        required_error: 'longitude required.',
-    }),
-    latitude: z.number({
-        required_error: 'latitude required.',
-    }),
-    about: z.string().min(10, { message: 'About is required' }),
-});
+// const formSchema = z.object({
+//     name: z.string().min(1, { message: 'Comapny full name is required' }),
+//     first_name: z.string().min(1, { message: 'First name is required' }),
+//     last_name: z.string().min(1, { message: 'Last name is required' }),
+//     username: z.string().min(1, { message: 'Username is required' }),
+//     province: z.string().min(1, { message: 'Province is required' }),
+//     city: z.string().min(1, { message: 'City is required' }),
+//     service_id: z.string().min(1, { message: 'Service is required' }),
+//     service_other: z.string().optional(),
+//     phone_number: z.string().min(8),
+//     code: z.string().min(1),
+//     address: z.string().min(10, { message: 'Address is required' }),
+//     longitude: z.number({
+//         required_error: 'longitude required.',
+//     }),
+//     latitude: z.number({
+//         required_error: 'latitude required.',
+//     }),
+//     about: z.string().min(10, { message: 'About is required' }),
+// });
+
+const formSchema = (isCompany: boolean | undefined) => {
+    return z.object({
+        name: isCompany
+            ? z.string().min(1, { message: 'Comapny full name is required' })
+            : z.string().optional(),
+        first_name: !isCompany
+            ? z.string().min(1, { message: 'First name is required' })
+            : z.string().optional(),
+        last_name: !isCompany
+            ? z.string().min(1, { message: 'Last name is required' })
+            : z.string().optional(),
+        username: !isCompany
+            ? z.string().min(1, { message: 'Username is required' })
+            : z.string().optional(),
+        province: z.string().min(1, { message: 'Province is required' }),
+        city: z.string().min(1, { message: 'City is required' }),
+        service_id: z.string().min(1, { message: 'Service is required' }),
+        service_other: z.string().optional(),
+        phone_number: z.string().min(8),
+        code: z.string().min(1),
+        address: z.string().min(10, { message: 'Address is required' }),
+        longitude: z.number({
+            required_error: 'longitude required.',
+        }),
+        latitude: z.number({
+            required_error: 'latitude required.',
+        }),
+        about: z.string().min(10, { message: 'About is required' }),
+    });
+};
 
 export default function Page() {
     const { toast } = useToast();
     const router = useRouter();
-    const { data: business } = useFetchBusiness();
+    const { data: business, isFetching } = useFetchBusiness();
+    const schema = formSchema(business?.is_company);
 
-    const form = useForm<z.infer<typeof formSchema>>({
-        resolver: zodResolver(formSchema),
+    const form = useForm<z.infer<typeof schema>>({
+        resolver: zodResolver(schema),
         mode: 'onChange',
         defaultValues: {
             code: '+1',
@@ -73,6 +108,9 @@ export default function Page() {
             service_id: business?.service_id,
             service_other: '',
             name: business?.name,
+            first_name: business?.first_name,
+            last_name: business?.last_name,
+            username: business?.username ? business?.username : '',
             address: business?.address,
             phone_number: business?.phone_number
                 ? business?.phone_number.replace(/^\+1/, '')
@@ -82,6 +120,7 @@ export default function Page() {
             about: business?.about,
         },
     });
+    console.log(form);
 
     const { data: dataState } = useFetchState();
     const { data: dataCity } = useFetchCity(form.getValues('province'), () => {
@@ -100,12 +139,17 @@ export default function Page() {
         onError: (error) => errorHelper(form.setError, error),
     });
 
-    const onSubmit = async (values: z.infer<typeof formSchema>) => {
+    const onSubmit = async (values: z.infer<typeof schema>) => {
         mutate({
             city_id: values.city,
             service_id: values.service_id,
             service_other: values.service_other,
-            name: values.name,
+            name: business?.is_company
+                ? values.name
+                : `${values.first_name} ${values.last_name}`,
+            first_name: !business?.is_company ? values.first_name : null,
+            last_name: !business?.is_company ? values.last_name : null,
+            username: !business?.is_company ? values.username : null,
             address: values.address,
             phone_number: `${values.code}${values.phone_number}`,
             latitude: values.latitude,
@@ -129,6 +173,17 @@ export default function Page() {
         form.setValue('latitude', lat);
         form.setValue('address', address);
     };
+    const [baseLocation, setBaseLocation] = useState<LatLng | undefined>();
+    useEffect(() => {
+        setBaseLocation({
+            lat: Number(business?.latitude),
+            lng: Number(business?.longitude),
+        });
+        handleLocationSelected({
+            lat: Number(business?.latitude),
+            lng: Number(business?.longitude),
+        });
+    }, [isFetching]);
 
     const [isOther, setIsOther] = useState('');
     const { data: dataService } = useFetchCommercialServices();
@@ -162,30 +217,95 @@ export default function Page() {
                                 onSubmit={form.handleSubmit(onSubmit)}
                                 className="w-full space-y-4 lg:w-1/2"
                             >
-                                <FormField
-                                    control={form.control}
-                                    name="name"
-                                    render={({ field }) => (
-                                        <FormItem>
-                                            <FormLabel className="!font-light text-white">
-                                                Full Company Name
-                                            </FormLabel>
-                                            <FormControl>
-                                                <Input
-                                                    className="bg-transparent text-white"
-                                                    placeholder="Company LLC"
-                                                    {...field}
-                                                />
-                                            </FormControl>
-                                            <FormMessage />
-                                        </FormItem>
-                                    )}
-                                />
+                                {business?.is_company && (
+                                    <FormField
+                                        control={form.control}
+                                        name="name"
+                                        render={({ field }) => (
+                                            <FormItem>
+                                                <FormLabel className="!font-light text-white">
+                                                    Full Company Name
+                                                </FormLabel>
+                                                <FormControl>
+                                                    <Input
+                                                        className="rounded-full border-white bg-transparent text-white"
+                                                        placeholder="Company LLC"
+                                                        {...field}
+                                                    />
+                                                </FormControl>
+                                                <FormMessage />
+                                            </FormItem>
+                                        )}
+                                    />
+                                )}
+                                {!business?.is_company && (
+                                    <Fragment>
+                                        <div className="grid w-full grid-cols-2 gap-4">
+                                            <FormField
+                                                control={form.control}
+                                                name="first_name"
+                                                render={({ field }) => (
+                                                    <FormItem>
+                                                        <FormLabel className="!font-light text-white">
+                                                            First Name
+                                                        </FormLabel>
+                                                        <FormControl>
+                                                            <Input
+                                                                className="rounded-full border-white bg-transparent text-white"
+                                                                placeholder="Ella"
+                                                                {...field}
+                                                            />
+                                                        </FormControl>
+                                                        <FormMessage />
+                                                    </FormItem>
+                                                )}
+                                            />
+                                            <FormField
+                                                control={form.control}
+                                                name="last_name"
+                                                render={({ field }) => (
+                                                    <FormItem>
+                                                        <FormLabel className="!font-light text-white">
+                                                            Last Name
+                                                        </FormLabel>
+                                                        <FormControl>
+                                                            <Input
+                                                                className="rounded-full border-white bg-transparent text-white"
+                                                                placeholder="Martin"
+                                                                {...field}
+                                                            />
+                                                        </FormControl>
+                                                        <FormMessage />
+                                                    </FormItem>
+                                                )}
+                                            />
+                                        </div>
+                                        <FormField
+                                            control={form.control}
+                                            name="username"
+                                            render={({ field }) => (
+                                                <FormItem>
+                                                    <FormLabel className="!font-light text-white">
+                                                        Username
+                                                    </FormLabel>
+                                                    <FormControl>
+                                                        <Input
+                                                            className="rounded-full border-white bg-transparent text-white"
+                                                            placeholder="ellamartin"
+                                                            {...field}
+                                                        />
+                                                    </FormControl>
+                                                    <FormMessage />
+                                                </FormItem>
+                                            )}
+                                        />
+                                    </Fragment>
+                                )}
                                 <div>
                                     <FormLabel className="!font-light text-white">
                                         Phone Number
                                     </FormLabel>
-                                    <div className="mt-2 flex flex-1 items-start space-x-4">
+                                    <div className="mt-2 flex flex-1 items-start space-x-2">
                                         <FormField
                                             control={form.control}
                                             name="code"
@@ -195,7 +315,7 @@ export default function Page() {
                                                         <Input
                                                             placeholder="+1"
                                                             readOnly
-                                                            className="bg-transparent text-center text-white"
+                                                            className="rounded-full border-white bg-transparent text-center text-white"
                                                             {...field}
                                                         />
                                                     </FormControl>
@@ -212,7 +332,7 @@ export default function Page() {
                                                         <Input
                                                             placeholder="123 456 789"
                                                             {...field}
-                                                            className="bg-transparent text-white"
+                                                            className="rounded-full border-white bg-transparent text-white"
                                                         />
                                                     </FormControl>
                                                     <FormMessage />
@@ -245,7 +365,7 @@ export default function Page() {
                                                 defaultValue={field.value}
                                             >
                                                 <FormControl>
-                                                    <SelectTrigger className="rounded-xl bg-transparent text-white">
+                                                    <SelectTrigger className="rounded-full bg-transparent text-white">
                                                         <SelectValue placeholder="Service" />
                                                     </SelectTrigger>
                                                 </FormControl>
@@ -281,7 +401,7 @@ export default function Page() {
                                                 <FormControl>
                                                     <Input
                                                         placeholder="Insert Service Name"
-                                                        className="bg-transparent text-white"
+                                                        className="rounded-full border-white bg-transparent text-white"
                                                         {...field}
                                                     />
                                                 </FormControl>
@@ -300,7 +420,7 @@ export default function Page() {
                                             </FormLabel>
                                             <FormControl>
                                                 <Textarea
-                                                    className="bg-transparent text-white"
+                                                    className="rounded-xl border-white bg-transparent text-white"
                                                     placeholder="Company LLC"
                                                     {...field}
                                                 />
@@ -328,7 +448,7 @@ export default function Page() {
                                                         }
                                                     >
                                                         <FormControl>
-                                                            <SelectTrigger className="rounded-xl bg-transparent text-white">
+                                                            <SelectTrigger className="rounded-full bg-transparent text-white">
                                                                 <SelectValue placeholder="Province" />
                                                             </SelectTrigger>
                                                         </FormControl>
@@ -369,7 +489,7 @@ export default function Page() {
                                                         }
                                                     >
                                                         <FormControl>
-                                                            <SelectTrigger className="rounded-xl bg-transparent text-white">
+                                                            <SelectTrigger className="rounded-full bg-transparent text-white">
                                                                 <SelectValue placeholder="City" />
                                                             </SelectTrigger>
                                                         </FormControl>
@@ -405,6 +525,7 @@ export default function Page() {
                                             onLocationSelected={
                                                 handleLocationSelected
                                             }
+                                            userLocationBase={baseLocation}
                                         />
                                         <div className="flex space-x-4">
                                             <FormField
@@ -440,7 +561,7 @@ export default function Page() {
                                                 <FormItem>
                                                     <FormControl>
                                                         <Input
-                                                            className="bg-transparent text-white"
+                                                            className="rounded-full border-white bg-transparent text-white"
                                                             placeholder="Address"
                                                             {...field}
                                                         />

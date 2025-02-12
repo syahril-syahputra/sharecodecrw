@@ -26,6 +26,7 @@ import {
     ShieldCheck,
     Star,
     Upload,
+    User,
     UserCheck,
 } from 'lucide-react';
 import Link from 'next/link';
@@ -185,6 +186,19 @@ export default function Page() {
                             </div>
                             {/* about */}
                             <div className="space-y-5">
+                                {business?.username && (
+                                    <div>
+                                        <div className="flex items-center space-x-2">
+                                            <User size={25} />
+                                            <span className="text-2xl font-semibold">
+                                                Username
+                                            </span>
+                                        </div>
+                                        <span className="font-thin">
+                                            {business?.username}
+                                        </span>
+                                    </div>
+                                )}
                                 <div>
                                     <div className="flex items-center space-x-2">
                                         <BookMarked size={25} />

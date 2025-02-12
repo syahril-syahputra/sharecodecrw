@@ -212,7 +212,7 @@ export default function IndividuRegistration() {
                                 <FormControl>
                                     <Input
                                         className="rounded-full border-white bg-transparent text-white"
-                                        placeholder="ella_martin"
+                                        placeholder="ellamartin"
                                         {...field}
                                     />
                                 </FormControl>
