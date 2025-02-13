@@ -16,7 +16,7 @@ export const useDeleteListing = ({
             const response = await fetchClient({
                 method: 'DELETE',
                 url: `/businesses/publisher/listings/${id}`,
-            })
+            });
             return response;
         },
         onSuccess: onSuccess,

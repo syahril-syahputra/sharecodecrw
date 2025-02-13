@@ -9,7 +9,6 @@ import {
     AlertDialogHeader,
 } from '@/components/ui/alert-dialog';
 import { Button } from '@/components/ui/button';
-import { Trash } from 'lucide-react';
 import { Fragment, useState } from 'react';
 import { useDeleteListing } from '@/feature/business/useDeleteListing';
 import { useToast } from '@/components/ui/use-toast';
@@ -49,20 +48,18 @@ export default function DeleteListing(props: { id?: string | undefined }) {
                     <AlertDialogHeader>
                         <AlertDialogTitle>Delete</AlertDialogTitle>
                         <AlertDialogDescription>
-                            <span className='italic'>
+                            <span className="italic">
                                 Delete listing, this action cannot be undone
                             </span>
                         </AlertDialogDescription>
                     </AlertDialogHeader>
                     <AlertDialogFooter>
-                        <AlertDialogCancel
-                            onClick={() => setDialog(false)}
-                        >
+                        <AlertDialogCancel onClick={() => setDialog(false)}>
                             Cancel
                         </AlertDialogCancel>
                         <AlertDialogAction
                             disabled={isPending}
-                            className='bg-destructive'
+                            className="bg-destructive"
                             onClick={() => mutate(props.id!)}
                         >
                             Delete

@@ -18,7 +18,7 @@ import {
     SelectTrigger,
     SelectValue,
 } from '@/components/ui/select';
-import { Check, Pen, Zap } from 'lucide-react';
+import { Check, Zap } from 'lucide-react';
 import Image from 'next/image';
 import { Alert, AlertTitle } from '@/components/ui/alert';
 import { Button } from '@/components/ui/button';
@@ -153,7 +153,7 @@ export default function Page({ params }: { params: { id: string } }) {
                         <Link href={`/user/listing/${params.id}/update`}>
                             <Button>Edit</Button>
                         </Link>
-                        <DeleteListing id={params.id}/>
+                        <DeleteListing id={params.id} />
                         {/* <Button
                             onClick={() => setrepublishShow((prev) => !prev)}
                         >

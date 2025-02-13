@@ -42,6 +42,6 @@ export const useCalculatePricing = (
         },
         queryKey: ['fetch.price', duration, is_premium, is_uplifter, is_color],
         placeholderData: keepPreviousData,
-        enabled: !!duration
+        enabled: !!duration,
     });
 };

@@ -73,7 +73,9 @@ export default function Page() {
                             </h1>
                             <div className="mx-auto w-6/12 text-lg italic underline">
                                 <p>
-                                    You are able to pay with your credit card as you create a listing by clicking Services and creating a service listing.
+                                    You are able to pay with your credit card as
+                                    you create a listing by clicking Services
+                                    and creating a service listing.
                                 </p>
                             </div>
                         </div>
