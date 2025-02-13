@@ -697,7 +697,7 @@ export default function Page() {
                                         Premium Booster
                                     </h1>
                                     <h2 className="text-sm text-gray-400">
-                                        $35* or 35 credits
+                                        $10* or 10 credits
                                     </h2>
                                     <div className="mt-1 text-sm text-gray-300">
                                         Includes all boosters applied at once by
@@ -816,7 +816,7 @@ export default function Page() {
                                         Uplifter Booster
                                     </h1>
                                     <h2 className="text-sm text-gray-400">
-                                        $13* or 13 credits
+                                        $7* or 7 credits
                                     </h2>
                                     <div className="mt-1 text-sm text-gray-300">
                                         Lifts the post up, making it appear more

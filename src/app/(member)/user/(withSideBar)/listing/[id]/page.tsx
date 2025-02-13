@@ -18,7 +18,7 @@ import {
     SelectTrigger,
     SelectValue,
 } from '@/components/ui/select';
-import { Check, Zap } from 'lucide-react';
+import { Check, Pen, Zap } from 'lucide-react';
 import Image from 'next/image';
 import { Alert, AlertTitle } from '@/components/ui/alert';
 import { Button } from '@/components/ui/button';
@@ -37,6 +37,7 @@ import clsx from 'clsx';
 import { useRepublishListing } from '@/feature/listing/useRepublishListing';
 import Link from 'next/link';
 import { useFetchDuration } from '@/feature/base/duration';
+import DeleteListing from '@/components/base/Publisher/Listings/DeleteListing';
 
 const formSchema = z
     .object({
@@ -94,7 +95,7 @@ export default function Page({ params }: { params: { id: string } }) {
         id: params.id,
         onSuccess: (result) => {
             // router.push('/user/listing');
-            if (result.data.data.url) {
+            if (result.data?.data?.url) {
                 window.location.href = result.data.data.url;
             } else {
                 router.push('/user/listing');
@@ -146,12 +147,13 @@ export default function Page({ params }: { params: { id: string } }) {
             <div className=" flex-1 rounded-lg bg-gradient-to-b from-[#1A3652] via-[#020508] to-[#020508] p-4 p-8">
                 <div className="flex items-center justify-between">
                     <h2 className="font-urbanist text-4xl font-bold text-white">
-                        Detail Service Listing
+                        Detail Service
                     </h2>
                     <div className="flex items-center space-x-2">
                         <Link href={`/user/listing/${params.id}/update`}>
                             <Button>Edit</Button>
                         </Link>
+                        <DeleteListing id={params.id}/>
                         {/* <Button
                             onClick={() => setrepublishShow((prev) => !prev)}
                         >
@@ -268,7 +270,7 @@ export default function Page({ params }: { params: { id: string } }) {
                                         Premium Booster
                                     </h1>
                                     <h2 className="text-sm text-gray-400">
-                                        $35* or 35 credits
+                                        $10* or 10 credits
                                     </h2>
                                     <div className="mt-1 text-sm text-gray-300">
                                         Includes all boosters applied at once by
@@ -387,7 +389,7 @@ export default function Page({ params }: { params: { id: string } }) {
                                         Uplifter Booster
                                     </h1>
                                     <h2 className="text-sm text-gray-400">
-                                        $13* or 13 credits
+                                        $7* or 7 credits
                                     </h2>
                                     <div className="mt-1 text-sm text-gray-300">
                                         Lifts the post up, making it appear more

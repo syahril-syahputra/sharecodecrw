@@ -71,11 +71,9 @@ export default function Page() {
                             <h1 className="space-x-2 text-4xl">
                                 <p>Plans and Pricing</p>
                             </h1>
-                            <div className="mx-auto w-6/12 text-muted-foreground">
+                            <div className="mx-auto w-6/12 text-lg italic underline">
                                 <p>
-                                    Want to promote yourself? We`&apos;`ve got
-                                    you covered with simple and intuitive
-                                    pricing for every owner.
+                                    You are able to pay with your credit card as you create a listing by clicking Services and creating a service listing.
                                 </p>
                             </div>
                         </div>
