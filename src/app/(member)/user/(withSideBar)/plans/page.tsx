@@ -2,11 +2,10 @@
 import CardDarkNeonGlow from '@/components/base/Card/CardDarkNeonGlow';
 import LoadingPage from '@/components/base/Loading/LoadingPage';
 import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
 import { useBuyPlan } from '@/feature/plans/useBuyPlan';
 import { useFetchPlans } from '@/feature/plans/useFetchPlans';
 import { IPlan } from '@/types/base/plans';
-import { Fragment, useState } from 'react';
+import { Fragment } from 'react';
 import { useToast } from '@/components/ui/use-toast';
 
 export default function Page() {
@@ -21,9 +20,9 @@ export default function Page() {
             {} as Record<string, IPlan>
         ) || {};
 
-    const [isShowForm, setIsShowForm] = useState(false);
-    const [isNumber, setIsNumber] = useState(true);
-    const [quantity, setQuantity] = useState('');
+    // const [isShowForm, setIsShowForm] = useState(false);
+    // const [isNumber, setIsNumber] = useState(true);
+    // const [quantity, setQuantity] = useState('');
     const { mutate, isPending } = useBuyPlan({
         onSuccess: (data) => {
             console.log(data);
@@ -44,22 +43,22 @@ export default function Page() {
         });
     };
 
-    const buyDynamicPlan = (plan_id: string) => {
-        mutate({
-            plan_id,
-            qty: parseInt(quantity),
-        });
-    };
+    // const buyDynamicPlan = (plan_id: string) => {
+    //     mutate({
+    //         plan_id,
+    //         qty: parseInt(quantity),
+    //     });
+    // };
 
-    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const newValue = e.target.value;
-        if (!isNaN(parseInt(newValue))) {
-            setQuantity(newValue);
-            setIsNumber(true);
-        } else {
-            setIsNumber(false);
-        }
-    };
+    // const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    //     const newValue = e.target.value;
+    //     if (!isNaN(parseInt(newValue))) {
+    //         setQuantity(newValue);
+    //         setIsNumber(true);
+    //     } else {
+    //         setIsNumber(false);
+    //     }
+    // };
     return (
         <div className="flex-1 px-6">
             {isLoading && <LoadingPage />}
@@ -68,7 +67,7 @@ export default function Page() {
                 <Fragment>
                     <div className="mb-5">
                         <div className="text-center">
-                            <h1 className="space-x-2 text-4xl">
+                            <h1 className="mb-4 space-x-2 text-4xl">
                                 <p>Plans and Pricing</p>
                             </h1>
                             <div className="mx-auto w-6/12 text-lg italic underline">
@@ -80,24 +79,24 @@ export default function Page() {
                             </div>
                         </div>
                     </div>
-                    <h2 className="mb-2 text-2xl font-bold">Buy Credits</h2>
+                    <h2 className="mb-2 text-2xl">Buy Credits</h2>
                     <div className="mb-2 grid grid-cols-2 gap-2">
-                        {mappedPlans && mappedPlans['150'] && (
+                        {mappedPlans && mappedPlans['30'] && (
                             <CardDarkNeonGlow variant="silver">
                                 <p className="mb-5 text-2xl font-semibold">
-                                    {mappedPlans['150'].name}
+                                    {mappedPlans['30'].name}
                                 </p>
                                 <p className="text-2xl font-semibold">
-                                    ${mappedPlans['150'].price}*
+                                    ${mappedPlans['30'].price}*
                                 </p>
                                 <p className="mb-5 text-lg text-muted-foreground">
-                                    {mappedPlans['150'].credits} Credits
+                                    {mappedPlans['30'].credits} Credits
                                 </p>
                                 <Button
                                     disabled={isPending}
                                     className="rounded-xl bg-blue-500"
                                     onClick={() =>
-                                        buyStaticPlan(mappedPlans['150'].id)
+                                        buyStaticPlan(mappedPlans['30'].id)
                                     }
                                 >
                                     Buy
@@ -108,22 +107,22 @@ export default function Page() {
                             </CardDarkNeonGlow>
                         )}
 
-                        {mappedPlans && mappedPlans['500'] && (
+                        {mappedPlans && mappedPlans['50'] && (
                             <CardDarkNeonGlow variant="gold">
                                 <p className="mb-5 text-2xl font-semibold">
-                                    {mappedPlans['500'].name}
+                                    {mappedPlans['50'].name}
                                 </p>
                                 <p className="text-2xl font-semibold">
-                                    ${mappedPlans['500'].price}*
+                                    ${mappedPlans['50'].price}*
                                 </p>
                                 <p className="mb-5 text-lg text-muted-foreground">
-                                    {mappedPlans['500'].credits} Credits
+                                    {mappedPlans['50'].credits} Credits
                                 </p>
                                 <Button
                                     disabled={isPending}
                                     className="rounded-xl bg-blue-500"
                                     onClick={() =>
-                                        buyStaticPlan(mappedPlans['150'].id)
+                                        buyStaticPlan(mappedPlans['50'].id)
                                     }
                                 >
                                     Buy
@@ -134,7 +133,7 @@ export default function Page() {
                             </CardDarkNeonGlow>
                         )}
                     </div>
-                    {mappedPlans && mappedPlans['1'] && (
+                    {/* {mappedPlans && mappedPlans['1'] && (
                         <CardDarkNeonGlow>
                             <p className="mb-5 text-2xl font-semibold">
                                 Grow with Crow Package
@@ -199,7 +198,7 @@ export default function Page() {
                                 *transaction tax may apply
                             </p>
                         </CardDarkNeonGlow>
-                    )}
+                    )} */}
                 </Fragment>
             )}
         </div>
