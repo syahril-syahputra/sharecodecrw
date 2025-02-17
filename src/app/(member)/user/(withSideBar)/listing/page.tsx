@@ -130,7 +130,7 @@ export default function Page() {
                     <div className="grid  flex-1 grid-cols-4 gap-4">
                         <InputCustom
                             className="w-full"
-                            placeholder="Insert Title "
+                            placeholder="Filter by Keyword"
                             value={titleSearch}
                             onChange={(e) => {
                                 const val: string = e.target.value;
@@ -205,7 +205,7 @@ export default function Page() {
                         <Link href={'/user/listing/create'}>
                             <Button size="sm">
                                 <Plus />
-                                Create Service
+                                Create Service Listing
                             </Button>
                         </Link>
                     }

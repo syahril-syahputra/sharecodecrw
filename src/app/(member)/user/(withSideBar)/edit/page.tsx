@@ -3,7 +3,7 @@ import CardDarkNeonGlow from '@/components/base/Card/CardDarkNeonGlow';
 import LoadingPage from '@/components/base/Loading/LoadingPage';
 import { Button } from '@/components/ui/button';
 import { useFetchBusiness } from '@/feature/business/useFetchBusiness';
-import { CircleAlert, X } from 'lucide-react';
+import { X } from 'lucide-react';
 import Link from 'next/link';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
@@ -79,7 +79,7 @@ const formSchema = (isCompany: boolean | undefined) => {
         city: z.string().min(1, { message: 'City is required' }),
         service_id: z.string().min(1, { message: 'Service is required' }),
         service_other: z.string().optional(),
-        phone_number: z.string().min(8),
+        // phone_number: z.string().min(8),
         code: z.string().min(1),
         address: z.string().min(10, { message: 'Address is required' }),
         longitude: z.number({
@@ -112,9 +112,9 @@ export default function Page() {
             last_name: business?.last_name,
             username: business?.username ? business?.username : '',
             address: business?.address,
-            phone_number: business?.phone_number
-                ? business?.phone_number.replace(/^\+1/, '')
-                : business?.phone_number,
+            // phone_number: business?.phone_number
+            //     ? business?.phone_number.replace(/^\+1/, '')
+            //     : business?.phone_number,
             latitude: business?.latitude,
             longitude: business?.latitude,
             about: business?.about,
@@ -151,7 +151,6 @@ export default function Page() {
             last_name: !business?.is_company ? values.last_name : null,
             username: !business?.is_company ? values.username : null,
             address: values.address,
-            phone_number: `${values.code}${values.phone_number}`,
             latitude: values.latitude,
             longitude: values.longitude,
             about: values.about,
@@ -301,54 +300,7 @@ export default function Page() {
                                         />
                                     </Fragment>
                                 )}
-                                <div>
-                                    <FormLabel className="!font-light text-white">
-                                        Phone Number
-                                    </FormLabel>
-                                    <div className="mt-2 flex flex-1 items-start space-x-2">
-                                        <FormField
-                                            control={form.control}
-                                            name="code"
-                                            render={({ field }) => (
-                                                <FormItem className="w-16">
-                                                    <FormControl>
-                                                        <Input
-                                                            placeholder="+1"
-                                                            readOnly
-                                                            className="rounded-full border-white bg-transparent text-center text-white"
-                                                            {...field}
-                                                        />
-                                                    </FormControl>
-                                                    <FormMessage />
-                                                </FormItem>
-                                            )}
-                                        />
-                                        <FormField
-                                            control={form.control}
-                                            name="phone_number"
-                                            render={({ field }) => (
-                                                <FormItem className="flex-1">
-                                                    <FormControl>
-                                                        <Input
-                                                            placeholder="123 456 789"
-                                                            {...field}
-                                                            className="rounded-full border-white bg-transparent text-white"
-                                                        />
-                                                    </FormControl>
-                                                    <FormMessage />
-                                                </FormItem>
-                                            )}
-                                        />
-                                    </div>
 
-                                    <div className="flex flex-1 items-center space-x-2 pt-2 text-sm text-gray-400">
-                                        <CircleAlert size={18} />
-                                        <span>
-                                            Verify phone number once again after
-                                            input new phone number
-                                        </span>
-                                    </div>
-                                </div>
                                 <FormField
                                     control={form.control}
                                     name="service_id"

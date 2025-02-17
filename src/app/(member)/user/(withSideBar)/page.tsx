@@ -3,6 +3,7 @@ import CardDarkNeonGlow from '@/components/base/Card/CardDarkNeonGlow';
 import DialogChangeBusinessAdditionalDocument from '@/components/base/Dialog/DialogChangeBusinessAdditionalDocument';
 import DialogChangeBusinessLicense from '@/components/base/Dialog/DialogChangeBusinessLicense';
 import DialogChangeBusinessPicture from '@/components/base/Dialog/DialogChangeBusinessPicture';
+import DialogChangePhoneNumber from '@/components/base/Dialog/DialogChangePhoneNumber';
 import DialogChangeUserEmail from '@/components/base/Dialog/DialogChangeUserEmail';
 import DialogVerifyPhoneNumber from '@/components/base/Dialog/DialogVerifyPhoneNumber';
 import LoadingPage from '@/components/base/Loading/LoadingPage';
@@ -222,14 +223,20 @@ export default function Page() {
                                             Contact
                                         </span>
                                     </div>
-                                    <div className="flex items-center space-x-2 font-thin text-white">
+                                    <div className="flex items-center space-x-2  text-white">
                                         <Phone size={15} />
+
                                         <span className="text-md">
                                             {emptyValueCheck(
                                                 business?.phone_number ?? '',
-                                                <span className="italic text-muted-foreground">
-                                                    no phone number given
-                                                </span>
+                                                <div className="flex space-x-2 ">
+                                                    <span className="items-center font-thin italic text-muted-foreground">
+                                                        no phone number given
+                                                    </span>
+                                                    <DialogChangePhoneNumber
+                                                        refetch={refetch}
+                                                    />
+                                                </div>
                                             )}
                                         </span>
                                         {business?.phone_number_verified_at && (

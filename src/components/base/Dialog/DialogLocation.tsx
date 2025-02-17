@@ -129,9 +129,11 @@ export default function DialogLocation(props: {
     };
     return (
         <Dialog open={props.open} onOpenChange={closeDialog}>
-            <DialogContent className="sm:max-w-[425px]">
+            <DialogContent className="bg-gray-900 sm:max-w-[425px]">
                 <DialogHeader>
-                    <DialogTitle>Select your location</DialogTitle>
+                    <DialogTitle className="text-white">
+                        Select your location
+                    </DialogTitle>
                 </DialogHeader>
                 <Form {...form}>
                     <form
