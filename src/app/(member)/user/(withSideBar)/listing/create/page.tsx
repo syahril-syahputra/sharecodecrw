@@ -43,7 +43,7 @@ import ErrorMessage from '@/components/base/Error/ErrorMessage';
 import { useFetchDuration } from '@/feature/base/duration';
 import clsx from 'clsx';
 
-const MAX_FILE_SIZE = 500000;
+const MAX_FILE_SIZE = 1000000;
 const ACCEPTED_IMAGE_TYPES = [
     'image/jpeg',
     'image/jpg',
@@ -301,7 +301,7 @@ export default function Page() {
                 <div className="flex w-full flex-1 items-start space-x-4  px-4 text-white">
                     <div className=" flex-1 rounded-lg bg-gradient-to-b from-[#1A3652] via-[#020508] to-[#020508] p-4 p-8">
                         <h2 className="font-urbanist text-4xl font-bold text-white">
-                            Create a Service
+                            Create a Service Listing
                         </h2>
 
                         <div className="space-y-8 py-8">
@@ -313,7 +313,7 @@ export default function Page() {
                                         <FormLabel>Title</FormLabel>
                                         <FormControl>
                                             <InputCustom
-                                                placeholder="Title"
+                                                placeholder="i.e. Home Cleaning Services"
                                                 {...field}
                                             />
                                         </FormControl>
@@ -329,7 +329,17 @@ export default function Page() {
                                         <FormLabel>Description</FormLabel>
                                         <FormControl>
                                             <TextareaCustom
-                                                placeholder="Write down event description"
+                                                placeholder="Write service description,
+
+    What is and is not included in your services including equipment/materials/tools,
+
+    Whether your services are provided in-person or online,
+
+    Locations you provide services to,
+
+    Languages you provide services in,
+
+    Mention your experience and certifications, if any, to increase your demand."
                                                 {...field}
                                             />
                                         </FormControl>
@@ -346,7 +356,7 @@ export default function Page() {
                                         <FormControl>
                                             <TagInput
                                                 {...field}
-                                                placeholder="Enter a topic"
+                                                placeholder="Hit enter to add your tags. (max 5 tags)"
                                                 tags={tags}
                                                 className="!bg-red-200"
                                                 setTags={(newTags) => {
@@ -376,7 +386,7 @@ export default function Page() {
                                             <FormLabel>Price</FormLabel>
                                             <FormControl>
                                                 <InputCustom
-                                                    placeholder="Price"
+                                                    placeholder="Price (CAD)"
                                                     {...field}
                                                 />
                                             </FormControl>
@@ -585,8 +595,8 @@ export default function Page() {
                                                     Image
                                                 </h2>
                                                 <span>
-                                                    Optionaly. Select an image
-                                                    to enhance your listing
+                                                    Select an image to enhance
+                                                    your listing
                                                 </span>
                                             </FormLabel>
                                             <div className="flex items-start">

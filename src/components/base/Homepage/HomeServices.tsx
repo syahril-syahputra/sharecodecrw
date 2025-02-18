@@ -153,10 +153,14 @@ export default function HomeServices() {
         data.pages.map((page) =>
             page.items.filter((_, index) => index % 2 !== 0)
         );
+
+    function resetFilter() {
+        resetHandler({ lat: filterValue.lat, lng: filterValue.lng });
+    }
     return (
         <div>
             <div className="mx-4">
-                <div className="container my-2 flex max-w-xl flex-1 items-center divide-x  divide-border rounded-full border border-border bg-gray-300 p-4 px-4  py-2 shadow-md">
+                <div className="container my-2 flex max-w-3xl flex-1 items-center divide-x  divide-border rounded-full border border-border bg-gray-300 p-4 px-4  py-2 shadow-md">
                     <div className="flex  cursor-pointer items-center text-primary hover:text-foreground">
                         <Search size={36} className="px-2 text-gray-600 " />
                     </div>
@@ -376,7 +380,7 @@ export default function HomeServices() {
                                 </Button>
                                 <Button
                                     variant={'ghost'}
-                                    onClick={resetHandler}
+                                    onClick={resetFilter}
                                     className="flex items-center space-x-2 text-white"
                                 >
                                     <RotateCcw />
@@ -461,8 +465,8 @@ export default function HomeServices() {
                         </div>
                     </div>
                 )}
-                <div className="container  hidden max-w-6xl gap-6 md:flex">
-                    <div className="flex w-1/2 flex-col gap-6">
+                <div className="container  hidden max-w-7xl gap-8 md:flex">
+                    <div className="flex w-1/2 flex-col gap-8">
                         {column1 &&
                             column1.map((items) =>
                                 items.map((item) => (
@@ -470,7 +474,7 @@ export default function HomeServices() {
                                 ))
                             )}
                     </div>
-                    <div className="flex w-1/2 flex-col gap-6">
+                    <div className="flex w-1/2 flex-col gap-8">
                         {column2 &&
                             column2.map((items) =>
                                 items.map((item) => (

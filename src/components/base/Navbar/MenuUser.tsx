@@ -13,6 +13,7 @@ import { signOut } from 'next-auth/react';
 import Link from 'next/link';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { useFetchCreditBusiness } from '@/feature/business/useFetchCreditBusiness';
+import ButtonNotification from './ButtonNotification';
 interface IProps {
     session?: { email: string };
     image?: string;
@@ -31,6 +32,7 @@ export default function MenuUser(props: IProps) {
                 <HandCoins />
                 <span>{!isLoading && credit}</span>
             </Link>
+            <ButtonNotification />
             <DropdownMenu>
                 <DropdownMenuTrigger asChild>
                     <Avatar className="mx-auto h-12 w-12 cursor-pointer">

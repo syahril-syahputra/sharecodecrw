@@ -373,7 +373,7 @@ export default function Page() {
                                             <FormControl>
                                                 <Textarea
                                                     className="rounded-xl border-white bg-transparent text-white"
-                                                    placeholder="Company LLC"
+                                                    placeholder="Description of yourself or your Company"
                                                     {...field}
                                                 />
                                             </FormControl>

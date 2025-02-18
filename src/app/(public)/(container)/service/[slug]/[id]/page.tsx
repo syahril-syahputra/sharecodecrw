@@ -151,7 +151,7 @@ export default async function Page({
                         />
                     </div>
                 </div>
-                <div className="w-full space-y-6 rounded-xl bg-gray-900 p-10 md:w-4/12">
+                <div className="w-full space-y-6 rounded-xl bg-gray-900 p-10 md:sticky md:top-28 md:w-4/12">
                     <div className="flex items-center space-x-4">
                         <div className="flex items-center space-x-2">
                             <Avatar>
@@ -202,7 +202,7 @@ export default async function Page({
                             </div>
                         </div>
                     </div>
-                    <div>
+                    <div className=" space-y-2">
                         <div className="flex items-center space-x-2 text-white">
                             <Contact size={22} />
                             <span className="text-xl">Contact</span>
@@ -227,7 +227,7 @@ export default async function Page({
                                 </div>
                             </div>
                         )}
-                        <div className="mt-4">
+                        <div className="">
                             <div className="mb-1 flex items-start space-x-2 font-urbanist font-thin text-white">
                                 <div>
                                     <MapPin
@@ -235,7 +235,9 @@ export default async function Page({
                                         className="mt-1 text-white"
                                     />
                                 </div>
-                                <span className="text-md">{data.address}</span>
+                                <span className="text-md">
+                                    {data.city}, {data.province}
+                                </span>
                             </div>
                             <div className="mb-4">
                                 <IframeMap

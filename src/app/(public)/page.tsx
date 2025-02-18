@@ -2,7 +2,6 @@
 // import { IDataLanding } from '@/types/landing';
 import HomeHero from '@/components/base/Homepage/HomeHero';
 import HomeServices from '@/components/base/Homepage/HomeServices';
-import ButtonNotification from '@/components/base/Navbar/ButtonNotification';
 import { getCurrentUser } from '@/lib/session';
 import { Bot, Home, Search } from 'lucide-react';
 import Link from 'next/link';
@@ -36,7 +35,6 @@ export default async function page() {
                     <Link href={'/'}>
                         <Search />
                     </Link>
-                    {user && <ButtonNotification />}
                 </div>
                 <div className="hidden w-min space-x-4 rounded-full bg-white p-4 shadow-xl">
                     <Bot />

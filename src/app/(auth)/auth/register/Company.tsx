@@ -51,7 +51,7 @@ const formSchema = z
         confirm_password: z
             .string()
             .min(1, { message: 'Comfirm Password is required' }),
-        address: z.string().min(1, { message: 'Address is required' }),
+        address: z.string().optional(),
         business_license: z
             .string()
             .min(1, { message: 'Business License is required' }),
@@ -81,7 +81,7 @@ export default function CompanyRegistration() {
     async function onSubmit(values: z.infer<typeof formSchema>) {
         const body: BodyCompanyRegistration = {
             company_name: values.company_name,
-            address: values.address,
+            address: values.address || '',
             business_license: values.business_license,
             email: values.email,
             city_id: values.city,

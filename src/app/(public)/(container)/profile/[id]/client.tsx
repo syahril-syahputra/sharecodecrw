@@ -150,8 +150,7 @@ export default function ProfileUser(props: {
                             <div className="flex items-center space-x-2 font-urbanist text-gray-400">
                                 <MapPin size={15} />
                                 <span className="text-md">
-                                    {data?.city}, {data?.province} |{' '}
-                                    {data?.address}
+                                    {data?.city}, {data?.province}
                                 </span>
                             </div>
                         )}

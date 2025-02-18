@@ -26,10 +26,10 @@ export default function useTableConfig<T>(config: ITableConfig<T>) {
         setPagination((prev) => ({ ...prev, pageIndex: 1 }));
         setfilter(filterValue);
     };
-    const resetHandler = () => {
+    const resetHandler = (param?: object) => {
         setPagination((prev) => ({ ...prev, pageIndex: 1 }));
-        setfilter(intialFilter);
-        setfilterValue(intialFilter);
+        setfilter({ ...intialFilter, ...param });
+        setfilterValue({ ...intialFilter, ...param });
     };
     return {
         filterValue,
