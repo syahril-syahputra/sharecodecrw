@@ -27,6 +27,12 @@ const nextConfig = {
                 port: '',
                 pathname: '/**',
             },
+            {
+                protocol: 'https',
+                hostname: 'prd-crowner-spc-nyc.nyc3.digitaloceanspaces.com',
+                port: '',
+                pathname: '/**',
+            },
         ],
     },
 };
