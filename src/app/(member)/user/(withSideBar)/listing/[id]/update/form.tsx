@@ -54,7 +54,7 @@ const formSchema = z.object({
     latitude: z.number({
         required_error: 'latitude required.',
     }),
-    address: z.string().min(1),
+    address: z.string().optional(),
     image: z.any().optional(),
 });
 
@@ -85,7 +85,7 @@ export default function FormUpdateListing({ data }: IProps) {
             pricing_type: data?.payment_type || '',
             province: data?.province_id || '',
             city: data?.city_id || '',
-            address: '',
+            address: data?.address,
             latitude: data?.latitude || 0,
             longitude: data?.longitude || 0,
             hashtags: data?.hashtags || [],

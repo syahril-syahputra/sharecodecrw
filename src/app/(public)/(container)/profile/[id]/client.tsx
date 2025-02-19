@@ -1,7 +1,6 @@
 import CardDarkNeonGlow from '@/components/base/Card/CardDarkNeonGlow';
 import RateBusiness from '@/components/base/Rate/RateBusiness';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { Badge } from '@/components/ui/badge';
 import {
     Carousel,
     CarouselContent,
@@ -99,13 +98,6 @@ export default function ProfileUser(props: {
                                 rate={data?.rating ?? 0}
                                 businessId={data?.id ?? ''}
                             />
-                        </div>
-                        <div>
-                            {data?.service_name && (
-                                <Badge className="bg-gray-700 px-4 py-2 text-sm font-light">
-                                    {data?.service_name}
-                                </Badge>
-                            )}
                         </div>
                     </div>
                 </div>

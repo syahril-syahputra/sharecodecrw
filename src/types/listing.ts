@@ -99,6 +99,7 @@ export interface IDetailListing {
     image_url: string;
     acceptance_status: typeAcceptanceStatus; // Can be replaced with enum if there are fixed options
     latitude: number;
+    address?: string;
     longitude: number;
     interest_counter: number;
     duration: number | null; // Duration can be null
