@@ -98,7 +98,7 @@ export interface IBusinessUpdate {
     first_name?: string | null;
     last_name?: string | null;
     username?: string | null;
-    address: string;
+    address?: string | null;
     // phone_number: string;
     latitude: number;
     longitude: number;
