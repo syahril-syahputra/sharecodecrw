@@ -28,15 +28,12 @@ import {
     SelectTrigger,
     SelectValue,
 } from '@/components/ui/select';
-import Spinner from '@/components/ui/spinner';
-import { LatLng } from '@/types/maps';
-import { Fragment, useEffect, useState } from 'react';
+import { Fragment } from 'react';
 import dynamic from 'next/dynamic';
-import { useFetchCommercialServices } from '@/feature/base/commercial-service';
 import { Textarea } from '@/components/ui/textarea';
 import { errorHelper } from '@/lib/formErrorHelper';
 
-const Map = dynamic(() => import('@/components/base/Maps/maps'), {
+const Map = dynamic(() => import('@/components/base/Maps/CityMap'), {
     ssr: false,
 });
 
@@ -77,8 +74,6 @@ const formSchema = (isCompany: boolean | undefined) => {
             : z.string().optional(),
         province: z.string().min(1, { message: 'Province is required' }),
         city: z.string().min(1, { message: 'City is required' }),
-        service_id: z.string().min(1, { message: 'Service is required' }),
-        service_other: z.string().optional(),
         // phone_number: z.string().min(8),
         code: z.string().min(1),
         address: z.string().min(10, { message: 'Address is required' }),
@@ -95,7 +90,7 @@ const formSchema = (isCompany: boolean | undefined) => {
 export default function Page() {
     const { toast } = useToast();
     const router = useRouter();
-    const { data: business, isFetching } = useFetchBusiness();
+    const { data: business } = useFetchBusiness();
     const schema = formSchema(business?.is_company);
 
     const form = useForm<z.infer<typeof schema>>({
@@ -105,8 +100,6 @@ export default function Page() {
             code: '+1',
             city: business?.city_id,
             province: business?.province_id,
-            service_id: business?.service_id,
-            service_other: '',
             name: business?.name,
             first_name: business?.first_name,
             last_name: business?.last_name,
@@ -123,11 +116,14 @@ export default function Page() {
     console.log(form);
 
     const { data: dataState } = useFetchState();
-    const { data: dataCity } = useFetchCity(form.getValues('province'), () => {
-        if (form.getValues('province') !== business?.province_id) {
-            form.setValue('city', '');
+    const { data: dataCity, isPending: isPendingCity } = useFetchCity(
+        form.getValues('province'),
+        () => {
+            if (form.getValues('province') !== business?.province_id) {
+                form.setValue('city', '');
+            }
         }
-    });
+    );
 
     const { mutate, isPending } = useUpdateBusiness({
         onSuccess: async (success) => {
@@ -142,8 +138,6 @@ export default function Page() {
     const onSubmit = async (values: z.infer<typeof schema>) => {
         mutate({
             city_id: values.city,
-            service_id: values.service_id,
-            service_other: values.service_other,
             name: business?.is_company
                 ? values.name
                 : `${values.first_name} ${values.last_name}`,
@@ -151,42 +145,27 @@ export default function Page() {
             last_name: !business?.is_company ? values.last_name : null,
             username: !business?.is_company ? values.username : null,
             address: values.address,
-            latitude: values.latitude,
-            longitude: values.longitude,
+            latitude: selectedCoordinate.lat,
+            longitude: selectedCoordinate.lng,
             about: values.about,
         });
     };
 
-    const [getAdreessLoading, setGetAdreessLoading] = useState(false);
-    const handleLocationSelected = async (latlng: LatLng) => {
-        const { lat, lng } = latlng;
-
-        setGetAdreessLoading(true);
-        const response = await fetch(
-            `https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}&addressdetails=1`
-        );
-        const data = await response.json();
-        const address = data.display_name;
-        setGetAdreessLoading(false);
-        form.setValue('longitude', lng);
-        form.setValue('latitude', lat);
-        form.setValue('address', address);
+    const selectedCity = form.watch(['city']);
+    const selectedCoordinateLat =
+        selectedCity &&
+        dataCity &&
+        !isPendingCity &&
+        dataCity.find((x) => x.id === selectedCity[0])?.latitude;
+    const selectedCoordinateLng =
+        selectedCity &&
+        dataCity &&
+        !isPendingCity &&
+        dataCity.find((x) => x.id === selectedCity[0])?.longitude;
+    const selectedCoordinate = {
+        lat: selectedCoordinateLat || 0,
+        lng: selectedCoordinateLng || 0,
     };
-    const [baseLocation, setBaseLocation] = useState<LatLng | undefined>();
-    useEffect(() => {
-        setBaseLocation({
-            lat: Number(business?.latitude),
-            lng: Number(business?.longitude),
-        });
-        handleLocationSelected({
-            lat: Number(business?.latitude),
-            lng: Number(business?.longitude),
-        });
-    }, [isFetching]);
-
-    const [isOther, setIsOther] = useState('');
-    const { data: dataService } = useFetchCommercialServices();
-
     return (
         <div className="flex-1 px-6">
             {false && <LoadingPage />}
@@ -303,67 +282,6 @@ export default function Page() {
 
                                 <FormField
                                     control={form.control}
-                                    name="service_id"
-                                    render={({ field }) => (
-                                        <FormItem className="flex-1">
-                                            <FormLabel className="!font-light text-white">
-                                                Category
-                                            </FormLabel>
-                                            <Select
-                                                onValueChange={(value) => {
-                                                    setIsOther(value);
-                                                    field.onChange(value);
-                                                }}
-                                                defaultValue={field.value}
-                                            >
-                                                <FormControl>
-                                                    <SelectTrigger className="rounded-full bg-transparent text-white">
-                                                        <SelectValue placeholder="Service" />
-                                                    </SelectTrigger>
-                                                </FormControl>
-                                                <SelectContent>
-                                                    {dataService?.map(
-                                                        (item) => (
-                                                            <SelectItem
-                                                                key={item.id}
-                                                                value={item.id}
-                                                            >
-                                                                {item.name}
-                                                            </SelectItem>
-                                                        )
-                                                    )}
-                                                    <SelectItem
-                                                        key={'Other'}
-                                                        value={'Other'}
-                                                    >
-                                                        Other
-                                                    </SelectItem>
-                                                </SelectContent>
-                                            </Select>
-                                            <FormMessage />
-                                        </FormItem>
-                                    )}
-                                />
-                                {isOther === 'Other' && (
-                                    <FormField
-                                        control={form.control}
-                                        name="service_other"
-                                        render={({ field }) => (
-                                            <FormItem>
-                                                <FormControl>
-                                                    <Input
-                                                        placeholder="Insert Service Name"
-                                                        className="rounded-full border-white bg-transparent text-white"
-                                                        {...field}
-                                                    />
-                                                </FormControl>
-                                                <FormMessage />
-                                            </FormItem>
-                                        )}
-                                    />
-                                )}
-                                <FormField
-                                    control={form.control}
                                     name="about"
                                     render={({ field }) => (
                                         <FormItem>
@@ -474,10 +392,7 @@ export default function Page() {
                                     <div>
                                         <Map
                                             className="relative z-0 h-[300px] w-full rounded-xl"
-                                            onLocationSelected={
-                                                handleLocationSelected
-                                            }
-                                            userLocationBase={baseLocation}
+                                            location={selectedCoordinate}
                                         />
                                         <div className="flex space-x-4">
                                             <FormField
@@ -500,29 +415,23 @@ export default function Page() {
                                             />
                                         </div>
                                     </div>
-                                    {getAdreessLoading ? (
-                                        <div className="flex items-center space-x-4 text-sm">
-                                            <Spinner />{' '}
-                                            <span>Searching Address...</span>
-                                        </div>
-                                    ) : (
-                                        <FormField
-                                            control={form.control}
-                                            name="address"
-                                            render={({ field }) => (
-                                                <FormItem>
-                                                    <FormControl>
-                                                        <Input
-                                                            className="rounded-full border-white bg-transparent text-white"
-                                                            placeholder="Address"
-                                                            {...field}
-                                                        />
-                                                    </FormControl>
-                                                    <FormMessage />
-                                                </FormItem>
-                                            )}
-                                        />
-                                    )}
+
+                                    <FormField
+                                        control={form.control}
+                                        name="address"
+                                        render={({ field }) => (
+                                            <FormItem>
+                                                <FormControl>
+                                                    <Input
+                                                        className="rounded-full border-white bg-transparent text-white"
+                                                        placeholder="Address"
+                                                        {...field}
+                                                    />
+                                                </FormControl>
+                                                <FormMessage />
+                                            </FormItem>
+                                        )}
+                                    />
                                 </div>
                                 <div className="mt-5 flex w-full justify-center">
                                     <Button

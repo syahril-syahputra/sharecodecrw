@@ -1,5 +1,5 @@
 'use client';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import {
     Form,
     FormControl,
@@ -24,7 +24,6 @@ import {
     SelectTrigger,
     SelectValue,
 } from '@/components/ui/select';
-import { LatLng } from '@/types/maps';
 import { Check, HardDriveUpload, Zap } from 'lucide-react';
 import Image from 'next/image';
 import useFilePreview from '@/lib/useFilePreview';
@@ -112,19 +111,14 @@ const formSchema = z
             .min(1, { message: 'Pricing Type is required' }),
         province: z.string().min(1, { message: 'Province is required' }),
         city: z.string().min(1, { message: 'City is required' }),
-        longitude: z.number({
-            required_error: 'longitude required.',
-        }),
-        latitude: z.number({
-            required_error: 'latitude required.',
-        }),
+
         address: z.string().min(1),
         image: z
             .any()
             .refine((files) => files?.length == 1, 'Image is required.')
             .refine(
                 (files) => files?.[0]?.size <= MAX_FILE_SIZE,
-                `Max file size is 500kb.`
+                `Max file size is 1mb.`
             )
             .refine(
                 (files) => ACCEPTED_IMAGE_TYPES.includes(files?.[0]?.type),
@@ -170,11 +164,10 @@ const formSchema = z
 //     data: Option[];
 // }
 
-const Map = dynamic(() => import('@/components/base/Maps/maps'), {
+const Map = dynamic(() => import('@/components/base/Maps/CityMap'), {
     ssr: false,
 });
 export default function Page() {
-    const [getAdreessLoading, setgetAdreessLoading] = useState(false);
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         mode: 'onChange',
@@ -204,22 +197,6 @@ export default function Page() {
     const fileRef = form.register('image');
     const result = form.watch(['image']);
     const [filePreview] = useFilePreview(result[0]);
-
-    const handleLocationSelected = async (latlng: LatLng) => {
-        const { lat, lng } = latlng;
-
-        setgetAdreessLoading(true);
-        const response = await fetch(
-            `https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}&addressdetails=1`
-        );
-        const data = await response.json();
-        const address = data.display_name;
-        // const address_obj: AddressObject = data.address;
-        setgetAdreessLoading(false);
-        form.setValue('longitude', lng);
-        form.setValue('latitude', lat);
-        form.setValue('address', address);
-    };
 
     const router = useRouter();
     const {
@@ -263,10 +240,10 @@ export default function Page() {
             boosters: booster,
             title: data.title,
             description: data.description,
-            latitude: data.latitude,
-            longitude: data.longitude,
             duration: parseInt(data.duration),
             price: data.price,
+            latitude: selectedCoordinate.lat,
+            longitude: selectedCoordinate.lng,
             payment_type: data.pricing_type,
             city_id: data.city,
             hashtags: data.hashtags,
@@ -290,6 +267,21 @@ export default function Page() {
         form.getValues().is_uplifter
     );
 
+    const selectedCity = form.watch(['city']);
+    const selectedCoordinateLat =
+        selectedCity &&
+        dataCity &&
+        !isPendingCity &&
+        dataCity.find((x) => x.id === selectedCity[0])?.latitude;
+    const selectedCoordinateLng =
+        selectedCity &&
+        dataCity &&
+        !isPendingCity &&
+        dataCity.find((x) => x.id === selectedCity[0])?.longitude;
+    const selectedCoordinate = {
+        lat: selectedCoordinateLat || 0,
+        lng: selectedCoordinateLng || 0,
+    };
     return (
         <Form {...form}>
             <form
@@ -329,18 +321,11 @@ export default function Page() {
                                         <FormLabel>Description</FormLabel>
                                         <FormControl>
                                             <TextareaCustom
-                                                placeholder="Write service description,
-
-    What is and is not included in your services including equipment/materials/tools,
-
-    Whether your services are provided in-person or online,
-
-    Locations you provide services to,
-
-    Languages you provide services in,
-
-    Mention your experience and certifications, if any, to increase your demand."
+                                                placeholder={
+                                                    'Write service description,\nWhat is and is not included in your services including equipment/materials/tools,\nWhether your services are provided in-person or online,\nLocations you provide services to,\nLanguages you provide services in,\nMention your experience and certifications, if any, to increase your demand.'
+                                                }
                                                 {...field}
+                                                rows={7}
                                             />
                                         </FormControl>
                                         <FormMessage />
@@ -451,53 +436,26 @@ export default function Page() {
                                     </div>
                                     <Map
                                         className="relative z-0 h-[200px] w-full"
-                                        onLocationSelected={
-                                            handleLocationSelected
-                                        }
+                                        location={selectedCoordinate}
                                     />
-                                    <div className="flex space-x-4">
-                                        <FormField
-                                            control={form.control}
-                                            name="longitude"
-                                            render={() => (
-                                                <FormItem className="flex-1">
-                                                    <FormMessage />
-                                                </FormItem>
-                                            )}
-                                        />
-                                        <FormField
-                                            control={form.control}
-                                            name="latitude"
-                                            render={() => (
-                                                <FormItem className="flex-1">
-                                                    <FormMessage />
-                                                </FormItem>
-                                            )}
-                                        />
-                                    </div>
                                 </div>
-                                {getAdreessLoading ? (
-                                    <div className="flex items-center space-x-4 text-sm">
-                                        <Spinner />{' '}
-                                        <span>Searching Address...</span>
-                                    </div>
-                                ) : (
-                                    <FormField
-                                        control={form.control}
-                                        name="address"
-                                        render={({ field }) => (
-                                            <FormItem className="flex-1">
-                                                <FormControl>
-                                                    <InputCustom
-                                                        placeholder="Address"
-                                                        {...field}
-                                                    />
-                                                </FormControl>
-                                                <FormMessage />
-                                            </FormItem>
-                                        )}
-                                    />
-                                )}
+
+                                <FormField
+                                    control={form.control}
+                                    name="address"
+                                    render={({ field }) => (
+                                        <FormItem className="flex-1">
+                                            <FormControl>
+                                                <InputCustom
+                                                    placeholder="Address"
+                                                    {...field}
+                                                />
+                                            </FormControl>
+                                            <FormMessage />
+                                        </FormItem>
+                                    )}
+                                />
+
                                 <div className="relative z-10 flex space-x-2">
                                     <FormField
                                         control={form.control}

@@ -146,14 +146,13 @@ export default function ProfileUser(props: {
                                 <span className="text-md">{data?.email}</span>
                             </div>
                         )}
-                        {data?.address && (
-                            <div className="flex items-center space-x-2 font-urbanist text-gray-400">
-                                <MapPin size={15} />
-                                <span className="text-md">
-                                    {data?.city}, {data?.province}
-                                </span>
-                            </div>
-                        )}
+
+                        <div className="flex items-center space-x-2 font-urbanist text-gray-400">
+                            <MapPin size={15} />
+                            <span className="text-md">
+                                {data?.city}, {data?.province}
+                            </span>
+                        </div>
                     </div>
                 </div>
                 {/* listings */}
