@@ -166,16 +166,6 @@ export default function Page() {
                                                 </div>
                                             )}
                                         </div>
-                                        <div>
-                                            {business?.service_name && (
-                                                <div className="flex items-center">
-                                                    <span className="flex items-center space-x-2 rounded-full bg-gray-700 px-4 py-2 text-sm font-light">
-                                                        {business?.service_name}
-                                                        <CheckCircle className="ml-2 text-blue-500" />
-                                                    </span>
-                                                </div>
-                                            )}
-                                        </div>
                                     </div>
                                 </div>
                                 <Link href={'/user/edit'}>

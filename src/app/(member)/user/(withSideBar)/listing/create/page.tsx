@@ -434,28 +434,7 @@ export default function Page() {
                                             </b>
                                         </span>
                                     </div>
-                                    <Map
-                                        className="relative z-0 h-[200px] w-full"
-                                        location={selectedCoordinate}
-                                    />
                                 </div>
-
-                                <FormField
-                                    control={form.control}
-                                    name="address"
-                                    render={({ field }) => (
-                                        <FormItem className="flex-1">
-                                            <FormControl>
-                                                <InputCustom
-                                                    placeholder="Address"
-                                                    {...field}
-                                                />
-                                            </FormControl>
-                                            <FormMessage />
-                                        </FormItem>
-                                    )}
-                                />
-
                                 <div className="relative z-10 flex space-x-2">
                                     <FormField
                                         control={form.control}
@@ -542,6 +521,26 @@ export default function Page() {
                                         </div>
                                     )}
                                 </div>
+                                <Map
+                                    className="relative z-0 h-[200px] w-full"
+                                    location={selectedCoordinate}
+                                />
+                                <FormField
+                                    control={form.control}
+                                    name="address"
+                                    render={({ field }) => (
+                                        <FormItem className="flex-1">
+                                            <FormControl>
+                                                <InputCustom
+                                                    placeholder="Address"
+                                                    {...field}
+                                                />
+                                            </FormControl>
+                                            <FormMessage />
+                                        </FormItem>
+                                    )}
+                                />
+
                                 <FormField
                                     control={form.control}
                                     name="image"
@@ -552,10 +551,7 @@ export default function Page() {
                                                 <h2 className="text-lg font-semibold">
                                                     Image
                                                 </h2>
-                                                <span>
-                                                    Select an image to enhance
-                                                    your listing
-                                                </span>
+                                                <span>Upload an image</span>
                                             </FormLabel>
                                             <div className="flex items-start">
                                                 <FormControl>

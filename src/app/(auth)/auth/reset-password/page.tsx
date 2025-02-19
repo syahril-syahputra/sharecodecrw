@@ -30,7 +30,7 @@ const formSchema = z
             .min(1, { message: 'confirm Password is required' }),
     })
     .refine((data) => data.password === data.confirm_password, {
-        message: "Confirm Passwords don't match",
+        message: 'Confirmation passwords does not match',
         path: ['confirm_password'],
     });
 export default function Page() {

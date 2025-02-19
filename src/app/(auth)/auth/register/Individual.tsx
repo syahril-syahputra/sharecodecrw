@@ -53,11 +53,11 @@ const formSchema = z
         password: z.string().min(1, { message: 'Password is required' }),
         confirm_password: z
             .string()
-            .min(1, { message: 'Comfirm Password is required' }),
+            .min(1, { message: 'Confirmation password is required' }),
         address: z.string().optional(),
     })
     .refine((data) => data.password === data.confirm_password, {
-        message: "Confirm Passwords don't match",
+        message: 'Confirmation passwords does not match',
         path: ['confirm_password'],
     });
 
@@ -86,7 +86,7 @@ export default function IndividuRegistration() {
             city_id: values.city,
             password: values.password,
             password_confirmation: values.confirm_password,
-            address: values.address || '',
+            address: values.address,
         };
         mutate(body);
     }

@@ -176,10 +176,12 @@ export default function Page({ params }: { params: { id: string } }) {
                     </div>
                     <Separator />
                     <div className="flex flex-col space-y-2">
-                        <label className="text-xl font-semibold">
+                        <label className=" text-xl font-semibold">
                             Description
                         </label>
-                        <span>{data?.description}</span>
+                        <span className="whitespace-pre-line">
+                            {data?.description}
+                        </span>
                     </div>
                     <Separator />
                     <div className="flex flex-col space-y-2">

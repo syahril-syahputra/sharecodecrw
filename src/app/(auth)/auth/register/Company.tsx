@@ -50,7 +50,7 @@ const formSchema = z
         password: z.string().min(1, { message: 'Password is required' }),
         confirm_password: z
             .string()
-            .min(1, { message: 'Comfirm Password is required' }),
+            .min(1, { message: 'Confirmation password is required' }),
         address: z.string().optional(),
         business_license: z
             .string()
@@ -58,7 +58,7 @@ const formSchema = z
         business_license_name: z.string().optional(),
     })
     .refine((data) => data.password === data.confirm_password, {
-        message: "Confirm Passwords don't match",
+        message: 'Confirmation passwords does not match',
         path: ['confirm_password'],
     });
 
@@ -81,7 +81,7 @@ export default function CompanyRegistration() {
     async function onSubmit(values: z.infer<typeof formSchema>) {
         const body: BodyCompanyRegistration = {
             company_name: values.company_name,
-            address: values.address || '',
+            address: values.address,
             business_license: values.business_license,
             email: values.email,
             city_id: values.city,

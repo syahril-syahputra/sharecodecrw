@@ -102,12 +102,17 @@ export default async function Page({
                         </div>
                         <div>
                             <div className="flex items-center space-x-2 font-urbanist">
-                                <Badge className="bg-gray-700 bg-gray-900 p-2 font-light">
-                                    {data.service_name}
-                                </Badge>
+                                {data.hashtags.map((item, index) => (
+                                    <Badge
+                                        key={index}
+                                        className=" bg-gray-900 px-4 py-2 font-light capitalize"
+                                    >
+                                        {item}
+                                    </Badge>
+                                ))}
                             </div>
                         </div>
-                        <div className="font-urbanist text-lg font-light text-white">
+                        <div className="whitespace-pre-line font-urbanist text-lg font-light text-white">
                             <span>{data.description}</span>
                         </div>
                         <div className="flex justify-center">

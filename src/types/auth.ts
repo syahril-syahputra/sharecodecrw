@@ -6,13 +6,13 @@ export interface BodyUserRegistration {
     password: string; // required
     password_confirmation: string; // required
     city_id: string; // required
-    address: string; //required
+    address?: string; //required
 }
 
 export interface BodyCompanyRegistration {
     company_name: string; // required
     email: string; // required
-    address: string; // required
+    address?: string; // required
     password: string; // required
     password_confirmation: string; // required
     business_license_name?: string; // required base 64

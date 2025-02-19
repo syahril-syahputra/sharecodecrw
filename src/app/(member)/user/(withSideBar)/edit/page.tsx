@@ -76,7 +76,7 @@ const formSchema = (isCompany: boolean | undefined) => {
         city: z.string().min(1, { message: 'City is required' }),
         // phone_number: z.string().min(8),
         code: z.string().min(1),
-        address: z.string().min(10, { message: 'Address is required' }),
+        address: z.string().optional(),
         longitude: z.number({
             required_error: 'longitude required.',
         }),
@@ -144,7 +144,7 @@ export default function Page() {
             first_name: !business?.is_company ? values.first_name : null,
             last_name: !business?.is_company ? values.last_name : null,
             username: !business?.is_company ? values.username : null,
-            address: values.address,
+            address: values.address || '',
             latitude: selectedCoordinate.lat,
             longitude: selectedCoordinate.lng,
             about: values.about,

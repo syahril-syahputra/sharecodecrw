@@ -18,6 +18,7 @@ export interface IBusinessListing {
     email: string;
     address: string;
     rating: number;
+    hashtags: string[];
     city: string;
     province: string;
     total_reviews: number;

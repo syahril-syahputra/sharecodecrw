@@ -22,7 +22,7 @@ export interface BodyUpdateListing {
     latitude: number;
     longitude: number;
     hashtags: string[]; // Array of strings
-    image: string; // Base64 string
+    image?: string; // Base64 string
 }
 export interface bodyCalculatePrice {
     duration: number;
