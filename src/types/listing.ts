@@ -11,7 +11,7 @@ export interface BodyCreateListing {
     duration: number;
     color_hexadecimal?: string;
     address?: string;
-    is_direct: boolean;
+    is_direct: boolean | null;
     hashtags: string[]; // Array of strings
     boosters: string[]; // Array of strings
     image: string; // Base64 string

@@ -210,7 +210,12 @@ export default function Page() {
                 data.is_color || data.is_premium
                     ? data.color_hexadecimal
                     : undefined,
-            is_direct: paymentMethod === 'credit_balance' ? false : true,
+            is_direct:
+                paymentMethod === 'credit_balance'
+                    ? false
+                    : paymentMethod === 'credit_card'
+                      ? true
+                      : null,
             image: base64,
             address: data.address,
         };
@@ -1101,7 +1106,8 @@ export default function Page() {
                                     <Button
                                         loading={isLoadingCreate}
                                         type="submit"
-                                        value="credit_balance"
+                                        value=""
+                                        disabled={isLoadingCreate}
                                     >
                                         Save as draft
                                     </Button>
