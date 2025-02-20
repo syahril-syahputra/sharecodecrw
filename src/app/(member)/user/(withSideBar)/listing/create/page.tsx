@@ -1,5 +1,5 @@
 'use client';
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
     Form,
     FormControl,
@@ -41,6 +41,7 @@ import { useFetchCity, useFetchState } from '@/feature/base/city';
 import ErrorMessage from '@/components/base/Error/ErrorMessage';
 import { useFetchDuration } from '@/feature/base/duration';
 import clsx from 'clsx';
+import { useFetchCommercialServices } from '@/feature/base/commercial-service';
 
 const MAX_FILE_SIZE = 1000000;
 const ACCEPTED_IMAGE_TYPES = [
@@ -49,52 +50,6 @@ const ACCEPTED_IMAGE_TYPES = [
     'image/png',
     'image/webp',
 ];
-// const formSchema = z.object({
-//     title: z.string().min(1, { message: 'Title is required' }),
-//     description: z
-//         .string()
-//         .min(50, { message: 'Description is required 20 character' }),
-
-//     hashtags: z.array(z.string()).min(3, { message: 'tags is required min 3' }),
-//     price: z.coerce.number(),
-//     pricing_type: z.string().min(1, { message: 'Pricing Type is required' }),
-//     province: z.string().min(1, { message: 'Province is required' }),
-//     city: z.string().min(1, { message: 'City is required' }),
-//     longitude: z.number({
-//         required_error: 'longitude required.',
-//     }),
-//     latitude: z.number({
-//         required_error: 'latitude required.',
-//     }),
-//     address: z.string().min(1),
-//     image: z
-//         .any()
-//         .refine((files) => files?.length == 1, 'Image is required.')
-//         .refine(
-//             (files) => files?.[0]?.size <= MAX_FILE_SIZE,
-//             `Max file size is 500kb.`
-//         )
-//         .refine(
-//             (files) => ACCEPTED_IMAGE_TYPES.includes(files?.[0]?.type),
-//             '.jpg, .jpeg, .png and .webp files are accepted.'
-//         ),
-
-//     // city_id: z.string().min(1),
-//     duration: z.string().min(1),
-//     is_premium: z.boolean().optional(),
-//     color_hexadecimal: z
-//         .string()
-//         .optional()
-//         .refine(
-//             (val) =>
-//                 val === '#258ad8' || val === '#d87925' || val === '#e9e1d3',
-//             {
-//                 message: 'Please Select Color',
-//             }
-//         ),
-//     is_color: z.boolean().optional(),
-//     is_uplifter: z.boolean().optional(),
-// });
 const formSchema = z
     .object({
         title: z.string().min(1, { message: 'Title is required' }),
@@ -109,6 +64,8 @@ const formSchema = z
         pricing_type: z
             .string()
             .min(1, { message: 'Pricing Type is required' }),
+        service_id: z.string().min(1, { message: 'Service is required' }),
+        service_other: z.string().optional(),
         province: z.string().min(1, { message: 'Province is required' }),
         city: z.string().min(1, { message: 'City is required' }),
 
@@ -245,6 +202,8 @@ export default function Page() {
             latitude: selectedCoordinate.lat,
             longitude: selectedCoordinate.lng,
             payment_type: data.pricing_type,
+            service_id: data.service_id,
+            service_other: data.service_other,
             city_id: data.city,
             hashtags: data.hashtags,
             color_hexadecimal:
@@ -282,6 +241,9 @@ export default function Page() {
         lat: selectedCoordinateLat || 0,
         lng: selectedCoordinateLng || 0,
     };
+    const [isOther, setIsOther] = useState('');
+    const { data: dataService } = useFetchCommercialServices();
+
     return (
         <Form {...form}>
             <form
@@ -332,6 +294,64 @@ export default function Page() {
                                     </FormItem>
                                 )}
                             />
+                            <FormField
+                                control={form.control}
+                                name="service_id"
+                                render={({ field }) => (
+                                    <FormItem className="flex-1">
+                                        <FormLabel className="!font-light text-white">
+                                            Category
+                                        </FormLabel>
+                                        <Select
+                                            onValueChange={(value) => {
+                                                setIsOther(value);
+                                                field.onChange(value);
+                                            }}
+                                            defaultValue={field.value}
+                                        >
+                                            <FormControl>
+                                                <SelectTrigger className="rounded-full bg-transparent text-white">
+                                                    <SelectValue placeholder="Select Category" />
+                                                </SelectTrigger>
+                                            </FormControl>
+                                            <SelectContent>
+                                                {dataService?.map((item) => (
+                                                    <SelectItem
+                                                        key={item.id}
+                                                        value={item.id}
+                                                    >
+                                                        {item.name}
+                                                    </SelectItem>
+                                                ))}
+                                                <SelectItem
+                                                    key={'Other'}
+                                                    value={'Other'}
+                                                >
+                                                    Other
+                                                </SelectItem>
+                                            </SelectContent>
+                                        </Select>
+                                        <FormMessage />
+                                    </FormItem>
+                                )}
+                            />
+                            {isOther === 'Other' && (
+                                <FormField
+                                    control={form.control}
+                                    name="service_other"
+                                    render={({ field }) => (
+                                        <FormItem>
+                                            <FormControl>
+                                                <InputCustom
+                                                    placeholder="Insert Service Name"
+                                                    {...field}
+                                                />
+                                            </FormControl>
+                                            <FormMessage />
+                                        </FormItem>
+                                    )}
+                                />
+                            )}
                             <FormField
                                 control={form.control}
                                 name="hashtags"
@@ -647,408 +667,447 @@ export default function Page() {
                             </Button>
                         </div> */}
                     </div>
-                    <CardDarkNeonGlow className="w-1/3 rounded-lg  bg-gray-900 px-4 py-8">
-                        <h1 className="flex items-center space-x-2">
-                            <Zap />
-                            <span className="text-xl font-semibold">
-                                Booster
-                            </span>
-                        </h1>
-                        <div className="space-y-4 py-4">
-                            <div className="mb-4 flex items-center justify-between rounded-lg bg-gray-800 p-4 shadow-md">
-                                <div>
-                                    <h1 className="text-lg font-semibold">
-                                        Premium Booster
-                                    </h1>
-                                    <h2 className="text-sm text-gray-400">
-                                        $10* or 10 credits
-                                    </h2>
-                                    <div className="mt-1 text-sm text-gray-300">
-                                        Includes all boosters applied at once by
-                                        scaling up the post, making it appear
-                                        higher and more visible with a
-                                        background color.
-                                    </div>
-                                    {form.getValues('is_premium') && (
-                                        <div className="space-y-2 py-4">
-                                            <FormField
-                                                control={form.control}
-                                                name="color_hexadecimal"
-                                                render={({ field }) => (
-                                                    <FormItem className="flex-1">
-                                                        <Select
-                                                            value={field.value}
-                                                            onValueChange={
-                                                                field.onChange
-                                                            }
-                                                        >
-                                                            <FormControl>
-                                                                <SelectTrigger>
-                                                                    <SelectValue placeholder="Select Color" />
-                                                                </SelectTrigger>
-                                                            </FormControl>
-                                                            <SelectContent>
-                                                                <SelectItem
-                                                                    key={
-                                                                        '#258ad8'
-                                                                    }
-                                                                    value={
-                                                                        '#258ad8'
-                                                                    }
-                                                                >
-                                                                    <div className="flex items-center space-x-2">
-                                                                        <div
-                                                                            className={clsx(
-                                                                                `h-4 w-4 rounded-full !bg-[#258AD8] `
-                                                                            )}
-                                                                        ></div>
-                                                                        <span>
-                                                                            Blue
-                                                                        </span>
-                                                                    </div>
-                                                                </SelectItem>
-                                                                <SelectItem
-                                                                    key={
-                                                                        '#d87925'
-                                                                    }
-                                                                    value={
-                                                                        '#d87925'
-                                                                    }
-                                                                >
-                                                                    <div className="flex items-center space-x-2">
-                                                                        <div
-                                                                            className={clsx(
-                                                                                `h-4 w-4 rounded-full !bg-[#D87925] `
-                                                                            )}
-                                                                        ></div>
-                                                                        <span>
-                                                                            Orange
-                                                                        </span>
-                                                                    </div>
-                                                                </SelectItem>
-                                                                <SelectItem
-                                                                    key={
-                                                                        '#e9e1d3'
-                                                                    }
-                                                                    value={
-                                                                        '#e9e1d3'
-                                                                    }
-                                                                >
-                                                                    <div className="flex items-center space-x-2">
-                                                                        <div
-                                                                            className={clsx(
-                                                                                `h-4 w-4 rounded-full !bg-[#e9e1d3] `
-                                                                            )}
-                                                                        ></div>
-                                                                        <span>
-                                                                            Light
-                                                                            Beige
-                                                                        </span>
-                                                                    </div>
-                                                                </SelectItem>
-                                                            </SelectContent>
-                                                        </Select>
-                                                        <FormMessage />
-                                                    </FormItem>
-                                                )}
-                                            />
+                    <div className="w-1/3 space-y-4">
+                        <CardDarkNeonGlow className=" rounded-lg  bg-gray-900 px-4 py-8">
+                            <h1 className="flex items-center space-x-2">
+                                <Zap />
+                                <span className="text-xl font-semibold">
+                                    Booster
+                                </span>
+                            </h1>
+                            <div className="space-y-4 py-4">
+                                <div className="mb-4 flex items-center justify-between rounded-lg bg-gray-800 p-4 shadow-md">
+                                    <div>
+                                        <h1 className="text-lg font-semibold">
+                                            Premium Booster
+                                        </h1>
+                                        <h2 className="text-sm text-gray-400">
+                                            $10* or 10 credits
+                                        </h2>
+                                        <div className="mt-1 text-sm text-gray-300">
+                                            Includes all boosters applied at
+                                            once by scaling up the post, making
+                                            it appear higher and more visible
+                                            with a background color.
                                         </div>
-                                    )}
-                                </div>
-                                <div>
-                                    <FormField
-                                        control={form.control}
-                                        name="is_premium"
-                                        render={({ field }) => (
-                                            <FormItem>
-                                                <FormControl>
-                                                    <Switch
-                                                        checked={field.value}
-                                                        onCheckedChange={
-                                                            field.onChange
-                                                        }
-                                                    />
-                                                </FormControl>
-                                            </FormItem>
-                                        )}
-                                    />
-                                </div>
-                            </div>
-                            <div className="mb-4 flex items-center justify-between rounded-lg bg-gray-800 p-4 shadow-md">
-                                <div>
-                                    <h1 className="text-lg font-semibold">
-                                        Uplifter Booster
-                                    </h1>
-                                    <h2 className="text-sm text-gray-400">
-                                        $7* or 7 credits
-                                    </h2>
-                                    <div className="mt-1 text-sm text-gray-300">
-                                        Lifts the post up, making it appear more
-                                        on top for interested parties.
-                                    </div>
-                                </div>
-                                <div>
-                                    <FormField
-                                        control={form.control}
-                                        name="is_uplifter"
-                                        render={({ field }) => (
-                                            <FormItem>
-                                                <FormControl>
-                                                    <Switch
-                                                        checked={field.value}
-                                                        onCheckedChange={
-                                                            field.onChange
-                                                        }
-                                                    />
-                                                </FormControl>
-                                            </FormItem>
-                                        )}
-                                    />
-                                </div>
-                            </div>
-                            <div className="mb-4 flex items-center justify-between rounded-lg bg-gray-800 p-4 shadow-md">
-                                <div>
-                                    <h1 className="text-lg font-semibold">
-                                        Color Booster
-                                    </h1>
-                                    <h2 className="text-sm text-gray-400">
-                                        $5* or 5 credits
-                                    </h2>
-                                    <div className="mt-1 text-sm text-gray-300">
-                                        Makes the post stand out by
-                                        incorporating a background color.
-                                    </div>
-                                    {form.getValues('is_color') && (
-                                        <div className="space-y-2 py-4">
-                                            <FormField
-                                                control={form.control}
-                                                name="color_hexadecimal"
-                                                render={({ field }) => (
-                                                    <FormItem className="flex-1">
-                                                        <Select
-                                                            value={field.value}
-                                                            onValueChange={
-                                                                field.onChange
-                                                            }
-                                                        >
-                                                            <FormControl>
-                                                                <SelectTrigger>
-                                                                    <SelectValue placeholder="Select Color" />
-                                                                </SelectTrigger>
-                                                            </FormControl>
-                                                            <SelectContent>
-                                                                <SelectItem
-                                                                    key={
-                                                                        '#258ad8'
-                                                                    }
-                                                                    value={
-                                                                        '#258ad8'
-                                                                    }
-                                                                >
-                                                                    <div className="flex items-center space-x-2">
-                                                                        <div
-                                                                            className={clsx(
-                                                                                `h-4 w-4 rounded-full !bg-[#258AD8] `
-                                                                            )}
-                                                                        ></div>
-                                                                        <span>
-                                                                            Blue
-                                                                        </span>
-                                                                    </div>
-                                                                </SelectItem>
-                                                                <SelectItem
-                                                                    key={
-                                                                        '#d87925'
-                                                                    }
-                                                                    value={
-                                                                        '#d87925'
-                                                                    }
-                                                                >
-                                                                    <div className="flex items-center space-x-2">
-                                                                        <div
-                                                                            className={clsx(
-                                                                                `h-4 w-4 rounded-full !bg-[#D87925] `
-                                                                            )}
-                                                                        ></div>
-                                                                        <span>
-                                                                            Orange
-                                                                        </span>
-                                                                    </div>
-                                                                </SelectItem>
-                                                                <SelectItem
-                                                                    key={
-                                                                        '#e9e1d3'
-                                                                    }
-                                                                    value={
-                                                                        '#e9e1d3'
-                                                                    }
-                                                                >
-                                                                    <div className="flex items-center space-x-2">
-                                                                        <div
-                                                                            className={clsx(
-                                                                                `h-4 w-4 rounded-full !bg-[#e9e1d3] `
-                                                                            )}
-                                                                        ></div>
-                                                                        <span>
-                                                                            Light
-                                                                            Beige
-                                                                        </span>
-                                                                    </div>
-                                                                </SelectItem>
-                                                            </SelectContent>
-                                                        </Select>
-                                                        <FormMessage />
-                                                    </FormItem>
-                                                )}
-                                            />
-                                        </div>
-                                    )}
-                                </div>
-                                <div>
-                                    <FormField
-                                        control={form.control}
-                                        name="is_color"
-                                        render={({ field }) => (
-                                            <FormItem>
-                                                <FormControl>
-                                                    <Switch
-                                                        checked={field.value}
-                                                        onCheckedChange={
-                                                            field.onChange
-                                                        }
-                                                    />
-                                                </FormControl>
-                                            </FormItem>
-                                        )}
-                                    />
-                                </div>
-                            </div>
-
-                            {!isLoadingDuration && (
-                                <FormField
-                                    control={form.control}
-                                    name="duration"
-                                    render={({ field }) => (
-                                        <FormItem className="flex-1">
-                                            <FormLabel>
-                                                Select publication duration
-                                            </FormLabel>
-                                            <Select
-                                                value={field.value}
-                                                onValueChange={field.onChange}
-                                            >
-                                                <FormControl>
-                                                    <SelectTrigger>
-                                                        <SelectValue placeholder="Duration" />
-                                                    </SelectTrigger>
-                                                </FormControl>
-                                                <SelectContent>
-                                                    {dataDuration?.map(
-                                                        (item) => (
-                                                            <SelectItem
-                                                                key={item.id}
+                                        {form.getValues('is_premium') && (
+                                            <div className="space-y-2 py-4">
+                                                <FormField
+                                                    control={form.control}
+                                                    name="color_hexadecimal"
+                                                    render={({ field }) => (
+                                                        <FormItem className="flex-1">
+                                                            <Select
                                                                 value={
-                                                                    item.duration +
-                                                                    ''
+                                                                    field.value
+                                                                }
+                                                                onValueChange={
+                                                                    field.onChange
                                                                 }
                                                             >
-                                                                {item.name}
-                                                            </SelectItem>
-                                                        )
+                                                                <FormControl>
+                                                                    <SelectTrigger>
+                                                                        <SelectValue placeholder="Select Color" />
+                                                                    </SelectTrigger>
+                                                                </FormControl>
+                                                                <SelectContent>
+                                                                    <SelectItem
+                                                                        key={
+                                                                            '#258ad8'
+                                                                        }
+                                                                        value={
+                                                                            '#258ad8'
+                                                                        }
+                                                                    >
+                                                                        <div className="flex items-center space-x-2">
+                                                                            <div
+                                                                                className={clsx(
+                                                                                    `h-4 w-4 rounded-full !bg-[#258AD8] `
+                                                                                )}
+                                                                            ></div>
+                                                                            <span>
+                                                                                Blue
+                                                                            </span>
+                                                                        </div>
+                                                                    </SelectItem>
+                                                                    <SelectItem
+                                                                        key={
+                                                                            '#d87925'
+                                                                        }
+                                                                        value={
+                                                                            '#d87925'
+                                                                        }
+                                                                    >
+                                                                        <div className="flex items-center space-x-2">
+                                                                            <div
+                                                                                className={clsx(
+                                                                                    `h-4 w-4 rounded-full !bg-[#D87925] `
+                                                                                )}
+                                                                            ></div>
+                                                                            <span>
+                                                                                Orange
+                                                                            </span>
+                                                                        </div>
+                                                                    </SelectItem>
+                                                                    <SelectItem
+                                                                        key={
+                                                                            '#e9e1d3'
+                                                                        }
+                                                                        value={
+                                                                            '#e9e1d3'
+                                                                        }
+                                                                    >
+                                                                        <div className="flex items-center space-x-2">
+                                                                            <div
+                                                                                className={clsx(
+                                                                                    `h-4 w-4 rounded-full !bg-[#e9e1d3] `
+                                                                                )}
+                                                                            ></div>
+                                                                            <span>
+                                                                                Light
+                                                                                Beige
+                                                                            </span>
+                                                                        </div>
+                                                                    </SelectItem>
+                                                                </SelectContent>
+                                                            </Select>
+                                                            <FormMessage />
+                                                        </FormItem>
                                                     )}
-                                                </SelectContent>
-                                            </Select>
-                                            <FormMessage />
-                                        </FormItem>
-                                    )}
-                                />
-                            )}
-                        </div>
-                        {!pricingLoading && pricingSuccess && (
-                            <div className="mx-auto max-w-md rounded-xl border p-4 shadow-md">
-                                <div className="mb-4 space-y-2">
-                                    {pricingResult.items.map((item) => (
-                                        <div
-                                            key={item.name}
-                                            className="mb-2 flex items-center justify-between"
-                                        >
+                                                />
+                                            </div>
+                                        )}
+                                    </div>
+                                    <div>
+                                        <FormField
+                                            control={form.control}
+                                            name="is_premium"
+                                            render={({ field }) => (
+                                                <FormItem>
+                                                    <FormControl>
+                                                        <Switch
+                                                            checked={
+                                                                field.value
+                                                            }
+                                                            onCheckedChange={
+                                                                field.onChange
+                                                            }
+                                                        />
+                                                    </FormControl>
+                                                </FormItem>
+                                            )}
+                                        />
+                                    </div>
+                                </div>
+                                <div className="mb-4 flex items-center justify-between rounded-lg bg-gray-800 p-4 shadow-md">
+                                    <div>
+                                        <h1 className="text-lg font-semibold">
+                                            Uplifter Booster
+                                        </h1>
+                                        <h2 className="text-sm text-gray-400">
+                                            $7* or 7 credits
+                                        </h2>
+                                        <div className="mt-1 text-sm text-gray-300">
+                                            Lifts the post up, making it appear
+                                            more on top for interested parties.
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <FormField
+                                            control={form.control}
+                                            name="is_uplifter"
+                                            render={({ field }) => (
+                                                <FormItem>
+                                                    <FormControl>
+                                                        <Switch
+                                                            checked={
+                                                                field.value
+                                                            }
+                                                            onCheckedChange={
+                                                                field.onChange
+                                                            }
+                                                        />
+                                                    </FormControl>
+                                                </FormItem>
+                                            )}
+                                        />
+                                    </div>
+                                </div>
+                                <div className="mb-4 flex items-center justify-between rounded-lg bg-gray-800 p-4 shadow-md">
+                                    <div>
+                                        <h1 className="text-lg font-semibold">
+                                            Color Booster
+                                        </h1>
+                                        <h2 className="text-sm text-gray-400">
+                                            $5* or 5 credits
+                                        </h2>
+                                        <div className="mt-1 text-sm text-gray-300">
+                                            Makes the post stand out by
+                                            incorporating a background color.
+                                        </div>
+                                        {form.getValues('is_color') && (
+                                            <div className="space-y-2 py-4">
+                                                <FormField
+                                                    control={form.control}
+                                                    name="color_hexadecimal"
+                                                    render={({ field }) => (
+                                                        <FormItem className="flex-1">
+                                                            <Select
+                                                                value={
+                                                                    field.value
+                                                                }
+                                                                onValueChange={
+                                                                    field.onChange
+                                                                }
+                                                            >
+                                                                <FormControl>
+                                                                    <SelectTrigger>
+                                                                        <SelectValue placeholder="Select Color" />
+                                                                    </SelectTrigger>
+                                                                </FormControl>
+                                                                <SelectContent>
+                                                                    <SelectItem
+                                                                        key={
+                                                                            '#258ad8'
+                                                                        }
+                                                                        value={
+                                                                            '#258ad8'
+                                                                        }
+                                                                    >
+                                                                        <div className="flex items-center space-x-2">
+                                                                            <div
+                                                                                className={clsx(
+                                                                                    `h-4 w-4 rounded-full !bg-[#258AD8] `
+                                                                                )}
+                                                                            ></div>
+                                                                            <span>
+                                                                                Blue
+                                                                            </span>
+                                                                        </div>
+                                                                    </SelectItem>
+                                                                    <SelectItem
+                                                                        key={
+                                                                            '#d87925'
+                                                                        }
+                                                                        value={
+                                                                            '#d87925'
+                                                                        }
+                                                                    >
+                                                                        <div className="flex items-center space-x-2">
+                                                                            <div
+                                                                                className={clsx(
+                                                                                    `h-4 w-4 rounded-full !bg-[#D87925] `
+                                                                                )}
+                                                                            ></div>
+                                                                            <span>
+                                                                                Orange
+                                                                            </span>
+                                                                        </div>
+                                                                    </SelectItem>
+                                                                    <SelectItem
+                                                                        key={
+                                                                            '#e9e1d3'
+                                                                        }
+                                                                        value={
+                                                                            '#e9e1d3'
+                                                                        }
+                                                                    >
+                                                                        <div className="flex items-center space-x-2">
+                                                                            <div
+                                                                                className={clsx(
+                                                                                    `h-4 w-4 rounded-full !bg-[#e9e1d3] `
+                                                                                )}
+                                                                            ></div>
+                                                                            <span>
+                                                                                Light
+                                                                                Beige
+                                                                            </span>
+                                                                        </div>
+                                                                    </SelectItem>
+                                                                </SelectContent>
+                                                            </Select>
+                                                            <FormMessage />
+                                                        </FormItem>
+                                                    )}
+                                                />
+                                            </div>
+                                        )}
+                                    </div>
+                                    <div>
+                                        <FormField
+                                            control={form.control}
+                                            name="is_color"
+                                            render={({ field }) => (
+                                                <FormItem>
+                                                    <FormControl>
+                                                        <Switch
+                                                            checked={
+                                                                field.value
+                                                            }
+                                                            onCheckedChange={
+                                                                field.onChange
+                                                            }
+                                                        />
+                                                    </FormControl>
+                                                </FormItem>
+                                            )}
+                                        />
+                                    </div>
+                                </div>
+
+                                {!isLoadingDuration && (
+                                    <FormField
+                                        control={form.control}
+                                        name="duration"
+                                        render={({ field }) => (
+                                            <FormItem className="flex-1">
+                                                <FormLabel>
+                                                    Select publication duration
+                                                </FormLabel>
+                                                <Select
+                                                    value={field.value}
+                                                    onValueChange={
+                                                        field.onChange
+                                                    }
+                                                >
+                                                    <FormControl>
+                                                        <SelectTrigger>
+                                                            <SelectValue placeholder="Duration" />
+                                                        </SelectTrigger>
+                                                    </FormControl>
+                                                    <SelectContent>
+                                                        {dataDuration?.map(
+                                                            (item) => (
+                                                                <SelectItem
+                                                                    key={
+                                                                        item.id
+                                                                    }
+                                                                    value={
+                                                                        item.duration +
+                                                                        ''
+                                                                    }
+                                                                >
+                                                                    {item.name}
+                                                                </SelectItem>
+                                                            )
+                                                        )}
+                                                    </SelectContent>
+                                                </Select>
+                                                <FormMessage />
+                                            </FormItem>
+                                        )}
+                                    />
+                                )}
+                            </div>
+                            {!pricingLoading && pricingSuccess && (
+                                <div className="mx-auto max-w-md rounded-xl border p-4 shadow-md">
+                                    <div className="mb-4 space-y-2">
+                                        {pricingResult.items.map((item) => (
+                                            <div
+                                                key={item.name}
+                                                className="mb-2 flex items-center justify-between"
+                                            >
+                                                <span className="text-lg capitalize">
+                                                    {item.name}
+                                                </span>
+                                                <span className="text-lg font-semibold">
+                                                    ${item.price}
+                                                </span>
+                                            </div>
+                                        ))}
+
+                                        <div className="flex items-center justify-between">
                                             <span className="text-lg capitalize">
-                                                {item.name}
+                                                tax amount{' '}
+                                                <a className="text-sm">
+                                                    (
+                                                    {
+                                                        pricingResult.tax_percentage
+                                                    }
+                                                    %)
+                                                </a>{' '}
                                             </span>
                                             <span className="text-lg font-semibold">
-                                                ${item.price}
+                                                ${pricingResult.tax_amount}
                                             </span>
                                         </div>
-                                    ))}
-
-                                    <div className="flex items-center justify-between">
-                                        <span className="text-lg capitalize">
-                                            tax amount{' '}
-                                            <a className="text-sm">
-                                                ({pricingResult.tax_percentage}
-                                                %)
-                                            </a>{' '}
-                                        </span>
-                                        <span className="text-lg font-semibold">
-                                            ${pricingResult.tax_amount}
-                                        </span>
-                                    </div>
-                                    <div className="mt-2 flex items-center justify-between border-t border-white pt-2">
-                                        <span className="text-xl font-bold">
-                                            total payment
-                                        </span>
-                                        <span className="text-xl font-bold">
-                                            ${pricingResult.total_payment}
-                                        </span>
-                                    </div>
-                                    <p className="mt-1 text-sm text-gray-500">
-                                        Equivalent to{' '}
-                                        {pricingResult.total_credits} credits
-                                    </p>
-                                </div>
-                                {isError && (
-                                    <ErrorMessage>
-                                        {error.response?.data?.message ||
-                                            'Something Wrong'}
-                                    </ErrorMessage>
-                                )}
-                                {isSuccess && (
-                                    <Alert variant={'success'}>
-                                        <AlertTitle className="flex items-center space-x-2">
-                                            <Check />
-                                            <span>
-                                                {createResponse.data.message}
+                                        <div className="mt-2 flex items-center justify-between border-t border-white pt-2">
+                                            <span className="text-xl font-bold">
+                                                total payment
                                             </span>
-                                        </AlertTitle>
-                                    </Alert>
-                                )}
-                                <div className="flex flex-col gap-2">
-                                    <Button
-                                        loading={isLoadingCreate}
-                                        type="submit"
-                                        value="credit_card"
-                                    >
-                                        Pay with Credit Card
-                                    </Button>
+                                            <span className="text-xl font-bold">
+                                                ${pricingResult.total_payment}
+                                            </span>
+                                        </div>
+                                        <p className="mt-1 text-sm text-gray-500">
+                                            Equivalent to{' '}
+                                            {pricingResult.total_credits}{' '}
+                                            credits
+                                        </p>
+                                    </div>
+                                    {isError && (
+                                        <ErrorMessage>
+                                            {error.response?.data?.message ||
+                                                'Something Wrong'}
+                                        </ErrorMessage>
+                                    )}
+                                    {isSuccess && (
+                                        <Alert variant={'success'}>
+                                            <AlertTitle className="flex items-center space-x-2">
+                                                <Check />
+                                                <span>
+                                                    {
+                                                        createResponse.data
+                                                            .message
+                                                    }
+                                                </span>
+                                            </AlertTitle>
+                                        </Alert>
+                                    )}
+                                    <div className="flex flex-col gap-2">
+                                        <Button
+                                            loading={isLoadingCreate}
+                                            type="submit"
+                                            value="credit_card"
+                                        >
+                                            Pay with Credit Card
+                                        </Button>
+                                        <Button
+                                            loading={isLoadingCreate}
+                                            type="submit"
+                                            value="credit_balance"
+                                            disabled={
+                                                isLoadingCreate ||
+                                                !pricingResult.is_sufficient
+                                            }
+                                        >
+                                            Pay with Credit Balance
+                                        </Button>
+                                        <div>
+                                            Your credit balance :{' '}
+                                            {pricingResult.credit_balance}
+                                        </div>
+                                    </div>
+                                </div>
+                            )}
+                        </CardDarkNeonGlow>
+                        <CardDarkNeonGlow>
+                            <div className="flex flex-col items-center  space-y-4">
+                                <div className="text-center  text-lg">
+                                    Publish it later
+                                </div>
+                                <div>
                                     <Button
                                         loading={isLoadingCreate}
                                         type="submit"
                                         value="credit_balance"
-                                        disabled={
-                                            isLoadingCreate ||
-                                            !pricingResult.is_sufficient
-                                        }
                                     >
-                                        Pay with Credit Balance
+                                        Save as draft
                                     </Button>
-                                    <div>
-                                        Your credit balance :{' '}
-                                        {pricingResult.credit_balance}
-                                    </div>
                                 </div>
                             </div>
-                        )}
-                    </CardDarkNeonGlow>
+                        </CardDarkNeonGlow>
+                    </div>
                 </div>
             </form>
         </Form>

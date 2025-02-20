@@ -6,6 +6,8 @@ export interface BodyCreateListing {
     city_id: string;
     latitude: number;
     longitude: number;
+    service_id: string;
+    service_other?: string;
     duration: number;
     color_hexadecimal?: string;
     is_direct: boolean;
@@ -19,6 +21,8 @@ export interface BodyUpdateListing {
     payment_type: string; // Bisa diganti dengan enum jika ada daftar tetap untuk jenis pembayaran
     description: string;
     city_id: string;
+    service_id: string;
+    service_other?: string;
     latitude: number;
     longitude: number;
     hashtags: string[]; // Array of strings
@@ -106,6 +110,8 @@ export interface IDetailListing {
     start_date: string | null; // Start date as string or null
     end_date: string | null; // End date as string or null
     hashtags: string[];
+    service_id: string;
+    service_other?: string;
 }
 export interface BodyRepublishListing {
     duration: number;

@@ -59,7 +59,7 @@ export const useUpdatePhoneNumber = ({ onSuccess, onError }: IProps) => {
     return useMutation({
         mutationFn: async (phone_number: string) => {
             const response = fetchClient({
-                method: 'PATCH',
+                method: 'PUT',
                 url: '/user/phone-number',
                 body: { phone_number },
             });

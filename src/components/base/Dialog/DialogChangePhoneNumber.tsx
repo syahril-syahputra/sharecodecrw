@@ -15,7 +15,6 @@ import {
     FormLabel,
     FormMessage,
 } from '@/components/ui/form';
-import { useAddhoneNumber } from '@/feature/business/useSendVerificationCode';
 import {
     AlertDialog,
     AlertDialogContent,
@@ -24,6 +23,7 @@ import {
     AlertDialogTitle,
 } from '@/components/ui/alert-dialog';
 import { Input } from '@/components/ui/input';
+import { useUpdatePhoneNumber } from '@/feature/user/profile';
 
 interface IProps {
     refetch: () => void;
@@ -52,7 +52,7 @@ export default function DialogChangePhoneNumber({ refetch }: IProps) {
     const {
         mutate: mutateVerifyPhoneNumber,
         isPending: isPendingVerifyPhoneNumber,
-    } = useAddhoneNumber({
+    } = useUpdatePhoneNumber({
         onSuccess: (success) => {
             toast({
                 description: success.data.message,
@@ -68,10 +68,7 @@ export default function DialogChangePhoneNumber({ refetch }: IProps) {
         },
     });
     function verifyPhoneNumber(data: z.infer<typeof formSchema>) {
-        mutateVerifyPhoneNumber({
-            code: data.code,
-            phone: 'userPhoneNumber',
-        });
+        mutateVerifyPhoneNumber(data.code + data.phone_number);
         refetch();
     }
 

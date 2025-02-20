@@ -144,7 +144,7 @@ export default function Page() {
             first_name: !business?.is_company ? values.first_name : null,
             last_name: !business?.is_company ? values.last_name : null,
             username: !business?.is_company ? values.username : null,
-            address: values.address || undefined,
+            address: values.address || null,
             latitude: selectedCoordinate.lat,
             longitude: selectedCoordinate.lng,
             about: values.about,

@@ -18,8 +18,13 @@ import CardDarkNeonGlow from '@/components/base/Card/CardDarkNeonGlow';
 import { IListing, IListingFilter } from '@/types/listing';
 import { InputCustom } from '@/components/ui/inputCustom';
 import Link from 'next/link';
+import { useValidateCreateListing } from '@/feature/listing/useValidateCreateListing';
+import { useRouter } from 'next/navigation';
+import { useToast } from '@/components/ui/use-toast';
 
 export default function Page() {
+    const router = useRouter();
+    const { toast } = useToast();
     const {
         filterValue,
         filter,
@@ -55,6 +60,24 @@ export default function Page() {
         filter,
         sort
     );
+
+    const { mutate: validateCreate, isPending: isLoadingValidateCreate } =
+        useValidateCreateListing({
+            onSuccess: (result) => {
+                if (result.data.data) {
+                    router.push('/user/listing/create');
+                } else {
+                    toast({
+                        variant: 'destructive',
+                        title: 'Create Listing Denied',
+
+                        description:
+                            'Please contact admin for more information',
+                    });
+                }
+            },
+            onError: () => {},
+        });
     const columnHelper = createColumnHelper<IListing>();
     const columns = [
         columnHelper.display({
@@ -202,12 +225,14 @@ export default function Page() {
 
                 <DataTable
                     topLeft={
-                        <Link href={'/user/listing/create'}>
-                            <Button size="sm">
-                                <Plus />
-                                Create Service Listing
-                            </Button>
-                        </Link>
+                        <Button
+                            size="sm"
+                            onClick={() => validateCreate()}
+                            loading={isLoadingValidateCreate}
+                        >
+                            <Plus />
+                            Create Service Listing
+                        </Button>
                     }
                     columns={columns}
                     data={data?.items}

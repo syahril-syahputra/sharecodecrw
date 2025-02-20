@@ -1,5 +1,5 @@
 'use client';
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
     Form,
     FormControl,
@@ -36,6 +36,7 @@ import ErrorMessage from '@/components/base/Error/ErrorMessage';
 import { Button } from '@/components/ui/button';
 import { useUpdateListing } from '@/feature/listing/useUpdateListing';
 import { BodyUpdateListing, IDetailListing } from '@/types/listing';
+import { useFetchCommercialServices } from '@/feature/base/commercial-service';
 
 const formSchema = z.object({
     title: z.string().min(1, { message: 'Title is required' }),
@@ -45,6 +46,9 @@ const formSchema = z.object({
 
     hashtags: z.array(z.string()).min(3, { message: 'tags is required min 3' }),
     price: z.coerce.number(),
+
+    service_id: z.string().min(1, { message: 'Service is required' }),
+    service_other: z.string().optional(),
     pricing_type: z.string().min(1, { message: 'Pricing Type is required' }),
     province: z.string().min(1, { message: 'Province is required' }),
     city: z.string().min(1, { message: 'City is required' }),
@@ -85,7 +89,9 @@ export default function FormUpdateListing({ data }: IProps) {
             pricing_type: data?.payment_type || '',
             province: data?.province_id || '',
             city: data?.city_id || '',
-            address: data?.address,
+            service_id: data.service_id,
+            service_other: data.service_other,
+            address: data?.address || '',
             latitude: data?.latitude || 0,
             longitude: data?.longitude || 0,
             hashtags: data?.hashtags || [],
@@ -151,6 +157,8 @@ export default function FormUpdateListing({ data }: IProps) {
             latitude: selectedCoordinate.lat,
             longitude: selectedCoordinate.lng,
             price: data.price,
+            service_id: data.service_id,
+            service_other: data.service_other,
             payment_type: data.pricing_type,
             city_id: data.city,
             hashtags: data.hashtags,
@@ -174,6 +182,9 @@ export default function FormUpdateListing({ data }: IProps) {
         lat: selectedCoordinateLat || 0,
         lng: selectedCoordinateLng || 0,
     };
+
+    const [isOther, setIsOther] = useState('');
+    const { data: dataService } = useFetchCommercialServices();
     return (
         <div className="flex w-full flex-1 items-start space-x-4  px-4 text-white">
             <div className=" flex-1 rounded-lg bg-gradient-to-b from-[#1A3652] via-[#020508] to-[#020508] p-4 p-8">
@@ -218,6 +229,64 @@ export default function FormUpdateListing({ data }: IProps) {
                                     </FormItem>
                                 )}
                             />
+                            <FormField
+                                control={form.control}
+                                name="service_id"
+                                render={({ field }) => (
+                                    <FormItem className="flex-1">
+                                        <FormLabel className="!font-light text-white">
+                                            Category
+                                        </FormLabel>
+                                        <Select
+                                            onValueChange={(value) => {
+                                                setIsOther(value);
+                                                field.onChange(value);
+                                            }}
+                                            defaultValue={field.value}
+                                        >
+                                            <FormControl>
+                                                <SelectTrigger className="rounded-full bg-transparent text-white">
+                                                    <SelectValue placeholder="Select Category" />
+                                                </SelectTrigger>
+                                            </FormControl>
+                                            <SelectContent>
+                                                {dataService?.map((item) => (
+                                                    <SelectItem
+                                                        key={item.id}
+                                                        value={item.id}
+                                                    >
+                                                        {item.name}
+                                                    </SelectItem>
+                                                ))}
+                                                <SelectItem
+                                                    key={'Other'}
+                                                    value={'Other'}
+                                                >
+                                                    Other
+                                                </SelectItem>
+                                            </SelectContent>
+                                        </Select>
+                                        <FormMessage />
+                                    </FormItem>
+                                )}
+                            />
+                            {isOther === 'Other' && (
+                                <FormField
+                                    control={form.control}
+                                    name="service_other"
+                                    render={({ field }) => (
+                                        <FormItem>
+                                            <FormControl>
+                                                <InputCustom
+                                                    placeholder="Insert Service Name"
+                                                    {...field}
+                                                />
+                                            </FormControl>
+                                            <FormMessage />
+                                        </FormItem>
+                                    )}
+                                />
+                            )}
                             <FormField
                                 control={form.control}
                                 name="hashtags"
@@ -440,10 +509,7 @@ export default function FormUpdateListing({ data }: IProps) {
                                                 <h2 className="text-lg font-semibold">
                                                     Image
                                                 </h2>
-                                                <span>
-                                                    Optionaly. Select an image
-                                                    to enhance your listing
-                                                </span>
+                                                <span>Upload an image</span>
                                             </FormLabel>
                                             <div className="flex items-start">
                                                 <FormControl>
@@ -487,7 +553,7 @@ export default function FormUpdateListing({ data }: IProps) {
                                                                             100
                                                                         }
                                                                     />
-                                                                    <label className="text-2xl text-black">
+                                                                    <label className="text-2xl !text-black">
                                                                         Choose
                                                                         Image
                                                                     </label>
