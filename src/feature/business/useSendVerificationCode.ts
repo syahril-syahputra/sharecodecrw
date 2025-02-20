@@ -50,26 +50,3 @@ export const useVerifyPhoneNumber = ({ onSuccess, onError }: IProps) => {
         onSuccess: onSuccess,
     });
 };
-export const useAddhoneNumber = ({ onSuccess, onError }: IProps) => {
-    return useMutation({
-        mutationFn: async ({
-            code,
-            phone,
-        }: {
-            code: string;
-            phone: string;
-        }) => {
-            const response = await fetchClient({
-                method: 'POST',
-                url: `/businesses/phone-number`,
-                body: {
-                    phone_number: code + phone,
-                },
-            });
-
-            return response;
-        },
-        onError: onError,
-        onSuccess: onSuccess,
-    });
-};

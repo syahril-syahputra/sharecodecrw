@@ -27,6 +27,8 @@ import { useUpdatePhoneNumber } from '@/feature/user/profile';
 
 interface IProps {
     refetch: () => void;
+    title: string;
+    userPhoneNumber?: string;
 }
 
 const formSchema = z.object({
@@ -38,14 +40,18 @@ const formSchema = z.object({
     }),
 });
 
-export default function DialogChangePhoneNumber({ refetch }: IProps) {
+export default function DialogChangePhoneNumber({
+    refetch,
+    title,
+    userPhoneNumber,
+}: IProps) {
     const { toast } = useToast();
     const [dialog, setDialog] = useState(false);
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: {
             code: '+1',
-            phone_number: '',
+            phone_number: userPhoneNumber || '',
         },
     });
 
@@ -78,15 +84,13 @@ export default function DialogChangePhoneNumber({ refetch }: IProps) {
                 onClick={() => setDialog(true)}
                 className="text-md flex cursor-pointer items-center rounded-full bg-gray-700 px-2 font-thin transition duration-100 hover:bg-gray-800"
             >
-                Add Phone Number
+                {title}
                 <MinusCircle size={18} className="ml-2 text-gray-900" />
             </button>
             <AlertDialog open={dialog} onOpenChange={setDialog}>
                 <AlertDialogContent className="bg-gray-900 text-white sm:max-w-[425px]">
                     <AlertDialogHeader>
-                        <AlertDialogTitle>
-                            Phone Number Verification
-                        </AlertDialogTitle>
+                        <AlertDialogTitle>Phone Number</AlertDialogTitle>
                     </AlertDialogHeader>
                     <div className="flex justify-center  ">
                         <Form {...form}>

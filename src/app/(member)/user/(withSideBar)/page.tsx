@@ -225,6 +225,7 @@ export default function Page() {
                                                     </span>
                                                     <DialogChangePhoneNumber
                                                         refetch={refetch}
+                                                        title="Add phone number"
                                                     />
                                                 </div>
                                             )}
@@ -240,13 +241,23 @@ export default function Page() {
                                         )}
                                         {business?.phone_number &&
                                             !business?.phone_number_verified_at && (
-                                                <DialogVerifyPhoneNumber
-                                                    userPhoneNumber={
-                                                        business?.phone_number ??
-                                                        ''
-                                                    }
-                                                    refetch={refetch}
-                                                />
+                                                <div className="flex items-center space-x-2">
+                                                    <DialogVerifyPhoneNumber
+                                                        userPhoneNumber={
+                                                            business?.phone_number ??
+                                                            ''
+                                                        }
+                                                        refetch={refetch}
+                                                    />
+                                                    <DialogChangePhoneNumber
+                                                        refetch={refetch}
+                                                        userPhoneNumber={
+                                                            business?.phone_number ??
+                                                            ''
+                                                        }
+                                                        title="Change phone number"
+                                                    />
+                                                </div>
                                             )}
                                     </div>
                                     <div className="flex items-center space-x-2 font-thin text-white">
