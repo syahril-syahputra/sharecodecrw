@@ -58,7 +58,6 @@ const formSchema = z.object({
     latitude: z.number({
         required_error: 'latitude required.',
     }),
-    address: z.string().optional(),
     image: z.any().optional(),
 });
 
@@ -91,7 +90,6 @@ export default function FormUpdateListing({ data }: IProps) {
             city: data?.city_id || '',
             service_id: data.service_id,
             service_other: data.service_other,
-            address: data?.address || '',
             latitude: data?.latitude || 0,
             longitude: data?.longitude || 0,
             hashtags: data?.hashtags || [],
@@ -163,7 +161,6 @@ export default function FormUpdateListing({ data }: IProps) {
             city_id: data.city,
             hashtags: data.hashtags,
             image: base64,
-            address: data.address,
         };
         createListing(dataBody);
     }
@@ -482,22 +479,6 @@ export default function FormUpdateListing({ data }: IProps) {
                                 <Map
                                     className="relative z-0 h-[200px] w-full"
                                     location={selectedCoordinate}
-                                />
-
-                                <FormField
-                                    control={form.control}
-                                    name="address"
-                                    render={({ field }) => (
-                                        <FormItem className="flex-1">
-                                            <FormControl>
-                                                <InputCustom
-                                                    placeholder="Address"
-                                                    {...field}
-                                                />
-                                            </FormControl>
-                                            <FormMessage />
-                                        </FormItem>
-                                    )}
                                 />
 
                                 <FormField

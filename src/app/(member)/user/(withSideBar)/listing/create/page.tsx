@@ -69,7 +69,6 @@ const formSchema = z
         province: z.string().min(1, { message: 'Province is required' }),
         city: z.string().min(1, { message: 'City is required' }),
 
-        address: z.string().min(1),
         image: z
             .any()
             .refine((files) => files?.length == 1, 'Image is required.')
@@ -217,7 +216,6 @@ export default function Page() {
                       ? true
                       : null,
             image: base64,
-            address: data.address,
         };
         createListing(dataBody);
     }
@@ -550,21 +548,6 @@ export default function Page() {
                                 <Map
                                     className="relative z-0 h-[200px] w-full"
                                     location={selectedCoordinate}
-                                />
-                                <FormField
-                                    control={form.control}
-                                    name="address"
-                                    render={({ field }) => (
-                                        <FormItem className="flex-1">
-                                            <FormControl>
-                                                <InputCustom
-                                                    placeholder="Address"
-                                                    {...field}
-                                                />
-                                            </FormControl>
-                                            <FormMessage />
-                                        </FormItem>
-                                    )}
                                 />
 
                                 <FormField

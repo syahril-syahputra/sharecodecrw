@@ -229,11 +229,6 @@ export default function Page({ params }: { params: { id: string } }) {
                         </div>
                     </div>
                     <Separator />
-                    <div className="flex flex-col space-y-2">
-                        <label className="text-xl font-semibold">Address</label>
-                        <span>{data?.address}</span>
-                    </div>
-                    <Separator />
                     <IframeMap
                         latitude={data?.latitude}
                         longitude={data?.longitude}
