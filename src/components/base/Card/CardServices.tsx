@@ -160,9 +160,7 @@ export default function CardServices(props: IProps) {
                 <div className="flex justify-between">
                     <div className="flex items-center space-x-2 font-saans font-bold ">
                         <Radius />
-                        <span>
-                            {parseFloat(props.data.distance.toFixed(2))} KM
-                        </span>
+                        <span>{props.data.distance}</span>
                     </div>
                     <div className="flex flex-1 flex-col text-right">
                         <span className="font-saans text-2xl font-bold">
