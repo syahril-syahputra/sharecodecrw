@@ -163,6 +163,7 @@ export default function FormUpdateListing({ data }: IProps) {
             city_id: data.city,
             hashtags: data.hashtags,
             image: base64,
+            address: data.address,
         };
         createListing(dataBody);
     }

@@ -71,8 +71,7 @@ export default function Page() {
                         variant: 'destructive',
                         title: 'Create Listing Denied',
 
-                        description:
-                            'Please contact admin for more information',
+                        description: result.data.message,
                     });
                 }
             },

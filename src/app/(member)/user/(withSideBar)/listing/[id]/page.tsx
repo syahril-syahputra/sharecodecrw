@@ -177,6 +177,15 @@ export default function Page({ params }: { params: { id: string } }) {
                     <Separator />
                     <div className="flex flex-col space-y-2">
                         <label className=" text-xl font-semibold">
+                            Category
+                        </label>
+                        <span className="whitespace-pre-line">
+                            {data?.service_name}
+                        </span>
+                    </div>
+                    <Separator />
+                    <div className="flex flex-col space-y-2">
+                        <label className=" text-xl font-semibold">
                             Description
                         </label>
                         <span className="whitespace-pre-line">

@@ -10,6 +10,7 @@ export interface BodyCreateListing {
     service_other?: string;
     duration: number;
     color_hexadecimal?: string;
+    address?: string;
     is_direct: boolean;
     hashtags: string[]; // Array of strings
     boosters: string[]; // Array of strings
@@ -22,6 +23,7 @@ export interface BodyUpdateListing {
     description: string;
     city_id: string;
     service_id: string;
+    address?: string;
     service_other?: string;
     latitude: number;
     longitude: number;
@@ -111,6 +113,7 @@ export interface IDetailListing {
     end_date: string | null; // End date as string or null
     hashtags: string[];
     service_id: string;
+    service_name: string;
     service_other?: string;
 }
 export interface BodyRepublishListing {

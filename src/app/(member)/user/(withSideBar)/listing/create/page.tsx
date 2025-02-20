@@ -212,6 +212,7 @@ export default function Page() {
                     : undefined,
             is_direct: paymentMethod === 'credit_balance' ? false : true,
             image: base64,
+            address: data.address,
         };
         createListing(dataBody);
     }
