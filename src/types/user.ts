@@ -88,6 +88,7 @@ export interface IBusiness {
     total_reviews: number;
     email: string;
     email_verified_at: string;
+    business_number: string;
 }
 
 export interface IBusinessUpdate {
@@ -103,4 +104,5 @@ export interface IBusinessUpdate {
     latitude: number;
     longitude: number;
     about: string;
+    business_number?: string;
 }

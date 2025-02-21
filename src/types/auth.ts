@@ -18,4 +18,5 @@ export interface BodyCompanyRegistration {
     business_license_name?: string; // required base 64
     business_license: string; // required base 64
     city_id: string; // required
+    business_number: string;
 }

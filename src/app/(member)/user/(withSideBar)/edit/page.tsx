@@ -28,7 +28,7 @@ import {
     SelectTrigger,
     SelectValue,
 } from '@/components/ui/select';
-import { Fragment } from 'react';
+import { Fragment, useEffect } from 'react';
 import dynamic from 'next/dynamic';
 import { Textarea } from '@/components/ui/textarea';
 import { errorHelper } from '@/lib/formErrorHelper';
@@ -36,27 +36,6 @@ import { errorHelper } from '@/lib/formErrorHelper';
 const Map = dynamic(() => import('@/components/base/Maps/CityMap'), {
     ssr: false,
 });
-
-// const formSchema = z.object({
-//     name: z.string().min(1, { message: 'Comapny full name is required' }),
-//     first_name: z.string().min(1, { message: 'First name is required' }),
-//     last_name: z.string().min(1, { message: 'Last name is required' }),
-//     username: z.string().min(1, { message: 'Username is required' }),
-//     province: z.string().min(1, { message: 'Province is required' }),
-//     city: z.string().min(1, { message: 'City is required' }),
-//     service_id: z.string().min(1, { message: 'Service is required' }),
-//     service_other: z.string().optional(),
-//     phone_number: z.string().min(8),
-//     code: z.string().min(1),
-//     address: z.string().min(10, { message: 'Address is required' }),
-//     longitude: z.number({
-//         required_error: 'longitude required.',
-//     }),
-//     latitude: z.number({
-//         required_error: 'latitude required.',
-//     }),
-//     about: z.string().min(10, { message: 'About is required' }),
-// });
 
 const formSchema = (isCompany: boolean | undefined) => {
     return z.object({
@@ -74,8 +53,6 @@ const formSchema = (isCompany: boolean | undefined) => {
             : z.string().optional(),
         province: z.string().min(1, { message: 'Province is required' }),
         city: z.string().min(1, { message: 'City is required' }),
-        // phone_number: z.string().min(8),
-        code: z.string().min(1),
         address: z.string().optional(),
         longitude: z.number({
             required_error: 'longitude required.',
@@ -84,20 +61,22 @@ const formSchema = (isCompany: boolean | undefined) => {
             required_error: 'latitude required.',
         }),
         about: z.string().min(10, { message: 'About is required' }),
+        business_number: z
+            .string()
+            .min(1, { message: 'Business number is required' }),
     });
 };
 
 export default function Page() {
     const { toast } = useToast();
     const router = useRouter();
-    const { data: business } = useFetchBusiness();
+    const { data: business, isFetching } = useFetchBusiness();
     const schema = formSchema(business?.is_company);
 
     const form = useForm<z.infer<typeof schema>>({
         resolver: zodResolver(schema),
         mode: 'onChange',
         defaultValues: {
-            code: '+1',
             city: business?.city_id,
             province: business?.province_id,
             name: business?.name,
@@ -105,15 +84,28 @@ export default function Page() {
             last_name: business?.last_name,
             username: business?.username ? business?.username : '',
             address: business?.address,
-            // phone_number: business?.phone_number
-            //     ? business?.phone_number.replace(/^\+1/, '')
-            //     : business?.phone_number,
-            latitude: business?.latitude,
-            longitude: business?.latitude,
-            about: business?.about,
+            latitude: business?.latitude || 0,
+            longitude: business?.latitude || 0,
+            about: business?.about || '',
+            business_number: business?.business_number,
         },
     });
-    console.log(form);
+
+    useEffect(() => {
+        form.reset({
+            city: business?.city_id,
+            province: business?.province_id,
+            name: business?.name,
+            first_name: business?.first_name,
+            last_name: business?.last_name,
+            username: business?.username ? business?.username : '',
+            address: business?.address,
+            latitude: selectedCoordinate.lat,
+            longitude: selectedCoordinate.lng,
+            about: business?.about || '',
+            business_number: business?.business_number,
+        });
+    }, [business, form]);
 
     const { data: dataState } = useFetchState();
     const { data: dataCity, isPending: isPendingCity } = useFetchCity(
@@ -148,6 +140,7 @@ export default function Page() {
             latitude: selectedCoordinate.lat,
             longitude: selectedCoordinate.lng,
             about: values.about,
+            business_number: values.business_number,
         });
     };
 
@@ -168,9 +161,9 @@ export default function Page() {
     };
     return (
         <div className="flex-1 px-6">
-            {false && <LoadingPage />}
+            {isFetching && <LoadingPage />}
 
-            {!false && (
+            {!isFetching && (
                 <div className="space-y-4">
                     <CardDarkNeonGlow>
                         <div className="flex justify-between">
@@ -196,25 +189,46 @@ export default function Page() {
                                 className="w-full space-y-4 lg:w-1/2"
                             >
                                 {business?.is_company && (
-                                    <FormField
-                                        control={form.control}
-                                        name="name"
-                                        render={({ field }) => (
-                                            <FormItem>
-                                                <FormLabel className="!font-light text-white">
-                                                    Full Company Name
-                                                </FormLabel>
-                                                <FormControl>
-                                                    <Input
-                                                        className="rounded-full border-white bg-transparent text-white"
-                                                        placeholder="Company LLC"
-                                                        {...field}
-                                                    />
-                                                </FormControl>
-                                                <FormMessage />
-                                            </FormItem>
-                                        )}
-                                    />
+                                    <div className="space-y-4">
+                                        <FormField
+                                            control={form.control}
+                                            name="name"
+                                            render={({ field }) => (
+                                                <FormItem>
+                                                    <FormLabel className="!font-light text-white">
+                                                        Full Company Name
+                                                    </FormLabel>
+                                                    <FormControl>
+                                                        <Input
+                                                            className="rounded-full border-white bg-transparent text-white"
+                                                            placeholder="Company LLC"
+                                                            {...field}
+                                                        />
+                                                    </FormControl>
+                                                    <FormMessage />
+                                                </FormItem>
+                                            )}
+                                        />
+                                        <FormField
+                                            control={form.control}
+                                            name="business_number"
+                                            render={({ field }) => (
+                                                <FormItem>
+                                                    <FormLabel className="!font-light text-white">
+                                                        Business Number
+                                                    </FormLabel>
+                                                    <FormControl>
+                                                        <Input
+                                                            className="rounded-full border-white bg-transparent text-white"
+                                                            placeholder="Write your business number"
+                                                            {...field}
+                                                        />
+                                                    </FormControl>
+                                                    <FormMessage />
+                                                </FormItem>
+                                            )}
+                                        />
+                                    </div>
                                 )}
                                 {!business?.is_company && (
                                     <Fragment>

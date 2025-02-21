@@ -56,6 +56,9 @@ const formSchema = z
             .string()
             .min(1, { message: 'Business License is required' }),
         business_license_name: z.string().optional(),
+        business_number: z
+            .string()
+            .min(1, { message: 'Business number is required' }),
     })
     .refine((data) => data.password === data.confirm_password, {
         message: 'Confirmation passwords does not match',
@@ -87,6 +90,7 @@ export default function CompanyRegistration() {
             city_id: values.city,
             password: values.password,
             password_confirmation: values.confirm_password,
+            business_number: values.business_number,
         };
         mutate(body);
     }
@@ -195,6 +199,26 @@ export default function CompanyRegistration() {
                                     <PasswordInput
                                         className="rounded-full border-white bg-transparent text-white"
                                         placeholder="Confirm Password"
+                                        {...field}
+                                    />
+                                </FormControl>
+                                <FormMessage />
+                            </FormItem>
+                        )}
+                    />
+
+                    <FormField
+                        control={form.control}
+                        name="business_number"
+                        render={({ field }) => (
+                            <FormItem>
+                                <FormLabel className="!font-light text-white">
+                                    Business Number
+                                </FormLabel>
+                                <FormControl>
+                                    <Input
+                                        className="rounded-full border-white bg-transparent text-white"
+                                        placeholder="Write your business number"
                                         {...field}
                                     />
                                 </FormControl>
