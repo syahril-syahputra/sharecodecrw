@@ -201,7 +201,8 @@ export default function Page() {
             latitude: selectedCoordinate.lat,
             longitude: selectedCoordinate.lng,
             payment_type: data.pricing_type,
-            service_id: data.service_id,
+            service_id:
+                data.service_id === 'Other' ? undefined : data.service_id,
             service_other: data.service_other,
             city_id: data.city,
             hashtags: data.hashtags,

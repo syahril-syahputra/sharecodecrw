@@ -259,7 +259,10 @@ export default function Page({ params }: { params: { id: string } }) {
             <CardDarkNeonGlow
                 className={clsx(
                     ' w-1/3 rounded-lg  bg-gray-900 px-4 py-8',
-                    data?.acceptance_status === 'expired' ? '' : 'hidden'
+                    data?.acceptance_status === 'expired' ||
+                        data?.acceptance_status === 'created'
+                        ? ''
+                        : 'hidden'
                 )}
             >
                 <h1 className="flex items-center space-x-2">

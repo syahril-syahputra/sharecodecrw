@@ -6,7 +6,7 @@ export interface BodyCreateListing {
     city_id: string;
     latitude: number;
     longitude: number;
-    service_id: string;
+    service_id?: string;
     service_other?: string;
     duration: number;
     color_hexadecimal?: string;
@@ -22,7 +22,7 @@ export interface BodyUpdateListing {
     payment_type: string; // Bisa diganti dengan enum jika ada daftar tetap untuk jenis pembayaran
     description: string;
     city_id: string;
-    service_id: string;
+    service_id?: string;
     address?: string;
     service_other?: string;
     latitude: number;

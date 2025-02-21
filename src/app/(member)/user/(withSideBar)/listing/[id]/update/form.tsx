@@ -155,7 +155,8 @@ export default function FormUpdateListing({ data }: IProps) {
             latitude: selectedCoordinate.lat,
             longitude: selectedCoordinate.lng,
             price: data.price,
-            service_id: data.service_id,
+            service_id:
+                data.service_id === 'Other' ? undefined : data.service_id,
             service_other: data.service_other,
             payment_type: data.pricing_type,
             city_id: data.city,
