@@ -160,9 +160,9 @@ export default function HomeServices() {
     return (
         <div>
             <div className="mx-4">
-                <div className="container my-2 flex max-w-3xl flex-1 items-center divide-x  divide-border rounded-full border border-border bg-gray-300 p-4 px-4  py-2 shadow-md">
+                <div className="container my-2 flex max-w-xl flex-1 items-center divide-x  divide-border rounded-full bg-[#D9D9D9] p-4 px-4 py-2">
                     <div className="flex  cursor-pointer items-center text-primary hover:text-foreground">
-                        <Search size={36} className="px-2 text-gray-600 " />
+                        <Search size={36} className="px-2 text-gray-700 " />
                     </div>
                     <InputSearch
                         placeholder="Search for service"
@@ -178,7 +178,7 @@ export default function HomeServices() {
                                 filterHandler();
                             }
                         }}
-                        className="h-min !border-0 !border-none bg-gray-300  !outline-none !ring-0 focus:ring-0 focus-visible:ring-0"
+                        className="placeholder-gray-500 text-md h-min !border-0 !border-none bg-transparent !outline-none !ring-0 focus:ring-0 focus-visible:ring-0"
                     />
                 </div>
             </div>
@@ -187,7 +187,7 @@ export default function HomeServices() {
                     <PopoverTrigger asChild>
                         <Button
                             variant={'default'}
-                            className="rounded-xl bg-gray-900 text-white"
+                            className="rounded-lg bg-gray-900 text-white"
                         >
                             <SlidersHorizontal />
                         </Button>
@@ -401,12 +401,12 @@ export default function HomeServices() {
                     }}
                     className={clsx(
                         filterValue.provider === ''
-                            ? 'bg-blue-500'
+                            ? 'bg-primary'
                             : 'bg-gray-900',
-                        '  rounded-xl text-white '
+                        '  rounded-lg text-white '
                     )}
                 >
-                    <span>All</span>
+                    <span className="font-urbanist">All</span>
                 </Button>
                 <Button
                     variant={'default'}
@@ -418,15 +418,15 @@ export default function HomeServices() {
                     }}
                     className={clsx(
                         filterValue.provider === 'company'
-                            ? '!bg-blue-500'
+                            ? '!bg-primary'
                             : 'bg-gray-900',
-                        'flex-1 rounded-xl  text-white'
+                        'flex-1 rounded-lg  text-white'
                     )}
                 >
                     <span className="inline md:hidden">
                         <ShieldCheck />
                     </span>
-                    <span className="hidden md:inline">Company Services</span>
+                    <span className="hidden md:inline font-urbanist">Company Services</span>
                 </Button>
                 <Button
                     variant={'default'}
@@ -438,15 +438,15 @@ export default function HomeServices() {
                     }}
                     className={clsx(
                         filterValue.provider === 'personal'
-                            ? '!bg-blue-500'
+                            ? '!bg-primary'
                             : 'bg-gray-900',
-                        'flex-1 rounded-xl  text-white'
+                        'flex-1 rounded-lg  text-white'
                     )}
                 >
                     <span className="inline md:hidden">
                         <User />
                     </span>
-                    <span className="hidden md:inline">Personal Services</span>
+                    <span className="hidden md:inline font-urbanist">Personal Services</span>
                     <span></span>
                 </Button>
             </div>
