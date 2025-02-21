@@ -233,11 +233,11 @@ export default function HomeServices() {
                                                 onValueChange={(value) =>
                                                     setfilterValue({
                                                         ...filterValue,
-                                                        category: value,
+                                                        service_id: value,
                                                     })
                                                 }
                                                 value={
-                                                    filterValue.category || ''
+                                                    filterValue.service_id || ''
                                                 }
                                             >
                                                 <SelectTrigger>

@@ -201,7 +201,8 @@ export default function Page() {
             latitude: selectedCoordinate.lat,
             longitude: selectedCoordinate.lng,
             payment_type: data.pricing_type,
-            service_id: data.service_id,
+            service_id:
+                data.service_id === 'Other' ? undefined : data.service_id,
             service_other: data.service_other,
             city_id: data.city,
             hashtags: data.hashtags,
@@ -298,64 +299,68 @@ export default function Page() {
                                     </FormItem>
                                 )}
                             />
-                            <FormField
-                                control={form.control}
-                                name="service_id"
-                                render={({ field }) => (
-                                    <FormItem className="flex-1">
-                                        <FormLabel className="!font-light text-white">
-                                            Category
-                                        </FormLabel>
-                                        <Select
-                                            onValueChange={(value) => {
-                                                setIsOther(value);
-                                                field.onChange(value);
-                                            }}
-                                            defaultValue={field.value}
-                                        >
-                                            <FormControl>
-                                                <SelectTrigger className="rounded-full bg-transparent text-white">
-                                                    <SelectValue placeholder="Select Category" />
-                                                </SelectTrigger>
-                                            </FormControl>
-                                            <SelectContent>
-                                                {dataService?.map((item) => (
-                                                    <SelectItem
-                                                        key={item.id}
-                                                        value={item.id}
-                                                    >
-                                                        {item.name}
-                                                    </SelectItem>
-                                                ))}
-                                                <SelectItem
-                                                    key={'Other'}
-                                                    value={'Other'}
-                                                >
-                                                    Other
-                                                </SelectItem>
-                                            </SelectContent>
-                                        </Select>
-                                        <FormMessage />
-                                    </FormItem>
-                                )}
-                            />
-                            {isOther === 'Other' && (
+                            <div className="space-y-2">
                                 <FormField
                                     control={form.control}
-                                    name="service_other"
+                                    name="service_id"
                                     render={({ field }) => (
-                                        <FormItem>
-                                            <FormControl>
-                                                <InputCustom
-                                                    placeholder="Insert Service Name"
-                                                    {...field}
-                                                />
-                                            </FormControl>
+                                        <FormItem className="flex-1">
+                                            <FormLabel className=" text-white">
+                                                Category
+                                            </FormLabel>
+                                            <Select
+                                                onValueChange={(value) => {
+                                                    setIsOther(value);
+                                                    field.onChange(value);
+                                                }}
+                                                defaultValue={field.value}
+                                            >
+                                                <FormControl>
+                                                    <SelectTrigger className="rounded-full bg-transparent text-white">
+                                                        <SelectValue placeholder="Select Category" />
+                                                    </SelectTrigger>
+                                                </FormControl>
+                                                <SelectContent>
+                                                    {dataService?.map(
+                                                        (item) => (
+                                                            <SelectItem
+                                                                key={item.id}
+                                                                value={item.id}
+                                                            >
+                                                                {item.name}
+                                                            </SelectItem>
+                                                        )
+                                                    )}
+                                                    <SelectItem
+                                                        key={'Other'}
+                                                        value={'Other'}
+                                                    >
+                                                        Other
+                                                    </SelectItem>
+                                                </SelectContent>
+                                            </Select>
                                             <FormMessage />
                                         </FormItem>
                                     )}
                                 />
-                            )}
+                                {isOther === 'Other' && (
+                                    <FormField
+                                        control={form.control}
+                                        name="service_other"
+                                        render={({ field }) => (
+                                            <FormItem>
+                                                <FormControl>
+                                                    <InputCustom
+                                                        placeholder="Insert Service Name"
+                                                        {...field}
+                                                    />
+                                                </FormControl>
+                                                <FormMessage />
+                                            </FormItem>
+                                        )}
+                                    />
+                                )}
+                            </div>
                             <FormField
                                 control={form.control}
                                 name="hashtags"

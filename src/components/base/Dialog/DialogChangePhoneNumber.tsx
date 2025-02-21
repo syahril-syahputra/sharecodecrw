@@ -51,7 +51,7 @@ export default function DialogChangePhoneNumber({
         resolver: zodResolver(formSchema),
         defaultValues: {
             code: '+1',
-            phone_number: userPhoneNumber || '',
+            phone_number: userPhoneNumber?.substring(2) || '',
         },
     });
 
