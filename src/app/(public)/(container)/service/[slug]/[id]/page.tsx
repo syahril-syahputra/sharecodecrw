@@ -101,11 +101,10 @@ export default async function Page({
                                 )}
                             </div>
                         </div>
-
+                        <Badge className=" bg-gray-900 px-4 py-2 font-semibold capitalize">
+                            {data.service_name}
+                        </Badge>
                         <div className="whitespace-pre-line font-urbanist text-lg font-light text-white">
-                            <h2 className="whitespace-pre-line pb-2 font-urbanist text-xl font-semibold text-white">
-                                {data.service_name} lorem
-                            </h2>
                             <span>{data.description}</span>
                         </div>
                         <div className="flex items-center space-x-2 font-urbanist">
