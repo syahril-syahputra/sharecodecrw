@@ -30,6 +30,7 @@ import QuestionAndAnswerDark from '@/components/base/QuestionAndAnswerDark';
 import { IServices } from '@/types/services';
 import { getRelatedListing } from '@/feature/business/useFetchBusinessListingRelated';
 import StartConversation from '@/components/base/Chat/StartConversation';
+import NavigationBottom from './NavigationBottom';
 
 async function getData(id: string, slug: string) {
     try {
@@ -269,6 +270,7 @@ export default async function Page({
                     </div>
                 </div>
             </section>
+            <NavigationBottom />
         </div>
     );
 }
