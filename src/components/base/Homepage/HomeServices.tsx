@@ -178,7 +178,7 @@ export default function HomeServices() {
                                 filterHandler();
                             }
                         }}
-                        className="placeholder-gray-500 text-md h-min !border-0 !border-none bg-transparent !outline-none !ring-0 focus:ring-0 focus-visible:ring-0"
+                        className="text-md h-min !border-0 !border-none bg-transparent placeholder-gray-500 !outline-none !ring-0 focus:ring-0 focus-visible:ring-0"
                     />
                 </div>
             </div>
@@ -426,7 +426,9 @@ export default function HomeServices() {
                     <span className="inline md:hidden">
                         <ShieldCheck />
                     </span>
-                    <span className="hidden md:inline font-urbanist">Company Services</span>
+                    <span className="hidden font-urbanist md:inline">
+                        Company Services
+                    </span>
                 </Button>
                 <Button
                     variant={'default'}
@@ -446,7 +448,9 @@ export default function HomeServices() {
                     <span className="inline md:hidden">
                         <User />
                     </span>
-                    <span className="hidden md:inline font-urbanist">Personal Services</span>
+                    <span className="hidden font-urbanist md:inline">
+                        Personal Services
+                    </span>
                     <span></span>
                 </Button>
             </div>

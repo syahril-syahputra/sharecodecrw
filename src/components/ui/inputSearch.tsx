@@ -11,7 +11,7 @@ const InputSearch = React.forwardRef<HTMLInputElement, InputProps>(
             <input
                 type={type}
                 className={cn(
-                    'flex h-10 w-full rounded-full !border-0 px-3 py-2 text-sm !border-none',
+                    'flex h-10 w-full rounded-full !border-0 !border-none px-3 py-2 text-sm',
                     className
                 )}
                 ref={ref}

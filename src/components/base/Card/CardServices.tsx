@@ -149,8 +149,8 @@ export default function CardServices(props: IProps) {
 
                     <Image
                         src={props.data.image_url}
-                        width={100}
-                        height={100}
+                        width={500}
+                        height={500}
                         alt="picture"
                         className="h-48 w-40 rounded-2xl object-cover"
                     />
