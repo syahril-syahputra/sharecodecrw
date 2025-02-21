@@ -17,7 +17,7 @@ async function getData(id: string) {
 export default async function Page({ params }: { params: { id: string } }) {
     const data = await getData(params.id);
     return (
-        <div className="container py-8">
+        <div className="flex-1">
             <FormUpdateListing data={data} />
         </div>
     );
