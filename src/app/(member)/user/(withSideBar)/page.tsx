@@ -29,6 +29,7 @@ import {
     Upload,
     User,
     UserCheck,
+    FileDigit
 } from 'lucide-react';
 import Link from 'next/link';
 import { Fragment, useState } from 'react';
@@ -187,6 +188,24 @@ export default function Page() {
                                         </div>
                                         <span className="font-thin">
                                             {business?.username}
+                                        </span>
+                                    </div>
+                                )}
+                                {business?.is_company && (
+                                    <div>
+                                        <div className="flex items-center space-x-2">
+                                            <FileDigit size={25} />
+                                            <span className="text-2xl font-semibold">
+                                                Business Number
+                                            </span>
+                                        </div>
+                                        <span className="font-thin">
+                                            {emptyValueCheck(
+                                                business?.business_number ?? '',
+                                                <span className="italic text-muted-foreground">
+                                                    no number given
+                                                </span>
+                                            )}
                                         </span>
                                     </div>
                                 )}
