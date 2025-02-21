@@ -29,7 +29,7 @@ import {
     Upload,
     User,
     UserCheck,
-    FileDigit
+    FileDigit,
 } from 'lucide-react';
 import Link from 'next/link';
 import { Fragment, useState } from 'react';

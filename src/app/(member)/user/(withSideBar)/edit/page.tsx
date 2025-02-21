@@ -86,8 +86,8 @@ export default function Page() {
             address: business?.address,
             latitude: business?.latitude || 0,
             longitude: business?.latitude || 0,
-            about: business?.about || "",
-            business_number: business?.business_number
+            about: business?.about || '',
+            business_number: business?.business_number,
         },
     });
 
@@ -102,10 +102,10 @@ export default function Page() {
             address: business?.address,
             latitude: selectedCoordinate.lat,
             longitude: selectedCoordinate.lng,
-            about: business?.about || "",
-            business_number: business?.business_number
-        })
-    }, [business, form])
+            about: business?.about || '',
+            business_number: business?.business_number,
+        });
+    }, [business, form]);
 
     const { data: dataState } = useFetchState();
     const { data: dataCity, isPending: isPendingCity } = useFetchCity(
@@ -140,7 +140,7 @@ export default function Page() {
             latitude: selectedCoordinate.lat,
             longitude: selectedCoordinate.lng,
             about: values.about,
-            business_number: values.business_number
+            business_number: values.business_number,
         });
     };
 

@@ -90,7 +90,7 @@ export default function CompanyRegistration() {
             city_id: values.city,
             password: values.password,
             password_confirmation: values.confirm_password,
-            business_number: values.business_number
+            business_number: values.business_number,
         };
         mutate(body);
     }
