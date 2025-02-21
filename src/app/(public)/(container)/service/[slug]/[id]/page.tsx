@@ -101,9 +101,12 @@ export default async function Page({
                                 )}
                             </div>
                         </div>
-                        <Badge className=" bg-gray-900 px-4 py-2 font-semibold capitalize">
-                            {data.service_name}
-                        </Badge>
+                        {data.service_name && (
+                            <Badge className=" bg-gray-900 px-4 py-2 font-semibold capitalize">
+                                {data.service_name}
+                            </Badge>
+                        )}
+
                         <div className="whitespace-pre-line font-urbanist text-lg font-light text-white">
                             <span>{data.description}</span>
                         </div>
