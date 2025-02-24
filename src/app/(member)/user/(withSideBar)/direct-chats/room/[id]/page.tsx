@@ -193,7 +193,7 @@ export default function Page({ params }: { params: { id: string } }) {
                     <div className="flex h-full flex-1 flex-col rounded-md ">
                         <ScrollArea className="flex-1 ">
                             <div
-                                className="flex h-full min-h-[600px] flex-col-reverse space-y-2 "
+                                className="flex min-h-[600px] flex-col-reverse space-y-2 "
                                 ref={first}
                             >
                                 {dataChat.map((item, index) => (
