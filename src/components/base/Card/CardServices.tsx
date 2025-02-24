@@ -53,6 +53,9 @@ export default function CardServices(props: IProps) {
                                 )}
                             </div>
                             <Rating
+                                isWhite={
+                                    props.data.color_hexadecimal === '#258ad8'
+                                }
                                 star={props.data.rating || 0}
                                 rater={props.data.total_reviews}
                             />
@@ -129,6 +132,7 @@ export default function CardServices(props: IProps) {
                             )}
                         </div>
                         <Rating
+                            isWhite={props.data.color_hexadecimal === '#258ad8'}
                             star={props.data.rating || 0}
                             rater={props.data.total_reviews}
                         />

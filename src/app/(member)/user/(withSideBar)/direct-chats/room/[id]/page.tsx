@@ -157,7 +157,7 @@ export default function Page({ params }: { params: { id: string } }) {
     const { data: conversationDetail } = useFetchConversationRoom(params.id);
     return (
         <Fragment>
-            <div className="flex-1 space-y-5 px-6">
+            <div className="flex h-[calc(100vh-150px)] flex-1 flex-col space-y-5 px-6">
                 <CardDarkNeonGlow>
                     <Link
                         href={`/profile/${conversationDetail?.chat_partner_business_id}`}
@@ -189,11 +189,11 @@ export default function Page({ params }: { params: { id: string } }) {
                         </div>
                     </Link>
                 </CardDarkNeonGlow>
-                <CardDarkNeonGlow>
-                    <div className="rounded-md">
-                        <ScrollArea className="h-[600px]">
+                <CardDarkNeonGlow isFull className="flex-1 ">
+                    <div className="flex h-full flex-1 flex-col rounded-md ">
+                        <ScrollArea className="flex-1 ">
                             <div
-                                className="flex min-h-[600px] flex-col-reverse space-y-2"
+                                className="flex h-full min-h-[600px] flex-col-reverse space-y-2 "
                                 ref={first}
                             >
                                 {dataChat.map((item, index) => (

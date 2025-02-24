@@ -1027,7 +1027,7 @@ export default function Page() {
                                         </div>
                                         <div className="mt-2 flex items-center justify-between border-t border-white pt-2">
                                             <span className="text-xl font-bold">
-                                                total payment
+                                                Total Payment
                                             </span>
                                             <span className="text-xl font-bold">
                                                 ${pricingResult.total_payment}

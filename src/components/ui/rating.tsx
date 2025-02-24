@@ -1,9 +1,11 @@
+import clsx from 'clsx';
 import { Star } from 'lucide-react';
 import React from 'react';
 
 interface IProps {
     star: number;
     rater: number;
+    isWhite?: boolean;
     variant?: 'big';
 }
 export default function Rating(props: IProps) {
@@ -19,11 +21,15 @@ export default function Rating(props: IProps) {
                     <p className="font-urbanist font-thin text-white">
                         {props.rater} Endorsements
                     </p>
-                    <div className="flex items-center space-x-1 text-gray-500">
+                    <div
+                        className={clsx(
+                            'flex items-center space-x-1 text-gray-500'
+                        )}
+                    >
                         {Array.from({ length: props.star }).map((_, index) => (
                             <Star
                                 key={index}
-                                fill="#258AD8"
+                                fill={props.isWhite ? '#FFFFFF' : '#258AD8'}
                                 strokeWidth={0}
                                 className="text-primary"
                             />
@@ -48,10 +54,12 @@ export default function Rating(props: IProps) {
             {Array.from({ length: props.star }).map((_, index) => (
                 <Star
                     key={index}
-                    fill="#258AD8"
+                    fill={props.isWhite ? '#FFFFFF' : '#258AD8'}
                     strokeWidth={0}
                     size={16}
-                    className="text-[#258AD8]"
+                    className={clsx(
+                        props.isWhite ? 'text-white' : 'text-[#258AD8]'
+                    )}
                 />
             ))}
             {Array.from({ length: 5 - Math.floor(props.star) }).map(

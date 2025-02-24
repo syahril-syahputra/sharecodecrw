@@ -32,7 +32,7 @@ export default function Page() {
                         <div className="mb-5 flex justify-between">
                             <h1 className="flex space-x-2 text-4xl">
                                 <MessagesSquareIcon size={35} />
-                                <p>Chats</p>
+                                <p>Messages</p>
                             </h1>
                         </div>
 

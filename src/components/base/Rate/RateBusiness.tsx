@@ -64,7 +64,7 @@ export default function RateBusiness({
     return (
         <Fragment>
             <DialogLoginRequired
-                title="Sign in to give a rate"
+                title="Sign your rating!"
                 isOpen={isOpen}
                 onOpenChange={(value) => setIsModalLogin(value)}
             />

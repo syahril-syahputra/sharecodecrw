@@ -147,7 +147,7 @@ export default function Page({ params }: { params: { id: string } }) {
             <div className=" flex-1 rounded-lg bg-gradient-to-b from-[#1A3652] via-[#020508] to-[#020508] p-4 p-8">
                 <div className="flex items-center justify-between">
                     <h2 className="font-urbanist text-4xl font-bold text-white">
-                        Detail Service
+                        Service Details
                     </h2>
                     <div className="flex items-center space-x-2">
                         <Link href={`/user/listing/${params.id}/update`}>
@@ -597,7 +597,7 @@ export default function Page({ params }: { params: { id: string } }) {
                                     </div>
                                     <div className="mt-2 flex items-center justify-between border-t border-white pt-2">
                                         <span className="text-xl font-bold">
-                                            total payment
+                                            Total Payment
                                         </span>
                                         <span className="text-xl font-bold">
                                             ${pricingResult.total_payment}

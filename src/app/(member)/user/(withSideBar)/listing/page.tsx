@@ -3,7 +3,7 @@ import { createColumnHelper } from '@tanstack/react-table';
 import { Button } from '@/components/ui/button';
 import { useEffect, useState } from 'react';
 import useTableConfig from '@/lib/useTableConfig';
-import { ListRestart, Plus, Search } from 'lucide-react';
+import { ListRestart, Plus } from 'lucide-react';
 import dayjs from 'dayjs';
 import {
     Select,
@@ -33,7 +33,6 @@ export default function Page() {
         setsort,
         resetHandler,
         setfilter,
-        filterHandler,
         setPagination,
         setfilterValue,
     } = useTableConfig<IListingFilter>({
@@ -211,11 +210,10 @@ export default function Page() {
                         </Select>
                     </div>
                     <div className="w-auto pr-4">
-                        <Button onClick={filterHandler}>
-                            <Search className="mr-2" />
-                            Search
-                        </Button>
-                        <Button variant={'ghost'} onClick={resetHandler}>
+                        <Button
+                            variant={'ghost'}
+                            onClick={() => resetHandler()}
+                        >
                             <ListRestart className="mr-2" />
                             Reset
                         </Button>
