@@ -64,7 +64,7 @@ export default function RateBusiness({
     return (
         <Fragment>
             <DialogLoginRequired
-                title="Sign your rating!"
+                title="Sign in to give a rating"
                 isOpen={isOpen}
                 onOpenChange={(value) => setIsModalLogin(value)}
             />
@@ -74,7 +74,7 @@ export default function RateBusiness({
                     <AlertDialogHeader>
                         <AlertDialogTitle>Rate</AlertDialogTitle>
                         <AlertDialogDescription>
-                            Give your rate!
+                            Give your rating!
                         </AlertDialogDescription>
 
                         <div className="flex justify-center">

@@ -62,6 +62,7 @@ export default function DialogChangeBusinessPicture({
     refetch,
 }: IProps) {
     const { toast } = useToast();
+
     const { mutate, isPending } = useUpdateBusinessDocument({
         onSuccess: async (success) => {
             refetch();

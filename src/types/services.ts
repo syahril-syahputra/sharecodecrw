@@ -3,7 +3,7 @@ export interface IFilterServices {
     title?: string;
     service_id?: string;
     province_id?: string;
-    city_id?: string;
+    city_id?: string; // ini dihilangin aja..
     rad?: string;
     lat?: any;
     lng?: any;

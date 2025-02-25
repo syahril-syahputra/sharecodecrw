@@ -33,7 +33,7 @@ export default function CardServices(props: IProps) {
                         backgroundColor: props.data.color_hexadecimal,
                     }}
                 >
-                    <div className="absolute -top-64 left-80 h-96 w-96 -translate-x-1/2 transform rounded-full bg-[#E9E1D3] opacity-35 blur-3xl"></div>
+                    <div className="absolute -top-64 left-80 h-96 w-96 -translate-x-1/2 transform rounded-full bg-[#EBE1D1] opacity-35 blur-3xl"></div>
                     <div className="flex items-center space-x-4 font-bold capitalize">
                         <Avatar>
                             <AvatarImage
@@ -112,7 +112,7 @@ export default function CardServices(props: IProps) {
                     backgroundColor: props.data.color_hexadecimal,
                 }}
             >
-                <div className="absolute -top-64 left-80 h-96 w-96 -translate-x-1/2 transform rounded-full bg-[#E9E1D3] opacity-35 blur-3xl"></div>
+                <div className="absolute -top-64 left-80 h-96 w-96 -translate-x-1/2 transform rounded-full bg-[#EBE1D1] opacity-35 blur-3xl"></div>
                 <div className="flex items-center space-x-4 font-bold capitalize">
                     <Avatar>
                         <AvatarImage

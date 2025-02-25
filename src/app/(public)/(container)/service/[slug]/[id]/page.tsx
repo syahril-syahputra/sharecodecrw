@@ -59,7 +59,7 @@ export default async function Page({
     return (
         <div className="container py-8">
             <section className="flex flex-col-reverse items-start justify-between space-y-4 md:flex-row md:space-x-4 md:space-y-0">
-                <div className="relative mt-4 w-full flex-1 space-y-4 overflow-hidden rounded-xl bg-gradient-to-b from-teal-700 to-gray-900 p-20 md:mt-0">
+                <div className="relative mt-4 w-full flex-1 space-y-4 overflow-hidden rounded-xl bg-gradient-to-b from-[#5D5A54] to-gray-900 p-20 md:mt-0">
                     <div className="space-y-10">
                         <div className="z-20 mb-4 rounded-xl">
                             <Image

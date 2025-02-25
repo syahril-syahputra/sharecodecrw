@@ -55,9 +55,7 @@ export default function Page() {
                         <div className="flex justify-between">
                             <h1 className="flex space-x-2 text-3xl">
                                 <p>
-                                    <span className="italic">
-                                        Welcome back,
-                                    </span>{' '}
+                                    <span className="italic">Welcome back</span>{' '}
                                     {business?.name}!
                                 </p>
                             </h1>
@@ -244,7 +242,7 @@ export default function Page() {
                                                     </span>
                                                     <DialogChangePhoneNumber
                                                         refetch={refetch}
-                                                        title="Add phone number"
+                                                        title="Add Canadian Phone"
                                                     />
                                                 </div>
                                             )}
@@ -299,7 +297,7 @@ export default function Page() {
                                                             true
                                                         )
                                                     }
-                                                    className="text-md flex cursor-pointer items-center rounded-full bg-gray-700 px-2 transition duration-100 hover:bg-gray-800"
+                                                    className="text-md  hidden cursor-pointer items-center rounded-full bg-gray-700 px-2 transition duration-100 hover:bg-gray-800"
                                                 >
                                                     change email
                                                 </span>

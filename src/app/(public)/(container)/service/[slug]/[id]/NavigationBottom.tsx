@@ -8,10 +8,12 @@ export default function NavigationBottom() {
         <div className="fixed bottom-0 left-0 right-0 flex items-center justify-center space-x-4 p-4">
             <div className="flex w-min space-x-6 overflow-x-hidden rounded-full bg-white/40 p-4 shadow-xl backdrop-blur-md">
                 <button className="text-black  hover:text-primary">
-                    <ArrowLeft size={24} />
+                    <Link href={'/'}>
+                        <ArrowLeft size={24} />
+                    </Link>
                 </button>
 
-                <button className="text-black   hover:text-primary">
+                <button className="hidden text-black  hover:text-primary">
                     <Link href={'/'}>
                         <Pin size={24} />
                     </Link>

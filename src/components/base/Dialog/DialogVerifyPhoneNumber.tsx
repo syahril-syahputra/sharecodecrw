@@ -119,7 +119,7 @@ export default function DialogVerifyPhoneNumber({
         <Fragment>
             {isPending ? (
                 <button className="text-md flex items-center rounded-full bg-gray-700 px-2 font-thin">
-                    verify phone number
+                    verify phone
                     <Loader2
                         size={18}
                         className="ml-2 animate-spin text-gray-900"
@@ -130,7 +130,7 @@ export default function DialogVerifyPhoneNumber({
                     onClick={() => requestVerificationCode()}
                     className="text-md flex cursor-pointer items-center rounded-full bg-gray-700 px-2 font-thin transition duration-100 hover:bg-gray-800"
                 >
-                    verify phone number
+                    verify phone
                     <MinusCircle size={18} className="ml-2 text-gray-900" />
                 </button>
             )}

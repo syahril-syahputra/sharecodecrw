@@ -14,11 +14,13 @@ import Link from 'next/link';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { useFetchCreditBusiness } from '@/feature/business/useFetchCreditBusiness';
 import ButtonNotification from './ButtonNotification';
+import { useSession } from 'next-auth/react';
 interface IProps {
     session?: { email: string };
     image?: string;
 }
 export default function MenuUser(props: IProps) {
+    const { data: session } = useSession();
     const { data: creditCounter, status, isLoading } = useFetchCreditBusiness();
     const [credit, setCredit] = useState(0);
     useEffect(() => {
@@ -37,7 +39,11 @@ export default function MenuUser(props: IProps) {
                 <DropdownMenuTrigger asChild>
                     <Avatar className="mx-auto h-12 w-12 cursor-pointer">
                         <AvatarImage
-                            src={props.image ? props.image : '/icons/user.png'}
+                            src={
+                                session?.user.profile_picture_url
+                                    ? session?.user.profile_picture_url
+                                    : '/icons/user.png'
+                            }
                         />
                         <AvatarFallback>C</AvatarFallback>
                     </Avatar>
