@@ -5,10 +5,12 @@ import DialogChangeBusinessLicense from '@/components/base/Dialog/DialogChangeBu
 import DialogChangeBusinessPicture from '@/components/base/Dialog/DialogChangeBusinessPicture';
 import DialogChangePhoneNumber from '@/components/base/Dialog/DialogChangePhoneNumber';
 import DialogChangeUserEmail from '@/components/base/Dialog/DialogChangeUserEmail';
+import DialogDeletePhoneNumber from '@/components/base/Dialog/DialogDeletePhoneNumber';
 import DialogVerifyPhoneNumber from '@/components/base/Dialog/DialogVerifyPhoneNumber';
 import LoadingPage from '@/components/base/Loading/LoadingPage';
 import IframeMap from '@/components/base/Maps/IframeMap';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { useFetchBusiness } from '@/feature/business/useFetchBusiness';
 import { emptyValueCheck } from '@/lib/utils';
@@ -52,13 +54,26 @@ export default function Page() {
             {!isLoading && (
                 <div className="space-y-4">
                     <CardDarkNeonGlow>
-                        <div className="flex justify-between">
-                            <h1 className="flex space-x-2 text-3xl">
+                        <div className="space-y-2">
+                            <h1 className="flex space-x-2  text-3xl">
                                 <p>
                                     <span className="italic">Welcome back</span>{' '}
                                     {business?.name}!
                                 </p>
                             </h1>
+                            <div className=" -space-y-1 text-gray-400">
+                                <h2 className="flex space-x-2 font-urbanist ">
+                                    All registered users can navigate through
+                                    and review service listings.
+                                </h2>
+                                {!business?.is_company && (
+                                    <h3 className="flex space-x-2 font-urbanist ">
+                                        Only users who verify their Canadian
+                                        phone number are able to create listings
+                                        and receive C$100 worth of credits.
+                                    </h3>
+                                )}
+                            </div>
                         </div>
                     </CardDarkNeonGlow>
                     <CardDarkNeonGlow>
@@ -242,19 +257,28 @@ export default function Page() {
                                                     </span>
                                                     <DialogChangePhoneNumber
                                                         refetch={refetch}
-                                                        title="Add Canadian Phone"
+                                                        title="Add a Canadian Phone"
                                                     />
                                                 </div>
                                             )}
                                         </span>
                                         {business?.phone_number_verified_at && (
-                                            <span className="text-md flex items-center rounded-full bg-gray-700 px-2">
-                                                verified
-                                                <CheckCircle
-                                                    size={18}
-                                                    className="ml-2 text-blue-500"
+                                            <>
+                                                <Badge>
+                                                    Verified{' '}
+                                                    <CheckCircle
+                                                        size={14}
+                                                        className="ml-2 text-white"
+                                                    />
+                                                </Badge>
+                                                <DialogDeletePhoneNumber
+                                                    refetch={refetch}
+                                                    userPhoneNumber={
+                                                        business?.phone_number ??
+                                                        ''
+                                                    }
                                                 />
-                                            </span>
+                                            </>
                                         )}
                                         {business?.phone_number &&
                                             !business?.phone_number_verified_at && (
@@ -284,13 +308,13 @@ export default function Page() {
                                         </span>
                                         {business?.email_verified_at ? (
                                             <div className="flex space-x-2">
-                                                <span className="text-md flex items-center rounded-full bg-gray-700 px-2">
-                                                    verified
+                                                <Badge>
+                                                    Verified{' '}
                                                     <CheckCircle
-                                                        size={18}
-                                                        className="ml-2 text-blue-500"
+                                                        size={14}
+                                                        className="ml-2 text-white"
                                                     />
-                                                </span>
+                                                </Badge>
                                                 <span
                                                     onClick={() =>
                                                         setDialogChangeEmail(

@@ -34,6 +34,7 @@ export default async function Navbar() {
     return (
         <div className="fixed left-0 right-0 top-0 z-50 bg-white/40 backdrop-blur-md">
             {!verified && <ResendVerificationEmail />}
+
             <div className=" container sticky flex max-w-6xl items-center justify-between space-x-4 p-4">
                 <div className="flex items-center space-x-4 pt-2 ">
                     <Link href={'/'}>

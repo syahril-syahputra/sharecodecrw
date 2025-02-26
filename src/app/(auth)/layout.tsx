@@ -1,4 +1,3 @@
-'use client';
 import NavbarAuth from '@/components/base/NavbarAuth';
 import { Metadata } from 'next';
 import React from 'react';

@@ -33,7 +33,11 @@ export default function Page() {
     return (
         <div className="mx-auto max-w-xl text-center">
             <CardDarkNeonGlow>
-                <TitleAuth>Verify your email to continue</TitleAuth>
+                {!isSend ? (
+                    <TitleAuth>Verify your email to continue</TitleAuth>
+                ) : (
+                    <TitleAuth>Email has been sent</TitleAuth>
+                )}
                 {!isSend && (
                     <Button
                         className="text-blue-500"

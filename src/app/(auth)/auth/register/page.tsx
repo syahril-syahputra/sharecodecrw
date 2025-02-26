@@ -27,11 +27,13 @@ export default function Page() {
             )}
             <div className="relative">
                 <div className="mb-6 flex items-center space-x-2">
-                    <ArrowLeftCircle
-                        className="cursor-pointer text-white"
-                        size={28}
-                        onClick={() => router.push('/auth/login')}
-                    />
+                    <Link href={'/'}>
+                        <ArrowLeftCircle
+                            className="cursor-pointer text-white"
+                            size={28}
+                            onClick={() => router.push('/auth/login')}
+                        />
+                    </Link>
                     <TitleAuth className="!text-4xl !text-white underline">
                         Sign Up
                     </TitleAuth>

@@ -26,6 +26,7 @@ import useFCMToken from '@/lib/hooks/useFCMToken';
 import TitleSeparator from '@/components/base/Title/TitleSeparator';
 import Image from 'next/image';
 import fetchClient from '@/lib/FetchClient';
+import { ArrowLeftCircle } from 'lucide-react';
 
 const formSchema = z.object({
     email: z
@@ -108,9 +109,19 @@ export default function Page() {
     return (
         <div className="relative mx-auto max-w-xl space-y-8 overflow-hidden rounded-xl bg-gray-900 p-10">
             <div className="absolute -right-80 -top-64 h-96 w-full -translate-x-1/2 transform rounded-full bg-primary opacity-30 blur-3xl"></div>
-            <TitleAuth className="!text-4xl !text-white underline">
-                Sign In
-            </TitleAuth>
+            <div className="mb-6 flex items-center space-x-2">
+                <Link href={'/'}>
+                    <ArrowLeftCircle
+                        className="cursor-pointer text-white"
+                        size={28}
+                        onClick={() => router.push('/auth/login')}
+                    />
+                </Link>
+                <TitleAuth className="!text-4xl !text-white underline">
+                    Sign In
+                </TitleAuth>
+            </div>
+
             <Form {...form}>
                 <form
                     onSubmit={form.handleSubmit(onSubmit)}

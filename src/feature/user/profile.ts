@@ -70,6 +70,20 @@ export const useUpdatePhoneNumber = ({ onSuccess, onError }: IProps) => {
     });
 };
 
+export const useDeletePhoneNumber = ({ onSuccess, onError }: IProps) => {
+    return useMutation({
+        mutationFn: async () => {
+            const response = fetchClient({
+                method: 'DELETE',
+                url: 'user/phone-number',
+            });
+            return response;
+        },
+        onError: onError,
+        onSuccess: onSuccess,
+    });
+};
+
 export const useUpdatePasswrod = ({ onSuccess, onError }: IProps) => {
     return useMutation({
         mutationFn: async (data: IUpdatePassword) => {
