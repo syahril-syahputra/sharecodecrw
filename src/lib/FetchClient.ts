@@ -10,6 +10,7 @@ interface fetchClientProps {
     token?: string;
     header?: object;
     contentType?: string;
+    byPassVerification?: boolean;
 }
 
 async function fetchClient({
@@ -18,12 +19,13 @@ async function fetchClient({
     body = {},
     token,
     contentType,
+    byPassVerification,
 }: fetchClientProps) {
     const session = await getSession();
     const accessToken = token || session?.access_token;
     const verified = session?.user.email_verified_at;
 
-    if (!verified && method === 'POST') {
+    if (!verified && method === 'POST' && !byPassVerification) {
         window.location.href = '/email-verification';
 
         return Promise.resolve({

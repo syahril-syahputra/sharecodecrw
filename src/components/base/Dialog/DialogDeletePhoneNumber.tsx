@@ -6,6 +6,7 @@ import { useToast } from '@/components/ui/use-toast';
 import {
     AlertDialog,
     AlertDialogContent,
+    AlertDialogDescription,
     AlertDialogFooter,
     AlertDialogHeader,
     AlertDialogTitle,
@@ -45,7 +46,7 @@ export default function DialogDeletePhoneNumber({ refetch }: IProps) {
         <Fragment>
             <button
                 onClick={() => setDialog(true)}
-                className="text-md flex cursor-pointer items-center rounded-full bg-gray-700 px-4 font-thin transition duration-100 hover:bg-gray-800"
+                className="text-md flex cursor-pointer items-center rounded-full bg-red-700 px-4 font-thin transition duration-100 hover:bg-gray-800"
             >
                 Delete Phone Number
             </button>
@@ -54,7 +55,10 @@ export default function DialogDeletePhoneNumber({ refetch }: IProps) {
                     <AlertDialogHeader>
                         <AlertDialogTitle>Delete Phone Number</AlertDialogTitle>
                     </AlertDialogHeader>
-
+                    <AlertDialogDescription className="text-white">
+                        Are you sure you want to delete the attached mobile
+                        number?
+                    </AlertDialogDescription>
                     <AlertDialogFooter>
                         <Button
                             onClick={() => setDialog(false)}
@@ -67,7 +71,7 @@ export default function DialogDeletePhoneNumber({ refetch }: IProps) {
                             type="submit"
                             onClick={deletePhoneNumber}
                         >
-                            Submit
+                            Yes, Delete
                         </Button>
                     </AlertDialogFooter>
                 </AlertDialogContent>
