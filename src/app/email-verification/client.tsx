@@ -3,36 +3,16 @@ import TitleAuth from '@/components/base/Title/TitleAuth';
 import { Button } from '@/components/ui/button';
 import fetchClient from '@/lib/FetchClient';
 import { useSession } from 'next-auth/react';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { redirect } from 'next/navigation';
 import CardDarkNeonGlow from '@/components/base/Card/CardDarkNeonGlow';
 import Navbar from './Navbar';
-import { IProfile } from '@/types/user';
-import { useRouter } from 'next/navigation';
 
-export default function Page() {
-    const { data, update } = useSession();
-
-    const router = useRouter();
+export default function Client() {
+    const { data } = useSession();
     if (data?.user.email_verified_at) {
         redirect('/user');
     }
-    useEffect(() => {
-        const getData = async () => {
-            const response = await fetchClient({
-                url: '/user/me',
-            });
-
-            const res = response.data.data as IProfile;
-            if (res.email_verified_at) {
-                await update({
-                    email_verified_at: res.email_verified_at,
-                });
-                router.push('/user');
-            }
-        };
-        getData();
-    }, []);
 
     const [isLoading, setisLoading] = useState(false);
     const [isSend, setisSend] = useState(false);

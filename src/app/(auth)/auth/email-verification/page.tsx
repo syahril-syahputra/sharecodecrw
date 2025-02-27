@@ -25,13 +25,17 @@ export default function Page() {
 
     async function resend() {
         try {
-            setisFaildeResend('');
-            await fetchClient({
-                url: '/auth/resend-verification',
-                method: 'POST',
-                byPassVerification: true,
-            });
-            setisTokenResend(true);
+            if (!data?.user) {
+                router.push('/auth/login');
+            } else {
+                setisFaildeResend('');
+                await fetchClient({
+                    url: '/auth/resend-verification',
+                    method: 'POST',
+                    byPassVerification: true,
+                });
+                setisTokenResend(true);
+            }
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
         } catch (error: any) {
             setisFaildeResend(error.response.data.message);
