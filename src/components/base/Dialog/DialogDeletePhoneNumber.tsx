@@ -69,6 +69,7 @@ export default function DialogDeletePhoneNumber({ refetch }: IProps) {
                         <Button
                             loading={isPending}
                             type="submit"
+                            variant={'destructive'}
                             onClick={deletePhoneNumber}
                         >
                             Yes, Delete

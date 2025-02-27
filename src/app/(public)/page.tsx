@@ -22,7 +22,7 @@ export default async function page() {
     // const user = await getCurrentUser();
     // const data = await getData();
     return (
-        <div className="z-20 mt-20">
+        <div className="z-20">
             <HomeHero />
             <HomeServices />
             <HomeBottomNavbar />

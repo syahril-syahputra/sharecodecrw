@@ -6,9 +6,7 @@ import { useSession } from 'next-auth/react';
 import React, { useState } from 'react';
 import { redirect } from 'next/navigation';
 import CardDarkNeonGlow from '@/components/base/Card/CardDarkNeonGlow';
-import Link from 'next/link';
-import Logo from '@/components/base/Logo';
-import MenuUser from '@/components/base/NavbarAuth/MenuUser';
+import Navbar from './Navbar';
 
 export default function Page() {
     const { data } = useSession();
@@ -36,21 +34,7 @@ export default function Page() {
 
     return (
         <div>
-            <div className="mx-auto flex max-w-5xl justify-evenly">
-                <div className="flex w-full items-center justify-between space-x-4  p-4 lg:w-6/12 xl:w-4/12">
-                    <Link href={'/'}>
-                        <Logo />
-                    </Link>
-                </div>
-                {data?.user ? (
-                    <MenuUser
-                        session={data?.user}
-                        image={data?.user.profile_picture_url || ''}
-                    />
-                ) : (
-                    <div></div>
-                )}
-            </div>
+            <Navbar />
             <div className="mx-auto max-w-xl text-center">
                 <CardDarkNeonGlow>
                     {!isSend ? (

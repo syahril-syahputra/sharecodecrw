@@ -76,17 +76,20 @@ export default async function Page({
                             </div>
                         </div>
                         <div className="flex items-center space-x-4">
-                            <div className="flex items-center space-x-2">
-                                <Avatar>
-                                    <AvatarImage src={data.cmp_image_url} />
-                                    <AvatarFallback>
-                                        {initialUserName}
-                                    </AvatarFallback>
-                                </Avatar>
-                                <span className="font-urbanist text-white">
-                                    {data.cmp_name}
-                                </span>
-                            </div>
+                            <Link href={`/profile/${data.cmp_id}`}>
+                                <div className="flex items-center space-x-2">
+                                    <Avatar>
+                                        <AvatarImage src={data.cmp_image_url} />
+                                        <AvatarFallback>
+                                            {initialUserName}
+                                        </AvatarFallback>
+                                    </Avatar>
+
+                                    <span className="font-urbanist text-white">
+                                        {data.cmp_name}
+                                    </span>
+                                </div>
+                            </Link>
                             <div className="flex items-center space-x-2 font-light">
                                 {data.is_company ? (
                                     <Badge className="flex bg-gray-900 p-2 px-4">
@@ -163,17 +166,22 @@ export default async function Page({
                 </div>
                 <div className="w-full space-y-6 rounded-xl bg-gray-900 p-10 md:sticky md:top-28 md:w-4/12">
                     <div className="flex items-center space-x-4">
-                        <div className="flex items-center space-x-2">
-                            <Avatar>
-                                <AvatarImage src={data.cmp_image_url} />
-                                <AvatarFallback>
-                                    {initialUserName}
-                                </AvatarFallback>
-                            </Avatar>
-                            <span className="font-urbanist text-white">
-                                {data.cmp_name}
-                            </span>
-                        </div>
+                        <Link
+                            href={`/profile/${data.cmp_id}`}
+                            className="text-primary"
+                        >
+                            <div className="flex items-center space-x-2">
+                                <Avatar>
+                                    <AvatarImage src={data.cmp_image_url} />
+                                    <AvatarFallback>
+                                        {initialUserName}
+                                    </AvatarFallback>
+                                </Avatar>
+                                <span className="font-urbanist text-white">
+                                    {data.cmp_name}
+                                </span>
+                            </div>
+                        </Link>
                         <div className="flex items-center space-x-2 font-light">
                             {data.is_company ? (
                                 <Badge className="flex bg-gray-500 px-3">
@@ -187,6 +195,7 @@ export default async function Page({
                                 </Badge>
                             )}
                         </div>
+
                         <Link
                             href={`/profile/${data.cmp_id}`}
                             className="text-primary"

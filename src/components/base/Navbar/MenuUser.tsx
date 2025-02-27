@@ -1,6 +1,6 @@
 'use client';
 import React, { useEffect, useState } from 'react';
-import { HandCoins, LogOut, User2 } from 'lucide-react';
+import { LogOut, User2 } from 'lucide-react';
 import {
     DropdownMenu,
     DropdownMenuContent,
@@ -31,7 +31,7 @@ export default function MenuUser(props: IProps) {
     return (
         <div className="flex items-center space-x-4 py-4">
             <Link href={'/user/plans'} className="flex items-center space-x-2">
-                <HandCoins />
+                <span className="font-semibold">Credit</span>{' '}
                 <span>{!isLoading && credit}</span>
             </Link>
             <ButtonNotification />

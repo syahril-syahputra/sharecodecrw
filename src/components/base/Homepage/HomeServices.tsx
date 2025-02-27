@@ -100,26 +100,6 @@ export default function HomeServices() {
         }
     }, []);
 
-    useEffect(() => {
-        filterHandler();
-    }, [filterValue.lat]);
-
-    // useEffect(() => {
-    //     const location = localStorage.getItem('location');
-    //     console.log(location);
-    //     if (location) {
-    //         setUserLocation(JSON.parse(location) as ICordinate);
-    //         setfilterValue({
-    //             ...filterValue,
-    //             lat: userLocation.lat + '',
-    //             lng: userLocation.lng + '',
-    //             // lat: '40.79509100',
-    //             // lng: '-73.96828500',
-    //         });
-    //     } else {
-    //         console.log('Geolocation is not available in your browser.');
-    //     }
-    // }, []);
     const { data: dataState, isLoading: isLoadingProvince } = useFetchState();
     const { data: dataCategory, isLoading: isLoadingCategory } =
         useFetchCategory();
@@ -132,9 +112,22 @@ export default function HomeServices() {
             });
         }
     );
+
     useEffect(() => {
         filterHandler();
     }, [filterValue.provider]);
+
+    useEffect(() => {
+        if (filterValue.city_id) {
+            const city =
+                dataCity && dataCity.find((x) => x.id === filterValue.city_id);
+            setfilterValue({
+                ...filterValue,
+                lat: city?.latitude,
+                lng: city?.longitude,
+            });
+        }
+    }, [filterValue.city_id]);
 
     const { data, fetchNextPage, isLoading, hasNextPage } = useFetchServices(
         filter,

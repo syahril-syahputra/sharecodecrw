@@ -21,16 +21,20 @@ export default function Page() {
 
     const [isVerified, setisVerified] = useState(false);
     const [isFailed, setisFailed] = useState(false);
+    const [isFaildeResend, setisFaildeResend] = useState('');
 
     async function resend() {
         try {
+            setisFaildeResend('');
             await fetchClient({
                 url: '/auth/resend-verification',
                 method: 'POST',
+                byPassVerification: true,
             });
             setisTokenResend(true);
-        } catch (error) {
-            console.log(error);
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        } catch (error: any) {
+            setisFaildeResend(error.response.data.message);
         }
 
         // router.push('/');
@@ -41,6 +45,7 @@ export default function Page() {
                 await fetchClient({
                     url: '/auth/email-verification',
                     method: 'POST',
+                    byPassVerification: true,
                     body: {
                         token:
                             'key=' +
@@ -120,25 +125,33 @@ export default function Page() {
                     <div className="relative my-8 overflow-hidden rounded-xl bg-gray-900 p-6 text-white shadow-lg">
                         <div className="absolute -top-72 left-1/2 h-96 w-96 -translate-x-1/2 transform rounded-full bg-blue-800 opacity-40 blur-2xl"></div>
                         <div className="relative space-y-8 text-center text-white">
-                            <div className="text-lg font-bold text-white">
-                                Your token is invalid or expired, please request
-                                new email verification token
-                            </div>
-                            <div>
-                                {isTokenResend ? (
-                                    <div>
-                                        Your token has been sent, verify your
-                                        email to continue
+                            {isTokenResend ? (
+                                <div className="text-lg font-bold text-white">
+                                    Your token has been sent, verify your email
+                                    to continue
+                                </div>
+                            ) : (
+                                <>
+                                    <div className="text-lg font-bold text-white">
+                                        Your token is invalid or expired, please
+                                        request new email verification token
                                     </div>
-                                ) : (
-                                    <label
-                                        onClick={resend}
-                                        className="cursor-pointer text-blue-500 underline hover:opacity-70"
-                                    >
-                                        Resend
-                                    </label>
-                                )}
-                            </div>
+                                    {isFaildeResend ? (
+                                        <div className=" text-red-500">
+                                            {isFaildeResend}
+                                        </div>
+                                    ) : (
+                                        <div>
+                                            <label
+                                                onClick={resend}
+                                                className="cursor-pointer text-blue-500 underline hover:opacity-70"
+                                            >
+                                                Resend
+                                            </label>
+                                        </div>
+                                    )}
+                                </>
+                            )}
                         </div>
                     </div>
                 </div>

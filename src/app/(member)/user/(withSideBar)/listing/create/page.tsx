@@ -42,6 +42,7 @@ import ErrorMessage from '@/components/base/Error/ErrorMessage';
 import { useFetchDuration } from '@/feature/base/duration';
 import clsx from 'clsx';
 import { useFetchCommercialServices } from '@/feature/base/commercial-service';
+import { PremiumColor } from '@/lib/premiumColor';
 
 const MAX_FILE_SIZE = 1000000;
 const ACCEPTED_IMAGE_TYPES = [
@@ -93,9 +94,11 @@ const formSchema = z
                 (val) =>
                     val === undefined ||
                     val === '' ||
-                    val === '#258ad8' ||
-                    val === '#d87925' ||
-                    val === '#e9e1d3',
+                    val === '#789DBC' ||
+                    val === '#FFE3E3' ||
+                    val === '#C9E9D2' ||
+                    val === '#BEAEE2' ||
+                    val === '#FFCACC',
                 {
                     message: 'Please Select a Valid Color',
                 }
@@ -705,64 +708,37 @@ export default function Page() {
                                                                     </SelectTrigger>
                                                                 </FormControl>
                                                                 <SelectContent>
-                                                                    <SelectItem
-                                                                        key={
-                                                                            '#258ad8'
-                                                                        }
-                                                                        value={
-                                                                            '#258ad8'
-                                                                        }
-                                                                    >
-                                                                        <div className="flex items-center space-x-2">
-                                                                            <div
-                                                                                className={clsx(
-                                                                                    `h-4 w-4 rounded-full !bg-[#258AD8] `
-                                                                                )}
-                                                                            ></div>
-                                                                            <span>
-                                                                                Blue
-                                                                            </span>
-                                                                        </div>
-                                                                    </SelectItem>
-                                                                    <SelectItem
-                                                                        key={
-                                                                            '#d87925'
-                                                                        }
-                                                                        value={
-                                                                            '#d87925'
-                                                                        }
-                                                                    >
-                                                                        <div className="flex items-center space-x-2">
-                                                                            <div
-                                                                                className={clsx(
-                                                                                    `h-4 w-4 rounded-full !bg-[#D87925] `
-                                                                                )}
-                                                                            ></div>
-                                                                            <span>
-                                                                                Orange
-                                                                            </span>
-                                                                        </div>
-                                                                    </SelectItem>
-                                                                    <SelectItem
-                                                                        key={
-                                                                            '#e9e1d3'
-                                                                        }
-                                                                        value={
-                                                                            '#e9e1d3'
-                                                                        }
-                                                                    >
-                                                                        <div className="flex items-center space-x-2">
-                                                                            <div
-                                                                                className={clsx(
-                                                                                    `h-4 w-4 rounded-full !bg-[#e9e1d3] `
-                                                                                )}
-                                                                            ></div>
-                                                                            <span>
-                                                                                Light
-                                                                                Beige
-                                                                            </span>
-                                                                        </div>
-                                                                    </SelectItem>
+                                                                    {PremiumColor.map(
+                                                                        (
+                                                                            item
+                                                                        ) => (
+                                                                            <SelectItem
+                                                                                key={
+                                                                                    item.color
+                                                                                }
+                                                                                value={
+                                                                                    item.color
+                                                                                }
+                                                                            >
+                                                                                <div className="flex items-center space-x-2">
+                                                                                    <div
+                                                                                        className={clsx(
+                                                                                            `h-4 w-4 rounded-full `
+                                                                                        )}
+                                                                                        style={{
+                                                                                            backgroundColor:
+                                                                                                item.color,
+                                                                                        }}
+                                                                                    ></div>
+                                                                                    <span>
+                                                                                        {
+                                                                                            item.name
+                                                                                        }
+                                                                                    </span>
+                                                                                </div>
+                                                                            </SelectItem>
+                                                                        )
+                                                                    )}
                                                                 </SelectContent>
                                                             </Select>
                                                             <FormMessage />
@@ -860,64 +836,37 @@ export default function Page() {
                                                                     </SelectTrigger>
                                                                 </FormControl>
                                                                 <SelectContent>
-                                                                    <SelectItem
-                                                                        key={
-                                                                            '#258ad8'
-                                                                        }
-                                                                        value={
-                                                                            '#258ad8'
-                                                                        }
-                                                                    >
-                                                                        <div className="flex items-center space-x-2">
-                                                                            <div
-                                                                                className={clsx(
-                                                                                    `h-4 w-4 rounded-full !bg-[#258AD8] `
-                                                                                )}
-                                                                            ></div>
-                                                                            <span>
-                                                                                Blue
-                                                                            </span>
-                                                                        </div>
-                                                                    </SelectItem>
-                                                                    <SelectItem
-                                                                        key={
-                                                                            '#d87925'
-                                                                        }
-                                                                        value={
-                                                                            '#d87925'
-                                                                        }
-                                                                    >
-                                                                        <div className="flex items-center space-x-2">
-                                                                            <div
-                                                                                className={clsx(
-                                                                                    `h-4 w-4 rounded-full !bg-[#D87925] `
-                                                                                )}
-                                                                            ></div>
-                                                                            <span>
-                                                                                Orange
-                                                                            </span>
-                                                                        </div>
-                                                                    </SelectItem>
-                                                                    <SelectItem
-                                                                        key={
-                                                                            '#e9e1d3'
-                                                                        }
-                                                                        value={
-                                                                            '#e9e1d3'
-                                                                        }
-                                                                    >
-                                                                        <div className="flex items-center space-x-2">
-                                                                            <div
-                                                                                className={clsx(
-                                                                                    `h-4 w-4 rounded-full !bg-[#e9e1d3] `
-                                                                                )}
-                                                                            ></div>
-                                                                            <span>
-                                                                                Light
-                                                                                Beige
-                                                                            </span>
-                                                                        </div>
-                                                                    </SelectItem>
+                                                                    {PremiumColor.map(
+                                                                        (
+                                                                            item
+                                                                        ) => (
+                                                                            <SelectItem
+                                                                                key={
+                                                                                    item.color
+                                                                                }
+                                                                                value={
+                                                                                    item.color
+                                                                                }
+                                                                            >
+                                                                                <div className="flex items-center space-x-2">
+                                                                                    <div
+                                                                                        className={clsx(
+                                                                                            `h-4 w-4 rounded-full `
+                                                                                        )}
+                                                                                        style={{
+                                                                                            backgroundColor:
+                                                                                                item.color,
+                                                                                        }}
+                                                                                    ></div>
+                                                                                    <span>
+                                                                                        {
+                                                                                            item.name
+                                                                                        }
+                                                                                    </span>
+                                                                                </div>
+                                                                            </SelectItem>
+                                                                        )
+                                                                    )}
                                                                 </SelectContent>
                                                             </Select>
                                                             <FormMessage />

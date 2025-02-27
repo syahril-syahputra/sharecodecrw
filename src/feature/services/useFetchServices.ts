@@ -12,12 +12,14 @@ export const useFetchServices = (
 ) => {
     return useInfiniteQuery({
         queryFn: async ({ pageParam }) => {
-            console.log(pageParam);
+            const newFilter = { ...filter };
+            delete newFilter.city_id;
+            delete newFilter.province_id;
             const baseUrl = `/businesses/listings`;
             const queryParams = new URLSearchParams({
                 page: pageParam + '',
                 paginate: page.pageSize.toString(),
-                ...filter,
+                ...newFilter,
                 ...sort,
             });
             const url = `${baseUrl}?${queryParams.toString()}`;
