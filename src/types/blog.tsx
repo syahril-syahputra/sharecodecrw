@@ -1,5 +1,3 @@
-import { ITags } from './user';
-
 export interface IArticle {
     id: string;
     categoryId: string;
