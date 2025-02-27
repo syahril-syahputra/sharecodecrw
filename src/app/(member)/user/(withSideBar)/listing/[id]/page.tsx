@@ -39,6 +39,7 @@ import Link from 'next/link';
 import { useFetchDuration } from '@/feature/base/duration';
 import DeleteListing from '@/components/base/Publisher/Listings/DeleteListing';
 import { PremiumColor } from '@/lib/premiumColor';
+import { useRefreshCreditBusiness } from '@/feature/business/useFetchCreditBusiness';
 
 const formSchema = z
     .object({
@@ -101,7 +102,7 @@ export default function Page({ params }: { params: { id: string } }) {
             if (result.data?.data?.url) {
                 window.location.href = result.data.data.url;
             } else {
-                router.push('/user/listing');
+                refreshCredit();
             }
 
             console.log('ok');
@@ -143,6 +144,12 @@ export default function Page({ params }: { params: { id: string } }) {
         form.getValues().is_uplifter
     );
 
+    const { mutate: refreshCredit } = useRefreshCreditBusiness({
+        onSuccess: async () => {
+            router.push('/user/listing');
+        },
+        onError: () => {},
+    });
     const { data: dataDuration, isLoading: isLoadingDuration } =
         useFetchDuration();
     return (

@@ -69,7 +69,7 @@ export default function RootLayout({
                     >
                         <Providers>
                             <SessionProvider>
-                                <div>{children}</div>
+                                <div className="bg-white">{children}</div>
                             </SessionProvider>
                         </Providers>
                     </ThemeProvider>

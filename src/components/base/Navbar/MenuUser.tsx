@@ -1,5 +1,5 @@
 'use client';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { LogOut, User2 } from 'lucide-react';
 import {
     DropdownMenu,
@@ -12,7 +12,10 @@ import {
 import { signOut } from 'next-auth/react';
 import Link from 'next/link';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { useFetchCreditBusiness } from '@/feature/business/useFetchCreditBusiness';
+import {
+    // useFetchCreditBusiness,
+    useRefreshCreditBusiness,
+} from '@/feature/business/useFetchCreditBusiness';
 import ButtonNotification from './ButtonNotification';
 import { useSession } from 'next-auth/react';
 interface IProps {
@@ -20,19 +23,24 @@ interface IProps {
     image?: string;
 }
 export default function MenuUser(props: IProps) {
-    const { data: session } = useSession();
-    const { data: creditCounter, status, isLoading } = useFetchCreditBusiness();
-    const [credit, setCredit] = useState(0);
+    const { data: session, update } = useSession();
+    const { mutate: refreshCredit, isPending } = useRefreshCreditBusiness({
+        onSuccess: async (data) => {
+            await update({
+                credit: data.data.data,
+            });
+        },
+        onError: () => {},
+    });
     useEffect(() => {
-        if (status === 'success') {
-            setCredit(creditCounter);
-        }
-    }, [setCredit, status]);
+        refreshCredit();
+    }, []);
+
     return (
         <div className="flex items-center space-x-4 py-4">
             <Link href={'/user/plans'} className="flex items-center space-x-2">
                 <span className="font-semibold">Credit</span>{' '}
-                <span>{!isLoading && credit}</span>
+                <span>{!isPending && session?.user.credit}</span>
             </Link>
             <ButtonNotification />
             <DropdownMenu>

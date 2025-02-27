@@ -92,6 +92,9 @@ export const authOptions: NextAuthOptions = {
                 if (session.profile_picture_url) {
                     token.profile_picture_url = session.profile_picture_url;
                 }
+                if (session.credit) {
+                    token.credit = session.credit;
+                }
             }
             // if (trigger === 'update') {
 
@@ -115,6 +118,7 @@ export const authOptions: NextAuthOptions = {
             session.user.city = token.city || '';
             session.user.province = token.province || '';
             session.user.business_id = token.business_id || '';
+            session.user.credit = token.credit || 0;
 
             return session;
         },

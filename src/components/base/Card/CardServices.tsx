@@ -9,6 +9,7 @@ import { IServices } from '@/types/services';
 import Link from 'next/link';
 import { truncateText } from '@/lib/utils';
 import clsx from 'clsx';
+import { PremiumColor } from '@/lib/premiumColor';
 
 interface IProps {
     data: IServices;
@@ -18,6 +19,11 @@ export default function CardServices(props: IProps) {
         ? props.data.cmp_name.charAt(0)
         : '';
 
+    const cekIsWhite = (color: string) => {
+        const cek = PremiumColor.find((x) => x.color === color)?.isWhite;
+        return cek;
+    };
+
     if (props.data.is_boost_size) {
         return (
             <Link href={`/service/${props.data.slug}/${props.data.id}`}>
@@ -26,10 +32,9 @@ export default function CardServices(props: IProps) {
                         `relative overflow-hidden  rounded-lg border-none bg-gray-950 p-10 text-white shadow-lg`
                     )}
                     style={{
-                        color:
-                            props.data.color_hexadecimal === '#e9e1d3'
-                                ? '#111111'
-                                : undefined,
+                        color: !cekIsWhite(props.data.color_hexadecimal)
+                            ? '#111111'
+                            : undefined,
                         backgroundColor: props.data.color_hexadecimal,
                     }}
                 >
@@ -67,7 +72,9 @@ export default function CardServices(props: IProps) {
                             <h2 className="mb-3 font-saans text-3xl font-bold">
                                 {props.data.title}
                             </h2>
-                            <p className="bg-gradient-to-b from-gray-200 to-transparent bg-clip-text font-urbanist text-transparent">
+                            <p
+                                className={`bg-gradient-to-b to-transparent bg-clip-text font-urbanist text-transparent ${!cekIsWhite(props.data.color_hexadecimal) ? `from-gray-800` : `from-gray-200`}`}
+                            >
                                 {truncateText(props.data.description, 250)}
                             </p>
                         </div>
@@ -105,10 +112,9 @@ export default function CardServices(props: IProps) {
                     `relative overflow-hidden rounded-lg border-none bg-gray-950 p-10 text-white shadow-lg`
                 )}
                 style={{
-                    color:
-                        props.data.color_hexadecimal === '#e9e1d3'
-                            ? '#111111'
-                            : undefined,
+                    color: !cekIsWhite(props.data.color_hexadecimal)
+                        ? '#111111'
+                        : undefined,
                     backgroundColor: props.data.color_hexadecimal,
                 }}
             >
@@ -145,7 +151,7 @@ export default function CardServices(props: IProps) {
                             {props.data.title}
                         </h2>
                         <p
-                            className={`bg-gradient-to-b to-transparent bg-clip-text font-urbanist text-transparent ${props.data.color_hexadecimal === `#e9e1d3` ? `from-gray-800` : `from-gray-200`}`}
+                            className={`bg-gradient-to-b to-transparent bg-clip-text font-urbanist text-transparent ${!cekIsWhite(props.data.color_hexadecimal) ? `from-gray-800` : `from-gray-200`}`}
                         >
                             {truncateText(props.data.description, 250)}
                         </p>

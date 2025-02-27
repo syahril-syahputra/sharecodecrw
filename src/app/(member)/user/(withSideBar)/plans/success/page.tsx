@@ -1,13 +1,26 @@
 'use client';
 import Spinner from '@/components/ui/spinner';
+import { useRefreshCreditBusiness } from '@/feature/business/useFetchCreditBusiness';
 import { useCheckPaymentStatus } from '@/feature/payments/useCheckPaymentStatus';
 import { Check, X } from 'lucide-react';
 import { useSearchParams } from 'next/navigation';
+import { useEffect } from 'react';
 
 export default function Page() {
     const searchParams = useSearchParams();
     const session_id = searchParams.get('session_id');
-    const { isPending, isError } = useCheckPaymentStatus(session_id!);
+    const { isPending, isError, isSuccess } = useCheckPaymentStatus(
+        session_id!
+    );
+    useEffect(() => {
+        if (isSuccess) {
+            refreshCredit();
+        }
+    }, [isSuccess]);
+    const { mutate: refreshCredit } = useRefreshCreditBusiness({
+        onSuccess: async () => {},
+        onError: () => {},
+    });
 
     if (isPending) {
         return (

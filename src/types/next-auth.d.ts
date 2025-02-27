@@ -23,6 +23,7 @@ declare module 'next-auth' {
         province?: string | null;
         email_verified_at?: string | null;
         business_id?: string | null;
+        credit?: string | null;
     }
 }
 

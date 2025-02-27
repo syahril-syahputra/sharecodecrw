@@ -43,6 +43,7 @@ import { useFetchDuration } from '@/feature/base/duration';
 import clsx from 'clsx';
 import { useFetchCommercialServices } from '@/feature/base/commercial-service';
 import { PremiumColor } from '@/lib/premiumColor';
+import { useRefreshCreditBusiness } from '@/feature/business/useFetchCreditBusiness';
 
 const MAX_FILE_SIZE = 1000000;
 const ACCEPTED_IMAGE_TYPES = [
@@ -172,13 +173,26 @@ export default function Page() {
             if (result.data?.data?.url) {
                 window.location.href = result.data.data.url;
             } else {
-                router.push('/user/listing');
+                refreshCredit();
             }
 
             console.log('ok');
         },
         onError: (error) => errorHelper(form.setError, error),
     });
+
+    const { mutate: refreshCredit } = useRefreshCreditBusiness({
+        onSuccess: async () => {
+            router.push('/user/listing');
+        },
+        onError: () => {},
+    });
+
+    // async function testing() {
+    //     await update({
+    //         credit: '50000',
+    //     });
+    // }
     async function onSubmit(
         data: z.infer<typeof formSchema>,
         event?: React.BaseSyntheticEvent
@@ -265,7 +279,6 @@ export default function Page() {
                         <h2 className="font-urbanist text-4xl font-bold text-white">
                             Create a Service Listing
                         </h2>
-
                         <div className="space-y-8 py-8">
                             <FormField
                                 control={form.control}
