@@ -9,7 +9,7 @@ export interface IArticle {
     creator: string;
     createdAt: string;
     body: string;
-    tags: ITags[];
+    hashtags: string[];
     creator_picture_url?: string;
     created_at: string;
     updated_at: string;

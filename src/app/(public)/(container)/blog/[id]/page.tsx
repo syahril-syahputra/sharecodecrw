@@ -53,8 +53,8 @@ export default async function page({ params }: { params: { id: string } }) {
                     {dayjs(data.createdAt).format('HH MMM YYYY')}
                 </div>
                 <div className=" space-x-2">
-                    {data.tags.map((item) => (
-                        <Badge key={item.id}>{item.title}</Badge>
+                    {data.hashtags.map((item, key) => (
+                        <Badge key={key}>{item}</Badge>
                     ))}
                 </div>
             </div>
