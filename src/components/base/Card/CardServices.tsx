@@ -20,6 +20,9 @@ export default function CardServices(props: IProps) {
         : '';
 
     const cekIsWhite = (color: string) => {
+        if (!color){
+            return true;
+        }
         const cek = PremiumColor.find((x) => x.color === color)?.isWhite;
         return cek;
     };
