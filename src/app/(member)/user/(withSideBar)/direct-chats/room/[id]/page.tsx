@@ -76,7 +76,7 @@ export default function Page({ params }: { params: { id: string } }) {
             });
 
             connect(
-                `wss://dev-api.crowner.ca/ws?token=${data.data.data.access_token}&room_id=${params.id}&type=direct-messages`
+                `${process.env.NEXT_PUBLIC_WS_SERVER}/ws?token=${data.data.data.access_token}&room_id=${params.id}&type=direct-messages`
             );
         } catch (error) {
             console.log(error);
