@@ -92,7 +92,7 @@ export default function Page() {
     }, [timer, isVerified]);
 
     return (
-        <div className="container">
+        <div className="container h-screen">
             {!isVerified && !isFailed && (
                 <div className="mx-auto w-full lg:w-6/12">
                     <div className="relative my-8 overflow-hidden rounded-xl bg-gray-900 p-6 text-white shadow-lg">

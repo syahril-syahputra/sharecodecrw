@@ -37,13 +37,13 @@ const koulen = Koulen({
 /* eslint-disable @typescript-eslint/no-unused-vars */
 const metadata: Metadata = {
     title: {
-        template: '%s | Simplest to Use',
+        template: '%s | Services One Click Away!',
         default: 'Crowner',
     },
     icons: {
         icon: '/favicon.ico',
     },
-    description: 'Simplest to Use',
+    description: 'Services One Click Away!',
     metadataBase: new URL('https://crowner.ca'),
 };
 /* eslint-disable @typescript-eslint/no-unused-vars */

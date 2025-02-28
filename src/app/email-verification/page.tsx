@@ -2,21 +2,21 @@
 import TitleAuth from '@/components/base/Title/TitleAuth';
 import { Button } from '@/components/ui/button';
 import fetchClient from '@/lib/FetchClient';
-import { useSession } from 'next-auth/react';
+import { signOut, useSession } from 'next-auth/react';
 import React, { useEffect, useState } from 'react';
 import { redirect } from 'next/navigation';
 import CardDarkNeonGlow from '@/components/base/Card/CardDarkNeonGlow';
 import Navbar from './Navbar';
 import { IProfile } from '@/types/user';
-import { useRouter } from 'next/navigation';
 
 export default function Page() {
-    const { data, update } = useSession();
+    const { data } = useSession();
 
-    const router = useRouter();
     if (data?.user.email_verified_at) {
         redirect('/user');
     }
+
+    const [isEmailVerified, setIsEmailVerified] = useState<string | null>(null);
     useEffect(() => {
         const getData = async () => {
             const response = await fetchClient({
@@ -25,14 +25,25 @@ export default function Page() {
 
             const res = response.data.data as IProfile;
             if (res.email_verified_at) {
-                await update({
-                    email_verified_at: res.email_verified_at,
-                });
-                router.push('/user');
+                setIsEmailVerified(res.email_verified_at);
             }
         };
         getData();
     }, []);
+
+    const handleUpdateSession = async () => {
+        // try {
+        //     await update({
+        //         email_verified_at: isEmailVerified,
+        //     });
+        //     router.push('/user');
+        //     router.refresh();
+        // } catch (error) {
+        //     console.error("Error updating session:", error);
+        // }
+
+        signOut();
+    };
 
     const [isLoading, setisLoading] = useState(false);
     const [isSend, setisSend] = useState(false);
@@ -55,7 +66,7 @@ export default function Page() {
     return (
         <div>
             <Navbar />
-            <div className="mx-auto max-w-xl text-center">
+            <div className="mx-auto h-screen max-w-xl text-center">
                 <CardDarkNeonGlow>
                     {!isSend ? (
                         <TitleAuth>Verify your email to continue</TitleAuth>
@@ -73,6 +84,17 @@ export default function Page() {
                         </Button>
                     )}
                 </CardDarkNeonGlow>
+                {isEmailVerified && (
+                    <div className="pt-10 italic">
+                        Is your email already verified?{' '}
+                        <span
+                            onClick={handleUpdateSession}
+                            className="cursor-pointer text-primary underline"
+                        >
+                            please logout and create new session
+                        </span>
+                    </div>
+                )}
             </div>
         </div>
     );

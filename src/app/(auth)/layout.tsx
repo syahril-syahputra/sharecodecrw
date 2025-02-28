@@ -4,7 +4,7 @@ import React from 'react';
 
 /* eslint-disable @typescript-eslint/no-unused-vars */
 const metadata: Metadata = {
-    title: 'Crowner - Simplest to Use',
+    title: 'Crowner - Services One Click Away!',
 };
 /* eslint-disable @typescript-eslint/no-unused-vars */
 

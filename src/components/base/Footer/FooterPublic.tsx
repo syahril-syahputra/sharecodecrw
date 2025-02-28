@@ -13,7 +13,7 @@ export default function FooterPublic() {
                             <span className="font-koulen text-4xl">
                                 CROWNER
                             </span>
-                            <span>Simplest to use</span>
+                            <span>Services One Click Away!</span>
                         </div>
                     </div>
                 </div>

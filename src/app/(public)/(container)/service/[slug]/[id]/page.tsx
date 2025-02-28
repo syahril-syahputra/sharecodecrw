@@ -130,33 +130,37 @@ export default async function Page({
                                 rater={data.total_reviews}
                             />
                         </div>
-                        <div>
-                            <div className="mb-3 text-4xl text-white">
-                                Similar Services
+                        {relatedListing.length != 0 && (
+                            <div>
+                                <div className="mb-3 text-4xl text-white">
+                                    Similar Services
+                                </div>
+                                <Carousel className="">
+                                    <CarouselContent className="space-x-4">
+                                        {relatedListing?.map(
+                                            (data: IServices) => (
+                                                <CarouselItem
+                                                    key={data.id}
+                                                    className="basis-96"
+                                                >
+                                                    <Link
+                                                        href={`/service/${data.slug}/${data.id}`}
+                                                        key={data.id}
+                                                    >
+                                                        <CardService
+                                                            data={data}
+                                                            variant="full"
+                                                        />
+                                                    </Link>
+                                                </CarouselItem>
+                                            )
+                                        )}
+                                    </CarouselContent>
+                                    <CarouselPrevious />
+                                    <CarouselNext />
+                                </Carousel>
                             </div>
-                            <Carousel className="">
-                                <CarouselContent className="space-x-4">
-                                    {relatedListing?.map((data: IServices) => (
-                                        <CarouselItem
-                                            key={data.id}
-                                            className="basis-96"
-                                        >
-                                            <Link
-                                                href={`/service/${data.slug}/${data.id}`}
-                                                key={data.id}
-                                            >
-                                                <CardService
-                                                    data={data}
-                                                    variant="full"
-                                                />
-                                            </Link>
-                                        </CarouselItem>
-                                    ))}
-                                </CarouselContent>
-                                <CarouselPrevious />
-                                <CarouselNext />
-                            </Carousel>
-                        </div>
+                        )}
                         <QuestionAndAnswerDark
                             user_id={user?.id || ''}
                             entity_id={params.id}

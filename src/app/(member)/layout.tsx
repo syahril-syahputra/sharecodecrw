@@ -3,7 +3,7 @@ import { Metadata } from 'next';
 import React from 'react';
 
 export const metadata: Metadata = {
-    title: 'Member | Crowner - Simplest to Use',
+    title: 'Member | Crowner - Services One Click Away!',
 };
 
 export default function layout({ children }: { children: React.ReactNode }) {

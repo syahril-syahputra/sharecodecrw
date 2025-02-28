@@ -21,7 +21,7 @@ async function getData() {
 }
 
 export const metadata: Metadata = {
-    title: 'Blogs | Crowner - Simplest to Use',
+    title: 'Blogs | Crowner - Services One Click Away!',
 };
 
 async function getArticle(filter: string | undefined) {
