@@ -16,6 +16,11 @@ export default function SideMenuClient() {
             <Menu>
                 <MenuGroup>
                     <Link href={'/user/listing'}>
+                        <MenuItem url={'/user'}>Home</MenuItem>
+                    </Link>
+                </MenuGroup>
+                <MenuGroup>
+                    <Link href={'/user/listing'}>
                         <MenuItem url={'/user/listing'}>
                             Create a Listing
                         </MenuItem>
@@ -24,6 +29,16 @@ export default function SideMenuClient() {
                 <MenuGroup>
                     <Link href={'/user/direct-chats'}>
                         <MenuItem url={'direct-chats'}>Messages</MenuItem>
+                    </Link>
+                </MenuGroup>
+                <MenuGroup>
+                    <Link href={'/user/direct-chats'}>
+                        <MenuItem url={'direct-chats'}>Interest</MenuItem>
+                    </Link>
+                </MenuGroup>
+                <MenuGroup>
+                    <Link href={'/user/direct-chats'}>
+                        <MenuItem url={'direct-chats'}>Favorites</MenuItem>
                     </Link>
                 </MenuGroup>
                 <MenuGroup>
